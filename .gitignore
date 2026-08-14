@@ -1,0 +1,31 @@
+# Segredos e configuração local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Dependências e builds
+node_modules/
+dist/
+build/
+target/
+coverage/
+.next/
+.turbo/
+
+# Dados locais e backups
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.webfit-backup
+
+# Ferramentas e sistema operacional
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
