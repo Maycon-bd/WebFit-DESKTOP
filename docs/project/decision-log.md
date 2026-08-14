@@ -29,6 +29,7 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | DEC-007 | não copiar documentação técnica web como verdade vigente | aprovada | [contexto](context.md#decisões-vigentes) |
 | DEC-008 | importar somente funcionalidade e comportamento validados | aprovada | [manifesto](legacy-import-manifest.md) |
 | DEC-009 | conduzir desenvolvimento por requisitos rastreáveis e gates | aprovada | [ciclo de desenvolvimento](development-lifecycle.md) |
+| DEC-010 | adotar Git Flow com `main` e `develop` como ramos permanentes | aprovada | [fluxo Git](git-workflow.md) |
 
 ## Decisões pendentes
 

@@ -50,6 +50,7 @@ Este diretório contém a documentação canônica do produto novo. O material e
 - [Contexto](project/context.md)
 - [Ciclo de desenvolvimento](project/development-lifecycle.md)
 - [Roadmap](project/roadmap.md)
+- [Fluxo Git](project/git-workflow.md)
 - [Registro de decisões](project/decision-log.md)
 - [Registro de riscos](project/risk-register.md)
 - [Catálogo funcional candidato](project/functional-candidates.md)

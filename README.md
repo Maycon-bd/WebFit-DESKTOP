@@ -15,6 +15,7 @@ O [Gate G1 — Visão aprovada](docs/project/development-lifecycle.md#gate-g1--v
 - [Ciclo de desenvolvimento](docs/project/development-lifecycle.md): gates, entregáveis, IDs e estrutura documental.
 - [Escopo candidato](docs/product/scope.md): itens ainda sujeitos a validação no Gate G1.
 - [Registro de decisões](docs/project/decision-log.md): decisões vigentes e questões pendentes.
+- [Fluxo Git](docs/project/git-workflow.md): ramificações, integração e release pelo Git Flow.
 - [Registro de riscos](docs/project/risk-register.md): riscos, respostas e responsáveis a definir.
 - [ADR-0001](docs/architecture/adr/ADR-0001-desktop-tauri-sqlite.md): arquitetura proposta e critérios do spike.
 - [Matriz de rastreabilidade](docs/requirements/traceability.md): instruções e tabela ainda sem requisitos.
