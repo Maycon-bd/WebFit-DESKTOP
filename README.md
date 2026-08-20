@@ -12,11 +12,13 @@ A baseline de requisitos do primeiro incremento está documentada e aguarda revi
 
 ```text
 autenticação → perfil → espaço Saúde → pacientes
-→ auditoria → backup/restauração mínima → persistência comprovada
+→ prescrições e cardápios → auditoria → backup/restauração mínima
+→ persistência comprovada
 ```
 
 ## Navegação
 
+- [Status operacional — comece aqui](docs/project/status.md)
 - [Índice da documentação](docs/README.md)
 - [Visão aprovada](docs/product/vision.md)
 - [Escopo do MVP Saúde](docs/product/scope.md)

@@ -115,6 +115,39 @@
 - **Status:** aprovado.
 - **Fonte:** entrevista 01 e decisão de projeto.
 
+## Prescrições e cardápios
+
+### RF-PRE-001 — Criar prescrição individual
+
+- **Descrição:** criar prescrição vinculada a paciente ativo, autor e espaço Saúde.
+- **Conteúdo mínimo:** identificação, objetivo, orientações e refeições.
+- **Prioridade:** obrigatória — incremento 1.
+- **Status:** em revisão no G2.
+- **Fonte:** entrevista 01 e aprovação de escopo posterior.
+
+### RF-PRE-002 — Montar refeições, alimentos e porções
+
+- **Descrição:** organizar refeições e incluir alimentos da base nutricional ou alimentos personalizados, com quantidade e unidade.
+- **Prioridade:** obrigatória — incremento 1.
+- **Status:** em revisão no G2.
+- **Dependências:** fonte nutricional, medidas caseiras e regras de alimentos personalizados.
+
+### RF-PRE-003 — Calcular composição nutricional
+
+- **Descrição:** calcular energia, macronutrientes e micronutrientes do item, refeição e cardápio usando dados e fórmulas aprovados.
+- **Prioridade:** obrigatória — incremento 1.
+- **Status:** em revisão no G2.
+- **Dependências:** fonte oficial, unidades, arredondamentos e critérios clínicos aprovados por Amanda.
+
+### RF-PRE-004 — Manter rascunho, versões e histórico
+
+- **Descrição:** salvar rascunho, criar versão final imutável, permitir nova versão derivada e consultar histórico sem sobrescrever versão emitida.
+- **Prioridade:** obrigatória — incremento 1.
+- **Status:** em revisão no G2.
+- **Dependências:** estados, transições e regras de correção/cancelamento.
+
+PDF, impressão e exportação não pertencem ao incremento 1.
+
 ## Auditoria
 
 ### RF-AUD-001 — Registrar e consultar auditoria
@@ -162,7 +195,6 @@
 | RF-AGE-001 | criar, reagendar, cancelar e concluir atendimento vinculado a paciente | estados e conflitos | proposto |
 | RF-ANA-001 | registrar anamnese e histórico clínico | campos e política de correção | proposto |
 | RF-ANT-001 | registrar antropometria e apresentar evolução | protocolos e fórmulas | proposto |
-| RF-PRE-001 | criar, versionar e emitir prescrição/cardápio individual | base alimentar e cálculos | proposto |
 | RF-ARQ-001 | importar, visualizar, exportar e arquivar arquivo clínico | tipos, limites e retenção | proposto |
 | RF-REL-001 | gerar documentos A4 e exportações PDF, XLSX e CSV | modelos e campos obrigatórios | proposto |
 | RF-FIN-001 | registrar recebimentos e estados financeiros em centavos | regras de cobrança e relatórios | proposto |

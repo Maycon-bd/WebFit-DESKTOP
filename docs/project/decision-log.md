@@ -26,6 +26,7 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | DEC-018 | incluir autenticação, auditoria, pacientes e backup mínimo no primeiro incremento | aprovada | [escopo](../product/scope.md) |
 | DEC-019 | adotar backup diário e manual, retenção de 60 dias, RPO de 24 horas e RTO até o próximo dia útil | aprovada | [entrevista 01](stakeholder-interview-round-01.md) |
 | DEC-020 | manter conectividade para atualização, recuperação remota e nuvem fora do MVP, sujeita a ADR | aprovada | decisão Maycon/Amanda |
+| DEC-021 | incluir prescrição e cardápio individual no primeiro incremento, sem PDF ou exportação | aprovada | [status operacional](status.md) |
 
 ## Decisões pendentes
 

@@ -46,6 +46,7 @@
 - [Entrevista — rodada 01](project/stakeholder-interview-round-01.md)
 - [Registro de decisões](project/decision-log.md)
 - [Product Backlog](project/product-backlog.md)
+- [Status operacional — retomar entre máquinas](project/status.md)
 - [Roadmap](project/roadmap.md)
 - [Riscos](project/risk-register.md)
 - [Ciclo de desenvolvimento](project/development-lifecycle.md)

@@ -487,7 +487,7 @@ O Gate G1 aprovou o MVP Saúde em 2026-08-20. A lista histórica acima deve ser 
 - [x] Definir espaços Saúde e Educação; implementar somente Saúde no MVP.
 - [x] Definir nutricionista e administrador com acesso total no MVP.
 - [x] Consolidar glossário inicial do primeiro incremento.
-- [x] Mapear jornada do primeiro incremento até paciente e backup; atendimento segue no próximo refinamento.
+- [x] Mapear jornada do primeiro incremento até paciente, prescrição/cardápio e backup; atendimento segue no próximo refinamento.
 - [x] Extrair e aprovar requisitos do primeiro incremento; restante do MVP permanece proposto.
 - [ ] Resolver os conflitos listados neste documento.
 - [x] Criar RNFs mensuráveis do primeiro incremento.

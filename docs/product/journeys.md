@@ -7,7 +7,8 @@
 ```text
 instalar → criar ou acessar usuário → autenticar → entrar no espaço Saúde
 → cadastrar perfil → cadastrar paciente → localizar e abrir paciente
-→ editar → arquivar → restaurar → criar backup
+→ editar → arquivar → restaurar → criar prescrição e cardápio
+→ calcular e finalizar → criar backup
 → restaurar em teste → fechar e reabrir preservando dados
 ```
 

@@ -23,6 +23,7 @@
 - Entrada no espaço Saúde.
 - Cadastro, busca, abertura, edição, arquivamento e restauração de pacientes.
 - Tags e observações básicas.
+- Prescrições e cardápios individualizados: refeições, alimentos, porções, cálculos, rascunho, versões, finalização e histórico.
 - Auditoria das ações críticas.
 - Rascunho protegido do cadastro de paciente.
 - Backup local mínimo, manual e automático, com restauração em ambiente de teste.

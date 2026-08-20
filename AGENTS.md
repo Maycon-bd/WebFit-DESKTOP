@@ -8,13 +8,27 @@ WebFit Desktop é um aplicativo local e offline para gestão de consultório e a
 
 Antes de planejar ou alterar o produto, leia:
 
-1. `docs/project/context.md`;
-2. `docs/project/development-lifecycle.md`;
-3. `docs/project/functional-candidates.md` durante a descoberta;
-4. `docs/product/scope.md`, quando existir;
-5. requisitos, regras, casos de uso e ADRs relacionados ao domínio alterado.
+1. `docs/project/status.md`;
+2. `docs/project/context.md`;
+3. `docs/project/development-lifecycle.md`;
+4. `docs/project/functional-candidates.md` durante a descoberta;
+5. `docs/product/scope.md`, quando existir;
+6. requisitos, regras, casos de uso e ADRs relacionados ao domínio alterado.
 
 Documentos legados são fontes de descoberta, não requisitos aprovados.
+
+## Retomada obrigatória entre máquinas e chats
+
+Quando uma solicitação contiver a frase **“Vamos continuar onde paramos”**, independentemente de maiúsculas, minúsculas ou pontuação:
+
+1. leia integralmente `docs/project/status.md` antes de planejar, responder sobre o próximo passo ou alterar arquivos;
+2. confira `git status --short --branch` e o commit atual;
+3. compare o estado local com branch, commit-base e sincronização registrados no checkpoint;
+4. se houver divergência, alterações não sincronizadas ou conflito entre máquinas, informe antes de editar;
+5. retome pela seção **Próxima ação exata** do checkpoint, sem reconstruir o estado apenas pela memória do chat;
+6. antes de encerrar trabalho material, atualize data, branch, commit-base, sincronização, última etapa concluída, próxima ação e checklist do Gate no mesmo arquivo.
+
+Essa regra também se aplica a variações claras da mesma frase, como “continuar de onde paramos”.
 
 ## Arquitetura vigente
 

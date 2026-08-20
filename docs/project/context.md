@@ -36,7 +36,7 @@ O registro completo está em [decision-log.md](decision-log.md).
 
 ## Escopo aprovado
 
-O Gate G1 foi aprovado em 2026-08-20 para o MVP Saúde. O primeiro incremento inclui autenticação, perfil, espaço Saúde, pacientes, auditoria e backup/restauração mínima. Agenda, atendimento, anamnese, antropometria, prescrições/cardápios, arquivos, documentos, financeiro, planner e relatórios seguem como incrementos do mesmo MVP, condicionados a requisitos próprios.
+O Gate G1 foi aprovado em 2026-08-20 para o MVP Saúde. O primeiro incremento inclui autenticação, perfil, espaço Saúde, pacientes, prescrições e cardápios individualizados, auditoria e backup/restauração mínima. Agenda, atendimento, anamnese, antropometria, prescrições/cardápios, arquivos, documentos, financeiro, planner e relatórios seguem como incrementos do mesmo MVP, condicionados a requisitos próprios.
 
 Educação, nuvem, sincronização entre computadores, portal do paciente e comunicação remota estão fora do MVP Saúde.
 

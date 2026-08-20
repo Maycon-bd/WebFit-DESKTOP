@@ -36,6 +36,7 @@ Este documento registra decisões extraídas da entrevista. Respostas diretas da
 ```text
 primeiro acesso e autenticação → perfil profissional → espaço Saúde
 → cadastrar, localizar, abrir, editar, arquivar e restaurar paciente
+→ criar prescrição e cardápio individual com cálculos e histórico
 → auditar ações críticas → criar backup local e validar restauração
 → fechar e reabrir sem perda dos dados salvos
 ```
