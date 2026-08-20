@@ -1,12 +1,35 @@
 # Arquitetura da informação
 
-**Status:** não definida.
+**Status:** estrutura do primeiro incremento aprovada.
 
-## Lacunas
+```text
+Aplicação
+├── Primeiro acesso
+├── Login
+├── Seleção de espaço
+│   └── Saúde
+├── Saúde
+│   ├── Início
+│   ├── Pacientes
+│   │   ├── Lista e pesquisa
+│   │   ├── Novo paciente
+│   │   ├── Perfil do paciente
+│   │   └── Arquivados
+│   ├── Perfil profissional
+│   ├── Backup e restauração
+│   └── Auditoria
+└── Sessão
+    ├── Bloquear
+    ├── Trocar senha
+    └── Sair
+```
 
-- Inventariar objetos e tarefas após a aprovação do escopo.
-- Definir agrupamentos, navegação, busca e hierarquia.
-- Validar linguagem com o glossário do domínio.
-- Definir visibilidade por papel somente após a matriz de permissões.
+Educação não aparece como funcionalidade simulada no MVP. A estrutura poderá receber outro espaço após requisitos próprios.
 
-Não transportar automaticamente menus ou módulos do WebFit Web.
+## Princípios
+
+- Fluxos guiados com menos campos por etapa.
+- Estado vazio, carregamento, erro e confirmação reais.
+- CPF mascarado em listagens.
+- Pacientes ativos e arquivados claramente separados.
+- Ações destrutivas ou de substituição exigem confirmação.

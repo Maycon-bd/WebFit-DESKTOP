@@ -1,14 +1,20 @@
 # Exportação de dados
 
-**Status:** não especificada.
+**Status:** capacidade aprovada para incremento posterior do MVP Saúde; não pertence ao incremento 1.
 
-## Lacunas
+## Formatos
 
-- Finalidades e atores autorizados.
-- Entidades, arquivos e períodos abrangidos.
-- Formatos, versão do esquema e documentação.
-- Proteção do pacote e tratamento de destino inseguro.
-- Auditoria, confirmação, cancelamento e falhas.
-- Critérios de completude, integridade e reimportação, quando aplicável.
+- PDF para leitura, envio e impressão.
+- XLSX para relatórios tabulares e análise.
+- CSV para dados estruturados e interoperabilidade controlada.
 
-Exportação de dados do usuário é distinta da importação histórica do WebFit Web e do backup operacional.
+## Regras
+
+- Exportação ocorre somente por ação explícita de usuário autenticado.
+- Nutricionista e administrador possuem acesso conforme decisão vigente.
+- Registrar formato, tipo de conteúdo, destinatário/finalidade declarados, instante e resultado.
+- Não registrar o conteúdo exportado na auditoria.
+- Alertar que o arquivo deixa a área privada do aplicativo.
+- Documentos clínicos usam dados fictícios em testes.
+
+Modelos, colunas, retenção e documentos prioritários serão detalhados antes do incremento correspondente.

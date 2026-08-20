@@ -1,21 +1,30 @@
 # Jornadas do produto
 
-**Status:** jornada candidata; não validada.
+**Status:** primeira jornada do MVP Saúde validada em 2026-08-20.
 
-## Primeira jornada a especificar
+## Primeiro incremento
 
 ```text
-instalar → criar administrador → cadastrar clínica → cadastrar paciente
-→ registrar atendimento → salvar prescrição → gerar documento
-→ criar backup → restaurar backup em instalação de teste
+instalar → criar ou acessar usuário → autenticar → entrar no espaço Saúde
+→ cadastrar perfil → cadastrar paciente → localizar e abrir paciente
+→ editar → arquivar → restaurar → criar backup
+→ restaurar em teste → fechar e reabrir preservando dados
 ```
 
-## Lacunas
+## Evolução do MVP Saúde
 
-- Identificar ator, objetivo e gatilho de cada etapa.
-- Definir pré-condições, resultado esperado, erros e recuperação.
-- Confirmar se anamnese, antropometria e financeiro integram a primeira jornada.
-- Definir os pontos de autorização, auditoria e confirmação.
-- Validar a jornada com o responsável pelo produto e usuários representativos.
+```text
+paciente → atendimento → anamnese → antropometria
+→ prescrição/cardápio → documento A4 → financeiro e planner
+→ relatórios/exportações → backup e recuperação
+```
 
-Após validação, decompor a jornada em casos de uso, requisitos, regras e critérios de aceite rastreáveis.
+## Pontos transversais
+
+- Toda operação é autorizada no backend.
+- Ações críticas são auditadas.
+- Formulários longos podem recuperar rascunhos.
+- Erros não podem simular sucesso.
+- Dados salvos sobrevivem ao fechamento e à reabertura.
+
+O espaço Educação terá jornada própria após descoberta. Não reutilizar automaticamente entidades ou fluxos clínicos.

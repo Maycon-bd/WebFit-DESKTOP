@@ -1,14 +1,21 @@
 # Acessibilidade
 
-**Status:** critérios ainda não definidos.
+**Status:** baseline do primeiro incremento aprovada.
 
-## Decisões e validações necessárias
+## Critérios
 
-- Padrão e nível de conformidade aplicável.
-- Navegação completa por teclado e ordem de foco.
-- Contraste, escala de texto e estados não dependentes apenas de cor.
-- Nomes acessíveis, mensagens de erro e anúncios de estado.
-- Compatibilidade com tecnologias assistivas no Windows.
-- Método, ferramentas e participantes de validação.
+- Login, seleção de espaço, pesquisa, abertura, cadastro, edição, salvar, cancelar, arquivar, restaurar, backup e logout funcionam sem depender do mouse.
+- `Tab` avança, `Shift+Tab` retorna, `Enter` aciona quando apropriado e `Esc` fecha/cancela sem perda silenciosa.
+- Ordem de foco acompanha a ordem visual e o foco é sempre visível.
+- Ampliação de 200% mantém conteúdo e ações acessíveis em 1366×768.
+- Erros identificam o campo e explicam correção; não dependem apenas de cor.
+- Controles possuem nome acessível e estados de carregamento/sucesso/erro são anunciáveis.
+- Fluxos guiados dividem cadastro em identificação, contato, complemento e revisão.
 
-Os critérios aprovados devem virar RNFs e testes rastreáveis.
+## Validação
+
+- testes automatizados de semântica onde aplicável;
+- revisão manual somente por teclado;
+- inspeção em 100%, 150% e 200%;
+- teste no WebView2/Windows do computador-alvo;
+- registro de evidências nos testes relacionados.

@@ -116,23 +116,23 @@ Nenhum arquivo legado será colado diretamente na documentação oficial do Desk
 8. publicar no documento canônico correspondente;
 9. manter rastreabilidade até teste e versão entregue.
 
-## Conflitos que precisam ser resolvidos antes da importação
+## Conflitos históricos e estado atual
 
 | Tema | Afirmações conflitantes ou incompletas | Decisão necessária |
 |---|---|---|
 | Agendamento inicial | documentos alternam entre “agendado” e “confirmado” | definir máquina de estados e estado inicial |
 | Cancelamento | regra antiga remove registro; schema posterior arquiva | definir cancelamento, exclusão e retenção |
 | Retorno e cobrança | retorno gera cobrança automaticamente como paga | confirmar se cria cobrança, qual status e possibilidade de desfazer |
-| CPF | aparece como campo, mas obrigatoriedade e unicidade não são claras | definir quando exigir, normalização e duplicidade |
-| Nome social/apelido | preenchimento automático com primeiro nome | validar edição e uso em relatórios/documentos |
+| CPF | aparece como campo, mas obrigatoriedade e unicidade não são claras | resolvido no incremento 1: obrigatório, normalizado e único no Saúde |
+| Nome social/apelido | preenchimento automático com primeiro nome | resolvido: nome social opcional, preferido na interface quando informado |
 | Consulta online | existe como modalidade, mas Desktop é offline | decidir se é apenas classificação ou se implica videochamada |
-| Chat e diário | pressupõem acesso do paciente em outro dispositivo | retirar do MVP local ou redesenhar como registro manual |
-| Planos Pro/Black | bloqueios foram simulados | remover até existir estratégia comercial aprovada |
-| Exclusão de pacientes | há lixeira, soft delete e retenção clínica/financeira | definir política funcional e legal |
-| Auditoria | não está claro quem pode consultar e por quanto tempo | definir finalidade, acesso e retenção |
-| Multi-clínica | schema suporta; experiência atual usa a primeira clínica | confirmar se o Desktop MVP precisa de uma ou várias clínicas |
-| Usuários locais | owner, nutricionista e assistente existem conceitualmente | definir permissões por ação e necessidade no MVP |
-| Datas e horários | formatos de tela foram tratados como armazenamento | definir regra de timezone, UTC e apresentação |
+| Chat e diário | pressupõem acesso do paciente em outro dispositivo | resolvido para o MVP Saúde: fora do escopo |
+| Planos Pro/Black | bloqueios foram simulados | resolvido para o MVP Saúde: fora do escopo |
+| Exclusão de pacientes | há lixeira, soft delete e retenção clínica/financeira | parcialmente resolvido: arquivar nunca exclui; retenção legal segue aberta |
+| Auditoria | não está claro quem pode consultar e por quanto tempo | parcialmente resolvido: ambos os papéis acessam; retenção segue aberta |
+| Multi-clínica | schema suporta; experiência atual usa a primeira clínica | resolvido para o MVP: espaço Saúde único; Educação é outro domínio futuro |
+| Usuários locais | owner, nutricionista e assistente existem conceitualmente | resolvido no MVP: nutricionista e administrador com acesso total |
+| Datas e horários | formatos de tela foram tratados como armazenamento | resolvido: instantes em UTC e datas civis sem conversão de fuso |
 
 Nenhuma dessas decisões deve ser tomada silenciosamente pelo código.
 
@@ -476,24 +476,24 @@ Toda mudança significativa reinicia o ciclo em requisitos e análise de impacto
 - planos pagos e bloqueios comerciais;
 - sincronização entre computadores.
 
-A divisão é uma proposta para a fase de requisitos, não aprovação automática. Ela deve ser confirmada no Gate G1.
+O Gate G1 aprovou o MVP Saúde em 2026-08-20. A lista histórica acima deve ser lida junto ao escopo canônico; somente requisitos aprovados entram em implementação.
 
 ## Primeiro ciclo antes de escrever o produto
 
 ### Ciclo 0 — Descoberta e baseline
 
-- [ ] Aprovar visão, público e problema.
-- [ ] Aprovar MVP e não escopo.
-- [ ] Definir se haverá uma ou várias clínicas locais.
-- [ ] Definir usuários e matriz de permissões.
-- [ ] Consolidar glossário.
-- [ ] Mapear jornada “instalar até concluir primeiro atendimento e backup”.
-- [ ] Extrair requisitos candidatos das fontes funcionais.
+- [x] Aprovar visão, público e problema.
+- [x] Aprovar MVP e não escopo.
+- [x] Definir espaços Saúde e Educação; implementar somente Saúde no MVP.
+- [x] Definir nutricionista e administrador com acesso total no MVP.
+- [x] Consolidar glossário inicial do primeiro incremento.
+- [x] Mapear jornada do primeiro incremento até paciente e backup; atendimento segue no próximo refinamento.
+- [x] Extrair e aprovar requisitos do primeiro incremento; restante do MVP permanece proposto.
 - [ ] Resolver os conflitos listados neste documento.
-- [ ] Criar requisitos não funcionais mensuráveis.
-- [ ] Aprovar critérios de aceite dos fluxos críticos.
-- [ ] Criar matriz inicial de rastreabilidade.
-- [ ] Registrar riscos e ADR da arquitetura.
+- [x] Criar RNFs mensuráveis do primeiro incremento.
+- [x] Aprovar critérios de aceite do primeiro incremento.
+- [x] Criar matriz inicial de rastreabilidade.
+- [x] Registrar riscos e ADR da arquitetura.
 
 ### Ciclo 1 — Prova da fundação
 

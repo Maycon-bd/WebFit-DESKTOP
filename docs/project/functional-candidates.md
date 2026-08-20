@@ -2,7 +2,7 @@
 
 ## Como usar
 
-Este catálogo transporta somente conhecimento de produto extraído do WebFit Web. Todos os itens estão no estado **proposto** até validação. A existência de uma tela ou regra antiga não significa aprovação para o Desktop.
+Este catálogo preserva conhecimento de produto extraído do WebFit Web. Ele é uma fonte histórica de descoberta: itens aprovados foram formalizados nos documentos de requisitos, e perguntas marcadas como pendentes aqui podem já estar resolvidas no registro de decisões. A existência de uma tela ou regra antiga não significa aprovação para o Desktop.
 
 Detalhes de banco, nuvem, navegador e estado técnico anterior foram removidos. Quando uma regra estiver contraditória ou incompleta, a decisão aparece explicitamente como pendência.
 
@@ -13,7 +13,7 @@ Detalhes de banco, nuvem, navegador e estado técnico anterior foram removidos. 
 - Assistente/recepcionista.
 - Paciente, apenas como entidade atendida no MVP local.
 
-O paciente não é usuário do MVP Desktop. A necessidade de múltiplos usuários locais e seus poderes deve ser validada.
+O paciente não é usuário do MVP Desktop. Para o MVP Saúde foram aprovados nutricionista e administrador, ambos com acesso total e ações auditadas; consulte DEC-016.
 
 ## Clínica e perfil profissional
 

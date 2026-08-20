@@ -1,17 +1,33 @@
 # Estratégia de testes
 
-**Status:** proposta inicial; depende de requisitos e arquitetura validados.
+**Status:** baseline do primeiro incremento aprovada.
 
-## Níveis candidatos
+## Níveis
 
-- Unidade para regras, validações e componentes.
-- Integração para SQLite, migrações, transações, autorização e arquivos.
-- Contrato para comandos frontend/backend.
-- Aceite para jornadas aprovadas.
-- Recuperação para backup, corrupção, falha de escrita e restauração.
-- Instalação para instalação limpa, atualização e preservação de dados.
-- Acessibilidade e usabilidade para fluxos críticos.
+- testes unitários de domínio e validação;
+- testes de componentes e fluxos React;
+- testes de comandos e autorização Rust;
+- integração SQLite com banco real temporário;
+- migração de banco vazio e da versão anterior;
+- testes de contrato IPC;
+- testes de backup/restauração e falhas;
+- testes de acessibilidade por ferramenta e revisão manual;
+- testes de instalador Windows em ambiente limpo;
+- testes de aceite na Sprint Review.
 
-## Princípios
+## Dados e segurança
 
-Testes usam dados sintéticos, são ligados a IDs e produzem evidências reproduzíveis. A pirâmide, ferramentas, ambientes, metas de cobertura e critérios de bloqueio ainda serão definidos.
+- usar apenas dados fictícios;
+- verificar ausência de dados sensíveis em logs;
+- testar ambos os papéis e sessão expirada;
+- testar CPF inválido/duplicado, transações e foreign keys;
+- testar corrupção, disco cheio, falta de permissão e interrupção;
+- nunca declarar sucesso simulado.
+
+## Desempenho
+
+Medir início frio, pesquisa, abertura e salvamento na baseline definida em RNFs, com 2.400 pacientes fictícios e registro do percentil 95.
+
+## Evidência
+
+Cada execução registra comando, ambiente, versão, resultado e artefato. Testes de aceite usam IDs `TA-*` e atualizam a matriz de rastreabilidade.

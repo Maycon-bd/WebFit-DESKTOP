@@ -1,31 +1,37 @@
 # WebFit Desktop
 
-Aplicativo desktop local e offline para gestão de consultório e acompanhamento nutricional. A direção inicial é Windows-first, para uso em um único computador, sem hospedagem ou mensalidade obrigatória.
+Aplicativo desktop local e offline para gestão e acompanhamento nutricional. A primeira versão é Windows-first, para um computador por instalação, sem hospedagem ou mensalidade obrigatória.
 
 ## Estado atual
 
-O projeto está no **Ciclo 0 — Descoberta e baseline**. Não há aplicação, dependências ou funcionalidades implementadas. A combinação Tauri 2, React, TypeScript, Vite, Rust e SQLite é uma proposta autorizada somente para spike; ainda não é uma arquitetura comprovada para produção.
+O **Gate G1 — Visão aprovada** foi concluído em 20/08/2026 para o **MVP Saúde**. A entrevista com Amanda validou autoridade, contexto, primeiro incremento e limites do produto.
 
-O [Gate G1 — Visão aprovada](docs/project/development-lifecycle.md#gate-g1--visão-aprovada) permanece pendente. Nenhum código do WebFit Web deve ser copiado e nenhum requisito deve ser implementado antes das aprovações previstas no ciclo de desenvolvimento.
+A baseline de requisitos do primeiro incremento está documentada e aguarda revisão final do Gate G2 antes do planejamento e do spike técnico. Ainda não existe aplicação, dependência, banco, teste executável ou instalador. Tauri, React, Rust e SQLite continuam aprovados apenas para validação pelo spike do ADR-0001.
+
+## Primeiro incremento
+
+```text
+autenticação → perfil → espaço Saúde → pacientes
+→ auditoria → backup/restauração mínima → persistência comprovada
+```
 
 ## Navegação
 
-- [Índice da documentação](docs/README.md): ponto de entrada para toda a documentação canônica.
-- [Contexto e decisões iniciais](docs/project/context.md): problema, direção, hipóteses e decisões já registradas.
-- [Ciclo de desenvolvimento](docs/project/development-lifecycle.md): gates, entregáveis, IDs e estrutura documental.
-- [Escopo candidato](docs/product/scope.md): itens ainda sujeitos a validação no Gate G1.
-- [Registro de decisões](docs/project/decision-log.md): decisões vigentes e questões pendentes.
-- [Fluxo Git](docs/project/git-workflow.md): ramificações, integração e release pelo Git Flow.
-- [Registro de riscos](docs/project/risk-register.md): riscos, respostas e responsáveis a definir.
-- [ADR-0001](docs/architecture/adr/ADR-0001-desktop-tauri-sqlite.md): arquitetura proposta e critérios do spike.
-- [Matriz de rastreabilidade](docs/requirements/traceability.md): instruções e tabela ainda sem requisitos.
+- [Índice da documentação](docs/README.md)
+- [Visão aprovada](docs/product/vision.md)
+- [Escopo do MVP Saúde](docs/product/scope.md)
+- [Entrevista curada](docs/project/stakeholder-interview-round-01.md)
+- [Requisitos funcionais](docs/requirements/functional-requirements.md)
+- [Matriz de rastreabilidade](docs/requirements/traceability.md)
+- [Product Backlog](docs/project/product-backlog.md)
+- [ADR-0001](docs/architecture/adr/ADR-0001-desktop-tauri-sqlite.md)
 
-## Regras para contribuir nesta fase
+## Regras para contribuir
 
-1. Trate documentos legados como fontes de descoberta, nunca como requisitos aprovados.
-2. Registre lacunas explicitamente; não complete decisões de produto por suposição.
-3. Só implemente requisitos com ID, critérios de aceite e status `aprovado`.
-4. Registre decisões arquiteturais significativas em ADR.
-5. Nunca adicione segredos, dados reais, bancos, backups, dependências instaladas ou artefatos de build ao repositório.
+1. Documentos legados são fontes de descoberta, não requisitos aprovados.
+2. Só implementar requisito com ID, critérios de aceite e status aprovado.
+3. Não introduzir nuvem, sincronização ou acesso remoto sem decisão e ADR.
+4. Não adicionar segredos, dados reais, bancos, backups ou artefatos de build.
+5. Manter requisitos, testes, documentação e versão rastreáveis.
 
-Consulte também [AGENTS.md](AGENTS.md), que contém as regras obrigatórias do projeto.
+Consulte [AGENTS.md](AGENTS.md) para as regras obrigatórias.

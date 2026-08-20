@@ -1,16 +1,18 @@
-# Personas
+# Personas e atores
 
-**Status:** não validadas.
+**Status:** atores do MVP Saúde validados em 2026-08-20.
 
-## Atores candidatos
-
-| Ator candidato | Hipótese atual | Lacuna de validação |
+| Ator | Papel aprovado | Acesso no MVP |
 |---|---|---|
-| Nutricionista autônomo | possível usuário principal | confirmar perfil, contexto e necessidades prioritárias |
-| Proprietário do consultório | pode aprovar ou administrar configurações | confirmar se é pessoa distinta do nutricionista |
-| Assistente/recepcionista | pode apoiar agenda e rotinas administrativas | confirmar presença no MVP e limites de acesso |
-| Paciente | entidade atendida, não usuário do MVP local | confirmar ausência de acesso direto no MVP |
+| Nutricionista | usuária principal e operadora do espaço Saúde | acesso total |
+| Administrador | Maycon, responsável por suporte e administração | acesso total por decisão do produto; ações auditadas |
+| Paciente | entidade atendida | sem login ou acesso direto no MVP |
 
-## Para validar cada persona
+## Contexto validado
 
-Registrar objetivos, tarefas, ambiente de uso, frequência, limitações, conhecimentos, necessidades de acessibilidade e acesso permitido a dados sensíveis. Não criar personas fictícias com nome, idade ou comportamento sem pesquisa.
+- Notebook de trabalho com Windows 10 e conta Windows exclusiva.
+- Uso para atendimento nutricional, registros clínicos e elaboração de cardápios individualizados.
+- Preferência por fluxos guiados com menos campos por etapa.
+- Teclado e ampliação de 200% são requisitos, ainda que não tenha sido relatada necessidade assistiva específica.
+
+Assistente, recepcionista, escolas, fornecedores e gestores da Educação não pertencem ao MVP Saúde. Novos atores exigem descoberta e matriz de permissões próprias.

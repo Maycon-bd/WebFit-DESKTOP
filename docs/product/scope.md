@@ -1,32 +1,49 @@
 # Escopo do produto
 
-**Status:** proposto; aguarda validação no Gate G1.
+**Status:** MVP Saúde aprovado no Gate G1 em 2026-08-20.
 
-## MVP candidato
+## MVP Saúde
 
-- Instalação e primeiro acesso.
-- Administrador local, bloqueio e troca de senha.
-- Perfil profissional e clínica.
-- Pacientes, agenda, anamnese e antropometria.
-- Prescrições, financeiro básico e planner.
-- Arquivos clínicos, relatórios, auditoria, backup, restauração e exportação.
+- Fundação local: instalação, primeiro acesso, autenticação, espaço de trabalho, auditoria e persistência.
+- Perfil profissional pertencente ao usuário.
+- Pacientes: cadastro, pesquisa, edição, tags, arquivamento e restauração.
+- Agenda e ciclo básico de atendimentos.
+- Anamnese e histórico clínico.
+- Antropometria e cálculos aprovados pelo domínio.
+- Prescrições e cardápios individualizados com cálculos aprovados.
+- Arquivos clínicos e documentos A4 prioritários.
+- Financeiro básico e planner.
+- Relatórios e exportações PDF, XLSX e CSV.
+- Backup local manual e automático, restauração e diagnóstico de integridade.
 
-## Fora do MVP candidato
+## Primeiro incremento
 
+- Primeiro acesso, login, logout e bloqueio.
+- Perfil profissional.
+- Entrada no espaço Saúde.
+- Cadastro, busca, abertura, edição, arquivamento e restauração de pacientes.
+- Tags e observações básicas.
+- Auditoria das ações críticas.
+- Rascunho protegido do cadastro de paciente.
+- Backup local mínimo, manual e automático, com restauração em ambiente de teste.
+- Persistência comprovada após fechar e reabrir.
+
+## Fora do MVP Saúde
+
+- Espaço Educação: escolas, cardápios semanais, fornecedores, pedidos e gestão municipal de alimentos.
 - Portal ou aplicativo do paciente.
 - Chat remoto, diário por celular e notificações push.
-- WhatsApp automatizado, teleconsulta e integrações com wearables.
+- WhatsApp automatizado, teleconsulta e wearables.
 - Site público, marketing, cursos e podcast.
 - Sincronização ou colaboração entre computadores.
-- Hospedagem, serviços em nuvem, planos pagos e bloqueios comerciais.
+- Hospedagem, backup em nuvem, planos pagos e bloqueios comerciais.
 
-## Lacunas de escopo
+## Evoluções sujeitas a nova decisão
 
-- Aprovar ou ajustar cada item do MVP e do não escopo.
-- Definir prioridade e critérios observáveis de sucesso.
-- Decidir uma ou várias clínicas por instalação.
-- Decidir um ou vários usuários locais e suas permissões.
-- Definir quais relatórios e documentos são prioritários.
-- Definir o tratamento local, se houver, para pré-consulta e modalidade online.
+- Atualizações do aplicativo pela internet.
+- Recuperação remota de acesso.
+- Backup opcional em nuvem.
+- Migração dos aproximadamente 80 pacientes existentes.
+- Descoberta, requisitos e arquitetura do espaço Educação.
 
-O catálogo detalhado permanece em [funcionalidades candidatas](../project/functional-candidates.md). Nenhum item desta lista é requisito aprovado.
+O catálogo detalhado permanece em [funcionalidades candidatas](../project/functional-candidates.md). A implementação é condicionada aos requisitos e testes aprovados no Gate G2.

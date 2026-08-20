@@ -2,56 +2,43 @@
 
 Este registro consolida decisões e pendências. ADRs detalham decisões arquiteturais; itens pendentes não autorizam implementação.
 
-## Template de decisão
-
-| Campo | Preenchimento |
-|---|---|
-| ID e título | identificador estável e frase objetiva |
-| Data | `AAAA-MM-DD` |
-| Status | proposta, aprovada, rejeitada ou substituída |
-| Decisor | pessoa ou papel com autoridade |
-| Contexto | problema e restrições |
-| Decisão | escolha explícita |
-| Alternativas | opções consideradas |
-| Consequências | benefícios, custos e riscos |
-| Evidências | links para pesquisa, spike, requisito ou ADR |
-
 ## Decisões registradas
 
 | ID | Decisão | Status | Fonte/evidência |
 |---|---|---|---|
-| DEC-001 | criar novo repositório chamado WebFit Desktop | aprovada | [contexto](context.md#decisões-vigentes) |
-| DEC-002 | pausar o desenvolvimento do WebFit Web | aprovada | [contexto](context.md#decisões-vigentes) |
-| DEC-003 | usar Tauri 2 como shell desktop | proposta aprovada para spike | [ADR-0001](../architecture/adr/ADR-0001-desktop-tauri-sqlite.md) |
-| DEC-004 | manter React + TypeScript + Vite | proposta aprovada para spike | [ADR-0001](../architecture/adr/ADR-0001-desktop-tauri-sqlite.md) |
-| DEC-005 | usar SQLite nativo como banco local | proposta aprovada para spike | [ADR-0001](../architecture/adr/ADR-0001-desktop-tauri-sqlite.md) |
-| DEC-006 | usar Rust como fronteira de domínio e persistência | proposta aprovada para spike | [ADR-0001](../architecture/adr/ADR-0001-desktop-tauri-sqlite.md) |
-| DEC-007 | não copiar documentação técnica web como verdade vigente | aprovada | [contexto](context.md#decisões-vigentes) |
+| DEC-001 | criar novo repositório chamado WebFit Desktop | aprovada | [contexto](context.md) |
+| DEC-002 | pausar o desenvolvimento do WebFit Web | aprovada | [contexto](context.md) |
+| DEC-003 | usar Tauri 2 como shell desktop | aprovada para spike | [ADR-0001](../architecture/adr/ADR-0001-desktop-tauri-sqlite.md) |
+| DEC-004 | manter React, TypeScript e Vite | aprovada para spike | [ADR-0001](../architecture/adr/ADR-0001-desktop-tauri-sqlite.md) |
+| DEC-005 | usar SQLite nativo como banco local | aprovada para spike | [ADR-0001](../architecture/adr/ADR-0001-desktop-tauri-sqlite.md) |
+| DEC-006 | usar Rust como fronteira de domínio e persistência | aprovada para spike | [ADR-0001](../architecture/adr/ADR-0001-desktop-tauri-sqlite.md) |
+| DEC-007 | não copiar documentação técnica web como verdade vigente | aprovada | [contexto](context.md) |
 | DEC-008 | importar somente funcionalidade e comportamento validados | aprovada | [manifesto](legacy-import-manifest.md) |
-| DEC-009 | conduzir desenvolvimento por requisitos rastreáveis e gates | aprovada | [ciclo de desenvolvimento](development-lifecycle.md) |
-| DEC-010 | adotar Git Flow com `main` e `develop` como ramos permanentes | aprovada | [fluxo Git](git-workflow.md) |
+| DEC-009 | conduzir desenvolvimento por requisitos rastreáveis e gates | aprovada | [ciclo](development-lifecycle.md) |
+| DEC-010 | adotar Git Flow com `main` e `develop` permanentes | aprovada | [fluxo Git](git-workflow.md) |
+| DEC-011 | usar `Maycon-bd/WebFit-DESKTOP` como repositório oficial | aprovada | [GitHub](https://github.com/Maycon-bd/WebFit-DESKTOP) |
+| DEC-012 | Amanda aprova domínio e aceite; Maycon atua como PO e responsável técnico | aprovada | [entrevista 01](stakeholder-interview-round-01.md) |
+| DEC-013 | aprovar o Gate G1 para o MVP Saúde | aprovada em 2026-08-20 | [escopo](../product/scope.md) |
+| DEC-014 | estruturar espaços Saúde e Educação, implementando apenas Saúde no MVP | aprovada | [entrevista 01](stakeholder-interview-round-01.md) |
+| DEC-015 | vincular o perfil profissional ao usuário | aprovada | [entrevista 01](stakeholder-interview-round-01.md) |
+| DEC-016 | admitir nutricionista e administrador, ambos com acesso total | aprovada | decisão Maycon/Amanda |
+| DEC-017 | exigir senha mínima de oito caracteres e espera progressiva | aprovada | decisão Maycon/Amanda |
+| DEC-018 | incluir autenticação, auditoria, pacientes e backup mínimo no primeiro incremento | aprovada | [escopo](../product/scope.md) |
+| DEC-019 | adotar backup diário e manual, retenção de 60 dias, RPO de 24 horas e RTO até o próximo dia útil | aprovada | [entrevista 01](stakeholder-interview-round-01.md) |
+| DEC-020 | manter conectividade para atualização, recuperação remota e nuvem fora do MVP, sujeita a ADR | aprovada | decisão Maycon/Amanda |
 
 ## Decisões pendentes
 
-| Assunto | Pergunta a decidir | Decisor | Prazo/gate | Estado |
+| Assunto | Pergunta a decidir | Decisor | Gate | Estado |
 |---|---|---|---|---|
-| Autoridade | quem aprova visão, escopo, requisitos, prioridades e aceite? | a identificar | G1 | aberta |
-| Usuário principal | nutricionista autônomo é o usuário principal? | responsável pelo produto | G1 | aberta |
-| Escopo | quais itens entram e não entram no MVP? | responsável pelo produto | G1 | aberta |
-| Clínica | uma instalação atende uma ou várias clínicas? | responsável pelo produto | G1/G2 | aberta |
-| Usuários | haverá um ou vários usuários locais e quais papéis? | produto e segurança | G1/G2 | aberta |
-| Permissões | quais ações cada papel pode executar? | produto e segurança | G2/G4 | aberta |
-| Pacientes | CPF, gênero, busca, arquivamento, restauração e eliminação | produto e jurídico/privacidade | G2 | aberta |
-| Agenda | estado inicial, transições, conclusão, conflito e modalidade online | responsável pelo produto | G2 | aberta |
-| Prontuário | versionamento, campos estruturados e poderes de alteração/consulta | produto e privacidade | G2 | aberta |
-| Antropometria | medidas, protocolos, fórmulas e persistência de cálculos | especialista de domínio | G2 | aberta |
-| Prescrição | estrutura, estados, alteração após emissão e validade documental | especialista de domínio | G2 | aberta |
-| Financeiro | cobrança automática, estado inicial, despesas e relatórios | responsável pelo produto | G2 | aberta |
-| Arquivos/documentos | documentos prioritários, assinatura e retenção | produto e jurídico/privacidade | G1/G2 | aberta |
-| Auditoria | acesso, eventos, motivos e retenção | produto e segurança | G2/G4 | aberta |
-| Backup | RPO/RTO, frequência, retenção, destinos, criptografia e automação | produto e responsável técnico | G2/G4 | aberta |
-| Arquitetura | Tauri/Rust/SQLite satisfaz os critérios do spike? | responsável técnico e produto | G4 | proposta |
-| Proteção local | SQLCipher e armazenamento de chaves são viáveis ou qual alternativa será aceita? | segurança e responsável técnico | G4 | aberta |
-| Repositório | qual pasta será a raiz definitiva e quando inicializar o Git? | responsável pelo projeto | antes da colaboração/versionamento | aberta |
+| Fórmulas clínicas | quais protocolos, fontes e fórmulas de energia, macro e micronutrientes serão usados? | Amanda | G2 do incremento clínico | aberta |
+| Alimentos | qual base nutricional e política de atualização serão adotadas? | Amanda e Maycon | G2/G4 do incremento de cardápio | aberta |
+| Documentos | quais documentos A4 serão prioritários e quais dados/assinaturas exigem? | Amanda | G2 | aberta |
+| Retenção clínica | qual política legal definitiva de retenção e eliminação? | produto e assessoria adequada | antes de G7 | aberta |
+| Migração | existe fonte confiável para os 80 pacientes? | Amanda e Maycon | antes da migração | aberta |
+| Backup externo | pen drive ou SSD e rotina operacional definitiva | Amanda | antes de G7 | aberta |
+| Proteção local | SQLCipher, chaves e proteção dos backups são viáveis? | Maycon | G4 | aberta |
+| Educação | atores, entidades, regras, escopo e prioridade | Amanda e Maycon | novo ciclo G1/G2 | adiada |
+| Serviços conectados | arquitetura, segurança, custos e privacidade de atualização, reset remoto e nuvem | Amanda e Maycon | ADR futuro | adiada |
 
-Novas decisões devem registrar a resposta, autoridade, data, justificativa e impacto. Não substitua perguntas abertas por suposições.
+Novas decisões devem registrar autoridade, data, justificativa, consequências e evidência.

@@ -2,80 +2,57 @@
 
 ## Problema
 
-Profissionais de nutrição precisam organizar informações do consultório e do acompanhamento clínico sem depender inicialmente de uma assinatura, servidor público ou conexão contínua com a internet.
+Profissionais de nutrição precisam organizar informações do atendimento e acompanhamento clínico sem depender de assinatura, servidor público ou conexão contínua com a internet.
 
-## Direção do produto
+## Direção aprovada
 
 - Aplicativo desktop local e offline.
-- Plataforma inicial: Windows.
-- Uso inicial em um único computador.
-- Sem hospedagem e sem mensalidade obrigatória.
-- Dados armazenados localmente e acompanhados por backup/restauração dentro do produto.
-- Interface atual do WebFit Web é referência visual e funcional, não base arquitetural obrigatória.
+- Plataforma inicial Windows, com Windows 10 como ambiente-alvo da stakeholder.
+- Um computador por instalação no MVP.
+- Dados locais com backup e restauração dentro do produto.
+- Sem hospedagem e mensalidade obrigatória.
+- Interface do WebFit Web é referência de descoberta, não base arquitetural.
+- Uma instalação pode conter espaços por domínio: Saúde no MVP e Educação no futuro.
 
-## Decisões vigentes
+## Governança
+
+- Amanda é stakeholder, especialista do domínio e aprovadora funcional.
+- Maycon é Product Owner, responsável técnico, administrador e aprovador técnico.
+- Escopo e mudanças relevantes são aprovados conjuntamente.
+- Feedback de Sprint Review atualiza o backlog sem remover os gates de requisitos e qualidade.
+
+## Decisões de fundação
 
 | ID | Decisão | Status |
 |---|---|---|
-| DEC-001 | criar novo repositório chamado WebFit Desktop | aprovada |
-| DEC-002 | pausar desenvolvimento do WebFit Web | aprovada |
-| DEC-003 | usar Tauri 2 como shell desktop | proposta aprovada para spike |
-| DEC-004 | manter React + TypeScript + Vite | proposta aprovada para spike |
-| DEC-005 | usar SQLite nativo como banco local | proposta aprovada para spike |
-| DEC-006 | usar Rust como fronteira de domínio e persistência | proposta aprovada para spike |
-| DEC-007 | não copiar documentação técnica web como verdade vigente | aprovada |
-| DEC-008 | importar somente funcionalidade e comportamento validados | aprovada |
-| DEC-009 | conduzir desenvolvimento por requisitos rastreáveis e gates | aprovada |
+| DEC-001 | criar o WebFit Desktop como produto/repositório novo | aprovada |
+| DEC-002 | pausar o WebFit Web | aprovada |
+| DEC-003 a DEC-006 | validar Tauri, React, TypeScript, Vite, Rust e SQLite por spike | aprovadas para spike |
+| DEC-007/008 | não importar arquitetura web; curar somente comportamento validado | aprovadas |
+| DEC-009 | usar requisitos rastreáveis e gates | aprovada |
+| DEC-010 | usar Git Flow | aprovada |
 
-As escolhas técnicas continuam sujeitas ao resultado do spike. Uma proposta aprovada para spike ainda não é uma decisão final de produção.
+O registro completo está em [decision-log.md](decision-log.md).
 
-## Hipóteses a validar no Ciclo 0
+## Escopo aprovado
 
-- O usuário principal é nutricionista autônomo.
-- Uma instalação pertence a um consultório.
-- O MVP pode operar sem acesso do paciente.
-- O MVP não precisa sincronizar dois computadores.
-- Um administrador local é suficiente no primeiro incremento.
-- Backup externo pode ser responsabilidade assistida do operador.
+O Gate G1 foi aprovado em 2026-08-20 para o MVP Saúde. O primeiro incremento inclui autenticação, perfil, espaço Saúde, pacientes, auditoria e backup/restauração mínima. Agenda, atendimento, anamnese, antropometria, prescrições/cardápios, arquivos, documentos, financeiro, planner e relatórios seguem como incrementos do mesmo MVP, condicionados a requisitos próprios.
 
-## MVP candidato
+Educação, nuvem, sincronização entre computadores, portal do paciente e comunicação remota estão fora do MVP Saúde.
 
-- instalação e primeiro acesso;
-- usuário administrador local;
-- perfil do profissional e clínica;
-- pacientes;
-- agenda;
-- anamnese;
-- antropometria;
-- prescrições;
-- financeiro básico;
-- planner;
-- arquivos e relatórios;
-- auditoria;
-- backup, restauração e exportação.
-
-Nada nesta lista substitui a aprovação formal de escopo e requisitos.
-
-## Fora do MVP candidato
-
-- portal/app do paciente;
-- chat remoto;
-- diário enviado pelo celular;
-- teleconsulta;
-- marketing e site público;
-- estudos/cursos/podcast;
-- integrações com WhatsApp e wearables;
-- sincronização e colaboração entre computadores;
-- monetização por planos.
-
-## Primeira jornada a especificar
+## Primeira jornada
 
 ```text
-instalar -> criar administrador -> cadastrar clínica -> cadastrar paciente
--> registrar atendimento -> salvar prescrição -> gerar documento
--> criar backup -> restaurar backup em instalação de teste
+autenticar → entrar no Saúde → cadastrar perfil → cadastrar/localizar paciente
+→ editar → arquivar/restaurar → criar backup → restaurar em teste
+→ fechar e reabrir preservando dados
 ```
 
-## Autoridade e mudanças
+## Volume e operação
 
-O responsável pelo produto aprova visão, escopo, requisitos, prioridades e critérios de aceite. Mudanças de arquitetura, segurança ou modelo de dados devem ser registradas em ADR e avaliadas quanto a migração e recuperação.
+- Cerca de 80 pacientes existentes, sem migração automática presumida.
+- Crescimento esperado de 30 a 40 pacientes por mês.
+- Cerca de 2.400 pacientes em cinco anos.
+- Backup diário e manual, retenção de 60 dias, RPO de 24 horas e RTO até o próximo dia útil.
+
+Fontes: [entrevista — rodada 01](stakeholder-interview-round-01.md), [escopo](../product/scope.md) e [decisões](decision-log.md).

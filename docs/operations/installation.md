@@ -1,14 +1,21 @@
 # Instalação
 
-**Status:** não definida; não existe aplicativo ou instalador.
+**Status:** requisitos aprovados; instalador ainda não existe.
 
-## Lacunas
+## Ambiente-alvo
 
-- Versões do Windows suportadas e arquitetura de CPU.
-- Pré-requisitos e comportamento offline após instalar.
-- Formato, assinatura e origem confiável do pacote.
-- Diretórios por usuário para aplicação, banco, arquivos e logs.
-- Instalação limpa, atualização, rollback e desinstalação sem perda silenciosa.
-- Diagnóstico e instruções acessíveis ao operador.
+- Windows 10 x64 no primeiro computador de uso.
+- Instalação sem Node, Rust ou ferramentas de desenvolvimento.
+- Conta Windows exclusiva da nutricionista.
+- Dados e backups locais em diretórios definidos pelo aplicativo e validados no spike.
 
-O spike deve produzir evidências; este documento será o manual operacional somente após validação.
+## Critérios do spike
+
+- instalar, iniciar e desinstalar em ambiente limpo;
+- preservar dados durante atualização de teste;
+- usar diretório correto por usuário/aplicação;
+- funcionar sem internet após instalação;
+- testar caminho com espaços e acentos;
+- registrar versão, tamanho, permissões e limitações.
+
+Atualização conectada é futura e exige ADR; não faz parte do instalador do MVP inicial.

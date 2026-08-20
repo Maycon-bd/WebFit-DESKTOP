@@ -1,29 +1,34 @@
 # Visão do produto
 
-**Status:** proposta para aprovação no Gate G1.
+**Status:** aprovada no Gate G1 em 2026-08-20.
 
 ## Problema
 
-Profissionais de nutrição precisam organizar informações do consultório e do acompanhamento clínico sem depender inicialmente de assinatura, servidor público ou conexão contínua com a internet.
+Profissionais de nutrição precisam organizar informações do consultório e do acompanhamento clínico sem depender de assinatura, servidor público ou conexão contínua com a internet.
 
-## Direção candidata
+## Direção aprovada
 
 - Aplicativo desktop local e offline.
 - Plataforma inicial Windows.
-- Uso inicial em um único computador.
+- Um computador por instalação no MVP.
 - Dados locais com backup e restauração dentro do produto.
 - Sem hospedagem ou mensalidade obrigatória na primeira versão.
+- Núcleo funcional independente de internet.
+- Espaços de trabalho separados por domínio, iniciando por Saúde.
 
 ## Valor esperado
 
-Permitir a gestão local do consultório e do acompanhamento nutricional com controle operacional sobre os dados e continuidade de uso sem internet.
+Permitir a gestão local do atendimento nutricional, incluindo cadastro, acompanhamento clínico, cardápios e rotinas operacionais, com controle sobre os dados e continuidade de uso sem internet.
 
-## Lacunas para aprovação
+## Autoridade e validação
 
-- Identificar nominalmente o responsável por aprovar produto e requisitos.
-- Confirmar o usuário principal e os demais stakeholders.
-- Definir objetivos mensuráveis do MVP.
-- Validar viabilidade operacional, econômica e legal.
-- Aprovar explicitamente a visão e suas restrições.
+- Amanda, nutricionista, é stakeholder e aprovadora funcional.
+- Maycon é Product Owner, responsável técnico e aprovador técnico.
+- Escopo e mudanças relevantes do MVP são aprovados conjuntamente.
+- A validação funcional ocorre nas Sprint Reviews.
 
-Fonte: [contexto do projeto](../project/context.md). Este documento não transforma hipóteses em fatos aprovados.
+## Evoluções fora desta baseline
+
+Atualização do aplicativo, recuperação remota de acesso e backup opcional em nuvem poderão usar conectividade no futuro sem tornar o núcleo clínico dependente da internet. Cada serviço externo exigirá requisito, análise de segurança e privacidade e ADR antes da implementação.
+
+Fontes: [contexto](../project/context.md) e [entrevista — rodada 01](../project/stakeholder-interview-round-01.md).

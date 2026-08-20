@@ -1,24 +1,42 @@
 # Segurança e privacidade
 
-**Status:** requisitos e desenho pendentes.
+**Status:** baseline aprovada; controles criptográficos dependem do spike.
 
-## Princípios vigentes
+## Atores e acesso
 
-- Dados de saúde são sensíveis.
-- Senhas, chaves, CPF, prontuários, mensagens e documentos clínicos não entram em logs.
-- Segredos não entram no frontend nem no repositório.
-- Toda operação é autorizada no backend; ocultar controles não basta.
-- Consultas são parametrizadas e operações relacionadas usam transações.
-- Banco, arquivos, backups, exportações e restaurações exigem proteção coerente.
+| Papel | Acesso aprovado |
+|---|---|
+| Nutricionista | acesso total aos dados e funções do espaço Saúde |
+| Administrador | acesso total por decisão do produto, incluindo funções administrativas e clínicas |
 
-## Lacunas bloqueantes
+O acesso total do administrador é uma decisão consciente de simplificação do MVP e aumenta o impacto de comprometimento da conta. Toda operação continua autorizada no backend e ações críticas são auditadas.
 
-- Modelo de ameaças e responsabilidades do operador.
-- Matriz de papéis e permissões.
-- Autenticação, bloqueio e recuperação de acesso.
-- Proteção de chaves pelo sistema operacional.
-- Viabilidade de SQLCipher ou alternativa aprovada.
-- Regras de auditoria, retenção, exportação e eliminação.
-- Processo de incidentes e requisitos legais/LGPD aplicáveis.
+## Autenticação
 
-Nenhum dado clínico real deve ser usado antes da validação dos controles e da restauração de backup.
+- Senha mínima de 8 caracteres; recomendar frases-senha.
+- Hash forte com salt individual e parâmetros versionados; nunca criptografia reversível de senha.
+- Espera progressiva após falhas; sem bloqueio permanente automático.
+- Bloqueio após 1 hora de inatividade e ao bloquear o Windows.
+- Reset gera senha temporária, força troca e não revela senha anterior.
+- Recuperação remota é futura e exige desenho separado; nenhuma senha mestra embutida.
+
+## Dados sensíveis
+
+- Senhas, chaves, CPF, prontuário, mensagem e documento clínico são proibidos em logs.
+- Segredos não entram no frontend ou repositório.
+- Banco, arquivos, assinatura, rascunhos e backups precisam de proteção coerente.
+- Arquivos são privados, nomeados por UUID e acessados por comando autorizado.
+- Exportação futura exige ação explícita e auditoria de destinatário/finalidade.
+
+## Auditoria mínima
+
+Registrar ator, instante UTC, espaço, ação, tipo/ID da entidade, resultado e motivo quando aplicável. Auditar login, falha, reset, perfil, consulta e alteração de paciente, arquivamento/restauração, tags, documentos, exportações, backup e restauração. Não duplicar conteúdo clínico no evento.
+
+## Bloqueios antes de dados reais
+
+- provar proteção local e armazenamento de chave;
+- testar backup/restauração criptografados;
+- definir retenção legal definitiva;
+- exercitar resposta a incidente;
+- aceitar formalmente o risco do acesso administrativo total;
+- concluir Gate G7.
