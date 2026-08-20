@@ -28,7 +28,7 @@ Educação não aparece como funcionalidade simulada no MVP. A estrutura poderá
 
 ## Princípios
 
-- Fluxos guiados com menos campos por etapa.
+- Fluxos diretos, com formulário único organizado e ações principais evidentes.
 - Estado vazio, carregamento, erro e confirmação reais.
 - CPF mascarado em listagens.
 - Pacientes ativos e arquivados claramente separados.

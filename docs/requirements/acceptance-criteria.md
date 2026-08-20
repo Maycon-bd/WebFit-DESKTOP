@@ -10,7 +10,7 @@
 | TA-AUT-004 | RF-AUT-003 | administrador redefine senha; antiga não é exibida; temporária exige troca; evento é auditado | aprovado |
 | TA-CLI-001 | RF-CLI-001 | validar obrigatórios, salvar perfil, reabrir e confirmar dados; alterar assinatura e verificar auditoria | aprovado |
 | TA-CLI-002 | RF-CLI-002 | após login, entrar somente em espaço autorizado; Saúde está disponível e Educação não é simulada | aprovado |
-| TA-PAT-001 | RF-PAT-001 | cadastrar paciente mínimo válido e reencontrá-lo após reiniciar | aprovado |
+| TA-PAT-001 | RF-PAT-001 | abrir Pacientes, clicar em Novo, preencher e salvar um paciente mínimo válido; reencontrá-lo após reiniciar | aprovado |
 | TA-PAT-002 | RF-PAT-001 | rejeitar CPF inválido/duplicado e campos obrigatórios ausentes sem perder dados digitados | aprovado |
 | TA-PAT-003 | RF-PAT-002 | localizar por nome, nome social, CPF formatado/não formatado e telefone; mostrar CPF mascarado | aprovado |
 | TA-PAT-004 | RF-PAT-003 | cancelar não salva; salvar persiste; ambas as ações têm comportamento e auditoria esperados | aprovado |

@@ -8,44 +8,40 @@
 - **Fase:** elicitação e análise de requisitos
 - **Gate atual:** G2 — baseline do primeiro incremento
 - **Estado:** em revisão
-- **Última seção concluída:** seção 1 — escopo do primeiro incremento
-- **Próxima seção:** seção 2 — autenticação e sessão
+- **Última seção concluída:** seção 4 — pacientes e tags
+- **Próxima seção:** seção 5 — prescrição e cardápio
 - **Branch registrada:** `main`
-- **Commit-base:** `e995940`
-- **Sincronização:** existem alterações locais posteriores ao commit-base; precisam de commit e push antes da troca de máquina
+- **Commit-base:** `8344c5f`
+- **Sincronização:** branch `main` alinhada com `origin/main` antes desta atualização; existem alterações locais que precisam de commit e push antes da troca de máquina
 
 ## Última decisão aprovada
 
-O primeiro incremento inclui **prescrição e cardápio individual**, além de autenticação, perfil, espaço Saúde, pacientes, auditoria e backup/restauração mínima.
+A seção 4 do G2 — **pacientes e tags** — foi aprovada por Maycon em 2026-08-20, com ajuste no fluxo de cadastro:
 
-Para prescrição/cardápio entram:
-
-- refeições;
-- alimentos e porções;
-- cálculos de energia, macro e micronutrientes após aprovação das fontes e fórmulas;
-- rascunho;
-- versionamento;
-- finalização;
-- histórico por paciente.
-
-PDF, impressão e exportação continuam fora do primeiro incremento.
+- abrir a área de pacientes, clicar em **Novo**, preencher um único formulário e salvar;
+- nome completo, CPF, telefone, data de nascimento, e-mail e endereço obrigatórios;
+- nome social, gênero, tags e observações opcionais; sexo permanece campo separado;
+- responsável legal informado quando aplicável;
+- CPF normalizado, validado e único no espaço Saúde, inclusive entre arquivados;
+- busca por nome, nome social, CPF ou telefone e CPF mascarado na listagem;
+- edição só persiste após confirmação em Salvar;
+- arquivamento preserva dados e histórico e exige restauração antes de novos registros;
+- tags podem ser criadas, selecionadas, renomeadas e desativadas sem romper o histórico;
+- cadastro incompleto possui rascunho recuperável conforme as regras da seção 6.
 
 ## Próxima ação exata
 
-Revisar e aprovar a seção 2 do G2 — autenticação e sessão:
+Especificar e aprovar a seção 5 do G2 — prescrição e cardápio:
 
-- nutricionista e administrador;
-- ambos com acesso total;
-- senha mínima de 8 caracteres;
-- espera progressiva após falhas: 30 segundos, 1 minuto, 5 minutos e 15 minutos;
-- bloqueio após 1 hora de inatividade;
-- bloqueio junto com o Windows;
-- reset administrativo sem revelar a senha anterior;
-- senha temporária com troca obrigatória;
-- recuperação remota fora do primeiro incremento;
-- eventos de autenticação registrados na auditoria.
+- confirmar a fonte nutricional oficial;
+- definir medidas caseiras e regras para alimentos personalizados;
+- aprovar fórmulas, unidades e arredondamentos dos cálculos;
+- definir os micronutrientes incluídos no primeiro incremento;
+- definir estados e transições da prescrição, inclusive correção e cancelamento;
+- detalhar rascunho, finalização, nova versão e histórico imutável;
+- criar regras de negócio e testes de aceite para RF-PRE-001 a RF-PRE-004.
 
-Quando Maycon confirmar esse conjunto, marcar a seção 2 como aprovada e avançar para perfil e espaço Saúde.
+As decisões clínicas precisam da aprovação de Amanda antes de concluir esta seção.
 
 ## Gates
 
@@ -64,10 +60,10 @@ Quando Maycon confirmar esse conjunto, marcar a seção 2 como aprovada e avanç
 | Ordem | Seção | Estado | Observação |
 |---:|---|---|---|
 | 1 | Escopo do incremento | **aprovado** | prescrição/cardápio incluído; PDF/exportação excluídos |
-| 2 | Autenticação e sessão | **em revisão — próximo passo** | RF-AUT-001 a RF-AUT-003 |
-| 3 | Perfil e espaço Saúde | pendente | RF-CLI-001 e RF-CLI-002 |
-| 4 | Pacientes e tags | pendente | RF-PAT-001 a RF-PAT-006 |
-| 5 | Prescrição e cardápio | em especificação clínica | fonte nutricional, fórmulas, unidades, arredondamentos e estados |
+| 2 | Autenticação e sessão | **aprovado** | RF-AUT-001 a RF-AUT-003; confirmação de Maycon em 2026-08-20 |
+| 3 | Perfil e espaço Saúde | **aprovado** | RF-CLI-001 e RF-CLI-002; confirmação de Maycon em 2026-08-20 |
+| 4 | Pacientes e tags | **aprovado** | RF-PAT-001 a RF-PAT-006; fluxo ajustado e confirmação de Maycon em 2026-08-20 |
+| 5 | Prescrição e cardápio | **em especificação clínica — próximo passo** | fonte nutricional, fórmulas, unidades, arredondamentos e estados |
 | 6 | Rascunhos | pendente | RN-DRF-001 a RN-DRF-004 |
 | 7 | Auditoria | pendente | RF-AUD-001 |
 | 8 | Backup e restauração | pendente | RF-BKP-001 a RF-BKP-003 |

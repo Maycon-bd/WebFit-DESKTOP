@@ -60,7 +60,7 @@
 
 ### RF-PAT-001 — Cadastrar paciente
 
-- **Descrição:** cadastrar paciente em fluxo guiado: identificação, contato, informações complementares e revisão.
+- **Descrição:** permitir abrir a área de pacientes, acionar **Novo**, preencher os dados em um único formulário e salvar o paciente.
 - **Obrigatórios:** nome completo, CPF, telefone, data de nascimento, e-mail e endereço.
 - **Opcionais:** nome social, gênero, tags e observações; sexo é campo separado; responsável legal aparece quando aplicável.
 - **Regras:** RN-PAT-001 a RN-PAT-006.

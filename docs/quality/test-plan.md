@@ -4,7 +4,7 @@
 
 | Grupo | Escopo | Evidência esperada |
 |---|---|---|
-| Frontend | fluxos guiados, validação, estados e teclado | relatório de testes e inspeção |
+| Frontend | fluxos diretos, formulários, validação, estados e teclado | relatório de testes e inspeção |
 | Rust | autenticação, autorização, regras e erros | `cargo test` |
 | SQLite | migrações, constraints, pesquisa e persistência | testes com banco temporário |
 | Segurança | hash, espera, sessão, logs e arquivos privados | testes negativos e varredura |

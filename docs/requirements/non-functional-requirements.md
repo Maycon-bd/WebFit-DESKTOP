@@ -20,7 +20,7 @@
 | RNF-POR-001 | executar em Windows 10 x64 sem ferramentas de desenvolvimento | instalador testado em ambiente limpo | aprovado |
 | RNF-OFF-001 | executar o núcleo Saúde sem internet | testes com rede indisponível | aprovado |
 | RNF-CON-001 | preservar dados confirmados após fechar e reabrir | teste de persistência e integridade | aprovado |
-| RNF-USA-001 | usar fluxos guiados com menos campos por etapa | cadastro: identificação, contato, complemento e revisão | aprovado |
+| RNF-USA-001 | apresentar formulários com organização visual clara e ações diretas | cadastro de paciente em tela única: Novo, preencher e Salvar | aprovado |
 | RNF-DOC-001 | gerar documentos compatíveis com A4 | inspeção em Edge, Chrome e impressão padrão do Windows | proposto |
 
 ## Baseline de medição proposta para o spike

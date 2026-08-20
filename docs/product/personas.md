@@ -12,7 +12,7 @@
 
 - Notebook de trabalho com Windows 10 e conta Windows exclusiva.
 - Uso para atendimento nutricional, registros clínicos e elaboração de cardápios individualizados.
-- Preferência por fluxos guiados com menos campos por etapa.
+- Preferência por fluxos diretos; no cadastro de paciente, abrir a área, clicar em Novo, preencher e salvar.
 - Teclado e ampliação de 200% são requisitos, ainda que não tenha sido relatada necessidade assistiva específica.
 
 Assistente, recepcionista, escolas, fornecedores e gestores da Educação não pertencem ao MVP Saúde. Novos atores exigem descoberta e matriz de permissões próprias.

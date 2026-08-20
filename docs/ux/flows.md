@@ -10,11 +10,11 @@ informar credenciais → validar no backend
 └── inválido → informar erro genérico → aplicar espera progressiva
 ```
 
-## Cadastro guiado de paciente
+## Cadastro de paciente
 
 ```text
-Identificação → Contato → Complemento → Revisão → Salvar
-       ↘ autosave de rascunho a cada ~30 s ↗
+Pacientes → Novo → preencher formulário → Salvar
+                  ↘ autosave de rascunho a cada ~30 s
 ```
 
 - Erro de validação mantém dados e leva ao campo correspondente.

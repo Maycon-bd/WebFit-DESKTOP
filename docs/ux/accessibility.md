@@ -10,7 +10,7 @@
 - Ampliação de 200% mantém conteúdo e ações acessíveis em 1366×768.
 - Erros identificam o campo e explicam correção; não dependem apenas de cor.
 - Controles possuem nome acessível e estados de carregamento/sucesso/erro são anunciáveis.
-- Fluxos guiados dividem cadastro em identificação, contato, complemento e revisão.
+- O formulário único de cadastro mantém seções e rótulos claros, ordem de foco coerente e ações Novo, Salvar e Cancelar acessíveis por teclado.
 
 ## Validação
 
