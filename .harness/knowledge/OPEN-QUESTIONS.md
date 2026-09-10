@@ -1,10 +1,10 @@
 # Questões abertas
 
-Somente questões já registradas ou explicitamente derivadas da documentação. Não decidir aqui.
+Somente questões já registradas ou explicitamente derivadas da documentação. Este arquivo não é fonte canônica de decisão. Ao trabalhar um item, aplique a matriz de autonomia: mova uma escolha suficientemente sustentada para o ledger como `AGENT-PROVISIONAL`; mantenha `NEEDS-HUMAN-DECISION` quando houver ASK-FIRST, alternativas equilibradas ou informação essencial ausente.
 
 ## Prioridade alta
 
-- Quais filtros combinados e ordenação a consulta de auditoria deve oferecer? Ver docs/project/status.md.
+- Como representar atores automáticos e tentativas sem usuário autenticado no modelo físico da auditoria? Esta decisão pertence ao G4 e não bloqueia UC-AUD-001.
 - Qual proteção local, armazenamento de chaves e estratégia de backup será viável? Ver ADR-0001.
 - Qual é a política legal definitiva de retenção e eliminação clínica?
 - Qual destino externo e rotina operacional de backup serão adotados?

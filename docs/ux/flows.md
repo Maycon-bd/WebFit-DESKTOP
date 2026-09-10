@@ -38,6 +38,19 @@ paciente arquivado → tentar novo registro → exigir restauração
 paciente arquivado → restaurar → mesmo prontuário ativo
 ```
 
+## Consulta de auditoria
+
+Auditoria → últimos 30 dias → página 1 de até 50 registros
+→ ordenar do mais recente para o mais antigo
+→ filtrar por período + usuário + ação + entidade + resultado (AND)
+→ abrir detalhe de metadados permitidos
+
+- Abertura do módulo e detalhe são auditadas uma única vez; filtros, páginas e ordenação não geram eventos.
+- A consulta usa conjunto estável entre páginas para não duplicar ou perder eventos.
+- Entidade resolvida mostra rótulo atual somente sob autorização; entidade indisponível mostra tipo + ID.
+- Sem eventos e nenhum resultado são estados vazios distintos.
+- Falha mostra erro seguro e nova tentativa quando recuperável; nunca aparece como lista vazia.
+- Não existem edição, exclusão ou exportação no incremento 1.
 ## Backup e restauração
 
 ```text

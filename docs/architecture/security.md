@@ -32,6 +32,8 @@ O acesso total do administrador é uma decisão consciente de simplificação do
 
 Registrar ator, instante UTC, espaço, ação, tipo/ID da entidade, resultado e motivo quando aplicável. Auditar login, falha, reset, perfil, consulta e alteração de paciente, arquivamento/restauração, tags, documentos, exportações, backup e restauração. Não duplicar conteúdo clínico no evento.
 
+A consulta exige usuário autenticado e autorizado, é limitada ao escopo permitido e não expõe snapshots, diferenças before/after ou rótulo sem autorização. Abertura do módulo e de detalhe é auditada sem conteúdo visualizado e sem recursão automática.
+
 ## Bloqueios antes de dados reais
 
 - provar proteção local e armazenamento de chave;

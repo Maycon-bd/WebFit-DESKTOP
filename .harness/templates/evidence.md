@@ -1,5 +1,5 @@
 # Evidence Report — título
-Estado: READY FOR HUMAN APPROVAL / READY WITH WARNINGS / NOT READY
+Estado: READY / READY FOR HUMAN DECISION REVIEW / READY WITH WARNINGS / NOT READY
 Data:
 Mudança/Spec:
 
@@ -10,5 +10,20 @@ Mudança/Spec:
 ## Segurança/UI condicional
 ## Riscos residuais
 ## Não verificados
+
+## Agent Decisions
+Total:
+Accepted:
+Pending Validation:
+Rejected:
+
+### Decisões pendentes relevantes
+
+- Decisão:
+- Escolha:
+- Impacto:
+- Confiança:
+- Risco:
+
 ## Decisão de entrega
 ## Aprovação humana

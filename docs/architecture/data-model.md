@@ -66,3 +66,4 @@ erDiagram
 - formato protegido do conteúdo de rascunho;
 - política legal definitiva de retenção;
 - schema dos módulos clínicos posteriores.
+- representação física do ator em operação automática e tentativa sem usuário autenticado, sem persistir credencial tentada ou outro dado sensível.

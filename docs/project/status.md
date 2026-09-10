@@ -8,31 +8,31 @@
 - **Fase:** elicitação e análise de requisitos
 - **Gate atual:** G2 — baseline do primeiro incremento
 - **Estado:** em revisão
-- **Última decisão concluída:** seção 7B — falha de gravação da auditoria; planejamento futuro de arquivos registrado
-- **Próxima ação:** seção 7C — consulta da auditoria
+- **Última decisão concluída:** seção 7C — consulta de auditoria aprovada e rastreada
+- **Próxima ação:** seção 8 — backup e restauração
 - **Branch registrada:** `main`
-- **Commit-base:** `5d9b03d`
-- **Sincronização:** branch alinhada com `origin/main` antes desta atualização; estas alterações precisam de commit e push antes da troca de máquina
+- **Commit-base:** `dfc4098`
+- **Sincronização:** branch `main` alinhada com `origin/main` em `dfc4098` antes desta atualização; estas alterações precisam de commit e push antes da troca de máquina
 
 ## Última decisão aprovada
 
-Maycon aprovou em 2026-09-10:
+Maycon aprovou em 2026-09-10 a consulta da auditoria:
 
-- operação crítica e autenticação bem-sucedida não concluem sem persistir o evento obrigatório de auditoria;
-- operação ou login já rejeitado permanece rejeitado quando a auditoria falhar e produz somente diagnóstico técnico seguro;
-- módulo futuro de arquivos com base clínica vinculada a pacientes e biblioteca profissional independente;
-- incremento 4 concentra arquivos clínicos; biblioteca profissional vem depois do núcleo do MVP;
-- primeira versão usa PDF/JPG/PNG, busca por metadados, visualização, arquivamento, exportação, integridade, backup e auditoria;
-- OCR, IA, edição, nuvem, sincronização e exclusão definitiva permanecem fora da primeira versão.
-
+- filtros por período, usuário, ação, tipo de entidade e resultado, combinados por AND;
+- ordenação fixa do mais recente para o mais antigo;
+- paginação no backend com 50 registros por página;
+- período inicial de 30 dias, com instantes UTC e fronteiras determinísticas;
+- catálogos controlados e resultados SUCCESS, FAILURE e DENIED;
+- persistência somente de tipo/ID da entidade, com resolução autorizada e fallback técnico;
+- nenhum snapshot ou diferença before/after;
+- lista, filtros, paginação e detalhe sem edição, exclusão ou exportação;
+- auditoria de abertura do módulo e detalhe, sem auditar filtros/páginas e sem recursão;
+- estados distintos para ausência de eventos, ausência de resultados e falha recuperável.
 ## Próxima ação exata
 
-Maycon deve confirmar a experiência de consulta da auditoria.
+Revisar e concluir a seção 8 do G2 — backup e restauração — usando RF-BKP-001 a RF-BKP-003, RN-BKP-001 a RN-BKP-007 e TA-BKP-001 a TA-BKP-005.
 
-Recomendação para decisão: listar eventos do mais recente para o mais antigo e permitir filtros combinados por período, usuário, ação, tipo de entidade e resultado. A interface pode resolver o identificador da entidade para um rótulo autorizado, mas o evento persistido não deve duplicar nome, CPF, conteúdo clínico ou nome de arquivo.
-
-Depois dessa decisão, criar o caso de uso de auditoria e completar o teste de consulta antes de avançar para backup e restauração.
-
+A representação física de atores automáticos ou sem usuário autenticado na auditoria permanece para o G4 e não reabre UC-AUD-001.
 ## Gates
 
 | Gate | Objetivo | Estado | Evidência/condição seguinte |
@@ -56,7 +56,7 @@ Depois dessa decisão, criar o caso de uso de auditoria e completar o teste de c
 | 5A | Composição e ciclo da prescrição | **aprovado por Amanda em 2026-08-21** | RF-PRE-001 a RF-PRE-004, RN-PRE e TA-PRE |
 | 5B | Necessidade energética e metas | **aprovado por Amanda em 2026-09-10** | RF-PRE-005, RN-PRE-011 a RN-PRE-024 e TA-PRE-008 a TA-PRE-016 |
 | 6 | Rascunhos | **aprovado por Maycon em 2026-09-10** | RF-DRF-001, RN-DRF-001 a RN-DRF-005 e TA-DRF-001 a TA-DRF-004 |
-| 7 | Auditoria | **em revisão — retenção e falha fechada aprovadas** | RF-AUD-001, RN-AUD-001 a RN-AUD-004 e TA-AUD-001 a TA-AUD-003 |
+| 7 | Auditoria | **aprovado por Maycon em 2026-09-10** | RF-AUD-001, UC-AUD-001, RN-AUD-001 a RN-AUD-015 e TA-AUD-001 a TA-AUD-013 |
 | 8 | Backup e restauração | pendente | RF-BKP-001 a RF-BKP-003 |
 | 9 | Requisitos não funcionais | pendente | RNF-* do incremento |
 | 10 | Testes e rastreabilidade | pendente | TA-* e matriz |
@@ -83,7 +83,6 @@ Depois dessa decisão, criar o caso de uso de auditoria e completar o teste de c
 
 ## Pendências que não devem ser esquecidas
 
-- Definir filtros e ordenação da consulta de auditoria.
 - No discovery de arquivos, definir limites, categorias, duplicidade, miniaturas e retenção.
 - Criptografia, diretório de dados, chaves e pacote de backup dependem do spike.
 - Pen drive ou SSD externo deve ser decidido antes do G7.

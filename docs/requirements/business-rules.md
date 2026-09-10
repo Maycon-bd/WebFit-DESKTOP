@@ -82,6 +82,24 @@
 | RN-AUD-002 | auditoria registra metadados mínimos e resultado, nunca senha, CPF completo ou conteúdo clínico | aprovado |
 | RN-AUD-003 | eventos de auditoria são imutáveis e permanecem por tempo indeterminado no MVP, sem edição ou exclusão automática, até aprovação de política legal de retenção | aprovado por Maycon em 2026-09-10 |
 | RN-AUD-004 | operação crítica e autenticação bem-sucedida só concluem com o evento obrigatório persistido; falha de auditoria desfaz ou impede a mudança, enquanto operação ou login já rejeitado permanece rejeitado e emite diagnóstico técnico seguro | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-005 | somente usuário autenticado e autorizado consulta eventos do escopo permitido; o modelo definitivo de capacidades por papel permanece decisão separada | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-006 | filtros combináveis usam AND e abrangem período, usuário, ação, tipo de entidade e resultado; módulo, origem, ID específico e texto livre ficam fora do incremento 1 | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-007 | a ordenação do incremento 1 é fixa do evento mais recente para o mais antigo | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-008 | a consulta é paginada no backend em páginas de 50 registros e não carrega toda a trilha na memória da interface | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-009 | a consulta inicial cobre os últimos 30 dias; o período pode ser alterado, os instantes permanecem em UTC e a semântica de fronteira deve ser determinística, documentada no plano e estável entre páginas | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-010 | ação, tipo de entidade e resultado usam catálogos controlados; resultados iniciais são SUCCESS, FAILURE e DENIED | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-011 | o evento persiste somente tipo e ID da entidade; a interface pode resolver rótulo atual sob autorização e usa tipo + ID como fallback sem perder o evento histórico | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-012 | eventos não armazenam snapshots nem diferenças before/after; históricos específicos pertencem aos respectivos domínios | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-013 | a interface oferece lista, filtros, paginação e detalhe de metadados permitidos; não oferece edição, exclusão ou exportação no incremento 1 | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-014 | abertura do módulo e abertura do detalhe geram auditoria sem conteúdo visualizado; página, filtro, limpeza e ordenação não geram evento, e persistir esses eventos de acesso não dispara nova auditoria | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-015 | ausência de eventos, ausência de resultados e falha de consulta são estados distintos; falha nunca aparece como lista vazia e permite nova tentativa quando recuperável | aprovado por Maycon em 2026-09-10 |
+
+### Catálogos iniciais da auditoria no incremento 1
+
+- **Ações:** LOGIN, PASSWORD_RESET, PROFILE_UPDATE, PATIENT_CREATE, PATIENT_VIEW, PATIENT_UPDATE, PATIENT_ARCHIVE, PATIENT_RESTORE, TAG_CREATE, TAG_ASSIGN, TAG_RENAME, TAG_DISABLE, PRESCRIPTION_CANCEL, BACKUP_CREATE, BACKUP_RESTORE, AUDIT_MODULE_OPEN e AUDIT_EVENT_DETAIL_VIEW.
+- **Tipos de entidade:** USER, PROFESSIONAL_PROFILE, WORKSPACE, PATIENT, TAG, PRESCRIPTION, BACKUP e AUDIT_EVENT.
+- **Resultados:** SUCCESS quando a operação conclui; FAILURE quando falha por credencial inválida, validação ou erro técnico; DENIED quando é impedida por autenticação, autorização ou regra de acesso.
+- A semântica técnica do ator de operações automáticas e tentativas de login sem usuário autenticado permanece pendente para o projeto físico; isso não altera o filtro por usuário nos eventos associados a um usuário.
 
 ## Backup
 

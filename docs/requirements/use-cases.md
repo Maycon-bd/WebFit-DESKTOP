@@ -13,8 +13,74 @@
 | UC-DRF-001 | recuperar ou descartar rascunho automático | nutricionista/administrador | preenchimento temporário do usuário e espaço é retomado ou eliminado sem afetar registro clínico persistente | RF-DRF-001, RF-PAT-006 | aprovado por Maycon em 2026-09-10 |
 | UC-PRE-001 | montar e finalizar prescrição | nutricionista/administrador | prescrição calculada, versionada e vinculada ao paciente | RF-PRE-001 a RF-PRE-004 | aprovado por Amanda |
 | UC-PRE-002 | calcular e ajustar necessidade energética | nutricionista/administrador | protocolo versionado produz estimativa, metas, alertas e histórico de ajustes | RF-PRE-005 | aprovado por Amanda em 2026-09-10 |
+| UC-AUD-001 | consultar auditoria | usuário autenticado e autorizado | eventos autorizados consultados com filtros, paginação e detalhe sem exposição de conteúdo sensível | RF-AUD-001 | aprovado por Maycon em 2026-09-10 |
 | UC-BKP-001 | criar backup | nutricionista/administrador/sistema | pacote válido criado e estado atualizado | RF-BKP-001, RF-BKP-003 | aprovado |
 | UC-BKP-002 | restaurar backup | nutricionista/administrador | pacote validado e dados restaurados | RF-BKP-002 | aprovado |
+
+## UC-AUD-001 — Consultar auditoria
+
+### Objetivo
+
+Permitir que usuário autenticado e autorizado consulte metadados de eventos críticos do espaço permitido para investigação e prestação de contas, sem expor conteúdo sensível ou alterar a trilha.
+
+### Ator
+
+Usuário autenticado e autorizado. Nutricionista e administrador permanecem autorizados conforme a decisão vigente, sem consolidar aqui o modelo definitivo de capacidades por papel.
+
+### Pré-condições
+
+- sessão válida;
+- autorização para o espaço consultado;
+- operação de consulta autorizada no backend.
+
+### Fluxo principal
+
+1. O usuário abre Auditoria no espaço autorizado.
+2. O backend valida sessão, autorização e escopo.
+3. A consulta estabelece um conjunto estável de resultados para evitar duplicidade ou perda entre páginas.
+4. O sistema registra uma única ação AUDIT_MODULE_OPEN, sem registrar o conteúdo visualizado e sem auditar recursivamente a própria persistência desse evento.
+5. O sistema consulta os últimos 30 dias, com ordenação fixa do mais recente para o mais antigo.
+6. O sistema apresenta a primeira página, limitada a 50 registros.
+7. Cada item apresenta somente ator, instante, espaço, ação, tipo/ID da entidade, resultado e motivo quando aplicável.
+8. O usuário pode combinar com AND os filtros de período, usuário, ação, tipo de entidade e resultado.
+9. Ao abrir um detalhe, o sistema apresenta somente metadados permitidos e registra uma única ação AUDIT_EVENT_DETAIL_VIEW, sem incluir o conteúdo visualizado.
+10. Quando autorizado, a interface resolve o rótulo atual da entidade; se não conseguir, mantém tipo e identificador técnico.
+
+### Fluxos alternativos
+
+- Sem eventos no conjunto consultado, mostrar estado vazio real.
+- Sem correspondência para os filtros, mostrar estado vazio de pesquisa e manter os filtros.
+- O usuário altera o período e a consulta reinicia na primeira página.
+- O usuário limpa filtros e retorna ao período padrão de 30 dias.
+- Uma entidade não pode ser resolvida e o evento continua visível por tipo e ID.
+- Novos eventos criados durante a navegação não alteram o conjunto estável já paginado; aparecem em nova consulta.
+
+### Exceções
+
+- Sessão ausente, expirada ou não autorizada: negar acesso e não retornar eventos.
+- Falha de consulta: mostrar erro seguro, não representar como lista vazia e permitir nova tentativa quando recuperável.
+- Falha ao resolver rótulo: usar tipo e ID sem perder o evento.
+- Falha ao registrar o acesso obrigatório: aplicar RN-AUD-004.
+
+### Filtros
+
+Período, usuário, ação, tipo de entidade e resultado, combinados por AND. Módulo, origem, ID específico e pesquisa textual livre ficam fora do incremento 1.
+
+### Ordenação
+
+Fixa, do evento mais recente para o mais antigo.
+
+### Permissões
+
+A consulta exige usuário autenticado e autorizado, com verificação no backend e restrição ao escopo permitido. O modelo definitivo de capacidades dos papéis permanece dependência separada e não é consolidado por este caso de uso.
+
+### Resultado esperado
+
+Lista paginada ou estado vazio correto, contendo somente metadados autorizados, sem edição, exclusão, exportação, snapshots ou diferenças before/after.
+
+### Regras relacionadas
+
+RF-AUD-001; RN-AUD-001 a RN-AUD-015; RNF-PRI-001; RNF-SEG-002; RNF-SEG-003; DEC-016; DEC-025; DEC-026; DEC-028 a DEC-037.
 
 ## Fluxos e erros obrigatórios
 

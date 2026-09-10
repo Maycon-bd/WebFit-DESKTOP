@@ -1,3 +1,5 @@
 # implementation.md
 
-Execute somente o plano aprovado. Preserve trabalho preexistente, use incrementos verticais e trate comportamento, erros, persistência, segurança e testes juntos. Pare diante de nova decisão, dependência, schema/migration, risco ou mudança de escopo.
+Execute somente o plano aprovado e o escopo autorizado. Preserve trabalho preexistente, use incrementos verticais e trate comportamento, erros, persistência, segurança e testes juntos.
+
+Decida autonomamente escolhas pequenas, locais e reversíveis já determinadas pelo plano, registrando-as proporcionalmente. Se surgir decisão que altere requisito, arquitetura, contrato público, banco/schema, segurança, autorização, domínio ou integração, reaplique a matriz. Continue apenas quando a escolha puder ser `AGENT-PROVISIONAL` e não exigir ação irreversível; pare diante de `NEEDS-HUMAN-DECISION`, condição ASK-FIRST, dependência não autorizada, risco material ou mudança de escopo. Nunca amplie o escopo silenciosamente.

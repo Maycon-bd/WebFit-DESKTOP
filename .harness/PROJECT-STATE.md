@@ -3,16 +3,18 @@
 ## Stage
 PLANNING
 
-G1 foi aprovado em 2026-08-20. G2 permanece em revisão, com a consulta de auditoria como próxima decisão exata. Não há implementação.
+G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria foi concluída; backup e restauração são a próxima seção. Não há implementação.
 
 ## Confirmed
 
 - Produto local, offline, Windows-first e um computador por instalação.
 - MVP Saúde; Educação está fora do MVP.
 - Amanda aprova domínio/aceite; Maycon é PO e responsável técnico.
+- O harness usa `AUTONOMOUS DECISION WITH HUMAN VALIDATION`: escolhas justificáveis podem avançar como `AGENT-PROVISIONAL`; condições ASK-FIRST permanecem humanas.
 - Primeiro incremento: autenticação, perfil, Saúde, pacientes, prescrição/cardápio, auditoria, backup/restauração mínima e persistência.
 - Requisitos, regras, critérios de aceite e rastreabilidade do primeiro incremento já existem em docs/requirements/.
 - A auditoria tem retenção indeterminada no MVP e falha de auditoria bloqueia operação crítica/autenticação bem-sucedida.
+- A consulta de auditoria usa usuário autenticado e autorizado, período padrão de 30 dias, filtros AND, ordem decrescente fixa e paginação de 50 registros.
 - Arquivos clínicos ficam planejados para incremento posterior; biblioteca profissional vem depois do núcleo do MVP.
 - Tauri 2/React/TypeScript/Vite/Rust/SQLite são composição proposta para spike no ADR-0001, não decisão de produção.
 
@@ -26,7 +28,7 @@ Estas são propostas de processo, não decisões do produto.
 
 ## Unknown
 
-- Filtros e ordenação da consulta de auditoria.
+- Representação física de atores automáticos e tentativas sem usuário autenticado na auditoria.
 - Proteção local, SQLCipher, chaves e proteção de backups.
 - Política legal definitiva de retenção clínica.
 - Destino externo de backup e rotina operacional definitiva.
@@ -44,9 +46,9 @@ Estas são propostas de processo, não decisões do produto.
 
 ## Next Decisions
 
-1. Confirmar filtros e ordenação da consulta de auditoria.
-2. Completar o teste de consulta e o caso de uso de auditoria.
-3. Fechar o checklist restante do G2.
+1. Completar a baseline de backup e restauração.
+2. Concluir os RNFs e a rastreabilidade restantes do primeiro incremento.
+3. Obter a aprovação final do G2.
 4. Só então preparar o plano executável e o spike do ADR-0001.
 
 ## Existing Documentation
@@ -69,4 +71,4 @@ O catálogo consolidado está em knowledge/OPEN-QUESTIONS.md e o registro em kno
 
 ## Recommended Next Step
 
-Confirmar a experiência de consulta da auditoria e completar sua evidência de aceite antes de avançar para backup/restauração.
+Completar a baseline de backup e restauração sem iniciar implementação.

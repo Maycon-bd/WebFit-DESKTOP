@@ -2,6 +2,8 @@
 
 Este diretório é o harness de engenharia do WebFit Desktop. Organiza contexto, governança, prompts, templates, integrações e evidências sem criar uma segunda fonte de requisitos ou decisões.
 
+O modelo decisório está em [AUTONOMY-POLICY.md](AUTONOMY-POLICY.md): escolhas justificáveis podem avançar como `AGENT-PROVISIONAL`, sempre visíveis e sujeitas a validação humana posterior; condições ASK-FIRST continuam exigindo decisão prévia.
+
 ## Estado
 
 PROJECT STAGE: PLANNING. Integrações externas e automação estão PREPARED — NOT ACTIVE. O repositório não contém código de aplicação.
@@ -16,7 +18,7 @@ IDEA / DEMANDA
 ↓ ARCHITECTURE / ADR
 ↓ PLAN
 ↓ TASKS
-↓ HUMAN GATE
+↓ HUMAN GATE ou READY FOR HUMAN DECISION REVIEW, conforme risco
 ↓ IMPLEMENTATION
 ↓ VERIFICATION
 ↓ INDEPENDENT REVIEW
@@ -31,9 +33,9 @@ Uma alteração documental simples pode ser LIGHT; uma feature comum é STANDARD
 ## Uso rápido
 
 1. Ler PROJECT-STATE.md, GOVERNANCE.md e os documentos canônicos relacionados.
-2. Classificar a demanda e registrar dúvidas; nunca transformar hipótese em fato.
+2. Classificar a demanda, aplicar a matriz de autonomia e distinguir fato, inferência, `AGENT-PROVISIONAL` e `NEEDS-HUMAN-DECISION`.
 3. Criar ou atualizar a Spec Kit canônica quando a ferramenta estiver disponível.
-4. Obter o gate humano antes de implementação ou alteração material.
+4. Obter o gate humano antes de condições ASK-FIRST; decisões provisórias não sensíveis podem sustentar especificação, plano e review.
 5. Executar verificação, review independente e gates condicionais.
 6. Produzir um Evidence Report antes da aprovação final.
 

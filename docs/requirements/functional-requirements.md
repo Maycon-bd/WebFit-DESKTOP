@@ -187,16 +187,18 @@ PDF, impressão e exportação não pertencem ao incremento 1.
 
 ### RF-AUD-001 — Registrar e consultar auditoria
 
-- **Descrição:** registrar ator, instante, espaço, ação, entidade e resultado de eventos críticos e permitir consulta pelos usuários autorizados.
+- **Descrição:** registrar ator, instante, espaço, ação, entidade e resultado de eventos críticos e permitir consulta paginada pelos usuários autenticados e autorizados.
+- **Consulta:** abrir com os últimos 30 dias, 50 registros por página e ordenação fixa do mais recente para o mais antigo; permitir filtros combinados com AND por período, usuário, ação, tipo de entidade e resultado.
+- **Detalhe:** apresentar somente metadados autorizados; resolver o rótulo atual da entidade quando permitido e usar tipo/ID como fallback.
+- **Ações:** listar, filtrar, paginar e abrir detalhe; não editar, excluir ou exportar no incremento 1.
 - **Retenção:** manter os eventos por tempo indeterminado no MVP, sem exclusão automática, até existir política legal aprovada.
-- **Erro:** operação crítica ou autenticação bem-sucedida não é concluída se seu evento obrigatório não puder ser persistido; operação ou login já rejeitado permanece rejeitado e produz somente diagnóstico técnico seguro.
-- **Restrição:** não registrar senha, CPF completo ou conteúdo clínico.
-- **Regras:** RN-AUD-001 a RN-AUD-004.
-- **Critérios:** TA-AUD-001 a TA-AUD-003.
+- **Erro:** operação crítica ou autenticação bem-sucedida não é concluída se seu evento obrigatório não puder ser persistido; operação ou login já rejeitado permanece rejeitado e produz somente diagnóstico técnico seguro. Falha de consulta aparece como erro seguro, nunca como lista vazia, e permite nova tentativa quando recuperável.
+- **Restrição:** não registrar senha, CPF completo, conteúdo clínico, nome de arquivo, snapshots ou dados anteriores/posteriores.
+- **Regras:** RN-AUD-001 a RN-AUD-015.
+- **Critérios:** TA-AUD-001 a TA-AUD-013.
 - **Prioridade:** obrigatória — incremento 1.
-- **Status:** aprovado.
-- **Fonte:** entrevista 01 e DEC-016.
-
+- **Status:** aprovado por Maycon em 2026-09-10 para a baseline do G2.
+- **Fonte:** entrevista 01, DEC-016, DEC-025, DEC-026 e DEC-028 a DEC-037.
 ## Backup e restauração
 
 ### RF-BKP-001 — Criar backup

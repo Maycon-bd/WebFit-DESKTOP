@@ -9,7 +9,7 @@
 | 3 | PBI-003 Perfil e espaço Saúde | perfil do usuário e entrada no espaço | baseline G2 |
 | 4 | PBI-004 Pacientes | cadastro, pesquisa, edição, tags, arquivamento e rascunho | baseline G2 |
 | 5 | PBI-010 Prescrição e cardápio | plano individual, cálculos, estados e histórico | baseline clínica G2 aprovada |
-| 6 | PBI-005 Auditoria | trilha segura das ações críticas | baseline G2 |
+| 6 | PBI-005 Auditoria | trilha segura e consulta autorizada das ações críticas | baseline G2 aprovada em 2026-09-10 |
 | 7 | PBI-006 Backup e restauração mínima | diário/manual, integridade e restauração de teste | baseline G2/spike |
 | 8 | PBI-007 Agenda e atendimento | ciclo básico da consulta | discovery G2 |
 | 9 | PBI-008 Anamnese | registro e histórico clínico | discovery G2 |

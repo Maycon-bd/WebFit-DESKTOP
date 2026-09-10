@@ -129,7 +129,7 @@ Nenhum arquivo legado será colado diretamente na documentação oficial do Desk
 | Chat e diário | pressupõem acesso do paciente em outro dispositivo | resolvido para o MVP Saúde: fora do escopo |
 | Planos Pro/Black | bloqueios foram simulados | resolvido para o MVP Saúde: fora do escopo |
 | Exclusão de pacientes | há lixeira, soft delete e retenção clínica/financeira | parcialmente resolvido: arquivar nunca exclui; retenção legal segue aberta |
-| Auditoria | não está claro quem pode consultar e por quanto tempo | parcialmente resolvido: ambos os papéis acessam; retenção segue aberta |
+| Auditoria | consulta, retenção e falha precisavam de definição | consulta aprovada por DEC-028 a DEC-037; retenção indeterminada é provisória e a política legal definitiva segue aberta antes do G7 |
 | Multi-clínica | schema suporta; experiência atual usa a primeira clínica | resolvido para o MVP: espaço Saúde único; Educação é outro domínio futuro |
 | Usuários locais | owner, nutricionista e assistente existem conceitualmente | resolvido no MVP: nutricionista e administrador com acesso total |
 | Datas e horários | formatos de tela foram tratados como armazenamento | resolvido: instantes em UTC e datas civis sem conversão de fuso |

@@ -50,6 +50,7 @@ Não trate a proposta como decisão de produção nem importe a arquitetura do W
 - Atualize documentação na mesma mudança que altera comportamento.
 - Preserve alterações preexistentes e não faça ações destrutivas sem autorização explícita.
 - Siga o fluxo em .harness/README.md e use LIGHT, STANDARD ou STRICT.
+- Siga .harness/AUTONOMY-POLICY.md para decidir, registrar e validar escolhas; nunca represente `AGENT-PROVISIONAL` como aprovação humana.
 - Não ative loops autônomos; o harness atual é preparatório.
 
 ## Dados e segurança
@@ -87,7 +88,7 @@ Antes de concluir uma entrega, execute os comandos disponíveis para formataçã
 
 - Requisitos têm ID, critérios de aceite, prioridade, status e rastreabilidade.
 - Decisões arquiteturais materiais usam ADR; não crie ADR retroativo sem evidência suficiente.
-- Hipóteses, propostas e questões abertas devem ser marcadas como tais.
+- Hipóteses, propostas, decisões `AGENT-PROVISIONAL` e questões `NEEDS-HUMAN-DECISION` devem ser marcadas como tais.
 - Atualize documentação, evidência e status na mesma mudança que alterar comportamento.
 
 ## Definition of Done por tipo
@@ -99,8 +100,9 @@ Antes de concluir uma entrega, execute os comandos disponíveis para formataçã
 
 ## Regras para agentes
 
-- Não invente requisitos, arquitetura, stack, métricas ou decisões.
-- Evidencie toda inferência e pergunte diante de decisão material.
+- Não invente requisitos, arquitetura, stack, métricas ou decisões sem base.
+- Use contexto, evidência, requisitos, restrições e comparação de alternativas. Se houver opção claramente superior e a matriz permitir, registre `AGENT-PROVISIONAL` e continue; se faltar informação essencial, houver alternativas equilibradas ou condição ASK-FIRST, registre `NEEDS-HUMAN-DECISION` e pergunte.
+- Acumule decisões provisórias relacionadas e solicite validação humana em lote ao final da fase relevante.
 - Não instale dependências sem aprovação.
 - Não altere banco de forma destrutiva, não acesse produção e não revele secrets.
 - Não faça commit, push ou deploy automaticamente.

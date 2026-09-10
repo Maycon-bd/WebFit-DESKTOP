@@ -18,6 +18,9 @@ Aplicação
 │   ├── Perfil profissional
 │   ├── Backup e restauração
 │   └── Auditoria
+│       ├── Lista paginada
+│       ├── Filtros
+│       └── Detalhe de metadados
 └── Sessão
     ├── Bloquear
     ├── Trocar senha
