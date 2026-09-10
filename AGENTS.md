@@ -1,45 +1,45 @@
 # AGENTS.md — WebFit Desktop
 
-## Produto
+## Projeto
 
-WebFit Desktop é um aplicativo local e offline para gestão de consultório e acompanhamento nutricional. A primeira versão é Windows-first, sem hospedagem, sem mensalidade e orientada ao uso em um único computador.
+- Nome: WebFit Desktop.
+- Objetivo: gestão local e offline de consultório e acompanhamento nutricional.
+- Estágio: PROJECT STAGE: PLANNING; G1 aprovado e G2 em revisão.
+- Domínio: Saúde no MVP; Educação é um espaço futuro.
+- Usuários aprovados no MVP: nutricionista e administrador, ambos com acesso total.
+- Operação: Windows-first, um computador por instalação, sem hospedagem ou mensalidade obrigatória.
+
+Ainda não existe aplicação, dependência, banco, teste executável ou instalador neste repositório.
 
 ## Fonte de verdade
 
-Antes de planejar ou alterar o produto, leia:
+Leia antes de planejar ou alterar o produto:
 
-1. `docs/project/status.md`;
-2. `docs/project/context.md`;
-3. `docs/project/development-lifecycle.md`;
-4. `docs/project/functional-candidates.md` durante a descoberta;
-5. `docs/product/scope.md`, quando existir;
-6. requisitos, regras, casos de uso e ADRs relacionados ao domínio alterado.
+1. docs/project/status.md;
+2. docs/project/context.md;
+3. docs/project/development-lifecycle.md;
+4. docs/project/functional-candidates.md durante descoberta;
+5. docs/product/scope.md;
+6. requisitos, regras, casos de uso, matriz e ADRs relacionados ao domínio.
 
-Documentos legados são fontes de descoberta, não requisitos aprovados.
+Hierarquia operacional detalhada: .harness/GOVERNANCE.md. Documentos legados são fontes de descoberta, não requisitos aprovados.
 
 ## Retomada obrigatória entre máquinas e chats
 
-Quando uma solicitação contiver a frase **“Vamos continuar onde paramos”**, independentemente de maiúsculas, minúsculas ou pontuação:
+Quando uma solicitação contiver a frase “Vamos continuar onde paramos”, independentemente de maiúsculas, minúsculas ou pontuação:
 
-1. leia integralmente `docs/project/status.md` antes de planejar, responder sobre o próximo passo ou alterar arquivos;
-2. confira `git status --short --branch` e o commit atual;
-3. compare o estado local com branch, commit-base e sincronização registrados no checkpoint;
-4. se houver divergência, alterações não sincronizadas ou conflito entre máquinas, informe antes de editar;
-5. retome pela seção **Próxima ação exata** do checkpoint, sem reconstruir o estado apenas pela memória do chat;
+1. leia integralmente docs/project/status.md;
+2. confira git status --short --branch e o commit atual;
+3. compare o estado local com branch, commit-base e sincronização registrados;
+4. informe divergências antes de editar;
+5. retome pela seção Próxima ação exata;
 6. antes de encerrar trabalho material, atualize data, branch, commit-base, sincronização, última etapa concluída, próxima ação e checklist do Gate no mesmo arquivo.
 
-Essa regra também se aplica a variações claras da mesma frase, como “continuar de onde paramos”.
+## Arquitetura em validação
 
-## Arquitetura vigente
+Tauri 2, React + TypeScript + Vite, Rust e SQLite são a composição proposta no ADR-0001, aprovada somente para spike. O spike deve validar shell, persistência, migrações, autorização, proteção local, arquivos, backup e restauração antes de qualquer implementação.
 
-- Tauri 2 para o aplicativo desktop.
-- React + TypeScript + Vite para a interface.
-- Rust para comandos, domínio, segurança, arquivos e persistência.
-- SQLite nativo para dados locais.
-- Arquivos clínicos no filesystem privado, com metadados e hashes no banco.
-- Comunicação frontend/backend por comandos pequenos, tipados e autorizados.
-
-Não introduza Supabase, Firebase, backend remoto, `localStorage` de domínio ou acesso SQL genérico pela WebView sem uma nova decisão arquitetural aprovada.
+Não trate a proposta como decisão de produção nem importe a arquitetura do WebFit Web. Não introduza Supabase, Firebase, backend remoto, localStorage de domínio ou acesso SQL genérico pela WebView sem nova decisão arquitetural aprovada.
 
 ## Processo obrigatório
 
@@ -49,15 +49,16 @@ Não introduza Supabase, Firebase, backend remoto, `localStorage` de domínio ou
 - Faça incrementos verticais: interface, domínio, persistência, erro e teste juntos.
 - Atualize documentação na mesma mudança que altera comportamento.
 - Preserve alterações preexistentes e não faça ações destrutivas sem autorização explícita.
+- Siga o fluxo em .harness/README.md e use LIGHT, STANDARD ou STRICT.
+- Não ative loops autônomos; o harness atual é preparatório.
 
 ## Dados e segurança
 
 - Trate dados de saúde como sensíveis.
 - Nunca registre senha, chave, CPF, prontuário, mensagem ou documento clínico em logs.
 - Nunca coloque segredo no frontend ou no repositório.
-- Autorize toda operação no backend Tauri; ocultar botão não é autorização.
-- Use consultas parametrizadas e transações.
-- Ative foreign keys em toda conexão SQLite.
+- Autorize toda operação no backend Tauri quando houver aplicação; ocultar botão não é autorização.
+- Use consultas parametrizadas e transações; ative foreign keys em toda conexão SQLite.
 - Valores monetários são inteiros em centavos.
 - Datas e horários instantâneos são persistidos em UTC.
 - Arquivos físicos usam UUID, não nome ou CPF do paciente.
@@ -66,37 +67,41 @@ Não introduza Supabase, Firebase, backend remoto, `localStorage` de domínio ou
 ## SQLite
 
 - Migrações devem ser numeradas, transacionais e testadas.
-- Teste tanto banco vazio quanto atualização da versão anterior.
-- Não use SQLite em pasta de rede ou pasta sincronizada como mecanismo de colaboração.
+- Teste banco vazio e atualização da versão anterior.
+- Não use SQLite em pasta de rede ou sincronizada como colaboração.
 - Não copie diretamente um banco ativo para backup; use snapshot consistente.
 - Execute verificações de integridade na restauração.
 
 ## Qualidade
 
-Antes de concluir uma entrega, execute os comandos disponíveis para:
+Antes de concluir uma entrega, execute os comandos disponíveis para formatação, lint, TypeScript, testes frontend, testes Rust, testes de integração SQLite e build Tauri aplicável. Se algum comando ainda não existir, registre isso no handoff e crie-o somente quando fizer parte do escopo da fundação.
 
-- formatação;
-- lint;
-- TypeScript;
-- testes frontend;
-- testes Rust;
-- testes de integração SQLite;
-- build Tauri aplicável.
+## Política de ferramentas
 
-Se algum comando ainda não existir, registre isso no handoff e crie-o quando fizer parte do escopo da fundação.
+- ALLOW: leitura, pesquisa, análise, criação de artefatos do harness e checks locais não destrutivos.
+- ASK: dependências, inicializações com risco de sobrescrita, migrações/schema, autenticação, integrações externas, infraestrutura, Plane/GitHub e mudanças arquiteturais materiais.
+- DENY sem autorização explícita e ambiente apropriado: produção, resets destrutivos, apagar trabalho, revelar secrets, bypass de segurança, pentest não autorizado, reproducer no host e deploy automático.
+- Nunca imprimir, versionar ou solicitar secrets em texto claro.
 
-## Definition of Done resumida
+## Convenções documentais
 
-Uma entrega só está concluída quando comportamento e erros estão implementados, critérios de aceite foram executados, testes passam, migrações são verificadas, documentação está atualizada e nenhum dado sensível foi introduzido em logs ou armazenamento inadequado.
+- Requisitos têm ID, critérios de aceite, prioridade, status e rastreabilidade.
+- Decisões arquiteturais materiais usam ADR; não crie ADR retroativo sem evidência suficiente.
+- Hipóteses, propostas e questões abertas devem ser marcadas como tais.
+- Atualize documentação, evidência e status na mesma mudança que alterar comportamento.
 
-## Escopo inicial proibido sem reavaliação
+## Definition of Done por tipo
 
-- sincronização entre computadores;
-- portal/app remoto do paciente;
-- chat remoto e notificações push;
-- WhatsApp automatizado;
-- teleconsulta;
-- hospedagem e serviços em nuvem;
-- planos pagos e bloqueios comerciais.
+- Documentação: fonte, status, links, revisão de consistência e questões abertas registradas.
+- Feature: requisito aprovado, implementação, erros, testes, rastreabilidade, revisão e evidência.
+- Arquitetura: alternativas, ADR, spike/evidência, riscos e aprovação humana.
+- Implementação: DoD de docs/quality/definition-of-done.md, incluindo migração/backup quando aplicável.
 
-Se uma solicitação exigir qualquer item acima, pare, apresente o impacto e solicite uma decisão de arquitetura e produto.
+## Regras para agentes
+
+- Não invente requisitos, arquitetura, stack, métricas ou decisões.
+- Evidencie toda inferência e pergunte diante de decisão material.
+- Não instale dependências sem aprovação.
+- Não altere banco de forma destrutiva, não acesse produção e não revele secrets.
+- Não faça commit, push ou deploy automaticamente.
+- Preserve o trabalho preexistente e confira git status antes e depois.

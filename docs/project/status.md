@@ -4,44 +4,34 @@
 
 ## Onde paramos
 
-- **Data do checkpoint:** 2026-08-20
+- **Data do checkpoint:** 2026-09-10
 - **Fase:** elicitação e análise de requisitos
 - **Gate atual:** G2 — baseline do primeiro incremento
 - **Estado:** em revisão
-- **Última seção concluída:** seção 4 — pacientes e tags
-- **Próxima seção:** seção 5 — prescrição e cardápio
+- **Última decisão concluída:** seção 7B — falha de gravação da auditoria; planejamento futuro de arquivos registrado
+- **Próxima ação:** seção 7C — consulta da auditoria
 - **Branch registrada:** `main`
-- **Commit-base:** `8344c5f`
-- **Sincronização:** branch `main` alinhada com `origin/main` antes desta atualização; existem alterações locais que precisam de commit e push antes da troca de máquina
+- **Commit-base:** `5d9b03d`
+- **Sincronização:** branch alinhada com `origin/main` antes desta atualização; estas alterações precisam de commit e push antes da troca de máquina
 
 ## Última decisão aprovada
 
-A seção 4 do G2 — **pacientes e tags** — foi aprovada por Maycon em 2026-08-20, com ajuste no fluxo de cadastro:
+Maycon aprovou em 2026-09-10:
 
-- abrir a área de pacientes, clicar em **Novo**, preencher um único formulário e salvar;
-- nome completo, CPF, telefone, data de nascimento, e-mail e endereço obrigatórios;
-- nome social, gênero, tags e observações opcionais; sexo permanece campo separado;
-- responsável legal informado quando aplicável;
-- CPF normalizado, validado e único no espaço Saúde, inclusive entre arquivados;
-- busca por nome, nome social, CPF ou telefone e CPF mascarado na listagem;
-- edição só persiste após confirmação em Salvar;
-- arquivamento preserva dados e histórico e exige restauração antes de novos registros;
-- tags podem ser criadas, selecionadas, renomeadas e desativadas sem romper o histórico;
-- cadastro incompleto possui rascunho recuperável conforme as regras da seção 6.
+- operação crítica e autenticação bem-sucedida não concluem sem persistir o evento obrigatório de auditoria;
+- operação ou login já rejeitado permanece rejeitado quando a auditoria falhar e produz somente diagnóstico técnico seguro;
+- módulo futuro de arquivos com base clínica vinculada a pacientes e biblioteca profissional independente;
+- incremento 4 concentra arquivos clínicos; biblioteca profissional vem depois do núcleo do MVP;
+- primeira versão usa PDF/JPG/PNG, busca por metadados, visualização, arquivamento, exportação, integridade, backup e auditoria;
+- OCR, IA, edição, nuvem, sincronização e exclusão definitiva permanecem fora da primeira versão.
 
 ## Próxima ação exata
 
-Especificar e aprovar a seção 5 do G2 — prescrição e cardápio:
+Maycon deve confirmar a experiência de consulta da auditoria.
 
-- confirmar a fonte nutricional oficial;
-- definir medidas caseiras e regras para alimentos personalizados;
-- aprovar fórmulas, unidades e arredondamentos dos cálculos;
-- definir os micronutrientes incluídos no primeiro incremento;
-- definir estados e transições da prescrição, inclusive correção e cancelamento;
-- detalhar rascunho, finalização, nova versão e histórico imutável;
-- criar regras de negócio e testes de aceite para RF-PRE-001 a RF-PRE-004.
+Recomendação para decisão: listar eventos do mais recente para o mais antigo e permitir filtros combinados por período, usuário, ação, tipo de entidade e resultado. A interface pode resolver o identificador da entidade para um rótulo autorizado, mas o evento persistido não deve duplicar nome, CPF, conteúdo clínico ou nome de arquivo.
 
-As decisões clínicas precisam da aprovação de Amanda antes de concluir esta seção.
+Depois dessa decisão, criar o caso de uso de auditoria e completar o teste de consulta antes de avançar para backup e restauração.
 
 ## Gates
 
@@ -60,12 +50,13 @@ As decisões clínicas precisam da aprovação de Amanda antes de concluir esta 
 | Ordem | Seção | Estado | Observação |
 |---:|---|---|---|
 | 1 | Escopo do incremento | **aprovado** | prescrição/cardápio incluído; PDF/exportação excluídos |
-| 2 | Autenticação e sessão | **aprovado** | RF-AUT-001 a RF-AUT-003; confirmação de Maycon em 2026-08-20 |
-| 3 | Perfil e espaço Saúde | **aprovado** | RF-CLI-001 e RF-CLI-002; confirmação de Maycon em 2026-08-20 |
-| 4 | Pacientes e tags | **aprovado** | RF-PAT-001 a RF-PAT-006; fluxo ajustado e confirmação de Maycon em 2026-08-20 |
-| 5 | Prescrição e cardápio | **em especificação clínica — próximo passo** | fonte nutricional, fórmulas, unidades, arredondamentos e estados |
-| 6 | Rascunhos | pendente | RN-DRF-001 a RN-DRF-004 |
-| 7 | Auditoria | pendente | RF-AUD-001 |
+| 2 | Autenticação e sessão | **aprovado** | RF-AUT-001 a RF-AUT-003 |
+| 3 | Perfil e espaço Saúde | **aprovado** | RF-CLI-001 e RF-CLI-002 |
+| 4 | Pacientes e tags | **aprovado** | RF-PAT-001 a RF-PAT-006 |
+| 5A | Composição e ciclo da prescrição | **aprovado por Amanda em 2026-08-21** | RF-PRE-001 a RF-PRE-004, RN-PRE e TA-PRE |
+| 5B | Necessidade energética e metas | **aprovado por Amanda em 2026-09-10** | RF-PRE-005, RN-PRE-011 a RN-PRE-024 e TA-PRE-008 a TA-PRE-016 |
+| 6 | Rascunhos | **aprovado por Maycon em 2026-09-10** | RF-DRF-001, RN-DRF-001 a RN-DRF-005 e TA-DRF-001 a TA-DRF-004 |
+| 7 | Auditoria | **em revisão — retenção e falha fechada aprovadas** | RF-AUD-001, RN-AUD-001 a RN-AUD-004 e TA-AUD-001 a TA-AUD-003 |
 | 8 | Backup e restauração | pendente | RF-BKP-001 a RF-BKP-003 |
 | 9 | Requisitos não funcionais | pendente | RNF-* do incremento |
 | 10 | Testes e rastreabilidade | pendente | TA-* e matriz |
@@ -92,8 +83,8 @@ As decisões clínicas precisam da aprovação de Amanda antes de concluir esta 
 
 ## Pendências que não devem ser esquecidas
 
-- Amanda deve aprovar fonte nutricional, fórmulas, unidades e arredondamentos.
-- Definir estados e transições da prescrição.
+- Definir filtros e ordenação da consulta de auditoria.
+- No discovery de arquivos, definir limites, categorias, duplicidade, miniaturas e retenção.
 - Criptografia, diretório de dados, chaves e pacote de backup dependem do spike.
 - Pen drive ou SSD externo deve ser decidido antes do G7.
 - Retenção clínica definitiva precisa de avaliação antes de dados reais.
@@ -134,4 +125,4 @@ Ao receber **“Vamos continuar onde paramos”** ou variação clara, este arqu
 
 ## Regra de manutenção
 
-Ao final de cada sessão, atualizar pelo menos: data, branch, commit-base, sincronização, última seção concluída, próxima ação e checklist do Gate. Não marcar Gate como aprovado sem decisão dos aprovadores e evidência correspondente.
+Ao final de cada sessão, atualizar pelo menos: data, branch, commit-base, sincronização, última etapa concluída, próxima ação e checklist do Gate. Não marcar Gate como aprovado sem decisão dos aprovadores e evidência correspondente.

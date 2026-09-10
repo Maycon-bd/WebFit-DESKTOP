@@ -44,6 +44,8 @@
 
 - [Contexto e decisões iniciais](project/context.md)
 - [Entrevista — rodada 01](project/stakeholder-interview-round-01.md)
+- [Decisões clínicas de energia e planejamento](project/energy-planning-decisions-2026-08-21.md)
+- [Planejamento futuro de arquivos e documentos](project/files-and-documents-planning.md)
 - [Registro de decisões](project/decision-log.md)
 - [Product Backlog](project/product-backlog.md)
 - [Status operacional — retomar entre máquinas](project/status.md)

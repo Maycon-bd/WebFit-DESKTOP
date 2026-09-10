@@ -19,6 +19,17 @@
 | `audit_events` | trilha de ações críticas | ator, UTC, espaço, ação, entidade, resultado e metadados não clínicos |
 | `backup_history` | resultado de backups/restaurações | caminho lógico, instante, checksum, tamanho, versão e resultado |
 
+### Entidades futuras propostas para arquivos
+
+| Entidade | Finalidade | Relações/invariantes principais |
+|---|---|---|
+| `stored_files` | metadados de PDF e imagem privados | UUID físico, nome original protegido, MIME detectado, tamanho, hash, autor, UTC, estado e escopo clínico ou profissional |
+| `patient_files` | vínculo de arquivo clínico | arquivo e paciente do mesmo espaço; arquivamento não exclui o físico |
+| `file_categories` | categorias controladas | pertencem ao espaço e podem ser desativadas sem quebrar histórico |
+| `file_tags` | classificação pesquisável | relação muitos para muitos preservada ao arquivar |
+
+Essas entidades são propostas para o incremento 4 e não autorizam migração ou implementação antes da baseline própria do módulo.
+
 ## Relações
 
 ```mermaid

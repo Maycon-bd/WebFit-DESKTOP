@@ -235,15 +235,18 @@ Envio remoto ao paciente está fora do MVP local. O módulo só entra se houver 
 - Haverá horário, prioridade, recorrência e responsável?
 - Tarefas concluídas continuam visíveis por quanto tempo?
 
-## Arquivos clínicos e impressos
+## Arquivos clínicos, biblioteca profissional e impressos
 
 ### Capacidades candidatas
 
 - Anexar PDF ou imagem a paciente.
+- Guardar documentos e imagens profissionais sem vínculo obrigatório com paciente.
 - Registrar nome original, tipo, tamanho, hash, autor e data.
-- Visualizar, exportar e arquivar arquivo.
+- Pesquisar por nome, paciente, categoria, tags, tipo e data.
+- Visualizar, exportar, arquivar e restaurar arquivo.
 - Gerar PDFs reais de documentos aprovados.
 - Detectar arquivo ausente ou alterado.
+- Incluir banco, arquivos e checksums no mesmo fluxo de backup e restauração.
 
 ### Documentos candidatos
 
@@ -256,6 +259,9 @@ Envio remoto ao paciente está fora do MVP local. O módulo só entra se houver 
 
 - Quais documentos entram no MVP?
 - Quais exigem assinatura ou dados profissionais específicos?
+- Qual limite por arquivo e capacidade total esperada?
+- Quais categorias, tags e regra de duplicidade serão usadas?
+- Miniaturas serão persistidas ou geradas sob demanda?
 - Política de retenção e eliminação dos anexos.
 
 ## Autenticação e usuários locais

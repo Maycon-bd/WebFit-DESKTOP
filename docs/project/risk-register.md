@@ -16,6 +16,7 @@ Escalas de probabilidade e impacto serão definidas no planejamento. Até lá, n
 | RSK-010 | misturar Saúde e Educação pode gerar modelo e interface incorretos | produto/arquitetura | separar espaços e executar discovery próprio para Educação | Amanda | novo G1/G2 | mitigado |
 | RSK-011 | backup no mesmo disco não protege contra falha física | operação | cópia externa mensal e definição de pen drive/SSD antes do uso real | Amanda | G7 | aberto |
 | RSK-012 | retenção clínica indefinida pode violar obrigação legal ou expectativa do titular | legal/privacidade | não eliminar automaticamente no MVP e validar política antes do G7 | Maycon/Amanda | G7 | aberto |
-| RSK-013 | base ou fórmula nutricional incorreta pode produzir cardápio inadequado | clínico/produto | Amanda aprova fonte, fórmula, arredondamento e testes antes do incremento | Amanda | G2 clínico | aberto |
+| RSK-013 | base ou fórmula nutricional incorreta pode produzir cardápio inadequado | clínico/produto | protocolo e testes aprovados por Amanda; implementar versionamento, testes automatizados e alertas antes do uso clínico | Amanda/Maycon | G2/G5/G7 | monitorado |
+| RSK-014 | arquivo físico pode se separar do metadado, corromper ou ficar ausente no backup | dados/operação | UUID privado, publicação atômica, hash, manifesto, backup conjunto e testes de restauração antes do uso real | Maycon | discovery de arquivos/G4/G6 | aberto |
 
 Toda aceitação de risco identifica autoridade, data, justificativa e prazo de revisão. Revisar no início e fim de cada gate e após mudança de escopo, arquitetura ou dados.

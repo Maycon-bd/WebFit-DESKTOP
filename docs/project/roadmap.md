@@ -19,8 +19,10 @@ O checkpoint atual e a próxima ação ficam exclusivamente em [status.md](statu
 1. Fundação, autenticação, perfil, pacientes, prescrição/cardápio individual, auditoria e backup mínimo.
 2. Agenda e atendimentos.
 3. Anamnese e antropometria.
-4. Arquivos e documentos A4.
+4. Arquivos clínicos por paciente e documentos A4, com importação, busca por metadados, visualização, integridade e backup.
 5. Financeiro básico e planner.
 6. Relatórios, exportações, recuperação e hardening.
 
 O espaço Educação e qualquer serviço em nuvem iniciam novo ciclo de produto e arquitetura.
+
+A biblioteca profissional da nutricionista reutilizará a infraestrutura segura do incremento 4, mas será planejada como evolução posterior ao núcleo do MVP Saúde.

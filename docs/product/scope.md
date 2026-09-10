@@ -11,7 +11,7 @@
 - Anamnese e histórico clínico.
 - Antropometria e cálculos aprovados pelo domínio.
 - Prescrições e cardápios individualizados com cálculos aprovados.
-- Arquivos clínicos e documentos A4 prioritários.
+- Arquivos clínicos vinculados a pacientes e documentos A4 prioritários.
 - Financeiro básico e planner.
 - Relatórios e exportações PDF, XLSX e CSV.
 - Backup local manual e automático, restauração e diagnóstico de integridade.
@@ -25,7 +25,7 @@
 - Tags e observações básicas.
 - Prescrições e cardápios individualizados: refeições, alimentos, porções, cálculos, rascunho, versões, finalização e histórico.
 - Auditoria das ações críticas.
-- Rascunho protegido do cadastro de paciente.
+- Rascunho automático protegido nos formulários longos do incremento, incluindo pacientes e prescrição, sem confundi-lo com o estado clínico persistente da prescrição.
 - Backup local mínimo, manual e automático, com restauração em ambiente de teste.
 - Persistência comprovada após fechar e reabrir.
 
@@ -46,5 +46,6 @@
 - Backup opcional em nuvem.
 - Migração dos aproximadamente 80 pacientes existentes.
 - Descoberta, requisitos e arquitetura do espaço Educação.
+- Biblioteca profissional de documentos e imagens sem vínculo obrigatório com paciente.
 
 O catálogo detalhado permanece em [funcionalidades candidatas](../project/functional-candidates.md). A implementação é condicionada aos requisitos e testes aprovados no Gate G2.

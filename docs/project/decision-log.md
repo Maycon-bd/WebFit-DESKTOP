@@ -27,13 +27,20 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | DEC-019 | adotar backup diário e manual, retenção de 60 dias, RPO de 24 horas e RTO até o próximo dia útil | aprovada | [entrevista 01](stakeholder-interview-round-01.md) |
 | DEC-020 | manter conectividade para atualização, recuperação remota e nuvem fora do MVP, sujeita a ADR | aprovada | decisão Maycon/Amanda |
 | DEC-021 | incluir prescrição e cardápio individual no primeiro incremento, sem PDF ou exportação | aprovada | [status operacional](status.md) |
+| DEC-022 | adotar TBCA 7.3 como fonte principal, TACO como fallback, gramas como base, micronutrientes iniciais e versões imutáveis | aprovada por Amanda em 2026-08-21 | [status operacional](status.md) |
+| DEC-023 | adotar Harris-Benedict revisada de Roza e Shizgal (1984), EER/DRI 2023 por ciclo de vida, ajuste ponderal estimado por coeficiente configurável de 7.800 kcal/kg, metas de macros e fibras, alertas e substituição manual rastreável | aprovada por Amanda em 2026-09-10 | [decisões clínicas de energia](energy-planning-decisions-2026-08-21.md) |
+| DEC-024 | aplicar rascunho automático a todos os formulários longos do incremento e distingui-lo do estado rascunho persistente da prescrição | aprovada por Maycon em 2026-09-10 | [status operacional](status.md) |
+| DEC-025 | manter a trilha de auditoria por tempo indeterminado no MVP, sem exclusão automática, até aprovação de política legal de retenção | aprovada por Maycon em 2026-09-10 | [status operacional](status.md) |
+| DEC-026 | impedir conclusão de operação crítica ou autenticação bem-sucedida quando o evento obrigatório de auditoria não puder ser persistido | aprovada por Maycon em 2026-09-10 | [status operacional](status.md) |
+| DEC-027 | planejar uma infraestrutura privada de arquivos com base clínica por paciente no incremento 4 e biblioteca profissional em evolução posterior | aprovada por Maycon em 2026-09-10 | [planejamento de arquivos](files-and-documents-planning.md) |
 
 ## Decisões pendentes
 
 | Assunto | Pergunta a decidir | Decisor | Gate | Estado |
 |---|---|---|---|---|
-| Fórmulas clínicas | quais protocolos, fontes e fórmulas de energia, macro e micronutrientes serão usados? | Amanda | G2 do incremento clínico | aberta |
-| Alimentos | qual base nutricional e política de atualização serão adotadas? | Amanda e Maycon | G2/G4 do incremento de cardápio | aberta |
+| Alimentos | TBCA 7.3 principal e TACO fallback; política de atualização técnica será definida no G4 | Amanda e Maycon | G4 | parcialmente resolvida |
+| Auditoria | quais filtros e ordenação oferecer na consulta? | Amanda e Maycon | seção 7 do G2 | parcialmente resolvida; retenção e falha fechada aprovadas |
+| Arquivos e biblioteca | quais limites, categorias, duplicidade, miniaturas e política de retenção usar? | Amanda e Maycon | discovery do incremento 4 e evolução posterior | proposta registrada |
 | Documentos | quais documentos A4 serão prioritários e quais dados/assinaturas exigem? | Amanda | G2 | aberta |
 | Retenção clínica | qual política legal definitiva de retenção e eliminação? | produto e assessoria adequada | antes de G7 | aberta |
 | Migração | existe fonte confiável para os 80 pacientes? | Amanda e Maycon | antes da migração | aberta |

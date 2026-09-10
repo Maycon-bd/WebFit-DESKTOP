@@ -39,10 +39,40 @@
 
 | ID | Regra | Status |
 |---|---|---|
-| RN-DRF-001 | rascunhos aplicam-se a formulários longos; nunca a senha, login, administração, confirmação ou backup | aprovado |
-| RN-DRF-002 | salvar aproximadamente a cada 30 segundos e antes de navegação segura | aprovado |
-| RN-DRF-003 | rascunho pertence ao usuário e espaço, só aparece autenticado e é removido ao concluir ou descartar | aprovado |
-| RN-DRF-004 | rascunhos abandonados são removidos após 30 dias; múltiplos rascunhos usam identificadores próprios | aprovado |
+| RN-DRF-001 | rascunhos automáticos aplicam-se a todo formulário explicitamente classificado como longo; nunca a senha, login, administração, confirmação ou backup | aprovado por Maycon em 2026-09-10 |
+| RN-DRF-002 | salvar aproximadamente a cada 30 segundos e antes de navegação segura; falha informa estado real e preserva a última versão válida | aprovado por Maycon em 2026-09-10 |
+| RN-DRF-003 | rascunho pertence ao usuário e espaço, só aparece autenticado e é removido ao concluir ou descartar | aprovado por Maycon em 2026-09-10 |
+| RN-DRF-004 | rascunhos automáticos abandonados são removidos após 30 dias; múltiplos rascunhos usam identificadores próprios | aprovado por Maycon em 2026-09-10 |
+| RN-DRF-005 | rascunho automático de formulário é temporário e não integra o histórico clínico; prescrição explicitamente salva em estado rascunho é persistente, versionável e não expira pela regra de 30 dias | aprovado por Maycon em 2026-09-10 |
+
+## Prescrição e cardápio
+
+| ID | Regra | Status |
+|---|---|---|
+| RN-PRE-001 | TBCA versão 7.3 é a fonte principal; cada alimento registra código, fonte e versão | aprovado por Amanda |
+| RN-PRE-002 | TACO é fallback quando o alimento não existir na TBCA; não mesclar valores silenciosamente | aprovado por Amanda |
+| RN-PRE-003 | composição é armazenada por 100 g de parte comestível e mantém unidade original do nutriente | aprovado por Amanda |
+| RN-PRE-004 | grama é a quantidade canônica; medida caseira só calcula após conversão explícita para gramas | aprovado por Amanda |
+| RN-PRE-005 | alimento personalizado não altera alimento oficial e exige nome, porção, composição por 100 g e origem, como rótulo | aprovado por Amanda |
+| RN-PRE-006 | calcular item por proporção da quantidade em gramas e somar por refeição e cardápio, preservando precisão interna | aprovado por Amanda |
+| RN-PRE-007 | exibir kcal inteira; macro e fibras com 1 casa decimal; micronutrientes com 1 ou 2 conforme unidade; arredondar apenas na apresentação | aprovado por Amanda |
+| RN-PRE-008 | prescrição finalizada é imutável; correção cria nova versão ligada à anterior | aprovado por Amanda |
+| RN-PRE-009 | ao finalizar nova versão, a anterior permanece no histórico como substituída | aprovado por Amanda |
+| RN-PRE-010 | cancelamento exige motivo, preserva a versão e é auditado | aprovado por Amanda |
+| RN-PRE-011 | todo cálculo energético registra método, referência, versão, entradas e origem automática ou manual | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-012 | Harris-Benedict usa as equações revisadas de Roza e Shizgal (1984); GET é TMB multiplicada pelo fator de atividade selecionado | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-013 | EER/DRI 2023 atende inicialmente pessoas de 3 a 18,99 anos por sexo, faixa etária e categoria de atividade; a atividade já integra a equação e não recebe fator adicional | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-014 | gestação usa a equação não gestante no primeiro trimestre e as equações DRI 2023 no segundo e terceiro, com idade, altura, peso atual, atividade, semana e depósito energético de +300, +200, +150 ou -50 kcal/dia conforme IMC pré-gestacional | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-015 | lactação usa DRI 2023: aleitamento exclusivo de 0 a 6 meses soma 540 e subtrai 140 kcal/dia; aleitamento parcial de 7 a 12 meses soma 380 kcal/dia; outros padrões exigem ajuste manual | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-016 | a projeção de perda ou ganho usa, por padrão, ajuste diário = variação desejada em kg × 7.800 kcal/kg ÷ prazo em dias, com sinal conforme o objetivo; o coeficiente é configurável e o resultado é identificado como estimativa | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-017 | meta inferior à TMB não é bloqueada, mas exige alerta e confirmação; o histórico registra valor, confirmação, usuário e instante | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-018 | em condição clínica especial, o cálculo é estimativa teórica com alerta, aceita ajuste manual e não se torna prescrição definitiva automaticamente | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-019 | carboidratos e proteínas convertem a 4 kcal/g e gorduras a 9 kcal/g; quando informados em percentuais, os três percentuais devem totalizar 100% | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-020 | proteína em g/kg tem prioridade; o sistema calcula proteína, preserva o percentual de carboidratos informado e usa gordura como variável de fechamento | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-021 | proteína mais carboidrato acima da energia total gera erro; igualdade, que produziria gordura zero, exige ajuste antes de concluir | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-022 | fibras usam a meta aplicável por idade e sexo; em diabetes prevalece o maior valor entre essa meta e 14 g/1.000 kcal; gestação e lactação têm prioridade com 28 e 29 g/dia | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-023 | energia é exibida sem casas decimais e macronutrientes e fibras com uma; cálculos intermediários preservam precisão e só a apresentação arredonda | aprovado por Amanda em 2026-09-10 |
+| RN-PRE-024 | a faixa de adequação do cardápio é inclusiva entre 95% e 105%; substituição manual preserva valor calculado, valor final, usuário, UTC, origem manual e observação opcional | aprovado por Amanda em 2026-09-10 |
 
 ## Auditoria
 
@@ -50,6 +80,8 @@
 |---|---|---|
 | RN-AUD-001 | auditar login, falha, reset, alteração de perfil, criação/edição/consulta/arquivamento/restauração de paciente, tags, backup, restauração, arquivos, documentos e exportações | aprovado |
 | RN-AUD-002 | auditoria registra metadados mínimos e resultado, nunca senha, CPF completo ou conteúdo clínico | aprovado |
+| RN-AUD-003 | eventos de auditoria são imutáveis e permanecem por tempo indeterminado no MVP, sem edição ou exclusão automática, até aprovação de política legal de retenção | aprovado por Maycon em 2026-09-10 |
+| RN-AUD-004 | operação crítica e autenticação bem-sucedida só concluem com o evento obrigatório persistido; falha de auditoria desfaz ou impede a mudança, enquanto operação ou login já rejeitado permanece rejeitado e emite diagnóstico técnico seguro | aprovado por Maycon em 2026-09-10 |
 
 ## Backup
 
