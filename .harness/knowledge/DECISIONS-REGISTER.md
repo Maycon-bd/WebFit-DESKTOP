@@ -24,34 +24,49 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 ## Agent-provisional ledger
 
-Nenhuma decisão `AGENT-PROVISIONAL` foi criada por esta alteração. A política foi determinada diretamente pelo responsável e registrada como `ACCEPTED`.
+### D-AUTO-001
 
-Cada futura decisão autônoma deve usar:
+- **ID:** D-AUTO-001
+- **Título:** representar atores de auditoria por tipo controlado
+- **Status:** `AGENT-PROVISIONAL`
+- **Categoria:** dados, segurança e auditoria
+- **Problema:** representar usuário autenticado, rotina automática e tentativa anterior à autenticação sem identidade falsa ou dado sensível.
+- **Alternativas consideradas:** usuário sintético; `user_id` nulo sem tipo; texto livre; `actor_kind` controlado com referência opcional.
+- **Alternativa escolhida:** `actor_kind = USER | SYSTEM | UNAUTHENTICATED`; `actor_user_id` obrigatório somente para USER. Não persistir login ou credencial tentada. Exibir “Sistema” e “Não autenticado”; filtro de usuário cobre somente USER.
+- **Justificativa:** preserva semântica, integridade e minimização sem poluir usuários nem usar texto livre.
+- **Evidências:** UC-BKP-001 admite sistema; login falho antecede identidade confiável; RN-AUD-002 e RNF-SEG-003 proíbem dado sensível.
+- **Requisitos relacionados:** RF-AUD-001, RN-AUD-001/002/010/016, TA-AUD-001/014.
+- **Decisões relacionadas:** DEC-025, DEC-026, DEC-032, DEC-038.
+- **Confiança:** ALTA.
+- **Impacto:** MÉDIO.
+- **Reversibilidade:** MODERADA.
+- **Risco:** novo tipo futuro exigirá evolução versionada do catálogo.
+- **Consequências:** ator verdadeiro e filtrável; nenhuma identidade sintética; schema físico deve aplicar invariantes.
+- **Validação humana:** PENDENTE.
 
-- ID;
-- título;
-- status `AGENT-PROVISIONAL`;
-- categoria;
-- problema;
-- alternativas consideradas;
-- alternativa escolhida;
-- justificativa;
-- evidências;
-- requisitos relacionados;
-- decisões relacionadas;
-- confiança `ALTA`, `MÉDIA` ou `BAIXA`;
-- impacto `BAIXO`, `MÉDIO` ou `ALTO`;
-- reversibilidade `FÁCIL`, `MODERADA` ou `DIFÍCIL`;
-- risco;
-- consequências;
-- validação humana `PENDENTE`.
+### D-AUTO-002
 
-Ao validar, rejeitar ou substituir, atualizar o estado, autoridade, data, motivo quando disponível e vínculo sucessor, sem apagar o registro anterior.
+- **ID:** D-AUTO-002
+- **Título:** fixar janela UTC, desempate e cursor da consulta de auditoria
+- **Status:** `AGENT-PROVISIONAL`
+- **Categoria:** consulta, contrato e testabilidade
+- **Problema:** evitar ambiguidade de fronteiras, empates e deslocamento do conjunto entre páginas.
+- **Alternativas consideradas:** offset em conjunto mutável; carga total; cursor opaco em snapshot; ordenação somente por instante.
+- **Alternativa escolhida:** capturar `query_as_of_utc`; consultar o intervalo semiaberto `[from_utc, to_utc)`, com default `from_utc = query_as_of_utc − 30 × 24 h` e `to_utc = query_as_of_utc`; usar ordem `(occurred_at_utc DESC, event_id DESC)` e cursor opaco vinculado ao snapshot, intervalo e filtros; 50 itens por página.
+- **Justificativa:** fronteira semiaberta evita sobreposição, ID cria ordem total e cursor mantém conjunto estável sem carga integral.
+- **Evidências:** DEC-029/030/031, RN-AUD-007/008/009 e TA-AUD-006.
+- **Requisitos relacionados:** RF-AUD-001, UC-AUD-001, TA-AUD-004/006/015.
+- **Decisões relacionadas:** DEC-029, DEC-030, DEC-031, DEC-038.
+- **Confiança:** ALTA.
+- **Impacto:** MÉDIO.
+- **Reversibilidade:** MODERADA.
+- **Risco:** cursor torna-se contrato técnico e deve permanecer opaco/versionável; eventos retroativos exigem regra física.
+- **Consequências:** paginação determinística, verificável e sem duplicidade/perda por novos eventos.
+- **Validação humana:** PENDENTE.
 
 ## Needs-human-decision / abertas
 
 - Proteção local, chaves e backup.
-- Representação técnica de atores sem usuário autenticado, como sistema e tentativa de login desconhecida.
 - Retenção clínica, backup externo, documentos e migração.
 
 Cada item aberto deve ser avaliado pela matriz antes de interromper o usuário. Permanecerá `NEEDS-HUMAN-DECISION` quando for ASK-FIRST ou quando faltar evidência essencial.

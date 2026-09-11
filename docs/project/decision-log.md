@@ -45,6 +45,13 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | DEC-037 | distinguir estado sem eventos, nenhum resultado e falha de consulta; falha não aparece como lista vazia e permite nova tentativa quando recuperável | ACCEPTED | validação histórica: aprovada por Maycon em 2026-09-10; decisão de fechamento de UC-AUD-001 |
 | DEC-038 | adotar no harness o modelo AUTONOMOUS DECISION WITH HUMAN VALIDATION, com matriz confiança × impacto, decisões AGENT-PROVISIONAL, ASK-FIRST para temas sensíveis e validação humana em lote | ACCEPTED | validada por Maycon em 2026-09-10; solicitação de atualização do harness |
 
+## Decisões provisórias do agente
+
+| ID | Decisão | Status | Fonte/evidência |
+|---|---|---|---|
+| D-AUTO-001 | representar ator por `USER`, `SYSTEM` ou `UNAUTHENTICATED`, com referência de usuário somente no primeiro caso e sem persistir credencial tentada | AGENT-PROVISIONAL | revisão de UC-AUD-001 em 2026-09-11; validação humana pendente |
+| D-AUTO-002 | usar janela UTC semiaberta congelada, ordem total por instante/ID e cursor opaco vinculado aos filtros para paginação estável | AGENT-PROVISIONAL | revisão de UC-AUD-001 em 2026-09-11; validação humana pendente |
+
 ## Decisões pendentes
 
 | Assunto | Pergunta a decidir | Decisor | Gate | Estado |

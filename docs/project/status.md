@@ -4,15 +4,15 @@
 
 ## Onde paramos
 
-- **Data do checkpoint:** 2026-09-10
+- **Data do checkpoint:** 2026-09-11
 - **Fase:** elicitação e análise de requisitos
 - **Gate atual:** G2 — baseline do primeiro incremento
 - **Estado:** em revisão
-- **Última decisão concluída:** seção 7C — consulta de auditoria aprovada e rastreada
+- **Última decisão concluída:** seção 7D — UC-AUD-001 reavaliada sob DEC-038 e pronta para revisão humana das decisões provisórias
 - **Próxima ação:** seção 8 — backup e restauração
 - **Branch registrada:** `main`
-- **Commit-base:** `dfc4098`
-- **Sincronização:** branch `main` alinhada com `origin/main` em `dfc4098` antes desta atualização; estas alterações precisam de commit e push antes da troca de máquina
+- **Commit-base:** `eb832bd`
+- **Sincronização:** branch `main` alinhada com `origin/main` em `eb832bd` antes desta atualização; estas alterações documentais precisam de commit e push antes da troca de máquina
 
 ## Última decisão aprovada
 
@@ -28,11 +28,14 @@ Maycon aprovou em 2026-09-10 a consulta da auditoria:
 - lista, filtros, paginação e detalhe sem edição, exclusão ou exportação;
 - auditoria de abertura do módulo e detalhe, sem auditar filtros/páginas e sem recursão;
 - estados distintos para ausência de eventos, ausência de resultados e falha recuperável.
+
+Em 2026-09-11, a aplicação de DEC-038 preservou DEC-028 a DEC-037 e registrou D-AUTO-001 (ator tipado) e D-AUTO-002 (janela/cursor determinísticos) como `AGENT-PROVISIONAL`. Não há decisão humana bloqueante para UC-AUD-001; os refinamentos aguardam validação em lote.
+
 ## Próxima ação exata
 
 Revisar e concluir a seção 8 do G2 — backup e restauração — usando RF-BKP-001 a RF-BKP-003, RN-BKP-001 a RN-BKP-007 e TA-BKP-001 a TA-BKP-005.
 
-A representação física de atores automáticos ou sem usuário autenticado na auditoria permanece para o G4 e não reabre UC-AUD-001.
+D-AUTO-001 propõe a representação de atores automáticos ou sem usuário autenticado; deve ser validada antes do schema no G4 e não reabre nem bloqueia UC-AUD-001.
 ## Gates
 
 | Gate | Objetivo | Estado | Evidência/condição seguinte |
@@ -56,7 +59,7 @@ A representação física de atores automáticos ou sem usuário autenticado na 
 | 5A | Composição e ciclo da prescrição | **aprovado por Amanda em 2026-08-21** | RF-PRE-001 a RF-PRE-004, RN-PRE e TA-PRE |
 | 5B | Necessidade energética e metas | **aprovado por Amanda em 2026-09-10** | RF-PRE-005, RN-PRE-011 a RN-PRE-024 e TA-PRE-008 a TA-PRE-016 |
 | 6 | Rascunhos | **aprovado por Maycon em 2026-09-10** | RF-DRF-001, RN-DRF-001 a RN-DRF-005 e TA-DRF-001 a TA-DRF-004 |
-| 7 | Auditoria | **aprovado por Maycon em 2026-09-10** | RF-AUD-001, UC-AUD-001, RN-AUD-001 a RN-AUD-015 e TA-AUD-001 a TA-AUD-013 |
+| 7 | Auditoria | **baseline aprovada; READY FOR HUMAN DECISION REVIEW** | RF-AUD-001, UC-AUD-001, RN-AUD-001 a RN-AUD-017, TA-AUD-001 a TA-AUD-015 e D-AUTO-001/002 |
 | 8 | Backup e restauração | pendente | RF-BKP-001 a RF-BKP-003 |
 | 9 | Requisitos não funcionais | pendente | RNF-* do incremento |
 | 10 | Testes e rastreabilidade | pendente | TA-* e matriz |

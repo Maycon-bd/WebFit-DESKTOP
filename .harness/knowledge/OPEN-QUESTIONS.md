@@ -4,7 +4,6 @@ Somente questões já registradas ou explicitamente derivadas da documentação.
 
 ## Prioridade alta
 
-- Como representar atores automáticos e tentativas sem usuário autenticado no modelo físico da auditoria? Esta decisão pertence ao G4 e não bloqueia UC-AUD-001.
 - Qual proteção local, armazenamento de chaves e estratégia de backup será viável? Ver ADR-0001.
 - Qual é a política legal definitiva de retenção e eliminação clínica?
 - Qual destino externo e rotina operacional de backup serão adotados?

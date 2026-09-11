@@ -46,8 +46,9 @@ Auditoria → últimos 30 dias → página 1 de até 50 registros
 → abrir detalhe de metadados permitidos
 
 - Abertura do módulo e detalhe são auditadas uma única vez; filtros, páginas e ordenação não geram eventos.
-- A consulta usa conjunto estável entre páginas para não duplicar ou perder eventos.
+- Conforme D-AUTO-002, a consulta usa janela UTC semiaberta congelada, desempate por ID e cursor opaco para não duplicar ou perder eventos entre páginas.
 - Entidade resolvida mostra rótulo atual somente sob autorização; entidade indisponível mostra tipo + ID.
+- Conforme D-AUTO-001, atores automáticos e pré-autenticação aparecem como Sistema e Não autenticado, sem credencial ou identificador tentado.
 - Sem eventos e nenhum resultado são estados vazios distintos.
 - Falha mostra erro seguro e nova tentativa quando recuperável; nunca aparece como lista vazia.
 - Não existem edição, exclusão ou exportação no incremento 1.

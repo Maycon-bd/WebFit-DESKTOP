@@ -4,6 +4,8 @@ Data: 2026-09-10
 Escopo: decisões, requisitos, arquitetura, segurança, operação e NFRs existentes.
 Status: revisão crítica preparatória; nenhuma decisão canônica foi alterada.
 
+> Atualização pós-review em 2026-09-11: RQ-001 e o risco de consulta incompleta foram superados por DEC-028 a DEC-037. A reavaliação sob DEC-038 está em [AUDIT-DECISION-REVIEW-2026-09-11.md](AUDIT-DECISION-REVIEW-2026-09-11.md), com D-AUTO-001 e D-AUTO-002 `AGENT-PROVISIONAL`. O corpo abaixo permanece preservado como registro histórico.
+
 ## Executive Summary
 
 O projeto está em PLANNING e ainda não possui código. A maior parte das decisões de processo e escopo continua coerente com o produto local, offline e Windows-first. Porém, sete decisões devem ser reavaliadas antes da implementação:

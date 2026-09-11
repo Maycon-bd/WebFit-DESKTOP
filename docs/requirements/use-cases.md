@@ -37,11 +37,11 @@ Usuário autenticado e autorizado. Nutricionista e administrador permanecem auto
 
 1. O usuário abre Auditoria no espaço autorizado.
 2. O backend valida sessão, autorização e escopo.
-3. A consulta estabelece um conjunto estável de resultados para evitar duplicidade ou perda entre páginas.
+3. Conforme D-AUTO-002, a consulta captura `query_as_of_utc`, estabelece o intervalo semiaberto `[from_utc, to_utc)` e congela snapshot, intervalo e filtros para todas as páginas; por padrão, `from_utc = query_as_of_utc − 30 × 24 h` e `to_utc = query_as_of_utc`.
 4. O sistema registra uma única ação AUDIT_MODULE_OPEN, sem registrar o conteúdo visualizado e sem auditar recursivamente a própria persistência desse evento.
 5. O sistema consulta os últimos 30 dias, com ordenação fixa do mais recente para o mais antigo.
-6. O sistema apresenta a primeira página, limitada a 50 registros.
-7. Cada item apresenta somente ator, instante, espaço, ação, tipo/ID da entidade, resultado e motivo quando aplicável.
+6. O sistema apresenta a primeira página, limitada a 50 registros, em ordem total por instante UTC decrescente e ID decrescente; páginas seguintes usam cursor opaco do mesmo snapshot.
+7. Cada item apresenta somente ator, instante, espaço, ação, tipo/ID da entidade, resultado e motivo quando aplicável. Conforme D-AUTO-001, ator USER usa rótulo autorizado, SYSTEM aparece como “Sistema” e UNAUTHENTICATED como “Não autenticado”, sem exibir identificador tentado.
 8. O usuário pode combinar com AND os filtros de período, usuário, ação, tipo de entidade e resultado.
 9. Ao abrir um detalhe, o sistema apresenta somente metadados permitidos e registra uma única ação AUDIT_EVENT_DETAIL_VIEW, sem incluir o conteúdo visualizado.
 10. Quando autorizado, a interface resolve o rótulo atual da entidade; se não conseguir, mantém tipo e identificador técnico.
@@ -54,6 +54,7 @@ Usuário autenticado e autorizado. Nutricionista e administrador permanecem auto
 - O usuário limpa filtros e retorna ao período padrão de 30 dias.
 - Uma entidade não pode ser resolvida e o evento continua visível por tipo e ID.
 - Novos eventos criados durante a navegação não alteram o conjunto estável já paginado; aparecem em nova consulta.
+- Eventos SYSTEM e UNAUTHENTICATED permanecem consultáveis, mas não correspondem ao filtro de usuário.
 
 ### Exceções
 
@@ -64,15 +65,22 @@ Usuário autenticado e autorizado. Nutricionista e administrador permanecem auto
 
 ### Filtros
 
-Período, usuário, ação, tipo de entidade e resultado, combinados por AND. Módulo, origem, ID específico e pesquisa textual livre ficam fora do incremento 1.
+Período, usuário, ação, tipo de entidade e resultado, combinados por AND. Conforme D-AUTO-001, o filtro de usuário considera somente eventos USER. Módulo, origem, ID específico e pesquisa textual livre ficam fora do incremento 1.
 
 ### Ordenação
 
-Fixa, do evento mais recente para o mais antigo.
+Fixa, do evento mais recente para o mais antigo; conforme D-AUTO-002, empates usam o ID do evento em ordem decrescente.
 
 ### Permissões
 
 A consulta exige usuário autenticado e autorizado, com verificação no backend e restrição ao escopo permitido. O modelo definitivo de capacidades dos papéis permanece dependência separada e não é consolidado por este caso de uso.
+
+### Decisões provisórias utilizadas
+
+- D-AUTO-001 — representação controlada do ator.
+- D-AUTO-002 — janela UTC, desempate e cursor determinísticos.
+
+Ambas estão `AGENT-PROVISIONAL`, podem orientar especificação e planejamento e não autorizam schema ou implementação antes da validação aplicável.
 
 ### Resultado esperado
 
@@ -80,7 +88,7 @@ Lista paginada ou estado vazio correto, contendo somente metadados autorizados, 
 
 ### Regras relacionadas
 
-RF-AUD-001; RN-AUD-001 a RN-AUD-015; RNF-PRI-001; RNF-SEG-002; RNF-SEG-003; DEC-016; DEC-025; DEC-026; DEC-028 a DEC-037.
+RF-AUD-001; RN-AUD-001 a RN-AUD-017; RNF-PRI-001; RNF-SEG-002; RNF-SEG-003; DEC-016; DEC-025; DEC-026; DEC-028 a DEC-038; D-AUTO-001; D-AUTO-002.
 
 ## Fluxos e erros obrigatórios
 

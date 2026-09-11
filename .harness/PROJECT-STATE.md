@@ -3,7 +3,7 @@
 ## Stage
 PLANNING
 
-G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria foi concluída; backup e restauração são a próxima seção. Não há implementação.
+G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria foi concluída e reavaliada sob DEC-038; UC-AUD-001 está READY FOR HUMAN DECISION REVIEW. Backup e restauração são a próxima seção. Não há implementação.
 
 ## Confirmed
 
@@ -15,8 +15,16 @@ G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria
 - Requisitos, regras, critérios de aceite e rastreabilidade do primeiro incremento já existem em docs/requirements/.
 - A auditoria tem retenção indeterminada no MVP e falha de auditoria bloqueia operação crítica/autenticação bem-sucedida.
 - A consulta de auditoria usa usuário autenticado e autorizado, período padrão de 30 dias, filtros AND, ordem decrescente fixa e paginação de 50 registros.
+
 - Arquivos clínicos ficam planejados para incremento posterior; biblioteca profissional vem depois do núcleo do MVP.
 - Tauri 2/React/TypeScript/Vite/Rust/SQLite são composição proposta para spike no ADR-0001, não decisão de produção.
+
+## Agent-Provisional
+
+- D-AUTO-001 — ator USER, SYSTEM ou UNAUTHENTICATED, sem credencial tentada.
+- D-AUTO-002 — janela UTC semiaberta congelada, ordem total e cursor opaco estável.
+
+Ambas têm confiança ALTA, impacto MÉDIO e reversibilidade MODERADA antes da implementação.
 
 ## Proposed
 
@@ -28,7 +36,6 @@ Estas são propostas de processo, não decisões do produto.
 
 ## Unknown
 
-- Representação física de atores automáticos e tentativas sem usuário autenticado na auditoria.
 - Proteção local, SQLCipher, chaves e proteção de backups.
 - Política legal definitiva de retenção clínica.
 - Destino externo de backup e rotina operacional definitiva.
