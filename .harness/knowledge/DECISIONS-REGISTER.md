@@ -21,6 +21,7 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 - DEC-022 a DEC-027: regras clínicas, rascunho automático, auditoria e planejamento de arquivos.
 - DEC-028 a DEC-037: consulta de auditoria, filtros, ordenação, paginação, período, catálogos, entidade, detalhe, meta-auditoria e estados.
 - DEC-038: adotar `AUTONOMOUS DECISION WITH HUMAN VALIDATION` no harness.
+- DEC-039: integrar Spec Kit como fonte operacional SDD, manter governança/gates no harness e usar `$project-task` como entrypoint.
 
 ## Agent-provisional ledger
 

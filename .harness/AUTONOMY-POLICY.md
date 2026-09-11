@@ -62,6 +62,10 @@ Decisões `AGENT-PROVISIONAL` não bloqueiam automaticamente SPEC, PLAN ou ARCHI
 
 Use `READY FOR HUMAN DECISION REVIEW` quando a fase técnica estiver completa e restarem decisões provisórias aguardando validação. Após validação, use `READY` ou o estado equivalente do gate. Um `NEEDS-HUMAN-DECISION` bloqueia somente quando sua resolução é materialmente necessária para o próximo passo.
 
+## Integração com Spec Kit
+
+A matriz aplica-se antes de `$speckit-clarify`. Ambiguidade com alternativa claramente superior, confiança suficiente, reversibilidade e ausência de ASK-FIRST deve ser registrada como `AGENT-PROVISIONAL` e pode sustentar Specification e Plan. Clarify ou decisão humana é reservado para informação material ausente, alternativas equilibradas ou tema sensível. A skill `$project-task` acumula decisões provisórias e as apresenta em lote no Human Decision Review.
+
 ## Implementação e loops
 
 Durante implementação, decisões pequenas e reversíveis podem seguir autonomamente dentro do plano aprovado. Alterações em requisito, arquitetura, contrato público, banco/schema, segurança, autorização, domínio ou integração retornam à matriz.

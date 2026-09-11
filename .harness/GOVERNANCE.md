@@ -7,7 +7,8 @@
 | Visão de produto | documentação aprovada em docs/product/ |
 | Regra de negócio | requisito/regra aprovada em docs/requirements/ |
 | Decisão arquitetural | ADR em docs/architecture/adr/ |
-| Feature | Spec Kit, quando inicializado e aprovado |
+| Constitution | .specify/memory/constitution.md |
+| Feature | Spec Kit Specification em specs/, após criação e aprovação |
 | Plano técnico | Spec Kit Plan |
 | Tasks | Spec Kit Tasks |
 | Contexto para agente | AGENTS.md |
@@ -25,6 +26,8 @@
 
 Auxiliares nunca publicam requisitos ou decisões concorrentes.
 
+Em caso de conflito, prevalecem: decisão humana `ACCEPTED`; ADR `ACCEPTED`; requisito ou documentação canônica aprovada; Constitution; Specification/Plan/Tasks da feature; código; evidência. AGENTS.md e o harness governam a condução do trabalho, sem substituir conteúdo canônico. Conflitos devem ser expostos e resolvidos na fonte competente. Ver [integrations/spec-kit.md](integrations/spec-kit.md).
+
 ## Níveis de mudança
 
 ### LIGHT
@@ -33,7 +36,7 @@ Correção documental ou alteração trivial sem comportamento, arquitetura, dad
 
 ### STANDARD
 
-Feature ou bug comum. Exige requisito aprovado, investigação, plano, implementação, testes, review, documentação e evidence report.
+Feature, bug, fluxo de UI, endpoint ou regra comum sem condição STRICT. Exige requisito aprovado e uso proporcional de Specification, Plan, Tasks e Analyze antes do gate; após aprovação, implementação, testes, Converge, Verification, Review, documentação e Evidence Report.
 
 ### STRICT
 

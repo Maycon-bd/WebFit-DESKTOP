@@ -3,7 +3,7 @@
 ## Stage
 PLANNING
 
-G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria foi concluída e reavaliada sob DEC-038; UC-AUD-001 está READY FOR HUMAN DECISION REVIEW. Backup e restauração são a próxima seção. Não há implementação.
+G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria foi concluída e reavaliada sob DEC-038; UC-AUD-001 está READY FOR HUMAN DECISION REVIEW. O Spec Kit e o entrypoint `$project-task` estão integrados e prontos para smoke test posterior. Backup e restauração são a próxima seção funcional. Não há implementação.
 
 ## Confirmed
 
@@ -11,6 +11,8 @@ G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria
 - MVP Saúde; Educação está fora do MVP.
 - Amanda aprova domínio/aceite; Maycon é PO e responsável técnico.
 - O harness usa `AUTONOMOUS DECISION WITH HUMAN VALIDATION`: escolhas justificáveis podem avançar como `AGENT-PROVISIONAL`; condições ASK-FIRST permanecem humanas.
+- Spec Kit é a fonte operacional SDD; harness, documentos canônicos, Decisions Register/ADRs e AGENTS.md mantêm responsabilidades distintas conforme DEC-039.
+- A Constitution 1.0.0 e a skill `$project-task` estão prontas; nenhuma feature Spec Kit foi criada.
 - Primeiro incremento: autenticação, perfil, Saúde, pacientes, prescrição/cardápio, auditoria, backup/restauração mínima e persistência.
 - Requisitos, regras, critérios de aceite e rastreabilidade do primeiro incremento já existem em docs/requirements/.
 - A auditoria tem retenção indeterminada no MVP e falha de auditoria bloqueia operação crítica/autenticação bem-sucedida.
@@ -29,7 +31,6 @@ Ambas têm confiança ALTA, impacto MÉDIO e reversibilidade MODERADA antes da i
 ## Proposed
 
 - Executar o spike do ADR-0001 somente depois dos gates documentais aplicáveis.
-- Usar Spec Kit como núcleo SDD quando o CLI estiver disponível e sua inicialização puder ocorrer sem sobrescrever documentos.
 - Usar Plane, Obsidian, MCP, Mantis, Impeccable e loops apenas nos papéis descritos no harness.
 
 Estas são propostas de processo, não decisões do produto.
@@ -48,7 +49,7 @@ Estas são propostas de processo, não decisões do produto.
 
 - G2 não está concluído.
 - ADR-0001 ainda é proposta para spike e não autoriza gerar aplicação.
-- Não há CLI specify detectável nem código executável para Mantis/Impeccable.
+- Não há código executável para Mantis/Impeccable; ambos permanecem PREPARED — NOT ACTIVE.
 - Não há configuração local detectável de MCP, Plane ou Obsidian.
 
 ## Next Decisions
@@ -78,4 +79,4 @@ O catálogo consolidado está em knowledge/OPEN-QUESTIONS.md e o registro em kno
 
 ## Recommended Next Step
 
-Completar a baseline de backup e restauração sem iniciar implementação.
+Completar a baseline de backup e restauração sem iniciar implementação. O smoke test de `$project-task` deve ocorrer em tarefa posterior e separada.

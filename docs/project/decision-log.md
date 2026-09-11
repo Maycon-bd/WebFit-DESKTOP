@@ -44,6 +44,7 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | DEC-036 | auditar abertura do módulo e detalhe de evento, sem auditar filtro, página ou ordenação; o registro do acesso não inclui conteúdo exibido nem gera recursão | ACCEPTED | validação histórica: aprovada por Maycon em 2026-09-10; decisão de fechamento de UC-AUD-001 |
 | DEC-037 | distinguir estado sem eventos, nenhum resultado e falha de consulta; falha não aparece como lista vazia e permite nova tentativa quando recuperável | ACCEPTED | validação histórica: aprovada por Maycon em 2026-09-10; decisão de fechamento de UC-AUD-001 |
 | DEC-038 | adotar no harness o modelo AUTONOMOUS DECISION WITH HUMAN VALIDATION, com matriz confiança × impacto, decisões AGENT-PROVISIONAL, ASK-FIRST para temas sensíveis e validação humana em lote | ACCEPTED | validada por Maycon em 2026-09-10; solicitação de atualização do harness |
+| DEC-039 | integrar Spec Kit como fonte operacional de SDD, preservar o harness para governança e gates independentes e usar `$project-task` como entrypoint sem modificar as skills oficiais | ACCEPTED | aprovada por Maycon em 2026-09-11; solicitação de integração Spec Kit ↔ harness |
 
 ## Decisões provisórias do agente
 

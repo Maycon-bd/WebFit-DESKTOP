@@ -8,11 +8,11 @@
 - **Fase:** elicitação e análise de requisitos
 - **Gate atual:** G2 — baseline do primeiro incremento
 - **Estado:** em revisão
-- **Última decisão concluída:** seção 7D — UC-AUD-001 reavaliada sob DEC-038 e pronta para revisão humana das decisões provisórias
+- **Última etapa concluída:** integração de infraestrutura Spec Kit ↔ harness, Constitution 1.0.0 e skill `$project-task`; o planejamento funcional permanece na seção 7D
 - **Próxima ação:** seção 8 — backup e restauração
 - **Branch registrada:** `main`
-- **Commit-base:** `eb832bd`
-- **Sincronização:** branch `main` alinhada com `origin/main` em `eb832bd` antes desta atualização; estas alterações documentais precisam de commit e push antes da troca de máquina
+- **Commit-base:** `60df5c7`
+- **Sincronização:** branch `main` está 1 commit à frente de `origin/main`; a instalação do Spec Kit e esta integração permanecem sem commit/push
 
 ## Última decisão aprovada
 
@@ -30,6 +30,8 @@ Maycon aprovou em 2026-09-10 a consulta da auditoria:
 - estados distintos para ausência de eventos, ausência de resultados e falha recuperável.
 
 Em 2026-09-11, a aplicação de DEC-038 preservou DEC-028 a DEC-037 e registrou D-AUTO-001 (ator tipado) e D-AUTO-002 (janela/cursor determinísticos) como `AGENT-PROVISIONAL`. Não há decisão humana bloqueante para UC-AUD-001; os refinamentos aguardam validação em lote.
+
+Também em 2026-09-11, Maycon aprovou DEC-039: Spec Kit tornou-se a fonte operacional de SDD, o harness preservou governança e gates independentes, e `$project-task` tornou-se o entrypoint de novas demandas. A integração está pronta para smoke test posterior, sem feature criada.
 
 ## Próxima ação exata
 

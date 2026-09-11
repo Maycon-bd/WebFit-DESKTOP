@@ -24,6 +24,8 @@ Leia antes de planejar ou alterar o produto:
 
 Hierarquia operacional detalhada: .harness/GOVERNANCE.md. Documentos legados são fontes de descoberta, não requisitos aprovados.
 
+O Spec Kit é a fonte operacional para Constitution, Specification, Clarify, Plan, Checklist, Tasks, Analyze, Implement e Converge. O harness mantém intake, investigação, decisões, gates, Verification, Review e Evidence. Use `$project-task` como entrypoint de novas demandas e consulte `.harness/integrations/spec-kit.md`; não crie specifications concorrentes dentro do harness.
+
 ## Retomada obrigatória entre máquinas e chats
 
 Quando uma solicitação contiver a frase “Vamos continuar onde paramos”, independentemente de maiúsculas, minúsculas ou pontuação:
@@ -50,6 +52,7 @@ Não trate a proposta como decisão de produção nem importe a arquitetura do W
 - Atualize documentação na mesma mudança que altera comportamento.
 - Preserve alterações preexistentes e não faça ações destrutivas sem autorização explícita.
 - Siga o fluxo em .harness/README.md e use LIGHT, STANDARD ou STRICT.
+- Orquestre as skills oficiais do Spec Kit sem modificá-las; customizações do projeto pertencem à Constitution, ao harness e à skill local `project-task`.
 - Siga .harness/AUTONOMY-POLICY.md para decidir, registrar e validar escolhas; nunca represente `AGENT-PROVISIONAL` como aprovação humana.
 - Não ative loops autônomos; o harness atual é preparatório.
 
