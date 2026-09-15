@@ -3,6 +3,12 @@ Estado: READY / READY FOR HUMAN DECISION REVIEW / READY WITH WARNINGS / NOT READ
 Data:
 Mudança/Spec:
 
+## Plane
+Plane Work Item:
+Estado inicial:
+Estado final:
+Sincronização: PASS / DEGRADED / NOT APPLICABLE
+
 ## Requisitos e critérios
 ## Implementação
 ## Testes e checks

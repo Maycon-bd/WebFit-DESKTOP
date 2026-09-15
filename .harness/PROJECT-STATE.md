@@ -12,6 +12,8 @@ G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria
 - Amanda aprova domínio/aceite; Maycon é PO e responsável técnico.
 - O harness usa `AUTONOMOUS DECISION WITH HUMAN VALIDATION`: escolhas justificáveis podem avançar como `AGENT-PROVISIONAL`; condições ASK-FIRST permanecem humanas.
 - Spec Kit é a fonte operacional SDD; harness, documentos canônicos, Decisions Register/ADRs e AGENTS.md mantêm responsabilidades distintas conforme DEC-039.
+- Plane está ACTIVE como camada controlada de gestão do trabalho: MCP ACTIVE, OAuth, Read VALIDATED, projeto `WEBFIT`; nenhum Work Item foi criado nesta integração.
+- Obsidian está ACTIVE como camada de navegação e conhecimento sobre o Vault na raiz do repositório; `README.md` é o entrypoint humano, `docs/` e `specs/` são navegáveis, e Codex e Obsidian editam os mesmos arquivos locais. Não há cópia documental, MCP, plugin comunitário ou Sync ativado por esta integração.
 - A Constitution 1.0.0 e a skill `$project-task` estão prontas; nenhuma feature Spec Kit foi criada.
 - Primeiro incremento: autenticação, perfil, Saúde, pacientes, prescrição/cardápio, auditoria, backup/restauração mínima e persistência.
 - Requisitos, regras, critérios de aceite e rastreabilidade do primeiro incremento já existem em docs/requirements/.
@@ -31,7 +33,7 @@ Ambas têm confiança ALTA, impacto MÉDIO e reversibilidade MODERADA antes da i
 ## Proposed
 
 - Executar o spike do ADR-0001 somente depois dos gates documentais aplicáveis.
-- Usar Plane, Obsidian, MCP, Mantis, Impeccable e loops apenas nos papéis descritos no harness.
+- Usar Plane apenas nos papéis descritos em `.harness/integrations/plane.md`; Obsidian permanece restrito à navegação e conhecimento conforme `.harness/integrations/obsidian.md`; Mantis, Impeccable e loops permanecem nos estados definidos para cada integração.
 
 Estas são propostas de processo, não decisões do produto.
 
@@ -50,7 +52,7 @@ Estas são propostas de processo, não decisões do produto.
 - G2 não está concluído.
 - ADR-0001 ainda é proposta para spike e não autoriza gerar aplicação.
 - Não há código executável para Mantis/Impeccable; ambos permanecem PREPARED — NOT ACTIVE.
-- Não há configuração local detectável de MCP, Plane ou Obsidian.
+- Plane/MCP está configurado e validado em leitura; Mantis, Impeccable e demais integrações externas continuam sem ativação. Obsidian está ACTIVE somente como camada local de navegação e conhecimento.
 
 ## Next Decisions
 
