@@ -4,12 +4,12 @@
 
 - Nome: WebFit Desktop.
 - Objetivo: gestão local e offline de consultório e acompanhamento nutricional.
-- Estágio: PROJECT STAGE: PLANNING; G1 aprovado e G2 em revisão.
+- Estágio: PROJECT STAGE: PLANNING; G1, G2 e G3 aprovados; execução técnica do G4 concluída e decisão humana pendente.
 - Domínio: Saúde no MVP; Educação é um espaço futuro.
 - Usuários aprovados no MVP: nutricionista e administrador, ambos com acesso total.
 - Operação: Windows-first, um computador por instalação, sem hospedagem ou mensalidade obrigatória.
 
-Ainda não existe aplicação, dependência, banco, teste executável ou instalador neste repositório.
+Ainda não existe aplicação de produto. Existe somente o spike técnico descartável do G4 em `spikes/g4-tauri-foundation/`, com dependências, banco fictício, testes e instaladores de prova; ele não autoriza implementação nem arquitetura de produção.
 
 ## Fonte de verdade
 

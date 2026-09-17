@@ -1,0 +1,38 @@
+[package]
+name = "spikesg4-tauri-foundation"
+version = "0.1.0"
+description = "A Tauri App"
+authors = ["you"]
+edition = "2021"
+
+[lib]
+name = "spikesg4_tauri_foundation_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+default = ["sqlite-bundled"]
+sqlite-bundled = ["rusqlite/bundled"]
+sqlcipher-spike = ["rusqlite/bundled-sqlcipher-vendored-openssl"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.40.2", features = ["backup"] }
+chrono = { version = "0.4.45", features = ["serde"] }
+uuid = { version = "1.26.1", features = ["v4", "serde"] }
+sha2 = "0.11.0"
+
+[dev-dependencies]
+tempfile = "3.27.0"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true

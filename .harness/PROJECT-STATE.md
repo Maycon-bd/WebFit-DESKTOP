@@ -3,7 +3,7 @@
 ## Stage
 PLANNING
 
-G1 foi aprovado em 2026-08-20. G2 e G3 foram aprovados em 2026-09-17 no escopo registrado no checkpoint. G4 está autorizado e em preparação. A baseline da auditoria foi concluída e reavaliada sob DEC-038; D-AUTO-001/002 foram aceitos por Amanda e Maycon em 2026-09-17. O Spec Kit e o entrypoint `$project-task` estão integrados e prontos para smoke test posterior. Backup e restauração seguem como parte da validação do G4. Não há implementação.
+G1 foi aprovado em 2026-08-20. G2 e G3 foram aprovados em 2026-09-17 no escopo registrado no checkpoint. A execução técnica do G4 foi concluída com recomendação REVISAR e aguarda decisão humana. A baseline da auditoria foi concluída e reavaliada sob DEC-038; D-AUTO-001/002 foram aceitos por Amanda e Maycon em 2026-09-17. O Spec Kit e o entrypoint `$project-task` estão integrados e prontos para smoke test posterior. Não há implementação de produto.
 
 ## Confirmed
 
@@ -12,7 +12,7 @@ G1 foi aprovado em 2026-08-20. G2 e G3 foram aprovados em 2026-09-17 no escopo r
 - Amanda aprova domínio/aceite; Maycon é PO e responsável técnico.
 - O harness usa `AUTONOMOUS DECISION WITH HUMAN VALIDATION`: escolhas justificáveis podem avançar como `AGENT-PROVISIONAL`; condições ASK-FIRST permanecem humanas.
 - Spec Kit é a fonte operacional SDD; harness, documentos canônicos, Decisions Register/ADRs e AGENTS.md mantêm responsabilidades distintas conforme DEC-039.
-- Plane está ACTIVE como camada controlada de gestão do trabalho: MCP ACTIVE, OAuth, Read VALIDATED, projeto `WEBFIT`; nenhum Work Item foi criado nesta integração.
+- Plane está ACTIVE como camada controlada de gestão do trabalho: MCP ACTIVE, OAuth e leitura/escrita validadas no projeto `WEBFIT`; `WEBFIT-3` acompanha o spike G4 e mantém vínculo externo com `PBI-001`.
 - Obsidian está ACTIVE como camada de navegação e conhecimento sobre o Vault na raiz do repositório; `README.md` é o entrypoint humano, `docs/` e `specs/` são navegáveis, e Codex e Obsidian editam os mesmos arquivos locais. Não há cópia documental, MCP, plugin comunitário ou Sync ativado por esta integração.
 - A Constitution 1.0.0 e a skill `$project-task` estão prontas; nenhuma feature Spec Kit foi criada.
 - Primeiro incremento: autenticação, perfil, Saúde, pacientes, prescrição/cardápio, auditoria, backup/restauração mínima e persistência.
@@ -39,7 +39,7 @@ Estas são propostas de processo, não decisões do produto.
 
 ## Unknown
 
-- Proteção local, SQLCipher, chaves e proteção de backups.
+- Decisão de produção sobre SQLCipher/licenciamento e política de custódia/recuperação de chaves e backups.
 - Política legal definitiva de retenção clínica.
 - Destino externo de backup e rotina operacional definitiva.
 - Limites, categorias, duplicidade, miniaturas e retenção de arquivos.
@@ -49,16 +49,16 @@ Estas são propostas de processo, não decisões do produto.
 
 ## Blockers
 
-- A preparação executável do G4 depende de autorização separada para instalar/configurar ferramentas e dependências.
-- ADR-0001 ainda é proposta para spike e não autoriza gerar aplicação.
+- A execução técnica do G4 terminou; sua aprovação bloqueia em decisão humana sobre criptografia, recuperação de chaves/backups e riscos residuais.
+- ADR-0001 ainda é proposta para spike e não autoriza implementação do produto.
 - Não há código executável para Mantis/Impeccable; ambos permanecem PREPARED — NOT ACTIVE.
 - Plane/MCP está configurado e validado em leitura; Mantis, Impeccable e demais integrações externas continuam sem ativação. Obsidian está ACTIVE somente como camada local de navegação e conhecimento.
 
 ## Next Decisions
 
-1. Autorizar a preparação das ferramentas e dependências do spike G4.
-2. Executar os critérios do ADR-0001 com dados fictícios.
-3. Registrar resultados, riscos e decisão do spike antes do G5.
+1. Decidir adoção de SQLCipher e o modelo de licenciamento/suporte.
+2. Decidir custódia, recuperação e portabilidade de chaves e backups.
+3. Aceitar a recomendação REVISAR ou solicitar mitigação/repetição dos riscos residuais antes do G5.
 
 
 ## Existing Documentation
@@ -81,4 +81,4 @@ O catálogo consolidado está em knowledge/OPEN-QUESTIONS.md e o registro em kno
 
 ## Recommended Next Step
 
-Completar a baseline de backup e restauração sem iniciar implementação. O smoke test de `$project-task` deve ocorrer em tarefa posterior e separada.
+Submeter a recomendação REVISAR do G4 à decisão humana, sem iniciar implementação do produto. O smoke test de `$project-task` permanece tarefa posterior e separada.

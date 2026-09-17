@@ -6,13 +6,13 @@
 
 - **Data do checkpoint:** 2026-09-17
 - **Fase:** spike técnico do primeiro incremento de Saúde
-- **Gate atual:** G4 — spike autorizado; G2 e G3 aprovados
-- **Estado:** planejamento aprovado para validação técnica; implementação de produto ainda bloqueada pelo resultado do spike
-- **Última etapa concluída:** integração do contrato de interação humana no harness, aprovação conjunta de D-AUTO-001/002 por Amanda e Maycon, aprovação da baseline do G2 e dos artefatos do G3, e autorização do spike G4
-- **Próxima ação:** criar o checkpoint local aprovado e gerar o scaffold mínimo do spike G4; depois validar shell, persistência, migrações, autorização, proteção local, arquivos, backup, restauração e instalador sem iniciar implementação de produto
+- **Gate atual:** G4 — execução técnica concluída; decisão humana pendente; G2 e G3 aprovados
+- **Estado:** spike recomenda REVISAR; implementação de produto continua bloqueada até decisão sobre criptografia, chaves/backups e riscos residuais
+- **Última etapa concluída:** validações do G4 consolidadas: SQLCipher, DPAPI, backup criptografado, Unicode, falhas de filesystem/espaço, CSP, 8 testes, build e instalação/desinstalação NSIS passaram
+- **Próxima ação:** Maycon decidir SQLCipher/licenciamento e política de custódia/recuperação de chaves e backups; aceitar ou pedir mitigação dos riscos residuais; então decidir o G4
 - **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude`
 - **Work Item:** `WEBFIT-3` — spike G4; vínculo legado `PBI-001`
-- **Commit-base:** `28d46b6`
+- **Commit-base:** `930f088`
 - **Sincronização:** branch de feature local sem upstream; `main` está sincronizada com `origin/main`; `develop` está 8 commits à frente de `origin/develop`; não houve push
 
 ## Última decisão aprovada
@@ -36,7 +36,7 @@ Também em 2026-09-11, Maycon aprovou DEC-039: Spec Kit tornou-se a fonte operac
 
 ## Próxima ação exata
 
-Autorizar a preparação das ferramentas e dependências do spike G4; executar o spike somente com dados fictícios e registrar evidência antes do G5.
+Revisar a recomendação do G4 somente com base em dados fictícios. A execução técnica passou; falta decisão humana sobre SQLCipher/licenciamento, custódia e recuperação de chaves/backups e aceitação dos riscos residuais. O ciclo manual completo da UI deve ser repetido quando o controlador estiver disponível; a instalação NSIS, abertura do app e persistência automatizada passaram.
 
 D-AUTO-001/002 estão aceitos por Amanda e Maycon para o comportamento e o spike G4; ainda não autorizam schema físico ou implementação de produção.
 
@@ -48,7 +48,7 @@ D-AUTO-001/002 estão aceitos por Amanda e Maycon para o comportamento e o spike
 | G1 | aprovar visão, autoridade e MVP Saúde | **aprovado em 2026-08-20** | entrevista e DEC-013 |
 | G2 | aprovar baseline rastreável do primeiro incremento | **aprovado em 2026-09-17 por Amanda e Maycon** | requisitos, testes e rastreabilidade aprovados; execução técnica e evidências permanecem pendentes |
 | G3 | criar plano executável | **aprovado em 2026-09-17 por Maycon** | artefatos Spec Kit aprovados; executar spike G4 |
-| G4 | validar arquitetura e spike | **iniciado em 2026-09-17** | validar ADR-0001 somente para spike e produzir evidência antes do G5 |
+| G4 | validar arquitetura e spike | **execução técnica concluída; decisão pendente** | recomendação REVISAR; decidir criptografia, recuperação de chaves/backups e riscos residuais |
 | G5 | construir incremento vertical | não iniciado | depende do G4 aplicável |
 | G6 | validar release candidate | não iniciado | requisitos críticos verificados |
 | G7 | liberar para dados reais | não iniciado | restauração exercitada e riscos aceitos |
@@ -65,7 +65,7 @@ D-AUTO-001/002 estão aceitos por Amanda e Maycon para o comportamento e o spike
 | 5B | Necessidade energética e metas | **aprovado por Amanda em 2026-09-10** | RF-PRE-005, RN-PRE-011 a RN-PRE-024 e TA-PRE-008 a TA-PRE-016 |
 | 6 | Rascunhos | **aprovado por Maycon em 2026-09-10** | RF-DRF-001, RN-DRF-001 a RN-DRF-005 e TA-DRF-001 a TA-DRF-004 |
 | 7 | Auditoria | **baseline aprovada; D-AUTO-001/002 aceitos em 2026-09-17** | RF-AUD-001, UC-AUD-001, RN-AUD-001 a RN-AUD-017, TA-AUD-001 a TA-AUD-015 e D-AUTO-001/002 |
-| 8 | Backup e restauração | **baseline aprovada; evidência de execução pendente** | RF-BKP-001 a RF-BKP-003; validar no spike G4 |
+| 8 | Backup e restauração | **baseline aprovada; prova técnica executada** | snapshot comum e backup SQLCipher, checksum, restauração e integridade passaram; política de chave/recuperação pendente |
 | 9 | Requisitos não funcionais | **baseline documentada** | RNF-* do incremento; medição pendente |
 | 10 | Testes e rastreabilidade | **artefatos preparados** | TA-*, matriz e tasks; execução pendente |
 | 11 | Aprovação final do G2 | **aprovado em 2026-09-17 por Amanda e Maycon** | aceite funcional conjunto de Amanda e Maycon |

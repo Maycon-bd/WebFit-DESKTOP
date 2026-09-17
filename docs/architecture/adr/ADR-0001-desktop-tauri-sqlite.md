@@ -1,6 +1,6 @@
 # ADR-0001 — Desktop local com Tauri, Rust e SQLite
 
-- **Status:** proposto para validação por spike
+- **Status:** proposto — spike concluído; decisão humana pendente
 - **Data:** 2026-08-13
 - **Decisores:** Amanda — aprovadora funcional; Maycon — Product Owner e responsável técnico
 - **Decisões relacionadas:** DEC-003, DEC-004, DEC-005 e DEC-006
@@ -72,4 +72,6 @@ As metas mensuráveis de desempenho, tamanho e tempos de recuperação ainda pre
 
 ## Evidências
 
-Ainda não existem. Preencher após o spike com links para plano, resultados, testes e riscos atualizados.
+Evidência consolidada em [g4-spike-2026-09-17.md](../../../.harness/evidence/g4-spike-2026-09-17.md): shell Tauri, SQLite embutido, migração, foreign keys, comandos tipados, persistência, backup/restauração, SQLCipher, DPAPI, cenários adversos, CSP, testes, build e instalação/desinstalação NSIS passaram localmente.
+
+**Recomendação do spike: REVISAR.** A composição é tecnicamente viável, mas o ADR não deve ser aceito para produção até decisão explícita sobre SQLCipher/licenciamento, custódia e recuperação da chave, proteção/restauração de backups em outra conta ou máquina e aceitação dos riscos residuais. O ciclo manual completo da UI e a instalação MSI permanecem provas complementares; persistência automatizada e instalação NSIS já passaram.
