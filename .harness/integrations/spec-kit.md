@@ -139,3 +139,7 @@ A auditoria atual encontrou em `.agents/` apenas skills Markdown versionáveis e
 ## No Duplicate Specifications
 
 Specifications de feature pertencem somente a `specs/` gerenciado pelo Spec Kit. Requisitos aprovados permanecem em `docs/`; o harness referencia ambos, sem replicá-los. Verification, Review e Evidence pertencem ao harness por responsabilidade distinta.
+
+## Contrato de interação humana
+
+Aplicar o [HUMAN INTERACTION CONTRACT](../HUMAN-INTERACTION-CONTRACT.md) na orquestração local. A aplicação de DEC-038 antes de Clarify não elimina discovery de comportamento de produto: opções técnicas superiores não resolvem por si só lacunas sobre como a pessoa percebe ou usa o produto. Antes de `READY FOR IMPLEMENTATION`, o review existente verifica compreensão, decisões discutidas, perguntas respondidas, aceite compreensível e ausência de suposições silenciosas. Respeitar o protocolo de perguntas de cada skill oficial sem modificá-la; as rodadas de 2–4 perguntas pertencem ao discovery do harness. Modos de interação e labels não alteram autoridade, gates ou estados.

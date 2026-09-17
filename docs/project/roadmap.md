@@ -2,14 +2,14 @@
 
 O checkpoint atual e a próxima ação ficam exclusivamente em [status.md](status.md).
 
-**Status:** G1 aprovado; baseline do primeiro incremento em elaboração.
+**Status:** G1, G2 e G3 aprovados; G4 autorizado e em preparação.
 
 | Marco | Objetivo | Estado |
 |---|---|---|
 | Ciclo 0 / G1 | aprovar visão, autoridade e limites do MVP Saúde | aprovado em 2026-08-20 |
-| Baseline / G2 | aprovar requisitos rastreáveis do primeiro incremento | em revisão; escopo aprovado |
-| Planejamento / G3 | decompor a primeira fatia e estimar | não iniciado |
-| Projeto e spike / G4 | validar Tauri, SQLite, segurança, dados e backup | não iniciado |
+| Baseline / G2 | aprovar requisitos rastreáveis do primeiro incremento | aprovado em 2026-09-17 por Amanda e Maycon |
+| Planejamento / G3 | decompor a primeira fatia e estimar | aprovado em 2026-09-17 por Maycon |
+| Projeto e spike / G4 | validar Tauri, SQLite, segurança, dados e backup | autorizado/iniciado em 2026-09-17; preparação executável pendente |
 | Construção / G5 | entregar primeiro incremento vertical | não iniciado |
 | Validação / G6 | aprovar release candidate | não iniciado |
 | Release / G7 | autorizar dados reais | não iniciado |

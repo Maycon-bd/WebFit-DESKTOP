@@ -3,7 +3,7 @@
 ## Stage
 PLANNING
 
-G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria foi concluída e reavaliada sob DEC-038; UC-AUD-001 está READY FOR HUMAN DECISION REVIEW. O Spec Kit e o entrypoint `$project-task` estão integrados e prontos para smoke test posterior. Backup e restauração são a próxima seção funcional. Não há implementação.
+G1 foi aprovado em 2026-08-20. G2 e G3 foram aprovados em 2026-09-17 no escopo registrado no checkpoint. G4 está autorizado e em preparação. A baseline da auditoria foi concluída e reavaliada sob DEC-038; D-AUTO-001/002 foram aceitos por Amanda e Maycon em 2026-09-17. O Spec Kit e o entrypoint `$project-task` estão integrados e prontos para smoke test posterior. Backup e restauração seguem como parte da validação do G4. Não há implementação.
 
 ## Confirmed
 
@@ -23,12 +23,12 @@ G1 foi aprovado em 2026-08-20. G2 permanece em revisão. A baseline da auditoria
 - Arquivos clínicos ficam planejados para incremento posterior; biblioteca profissional vem depois do núcleo do MVP.
 - Tauri 2/React/TypeScript/Vite/Rust/SQLite são composição proposta para spike no ADR-0001, não decisão de produção.
 
-## Agent-Provisional
+## Accepted decisions
 
-- D-AUTO-001 — ator USER, SYSTEM ou UNAUTHENTICATED, sem credencial tentada.
-- D-AUTO-002 — janela UTC semiaberta congelada, ordem total e cursor opaco estável.
+- D-AUTO-001 — ator USER, SYSTEM ou UNAUTHENTICATED, sem credencial tentada; aceito por Amanda e Maycon em 2026-09-17.
+- D-AUTO-002 — janela UTC semiaberta congelada, ordem total e cursor opaco estável; aceito por Amanda e Maycon em 2026-09-17.
 
-Ambas têm confiança ALTA, impacto MÉDIO e reversibilidade MODERADA antes da implementação.
+Ambas têm confiança ALTA, impacto MÉDIO e reversibilidade MODERADA antes da implementação. A aceitação cobre o comportamento e o uso no spike; não aprova schema físico ou implementação de produção.
 
 ## Proposed
 
@@ -49,17 +49,17 @@ Estas são propostas de processo, não decisões do produto.
 
 ## Blockers
 
-- G2 não está concluído.
+- A preparação executável do G4 depende de autorização separada para instalar/configurar ferramentas e dependências.
 - ADR-0001 ainda é proposta para spike e não autoriza gerar aplicação.
 - Não há código executável para Mantis/Impeccable; ambos permanecem PREPARED — NOT ACTIVE.
 - Plane/MCP está configurado e validado em leitura; Mantis, Impeccable e demais integrações externas continuam sem ativação. Obsidian está ACTIVE somente como camada local de navegação e conhecimento.
 
 ## Next Decisions
 
-1. Completar a baseline de backup e restauração.
-2. Concluir os RNFs e a rastreabilidade restantes do primeiro incremento.
-3. Obter a aprovação final do G2.
-4. Só então preparar o plano executável e o spike do ADR-0001.
+1. Autorizar a preparação das ferramentas e dependências do spike G4.
+2. Executar os critérios do ADR-0001 com dados fictícios.
+3. Registrar resultados, riscos e decisão do spike antes do G5.
+
 
 ## Existing Documentation
 

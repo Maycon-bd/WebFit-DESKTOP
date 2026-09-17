@@ -21,7 +21,7 @@
 | RF-PRE-003 | composição nutricional | aprovado | Amanda/DEC-022 | RN-PRE-006/007 | UC-PRE-001 | TA-PRE-003/005 | RSK-013 | PBI-010 | PENDENTE |
 | RF-PRE-004 | versões e histórico | aprovado | Amanda/DEC-022 | RN-PRE-008..010 | UC-PRE-001 | TA-PRE-006/007 | RSK-013 | PBI-010 | PENDENTE |
 | RF-PRE-005 | necessidade energética e metas | aprovado | Amanda/DEC-023 | RN-PRE-011..024 | UC-PRE-002 | TA-PRE-008..016 | RSK-013 | PBI-010 | PENDENTE |
-| RF-AUD-001 | auditoria | baseline aprovada; refinamentos AGENT-PROVISIONAL | DEC-016/025/026/028..038, D-AUTO-001/002 | RN-AUD-001..017 | UC-AUD-001 | TA-AUD-001..015 | RSK-003/008/012 | PBI-005 | PENDENTE |
+| RF-AUD-001 | auditoria | baseline e refinamentos aprovados | DEC-016/025/026/028..038, D-AUTO-001/002 | RN-AUD-001..017 | UC-AUD-001 | TA-AUD-001..015 | RSK-003/008/012 | PBI-005 | PENDENTE |
 | RF-BKP-001 | criar backup | aprovado | entrevista 01 | RN-BKP-001..005 | UC-BKP-001 | TA-BKP-001/002 | RSK-004/011, ADR-0001 | PBI-006 | PENDENTE |
 | RF-BKP-002 | restaurar backup | aprovado | entrevista 01 | RN-BKP-005..007 | UC-BKP-002 | TA-BKP-003/004 | RSK-004, ADR-0001 | PBI-006 | PENDENTE |
 | RF-BKP-003 | estado do backup | aprovado | entrevista 01 | RN-BKP-001..004 | UC-BKP-001 | TA-BKP-005 | RSK-004/011 | PBI-006 | PENDENTE |

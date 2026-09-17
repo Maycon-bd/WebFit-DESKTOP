@@ -15,6 +15,20 @@ You MUST consider the user input before proceeding. If it does not describe a de
 
 Act as the WebFit engineering entrypoint. Orchestrate the official Spec Kit skills and the harness; do not reproduce their internal workflows. Follow `.harness/integrations/spec-kit.md`.
 
+## Human Interaction Contract
+
+Read and apply `.harness/HUMAN-INTERACTION-CONTRACT.md` throughout this workflow. Concise does not mean context-free. Internally select DISCOVERY, DECISION or EXECUTION for each interaction; these are communication modes, not gates.
+
+- DISCOVERY: explain the topic, known facts and open questions; ask 2–4 related questions per round (only one if one remains), with useful options, grounded recommendations and consequences. Recover existing answers first. Investigate important product behavior before consolidation; do not turn discovery into a mechanical checklist.
+- DECISION: before requesting a human choice, explain what is being decided, why now, its source and approval scope, current state, relevant options, recommendation, impact and a clear question. Prefer 1–3 short paragraphs when sufficient. Show the provenance chain for important technology, architecture, dependencies or behavior when not obvious. Use `[APPROVED]`, `[PROVISIONAL]`, `[DEPENDENCY]`, `[NEW PROPOSAL]` and `[BLOCKER]` only when helpful; these do not replace ledger states or authorize actions.
+- EXECUTION: when necessary decisions are settled, briefly report action, result, relevant evidence, any problem and next step. Switch back to DECISION when a human choice arises.
+
+DEC-038 remains active. Distinguish IMPLEMENTATION DETAIL from PRODUCT BEHAVIOR before applying autonomy: low-impact internal choices may remain AUTO or `AGENT-PROVISIONAL`; meaningful product behavior needs adequate discovery even with a clear technical recommendation. Do not reopen approved behavior or ask again for sufficient existing authorization. Sensitive-change approvals remain mandatory within their actual scope.
+
+The goal is a specification the human understands and considers correct, beyond generated artifacts. Before `READY FOR IMPLEMENTATION`, review evidence that behavior and acceptance criteria are understandable, relevant decisions were discussed, important questions answered and no silent product assumptions remain. Resolve material gaps through discovery/decision within existing gates; readiness does not grant implementation approval.
+
+Keep operational details in artifacts. User-facing output must help understanding, decision, progress or validation; omit unnecessary internal IDs, long logs, gate inventories and operational reasoning. Preserve useful provenance references, blockers and material provisional choices. Respect official Spec Kit question protocols when a skill is active; add context without editing or duplicating official skills.
+
 ## Plane Work Item Contract
 
 Plane is the work-management layer for this entrypoint. It owns demand identification, backlog, priority, module, assignee, operational state and follow-up. It is not canonical for requirements, business rules, ADRs, architecture, Specification, Plan, technical Tasks or Evidence; those remain in `docs/`, ADRs, the Decisions Register, Spec Kit and the harness.
@@ -69,7 +83,7 @@ Branch, Spec path and Evidence must carry the same Work Item ID. Preserve DEC-01
 Before classifying or changing anything:
 
 1. Read `AGENTS.md` in full.
-2. Read `.harness/GOVERNANCE.md`, `.harness/AUTONOMY-POLICY.md`, `.harness/PROJECT-STATE.md`, and `.harness/knowledge/DECISIONS-REGISTER.md`.
+2. Read `.harness/GOVERNANCE.md`, `.harness/AUTONOMY-POLICY.md`, `.harness/HUMAN-INTERACTION-CONTRACT.md`, `.harness/PROJECT-STATE.md`, and `.harness/knowledge/DECISIONS-REGISTER.md`.
 3. Read `docs/project/status.md` and locate the canonical requirements, rules, use cases, traceability, ADRs, and open questions related to the demand.
 4. Read `docs/project/git-workflow.md` and `.harness/integrations/github.md`; check current branch, local/remote refs already known, and `git status --short --branch`.
 5. Apply this authority order: human `ACCEPTED` decision; accepted ADR; approved canonical requirement/documentation; Constitution; feature Specification/Plan/Tasks; code; execution evidence.
@@ -124,7 +138,7 @@ For each material ambiguity:
 4. Use `NEEDS-HUMAN-DECISION` and stop only when missing information is material to the next step, alternatives are balanced, or ASK-FIRST applies.
 5. Never present a provisional decision as accepted.
 
-Use the official `$speckit-clarify` workflow only when clarification is materially necessary. Do not interrupt the user for minor, reversible choices.
+Use the official `$speckit-clarify` workflow only when clarification is materially necessary. Do not interrupt the user for minor, reversible implementation choices. This does not suppress product discovery: investigate meaningful behavioral gaps before consolidating them, following the Human Interaction Contract.
 
 ## Orchestrate Official Spec Kit Skills
 
@@ -174,7 +188,7 @@ Do not weaken STRICT because a technical choice appears straightforward.
 
 ## Human Gates
 
-Distinguish and report these gates explicitly:
+Distinguish these gates in records and explain the applicable approval to the human with its context and scope, without dumping the full gate inventory:
 
 - **HUMAN DECISION REVIEW**: batch validation of `AGENT-PROVISIONAL` decisions.
 - **IMPLEMENTATION APPROVAL**: authorization to begin implementation when required by the selected level or project stage.
@@ -197,7 +211,7 @@ Codex skills provide instructions; they are not a programmable nested-call API. 
 
 ## Completion Report
 
-Report:
+Record in the evidence/handoff as applicable; the user-facing report selects what helps understanding, decision, progress and validation under the Human Interaction Contract:
 
 - classification and rationale;
 - Plane Work Item ID, initial/final state and synchronization result;
@@ -216,4 +230,6 @@ Report:
 - [ ] Canonical sources and accepted decisions were applied.
 - [ ] Official Spec Kit skills were orchestrated without duplicated workflow logic.
 - [ ] Provisional and human-required decisions are explicit.
+- [ ] Human decisions received context and provenance; important product behavior received adequate discovery.
+- [ ] Before `READY FOR IMPLEMENTATION`, specification comprehension and absence of silent product assumptions were reviewed.
 - [ ] The correct human or completion gate is reported.

@@ -93,15 +93,15 @@
 | RN-AUD-013 | a interface oferece lista, filtros, paginação e detalhe de metadados permitidos; não oferece edição, exclusão ou exportação no incremento 1 | aprovado por Maycon em 2026-09-10 |
 | RN-AUD-014 | abertura do módulo e abertura do detalhe geram auditoria sem conteúdo visualizado; página, filtro, limpeza e ordenação não geram evento, e persistir esses eventos de acesso não dispara nova auditoria | aprovado por Maycon em 2026-09-10 |
 | RN-AUD-015 | ausência de eventos, ausência de resultados e falha de consulta são estados distintos; falha nunca aparece como lista vazia e permite nova tentativa quando recuperável | aprovado por Maycon em 2026-09-10 |
-| RN-AUD-016 | conforme D-AUTO-001, o ator apresentado usa tipo controlado USER, SYSTEM ou UNAUTHENTICATED; referência de usuário existe somente para USER, tentativas pré-autenticação não persistem identificador/credencial fornecido e o filtro de usuário alcança somente USER | AGENT-PROVISIONAL — validação humana pendente |
-| RN-AUD-017 | conforme D-AUTO-002, cada consulta captura query_as_of_utc, usa intervalo semiaberto [from_utc, to_utc), com default entre query_as_of_utc − 30 × 24 h e query_as_of_utc, ordem total por instante UTC e ID decrescentes e cursor opaco vinculado ao snapshot, intervalo e filtros | AGENT-PROVISIONAL — validação humana pendente |
+| RN-AUD-016 | conforme D-AUTO-001, o ator apresentado usa tipo controlado USER, SYSTEM ou UNAUTHENTICATED; referência de usuário existe somente para USER, tentativas pré-autenticação não persistem identificador/credencial fornecido e o filtro de usuário alcança somente USER | aprovado por Amanda e Maycon em 2026-09-17 |
+| RN-AUD-017 | conforme D-AUTO-002, cada consulta captura query_as_of_utc, usa intervalo semiaberto [from_utc, to_utc), com default entre query_as_of_utc − 30 × 24 h e query_as_of_utc, ordem total por instante UTC e ID decrescentes e cursor opaco vinculado ao snapshot, intervalo e filtros | aprovado por Amanda e Maycon em 2026-09-17 |
 
 ### Catálogos iniciais da auditoria no incremento 1
 
 - **Ações:** LOGIN, PASSWORD_RESET, PROFILE_UPDATE, PATIENT_CREATE, PATIENT_VIEW, PATIENT_UPDATE, PATIENT_ARCHIVE, PATIENT_RESTORE, TAG_CREATE, TAG_ASSIGN, TAG_RENAME, TAG_DISABLE, PRESCRIPTION_CANCEL, BACKUP_CREATE, BACKUP_RESTORE, AUDIT_MODULE_OPEN e AUDIT_EVENT_DETAIL_VIEW.
 - **Tipos de entidade:** USER, PROFESSIONAL_PROFILE, WORKSPACE, PATIENT, TAG, PRESCRIPTION, BACKUP e AUDIT_EVENT.
 - **Resultados:** SUCCESS quando a operação conclui; FAILURE quando falha por credencial inválida, validação ou erro técnico; DENIED quando é impedida por autenticação, autorização ou regra de acesso.
-- **Ator provisório (D-AUTO-001):** USER mostra rótulo autorizado do usuário; SYSTEM mostra “Sistema”; UNAUTHENTICATED mostra “Não autenticado”. O filtro de usuário alcança somente eventos USER. A representação física depende de validação antes do schema.
+- **Ator aprovado (D-AUTO-001):** USER mostra rótulo autorizado do usuário; SYSTEM mostra “Sistema”; UNAUTHENTICATED mostra “Não autenticado”. O filtro de usuário alcança somente eventos USER. A representação física deve aplicar os invariantes aprovados após o spike.
 
 ## Backup
 

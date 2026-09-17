@@ -50,15 +50,15 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 
 | ID | Decisão | Status | Fonte/evidência |
 |---|---|---|---|
-| D-AUTO-001 | representar ator por `USER`, `SYSTEM` ou `UNAUTHENTICATED`, com referência de usuário somente no primeiro caso e sem persistir credencial tentada | AGENT-PROVISIONAL | revisão de UC-AUD-001 em 2026-09-11; validação humana pendente |
-| D-AUTO-002 | usar janela UTC semiaberta congelada, ordem total por instante/ID e cursor opaco vinculado aos filtros para paginação estável | AGENT-PROVISIONAL | revisão de UC-AUD-001 em 2026-09-11; validação humana pendente |
+| D-AUTO-001 | representar ator por `USER`, `SYSTEM` ou `UNAUTHENTICATED`, com referência de usuário somente no primeiro caso e sem persistir credencial tentada | ACCEPTED | revisão de UC-AUD-001 em 2026-09-11; aprovação conjunta de Maycon e Amanda em 2026-09-17 |
+| D-AUTO-002 | usar janela UTC semiaberta congelada, ordem total por instante/ID e cursor opaco vinculado aos filtros para paginação estável | ACCEPTED | revisão de UC-AUD-001 em 2026-09-11; aprovação conjunta de Maycon e Amanda em 2026-09-17 |
 
 ## Decisões pendentes
 
 | Assunto | Pergunta a decidir | Decisor | Gate | Estado |
 |---|---|---|---|---|
 | Alimentos | TBCA 7.3 principal e TACO fallback; política de atualização técnica será definida no G4 | Amanda e Maycon | G4 | parcialmente resolvida |
-| Auditoria | como representar atores sem usuário autenticado, como sistema e tentativa de login desconhecida? | Amanda e Maycon | G4, antes do schema físico | consulta resolvida por DEC-028 a DEC-037; detalhe técnico do ator não bloqueia UC-AUD-001 |
+| Auditoria | como representar atores sem usuário autenticado, como sistema e tentativa de login desconhecida? | Amanda e Maycon | G4, antes do schema físico | resolvida e aceita em 2026-09-17 por Amanda e Maycon; aplicar no schema após validação do spike |
 | Arquivos e biblioteca | quais limites, categorias, duplicidade, miniaturas e política de retenção usar? | Amanda e Maycon | discovery do incremento 4 e evolução posterior | proposta registrada |
 | Documentos | quais documentos A4 serão prioritários e quais dados/assinaturas exigem? | Amanda | G2 | aberta |
 | Retenção clínica | qual política legal definitiva de retenção e eliminação? | produto e assessoria adequada | antes de G7 | aberta |

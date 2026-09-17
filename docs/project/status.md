@@ -4,19 +4,20 @@
 
 ## Onde paramos
 
-- **Data do checkpoint:** 2026-09-11
-- **Fase:** elicitação e análise de requisitos
-- **Gate atual:** G2 — baseline do primeiro incremento
-- **Estado:** em revisão
-- **Última etapa concluída:** integração de infraestrutura Spec Kit ↔ harness, Constitution 1.0.0 e skill `$project-task`; o planejamento funcional permanece na seção 7D
-- **Próxima ação:** seção 8 — backup e restauração
-- **Branch registrada:** `main`
-- **Commit-base:** `60df5c7`
-- **Sincronização:** branch `main` está 1 commit à frente de `origin/main`; a instalação do Spec Kit e esta integração permanecem sem commit/push
+- **Data do checkpoint:** 2026-09-17
+- **Fase:** spike técnico do primeiro incremento de Saúde
+- **Gate atual:** G4 — spike autorizado; G2 e G3 aprovados
+- **Estado:** planejamento aprovado para validação técnica; implementação de produto ainda bloqueada pelo resultado do spike
+- **Última etapa concluída:** integração do contrato de interação humana no harness, aprovação conjunta de D-AUTO-001/002 por Amanda e Maycon, aprovação da baseline do G2 e dos artefatos do G3, e autorização do spike G4
+- **Próxima ação:** criar o checkpoint local aprovado e gerar o scaffold mínimo do spike G4; depois validar shell, persistência, migrações, autorização, proteção local, arquivos, backup, restauração e instalador sem iniciar implementação de produto
+- **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude`
+- **Work Item:** `WEBFIT-3` — spike G4; vínculo legado `PBI-001`
+- **Commit-base:** `28d46b6`
+- **Sincronização:** branch de feature local sem upstream; `main` está sincronizada com `origin/main`; `develop` está 8 commits à frente de `origin/develop`; não houve push
 
 ## Última decisão aprovada
 
-Maycon aprovou em 2026-09-10 a consulta da auditoria:
+Amanda e Maycon aprovaram em 2026-09-17 D-AUTO-001/002 e a baseline da auditoria; Maycon aprovou em 2026-09-10 a consulta da auditoria:
 
 - filtros por período, usuário, ação, tipo de entidade e resultado, combinados por AND;
 - ordenação fixa do mais recente para o mais antigo;
@@ -29,23 +30,25 @@ Maycon aprovou em 2026-09-10 a consulta da auditoria:
 - auditoria de abertura do módulo e detalhe, sem auditar filtros/páginas e sem recursão;
 - estados distintos para ausência de eventos, ausência de resultados e falha recuperável.
 
-Em 2026-09-11, a aplicação de DEC-038 preservou DEC-028 a DEC-037 e registrou D-AUTO-001 (ator tipado) e D-AUTO-002 (janela/cursor determinísticos) como `AGENT-PROVISIONAL`. Não há decisão humana bloqueante para UC-AUD-001; os refinamentos aguardam validação em lote.
+Em 2026-09-11, a aplicação de DEC-038 preservou DEC-028 a DEC-037 e registrou D-AUTO-001/002 como provisórios. Em 2026-09-17, Amanda e Maycon aprovaram conjuntamente os dois refinamentos; a aceitação cobre comportamento e uso no spike, não schema físico nem arquitetura de produção.
 
 Também em 2026-09-11, Maycon aprovou DEC-039: Spec Kit tornou-se a fonte operacional de SDD, o harness preservou governança e gates independentes, e `$project-task` tornou-se o entrypoint de novas demandas. A integração está pronta para smoke test posterior, sem feature criada.
 
 ## Próxima ação exata
 
-Revisar e concluir a seção 8 do G2 — backup e restauração — usando RF-BKP-001 a RF-BKP-003, RN-BKP-001 a RN-BKP-007 e TA-BKP-001 a TA-BKP-005.
+Autorizar a preparação das ferramentas e dependências do spike G4; executar o spike somente com dados fictícios e registrar evidência antes do G5.
 
-D-AUTO-001 propõe a representação de atores automáticos ou sem usuário autenticado; deve ser validada antes do schema no G4 e não reabre nem bloqueia UC-AUD-001.
+D-AUTO-001/002 estão aceitos por Amanda e Maycon para o comportamento e o spike G4; ainda não autorizam schema físico ou implementação de produção.
+
+`PLANE / SOURCE-OF-TRUTH MISMATCH`: a demanda nasceu como `PBI-001` antes da integração Plane. O Work Item `WEBFIT-3` usa `external_id=PBI-001`; branch, specification e requisitos canônicos preservam o identificador legado para evitar renomeação destrutiva durante o planejamento.
 ## Gates
 
 | Gate | Objetivo | Estado | Evidência/condição seguinte |
 |---|---|---|---|
 | G1 | aprovar visão, autoridade e MVP Saúde | **aprovado em 2026-08-20** | entrevista e DEC-013 |
-| G2 | aprovar baseline rastreável do primeiro incremento | **em revisão** | concluir checklist abaixo |
-| G3 | criar plano executável | não iniciado | depende do G2 |
-| G4 | validar arquitetura e spike | não iniciado | depende do G3 e ADR-0001 |
+| G2 | aprovar baseline rastreável do primeiro incremento | **aprovado em 2026-09-17 por Amanda e Maycon** | requisitos, testes e rastreabilidade aprovados; execução técnica e evidências permanecem pendentes |
+| G3 | criar plano executável | **aprovado em 2026-09-17 por Maycon** | artefatos Spec Kit aprovados; executar spike G4 |
+| G4 | validar arquitetura e spike | **iniciado em 2026-09-17** | validar ADR-0001 somente para spike e produzir evidência antes do G5 |
 | G5 | construir incremento vertical | não iniciado | depende do G4 aplicável |
 | G6 | validar release candidate | não iniciado | requisitos críticos verificados |
 | G7 | liberar para dados reais | não iniciado | restauração exercitada e riscos aceitos |
@@ -61,11 +64,11 @@ D-AUTO-001 propõe a representação de atores automáticos ou sem usuário aute
 | 5A | Composição e ciclo da prescrição | **aprovado por Amanda em 2026-08-21** | RF-PRE-001 a RF-PRE-004, RN-PRE e TA-PRE |
 | 5B | Necessidade energética e metas | **aprovado por Amanda em 2026-09-10** | RF-PRE-005, RN-PRE-011 a RN-PRE-024 e TA-PRE-008 a TA-PRE-016 |
 | 6 | Rascunhos | **aprovado por Maycon em 2026-09-10** | RF-DRF-001, RN-DRF-001 a RN-DRF-005 e TA-DRF-001 a TA-DRF-004 |
-| 7 | Auditoria | **baseline aprovada; READY FOR HUMAN DECISION REVIEW** | RF-AUD-001, UC-AUD-001, RN-AUD-001 a RN-AUD-017, TA-AUD-001 a TA-AUD-015 e D-AUTO-001/002 |
-| 8 | Backup e restauração | pendente | RF-BKP-001 a RF-BKP-003 |
-| 9 | Requisitos não funcionais | pendente | RNF-* do incremento |
-| 10 | Testes e rastreabilidade | pendente | TA-* e matriz |
-| 11 | Aprovação final do G2 | pendente | Amanda e Maycon |
+| 7 | Auditoria | **baseline aprovada; D-AUTO-001/002 aceitos em 2026-09-17** | RF-AUD-001, UC-AUD-001, RN-AUD-001 a RN-AUD-017, TA-AUD-001 a TA-AUD-015 e D-AUTO-001/002 |
+| 8 | Backup e restauração | **baseline aprovada; evidência de execução pendente** | RF-BKP-001 a RF-BKP-003; validar no spike G4 |
+| 9 | Requisitos não funcionais | **baseline documentada** | RNF-* do incremento; medição pendente |
+| 10 | Testes e rastreabilidade | **artefatos preparados** | TA-*, matriz e tasks; execução pendente |
+| 11 | Aprovação final do G2 | **aprovado em 2026-09-17 por Amanda e Maycon** | aceite funcional conjunto de Amanda e Maycon |
 
 ## Escopo aprovado do primeiro incremento
 

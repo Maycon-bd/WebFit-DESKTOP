@@ -2,7 +2,7 @@
 
 - **Status:** proposto para validação por spike
 - **Data:** 2026-08-13
-- **Decisores:** responsável pelo produto e responsável técnico — nomes pendentes
+- **Decisores:** Amanda — aprovadora funcional; Maycon — Product Owner e responsável técnico
 - **Decisões relacionadas:** DEC-003, DEC-004, DEC-005 e DEC-006
 
 ## Contexto

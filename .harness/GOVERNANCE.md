@@ -13,6 +13,7 @@
 | Tasks | Spec Kit Tasks |
 | Contexto para agente | AGENTS.md |
 | Política de autonomia | .harness/AUTONOMY-POLICY.md |
+| Interação humana | .harness/HUMAN-INTERACTION-CONTRACT.md |
 | Registro navegável e ledger | .harness/knowledge/DECISIONS-REGISTER.md; decisão canônica permanece em docs/ ou ADR aplicável |
 | Gestão de trabalho | Plane, quando conectado, exclusivamente para backlog, prioridade, módulo, responsável, estado e acompanhamento |
 | Navegação de conhecimento | Obsidian sobre este workspace |
@@ -69,6 +70,8 @@ Branch local não concede Implementation Approval, Sensitive Change Approval ou 
 Aplicar a matriz e o processo de [AUTONOMY-POLICY.md](AUTONOMY-POLICY.md). A existência de `AGENT-PROVISIONAL` permite `READY FOR HUMAN DECISION REVIEW`; não equivale a gate aprovado.
 
 ## Gates e autoridade
+
+Aplicar o [HUMAN INTERACTION CONTRACT](HUMAN-INTERACTION-CONTRACT.md) em toda conversa conduzida pelo harness. DISCOVERY, DECISION e EXECUTION regulam comunicação, sem substituir classificação, estados ou gates. Antes de pedir decisão, explicar origem, estado, opções, recomendação e impacto; uma dependência técnica não herda autorização de instalação. Antes de `READY FOR IMPLEMENTATION`, verificar compreensão do comportamento e dos critérios de aceite, decisões discutidas, perguntas importantes respondidas e ausência de suposições silenciosas de produto. Registrar evidências na revisão existente, sem criar gate adicional.
 
 - Amanda aprova domínio e aceite funcional.
 - Maycon é Product Owner, responsável técnico, administrador e aprovador técnico.

@@ -4,6 +4,10 @@ Este diretório é o harness de engenharia do WebFit Desktop. Organiza contexto,
 
 O modelo decisório está em [AUTONOMY-POLICY.md](AUTONOMY-POLICY.md): escolhas justificáveis podem avançar como `AGENT-PROVISIONAL`, sempre visíveis e sujeitas a validação humana posterior; condições ASK-FIRST continuam exigindo decisão prévia.
 
+## Interação humana
+
+O [HUMAN INTERACTION CONTRACT](HUMAN-INTERACTION-CONTRACT.md) rege a comunicação: **Concise does not mean context-free.** DISCOVERY investiga produto em rodadas de 2–4 perguntas relacionadas; DECISION explica origem, opções e impacto antes da pergunta; EXECUTION comunica ação, resultado, evidência e próximo passo de forma breve. DEC-038 e os gates continuam válidos; autonomia técnica não substitui discovery de comportamento de produto. A revisão anterior a `READY FOR IMPLEMENTATION` também verifica se a especificação é compreensível para o humano.
+
 ## Estado
 
 PROJECT STAGE: PLANNING. Spec Kit e `$project-task` estão integrados; a proteção local de branches corrige a lacuna encontrada no smoke test. Plane está ACTIVE somente como camada controlada de gestão do trabalho; MCP/Plane usa OAuth, leitura validada e escrita limitada ao Work Item da execução atual de `$project-task`. Obsidian está ACTIVE somente como camada de navegação e conhecimento sobre os mesmos arquivos locais; não é fonte paralela da verdade e não requer MCP. As demais integrações externas e automação permanecem PREPARED — NOT ACTIVE. O repositório não contém código de aplicação.

@@ -29,7 +29,7 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 - **ID:** D-AUTO-001
 - **Título:** representar atores de auditoria por tipo controlado
-- **Status:** `AGENT-PROVISIONAL`
+- **Status:** `ACCEPTED`
 - **Categoria:** dados, segurança e auditoria
 - **Problema:** representar usuário autenticado, rotina automática e tentativa anterior à autenticação sem identidade falsa ou dado sensível.
 - **Alternativas consideradas:** usuário sintético; `user_id` nulo sem tipo; texto livre; `actor_kind` controlado com referência opcional.
@@ -43,13 +43,13 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 - **Reversibilidade:** MODERADA.
 - **Risco:** novo tipo futuro exigirá evolução versionada do catálogo.
 - **Consequências:** ator verdadeiro e filtrável; nenhuma identidade sintética; schema físico deve aplicar invariantes.
-- **Validação humana:** PENDENTE.
+- **Validação humana:** aprovada por Amanda e Maycon em 2026-09-17.
 
 ### D-AUTO-002
 
 - **ID:** D-AUTO-002
 - **Título:** fixar janela UTC, desempate e cursor da consulta de auditoria
-- **Status:** `AGENT-PROVISIONAL`
+- **Status:** `ACCEPTED`
 - **Categoria:** consulta, contrato e testabilidade
 - **Problema:** evitar ambiguidade de fronteiras, empates e deslocamento do conjunto entre páginas.
 - **Alternativas consideradas:** offset em conjunto mutável; carga total; cursor opaco em snapshot; ordenação somente por instante.
@@ -63,7 +63,7 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 - **Reversibilidade:** MODERADA.
 - **Risco:** cursor torna-se contrato técnico e deve permanecer opaco/versionável; eventos retroativos exigem regra física.
 - **Consequências:** paginação determinística, verificável e sem duplicidade/perda por novos eventos.
-- **Validação humana:** PENDENTE.
+- **Validação humana:** aprovada por Amanda e Maycon em 2026-09-17.
 
 ## Needs-human-decision / abertas
 

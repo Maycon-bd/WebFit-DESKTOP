@@ -32,7 +32,13 @@ Popularidade, novidade, preferência do agente, elegância abstrata ou frequênc
 
 Uma opção pode ser `AGENT-PROVISIONAL` quando atende aos requisitos conhecidos, não contradiz decisão `ACCEPTED`, tem justificativa concreta, não depende de informação essencial ausente, não cria risco desproporcional e apresenta vantagem clara.
 
-Decisões triviais, técnicas, locais e reversíveis não devem interromper o fluxo. Devem ser decididas, registradas de forma proporcional e usadas para continuar. Exemplos: nomes internos, organização local, convenção dominante, estado vazio e detalhes pequenos de implementação.
+Decisões triviais, técnicas, locais e reversíveis não devem interromper o fluxo. Devem ser decididas, registradas de forma proporcional e usadas para continuar. Exemplos: nomes internos, organização local e convenção técnica dominante dentro do comportamento aprovado.
+
+## IMPLEMENTATION DETAIL e PRODUCT BEHAVIOR
+
+DEC-038 permanece vigente com a mesma matriz, estados, ASK-FIRST e validação em lote. Aplicar o [HUMAN INTERACTION CONTRACT](HUMAN-INTERACTION-CONTRACT.md): detalhe interno de implementação de baixo impacto pode ser AUTO ou `AGENT-PROVISIONAL`; comportamento que altera como o usuário percebe ou utiliza o produto exige discovery adequado antes de consolidar lacunas relevantes, mesmo com recomendação clara. Estados vazios, feedback, erros e recuperação não são automaticamente detalhes técnicos. Não repetir perguntas já respondidas nem interromper por microescolhas dentro do comportamento aprovado.
+
+Antes de solicitar validação humana, explicar a cadeia de origem, o escopo já aprovado, as opções e suas consequências. `[DEPENDENCY]` indica necessidade técnica, não autorização para uma ação ASK-FIRST. Os labels da conversa não substituem os estados do ledger.
 
 ## Matriz confiança × impacto
 
