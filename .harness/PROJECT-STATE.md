@@ -22,6 +22,7 @@ G1 foi aprovado em 2026-08-20. G2 e G3 foram aprovados em 2026-09-17 no escopo r
 
 - Arquivos clínicos ficam planejados para incremento posterior; biblioteca profissional vem depois do núcleo do MVP.
 - Tauri 2/React/TypeScript/Vite/Rust/SQLite são composição proposta para spike no ADR-0001, não decisão de produção.
+- A política de operação sem custo recorrente foi detalhada em `docs/operations/cost-free-operation.md`: instalação local/offline, SQLCipher Community com avisos de licença, backup local com cópia externa opcional, credencial de recuperação offline, NSIS, manutenção manual e ausência de nuvem/telemetria; ainda pendente de aprovação humana.
 
 ## Accepted decisions
 
@@ -39,7 +40,7 @@ Estas são propostas de processo, não decisões do produto.
 
 ## Unknown
 
-- Decisão de produção sobre SQLCipher/licenciamento e política de custódia/recuperação de chaves e backups.
+- Aprovação da política sem custo recorrente, licenciamento do SQLCipher Community e política operacional final do SQLCipher/DPAPI; credencial administrativa, rotação e recuperação de chaves/backups.
 - Política legal definitiva de retenção clínica.
 - Destino externo de backup e rotina operacional definitiva.
 - Limites, categorias, duplicidade, miniaturas e retenção de arquivos.
@@ -56,8 +57,9 @@ Estas são propostas de processo, não decisões do produto.
 
 ## Next Decisions
 
-1. Decidir adoção de SQLCipher e o modelo de licenciamento/suporte.
-2. Decidir custódia, recuperação e portabilidade de chaves e backups.
+1. Aprovar ou ajustar a política sem custo recorrente registrada em `docs/operations/cost-free-operation.md`.
+2. Confirmar licenciamento/suporte e política operacional final do SQLCipher/DPAPI, incluindo credencial administrativa, rotação, recuperação e portabilidade de chaves/backups.
+
 3. Aceitar a recomendação REVISAR ou solicitar mitigação/repetição dos riscos residuais antes do G5.
 
 
@@ -81,4 +83,4 @@ O catálogo consolidado está em knowledge/OPEN-QUESTIONS.md e o registro em kno
 
 ## Recommended Next Step
 
-Submeter a recomendação REVISAR do G4 à decisão humana, sem iniciar implementação do produto. O smoke test de `$project-task` permanece tarefa posterior e separada.
+Submeter a recomendação REVISAR do G4 e a política sem custo recorrente à decisão humana, sem iniciar implementação do produto. O smoke test de `$project-task` permanece tarefa posterior e separada.

@@ -4,16 +4,16 @@
 
 ## Onde paramos
 
-- **Data do checkpoint:** 2026-09-17
+- **Data do checkpoint:** 2026-09-19
 - **Fase:** spike técnico do primeiro incremento de Saúde
 - **Gate atual:** G4 — execução técnica concluída; decisão humana pendente; G2 e G3 aprovados
-- **Estado:** spike recomenda REVISAR; implementação de produto continua bloqueada até decisão sobre criptografia, chaves/backups e riscos residuais
-- **Última etapa concluída:** validações do G4 consolidadas: SQLCipher, DPAPI, backup criptografado, Unicode, falhas de filesystem/espaço, CSP, 8 testes, build e instalação/desinstalação NSIS passaram
-- **Próxima ação:** Maycon decidir SQLCipher/licenciamento e política de custódia/recuperação de chaves e backups; aceitar ou pedir mitigação dos riscos residuais; então decidir o G4
+- **Estado:** spike recomenda REVISAR; a política operacional sem custo recorrente foi detalhada e está pendente de aprovação humana; implementação de produto continua bloqueada até fechar G4
+- **Última etapa concluída:** validações do G4 consolidadas: SQLCipher, DPAPI, pacote portátil com custódia administrativa fictícia, restauração separada, auditoria, nuvem simulada, Unicode, falhas de filesystem/espaço, CSP, 9 testes, build, instalação/desinstalação NSIS e confirmação manual da interface com imagem de evidência passaram
+- **Próxima ação:** aprovar ou ajustar a política sem custo recorrente, registrar a decisão final do G4, confirmar licenciamento e política operacional da recuperação de chaves/backups e então preparar o G5
 - **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude`
 - **Work Item:** `WEBFIT-3` — spike G4; vínculo legado `PBI-001`
-- **Commit-base:** `930f088`
-- **Sincronização:** branch de feature local sem upstream; `main` está sincronizada com `origin/main`; `develop` está 8 commits à frente de `origin/develop`; não houve push
+- **Commit-base:** `5a9a409`
+- **Sincronização:** branch `feature/pbi-001-primeiro-incremento-saude` acompanha `origin/feature/pbi-001-primeiro-incremento-saude` no commit-base; existem alterações locais não commitadas, incluindo evidências/documentação do G4 e a política de custo zero; não houve commit nem push nesta sessão
 
 ## Última decisão aprovada
 
@@ -36,9 +36,13 @@ Também em 2026-09-11, Maycon aprovou DEC-039: Spec Kit tornou-se a fonte operac
 
 ## Próxima ação exata
 
-Revisar a recomendação do G4 somente com base em dados fictícios. A execução técnica passou; falta decisão humana sobre SQLCipher/licenciamento, custódia e recuperação de chaves/backups e aceitação dos riscos residuais. O ciclo manual completo da UI deve ser repetido quando o controlador estiver disponível; a instalação NSIS, abertura do app e persistência automatizada passaram.
+Submeter à aprovação humana a política registrada em [cost-free-operation.md](../operations/cost-free-operation.md): operação local/offline sem mensalidade, componentes gratuitos/open source, SQLCipher Community com avisos de licença, backup local com cópia externa opcional, credencial de recuperação offline sob custódia de Maycon, NSIS como instalador, atualizações manuais e ausência de nuvem/telemetria. Depois, registrar a decisão final do G4 e atualizar o ADR-0001 antes de preparar o G5.
 
-D-AUTO-001/002 estão aceitos por Amanda e Maycon para o comportamento e o spike G4; ainda não autorizam schema físico ou implementação de produção.
+A execução técnica do G4 passou. O ciclo manual completo da UI deve ser repetido quando o controlador estiver disponível; a instalação NSIS, abertura do app e persistência automatizada passaram. O MSI, a assinatura de código e a nuvem não bloqueiam o MVP privado, mas permanecem fora da decisão atual.
+
+D-AUTO-001/002, DEC-040 e DEC-041 estão aceitos por Maycon para o comportamento/direção do spike; ainda não autorizam schema físico, autenticação administrativa de produção ou implementação integral do produto.
+
+A proposta econômica está registrada, mas ainda não é decisão aprovada: [cost-free-operation.md](../operations/cost-free-operation.md) e [cost-free-operation-approval.md](../operations/cost-free-operation-approval.md). O custo recorrente obrigatório projetado é R$ 0; mídia externa e assinatura de código para eventual distribuição pública são custos opcionais.
 
 `PLANE / SOURCE-OF-TRUTH MISMATCH`: a demanda nasceu como `PBI-001` antes da integração Plane. O Work Item `WEBFIT-3` usa `external_id=PBI-001`; branch, specification e requisitos canônicos preservam o identificador legado para evitar renomeação destrutiva durante o planejamento.
 ## Gates
@@ -48,7 +52,7 @@ D-AUTO-001/002 estão aceitos por Amanda e Maycon para o comportamento e o spike
 | G1 | aprovar visão, autoridade e MVP Saúde | **aprovado em 2026-08-20** | entrevista e DEC-013 |
 | G2 | aprovar baseline rastreável do primeiro incremento | **aprovado em 2026-09-17 por Amanda e Maycon** | requisitos, testes e rastreabilidade aprovados; execução técnica e evidências permanecem pendentes |
 | G3 | criar plano executável | **aprovado em 2026-09-17 por Maycon** | artefatos Spec Kit aprovados; executar spike G4 |
-| G4 | validar arquitetura e spike | **execução técnica concluída; decisão pendente** | recomendação REVISAR; decidir criptografia, recuperação de chaves/backups e riscos residuais |
+| G4 | validar arquitetura e spike | **execução técnica concluída; decisão pendente** | aprovar política sem custo recorrente, licenciamento, recuperação de chaves/backups e riscos residuais |
 | G5 | construir incremento vertical | não iniciado | depende do G4 aplicável |
 | G6 | validar release candidate | não iniciado | requisitos críticos verificados |
 | G7 | liberar para dados reais | não iniciado | restauração exercitada e riscos aceitos |
@@ -65,7 +69,7 @@ D-AUTO-001/002 estão aceitos por Amanda e Maycon para o comportamento e o spike
 | 5B | Necessidade energética e metas | **aprovado por Amanda em 2026-09-10** | RF-PRE-005, RN-PRE-011 a RN-PRE-024 e TA-PRE-008 a TA-PRE-016 |
 | 6 | Rascunhos | **aprovado por Maycon em 2026-09-10** | RF-DRF-001, RN-DRF-001 a RN-DRF-005 e TA-DRF-001 a TA-DRF-004 |
 | 7 | Auditoria | **baseline aprovada; D-AUTO-001/002 aceitos em 2026-09-17** | RF-AUD-001, UC-AUD-001, RN-AUD-001 a RN-AUD-017, TA-AUD-001 a TA-AUD-015 e D-AUTO-001/002 |
-| 8 | Backup e restauração | **baseline aprovada; prova técnica executada** | snapshot comum e backup SQLCipher, checksum, restauração e integridade passaram; política de chave/recuperação pendente |
+| 8 | Backup e restauração | **baseline aprovada; prova técnica executada** | snapshot comum, backup SQLCipher, pacote portátil, checksum, restauração separada, auditoria e integridade passaram; política de credencial administrativa de produção pendente |
 | 9 | Requisitos não funcionais | **baseline documentada** | RNF-* do incremento; medição pendente |
 | 10 | Testes e rastreabilidade | **artefatos preparados** | TA-*, matriz e tasks; execução pendente |
 | 11 | Aprovação final do G2 | **aprovado em 2026-09-17 por Amanda e Maycon** | aceite funcional conjunto de Amanda e Maycon |
@@ -92,8 +96,10 @@ D-AUTO-001/002 estão aceitos por Amanda e Maycon para o comportamento e o spike
 ## Pendências que não devem ser esquecidas
 
 - No discovery de arquivos, definir limites, categorias, duplicidade, miniaturas e retenção.
-- Criptografia, diretório de dados, chaves e pacote de backup dependem do spike.
+- Criptografia, diretório de dados, chaves e pacote de backup foram validados tecnicamente no spike; decisão operacional final e aplicação em produção dependem do fechamento do G4.
 - Pen drive ou SSD externo deve ser decidido antes do G7.
+- A política de custo zero está proposta, mas requer aprovação antes do G5; ver `docs/operations/cost-free-operation.md`.
+- Incluir avisos de licença e inventário de componentes antes do release.
 - Retenção clínica definitiva precisa de avaliação antes de dados reais.
 - Educação e serviços em nuvem exigem novo ciclo/ADR.
 
@@ -133,3 +139,10 @@ Ao receber **“Vamos continuar onde paramos”** ou variação clara, este arqu
 ## Regra de manutenção
 
 Ao final de cada sessão, atualizar pelo menos: data, branch, commit-base, sincronização, última etapa concluída, próxima ação e checklist do Gate. Não marcar Gate como aprovado sem decisão dos aprovadores e evidência correspondente.
+
+## Inventário local desta sessão
+
+- Alterações preexistentes preservadas nos registros do G4, no spike e nas evidências.
+- Documento novo: `docs/operations/cost-free-operation.md`.
+- Documento novo: `docs/operations/cost-free-operation-approval.md`.
+- Ainda não houve commit, push, merge, PR ou implementação do produto.

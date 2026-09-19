@@ -1,3 +1,5 @@
+#[cfg(all(feature = "sqlcipher-spike", test))]
+mod portable_backup;
 mod storage;
 
 use serde::Deserialize;

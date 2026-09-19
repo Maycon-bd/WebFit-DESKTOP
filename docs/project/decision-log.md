@@ -45,6 +45,15 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | DEC-037 | distinguir estado sem eventos, nenhum resultado e falha de consulta; falha não aparece como lista vazia e permite nova tentativa quando recuperável | ACCEPTED | validação histórica: aprovada por Maycon em 2026-09-10; decisão de fechamento de UC-AUD-001 |
 | DEC-038 | adotar no harness o modelo AUTONOMOUS DECISION WITH HUMAN VALIDATION, com matriz confiança × impacto, decisões AGENT-PROVISIONAL, ASK-FIRST para temas sensíveis e validação humana em lote | ACCEPTED | validada por Maycon em 2026-09-10; solicitação de atualização do harness |
 | DEC-039 | integrar Spec Kit como fonte operacional de SDD, preservar o harness para governança e gates independentes e usar `$project-task` como entrypoint sem modificar as skills oficiais | ACCEPTED | aprovada por Maycon em 2026-09-11; solicitação de integração Spec Kit ↔ harness |
+| DEC-040 | adotar SQLCipher como direção de proteção do banco local e gerar uma chave aleatória por instalação protegida pelo DPAPI `CurrentUser` | ACCEPTED | aprovada por Maycon em 2026-09-17; validação no spike G4 e [evidência](../../.harness/evidence/g4-spike-2026-09-17.md); não representa aceitação integral do ADR de produção |
+
+## DEC-041 — backup portátil e custódia administrativa
+
+- **Status:** ACCEPTED.
+- **Decisão:** o backup portátil deve conter banco criptografado, chave do backup encapsulada/protegida, manifesto, checksum e metadados. A recuperação em outra instalação exige credencial administrativa separada; a chave não será enviada em texto puro.
+- **Escopo:** direção aprovada para o spike e para detalhamento posterior; autenticação, autorização, rotação, recuperação de credencial e integração real de nuvem permanecem pendentes.
+- **Aprovação:** Maycon, em 2026-09-17.
+- **Evidência:** teste `portable_backup`, com nuvem simulada, restauração separada, auditoria SUCCESS/DENIED e ausência de segredo no log.
 
 ## Decisões provisórias do agente
 
@@ -64,7 +73,7 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | Retenção clínica | qual política legal definitiva de retenção e eliminação? | produto e assessoria adequada | antes de G7 | aberta |
 | Migração | existe fonte confiável para os 80 pacientes? | Amanda e Maycon | antes da migração | aberta |
 | Backup externo | pen drive ou SSD e rotina operacional definitiva | Amanda | antes de G7 | aberta |
-| Proteção local | SQLCipher, chaves e proteção dos backups são viáveis? | Maycon | G4 | aberta |
+| Proteção local | SQLCipher e chave por instalação protegida por DPAPI `CurrentUser` foram aprovados como direção; licenciamento, implementação e política operacional final ainda devem ser revisados | Maycon | G4 | direção aceita; detalhes pendentes |
 | Educação | atores, entidades, regras, escopo e prioridade | Amanda e Maycon | novo ciclo G1/G2 | adiada |
 | Serviços conectados | arquitetura, segurança, custos e privacidade de atualização, reset remoto e nuvem | Amanda e Maycon | ADR futuro | adiada |
 

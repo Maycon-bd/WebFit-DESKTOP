@@ -22,6 +22,8 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 - DEC-028 a DEC-037: consulta de auditoria, filtros, ordenação, paginação, período, catálogos, entidade, detalhe, meta-auditoria e estados.
 - DEC-038: adotar `AUTONOMOUS DECISION WITH HUMAN VALIDATION` no harness.
 - DEC-039: integrar Spec Kit como fonte operacional SDD, manter governança/gates no harness e usar `$project-task` como entrypoint.
+- DEC-040: SQLCipher como direção de proteção local e chave aleatória por instalação protegida pelo DPAPI `CurrentUser`, aprovada por Maycon em 2026-09-17 para o escopo do spike e detalhamento posterior.
+- DEC-041: backup portátil com chave encapsulada, credencial administrativa separada, manifesto, checksum e auditoria; nuvem real permanece fora desta prova.
 
 ## Agent-provisional ledger
 
@@ -67,7 +69,8 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 ## Needs-human-decision / abertas
 
-- Proteção local, chaves e backup.
+- Licenciamento, implementação e operação final do SQLCipher/DPAPI; credencial administrativa, rotação e recuperação.
+- Integração de nuvem, retenção clínica, backup externo, documentos e migração.
 - Retenção clínica, backup externo, documentos e migração.
 
 Cada item aberto deve ser avaliado pela matriz antes de interromper o usuário. Permanecerá `NEEDS-HUMAN-DECISION` quando for ASK-FIRST ou quando faltar evidência essencial.
