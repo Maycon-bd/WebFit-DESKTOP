@@ -4,16 +4,16 @@
 
 ## Onde paramos
 
-- **Data do checkpoint:** 2026-09-19
+- **Data do checkpoint:** 2026-09-21
 - **Fase:** spike técnico do primeiro incremento de Saúde
 - **Gate atual:** G4 — execução técnica concluída; decisão humana pendente; G2 e G3 aprovados
 - **Estado:** spike recomenda REVISAR; a política operacional sem custo recorrente foi detalhada e está pendente de aprovação humana; implementação de produto continua bloqueada até fechar G4
-- **Última etapa concluída:** validações do G4 consolidadas: SQLCipher, DPAPI, pacote portátil com custódia administrativa fictícia, restauração separada, auditoria, nuvem simulada, Unicode, falhas de filesystem/espaço, CSP, 9 testes, build, instalação/desinstalação NSIS e confirmação manual da interface com imagem de evidência passaram
+- **Última etapa concluída:** alterações do G4 e da política de custo zero foram consolidadas no commit `3875c57` e sincronizadas com `origin/feature/pbi-001-primeiro-incremento-saude`; SQLCipher, DPAPI, pacote portátil com custódia administrativa fictícia, restauração separada, auditoria, nuvem simulada, Unicode, falhas de filesystem/espaço, CSP, 9 testes, build, instalação/desinstalação NSIS e confirmação manual da interface com imagem de evidência passaram
 - **Próxima ação:** aprovar ou ajustar a política sem custo recorrente, registrar a decisão final do G4, confirmar licenciamento e política operacional da recuperação de chaves/backups e então preparar o G5
 - **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude`
 - **Work Item:** `WEBFIT-3` — spike G4; vínculo legado `PBI-001`
-- **Commit-base:** `5a9a409`
-- **Sincronização:** branch `feature/pbi-001-primeiro-incremento-saude` acompanha `origin/feature/pbi-001-primeiro-incremento-saude` no commit-base; existem alterações locais não commitadas, incluindo evidências/documentação do G4 e a política de custo zero; não houve commit nem push nesta sessão
+- **Commit-base:** `3875c57` (`feat: implement G4 Tauri foundation spike and operational documentation`)
+- **Sincronização:** branch `feature/pbi-001-primeiro-incremento-saude` está alinhada com `origin/feature/pbi-001-primeiro-incremento-saude`; working tree limpo no início desta retomada; o commit consolidou as alterações do G4, evidências, spike e política de custo zero
 
 ## Última decisão aprovada
 
@@ -145,4 +145,4 @@ Ao final de cada sessão, atualizar pelo menos: data, branch, commit-base, sincr
 - Alterações preexistentes preservadas nos registros do G4, no spike e nas evidências.
 - Documento novo: `docs/operations/cost-free-operation.md`.
 - Documento novo: `docs/operations/cost-free-operation-approval.md`.
-- Ainda não houve commit, push, merge, PR ou implementação do produto.
+- O commit `3875c57` está presente localmente e na origem; não houve merge, PR ou implementação do produto.
