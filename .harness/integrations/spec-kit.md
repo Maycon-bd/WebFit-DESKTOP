@@ -78,7 +78,9 @@ EVIDENCE
 HUMAN APPROVAL
 ```
 
-`$project-task` é o entrypoint. A entrada pode referenciar um Work Item existente (`WEBFIT-12`) ou uma nova demanda explícita. Para STANDARD/STRICT, o ID Plane deve preceder Branch Safety e ser preservado nos artefatos. Skills não são uma API programável de chamadas aninhadas: se o runtime não puder despachar outra skill na mesma tarefa, o entrypoint deve produzir um handoff explícito com a próxima invocação `$speckit-*`, sem fingir execução.
+`$project-task` é o entrypoint. A entrada pode referenciar um Work Item existente (`WEBFIT-12`) ou uma nova demanda explícita. Para STANDARD/STRICT, o ID Plane deve preceder Branch Safety e ser preservado nos artefatos. Skills são instruções: quando seus arquivos estão disponíveis, leia a skill oficial necessária e siga seu procedimento no mesmo chat; uma API programável de chamadas aninhadas não é pré-requisito. Handoff só ocorre diante de instrução, ferramenta, ambiente ou autoridade realmente indisponível, com bloqueio concreto e próxima ação. Nunca declare uma etapa executada apenas por ler seu arquivo.
+
+Na retomada, confirme a fase e reutilize Specification, Plan, Tasks e aprovações válidos. Não refaça a cadeia completa por novo turno. Ao mudar escopo ou uma entrada material, revise os artefatos dependentes e execute novamente as etapas afetadas. A [condução proporcional](../GOVERNANCE.md#condução-proporcional-e-retomada) preserva os controles de STANDARD/STRICT e a independência de Verification e Review.
 
 ## Branch Association
 

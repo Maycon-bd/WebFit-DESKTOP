@@ -45,6 +45,19 @@ Arquitetura, autenticação, autorização, dados sensíveis, financeiro, migra�
 
 O nível STRICT não elimina análise autônoma: o agente pode comparar e recomendar alternativas, mas condições ASK-FIRST não podem ser executadas com base apenas em `AGENT-PROVISIONAL`.
 
+## Condução proporcional e retomada
+
+Use o fluxo a partir da primeira etapa pendente da demanda. Um novo turno, chat ou pedido de continuação não reinicia discovery, Specification, Plan ou Tasks que já estejam válidos. Confirme o checkpoint, o estado Git e as fontes afetadas; reabra uma etapa apenas diante de mudança de escopo, conflito, evidência inválida ou aprovação ainda necessária. O gatilho de retomada de AGENTS.md continua exigindo leitura integral do checkpoint.
+
+- Leia AGENTS.md, checkpoint e políticas aplicáveis na entrada; reutilize o contexto já lido no mesmo chat enquanto arquivos, escopo, branch e aprovações continuarem válidos. Reconfira Git antes de editar e ao concluir. Consulte o ledger e os documentos de domínio por assunto; não carregue todos por rotina. As leituras obrigatórias antes de planejar ou alterar o produto permanecem vigentes.
+- LIGHT documental segue fonte → alteração → revisão de consistência/links → evidência breve. Não exige Work Item, Specification, Plan, Tasks ou pedido genérico para continuar. Uma solicitação explícita de correção local autoriza essa correção no escopo descrito; ações externas e gates de produto mantêm suas regras.
+- STANDARD/STRICT reutilizam artefatos aprovados da mesma demanda. Execute as skills necessárias à fase e atualize os artefatos afetados; não gere cópias nem simule que uma etapa obrigatória foi executada. Checklist, ADR, pesquisa e gates especializados só entram quando houver seu motivo concreto.
+- Continue o trabalho autorizado entre etapas no mesmo chat. Ler e seguir uma skill oficial disponível é sua execução instrucional; a ausência de uma API de chamadas aninhadas não exige que o humano a invoque novamente. Handoff ocorre somente quando instruções, ferramentas, ambiente ou autoridade necessários estiverem de fato indisponíveis.
+- Uma pergunta bloqueia somente o trabalho que depende da resposta. Reaproveite autorização suficiente e agrupe decisões relacionadas; não peça confirmação por arquivo, comando permitido ou transição de fase. Um lote pode cobrir gates relacionados quando explicitar separadamente escopo, responsáveis e condições de cada aprovação.
+- Registre Verification, Review e Evidence com responsabilidades e resultados distinguíveis. Referencie os mesmos comandos e evidências em vez de duplicá-los em cada documento. Reexecute checks quando mudar seu código/configuração de entrada, quando o resultado não corresponder ao estado final ou houver falha pendente. Independência de review e checks exigidos pela DoD permanecem obrigatórios.
+
+Essas orientações reduzem repetição operacional; não concedem G5, aprovação sensível, aprovação final, escrita externa ou ativação de loops. Ganho de tempo só poderá ser afirmado após observação de demandas comparáveis.
+
 ## Proteção de branches
 
 A convenção canônica permanece DEC-010 e [docs/project/git-workflow.md](../docs/project/git-workflow.md): `main` e `develop` são permanentes; `feature/<id>-<resumo>` nasce de `develop`; `hotfix/<id>-<resumo>` nasce de `main` somente no caso aprovado. `main`, `master`, `develop` e qualquer outro ramo protegido definido pelo projeto não recebem diretamente alterações versionáveis de demandas reais STANDARD ou STRICT.

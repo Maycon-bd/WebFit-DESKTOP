@@ -4,16 +4,17 @@
 
 ## Onde paramos
 
-- **Data do checkpoint:** 2026-09-21
-- **Fase:** spike técnico do primeiro incremento de Saúde
-- **Gate atual:** G4 — execução técnica concluída; decisão humana pendente; G2 e G3 aprovados
-- **Estado:** spike recomenda REVISAR; a política operacional sem custo recorrente foi detalhada e está pendente de aprovação humana; implementação de produto continua bloqueada até fechar G4
-- **Última etapa concluída:** alterações do G4 e da política de custo zero foram consolidadas no commit `3875c57` e sincronizadas com `origin/feature/pbi-001-primeiro-incremento-saude`; SQLCipher, DPAPI, pacote portátil com custódia administrativa fictícia, restauração separada, auditoria, nuvem simulada, Unicode, falhas de filesystem/espaço, CSP, 9 testes, build, instalação/desinstalação NSIS e confirmação manual da interface com imagem de evidência passaram
-- **Próxima ação:** aprovar ou ajustar a política sem custo recorrente, registrar a decisão final do G4, confirmar licenciamento e política operacional da recuperação de chaves/backups e então preparar o G5
+- **Data do checkpoint:** 2026-09-30
+- **Fase:** preparação do G5 — construção do primeiro incremento de Saúde
+- **Gate atual:** G4 aprovado em 2026-09-21; G5 em preparação; implementação ainda não iniciada
+- **Estado:** G4 fechado e ADR-0001/ADR-0002 aceitos; preparação local do updater executada; repositório de releases criado; runner registrado e funcional manualmente; publicação piloto ainda não está ativa
+- **Última etapa concluída:** revisão better-harness e simplificação documental local: contexto proporcional, retomada por fase, continuidade entre skills no mesmo chat e correção de instruções que reabriam o ADR-0002; G5 e publicação continuam pendentes. Ver `.harness/evidence/harness-proporcional-2026-09-30.md` para validações e limites.
+- **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o serviço Windows instalado com `AUTORIDADE NT\\SERVIÇO DE REDE` falha ao iniciar com erro 1068; nenhum segredo foi versionado no Git
+- **Próxima ação:** na outra máquina, ler este checkpoint; depois resolver o serviço do runner sem executar `config.cmd` novamente, confirmar `WEBFIT_RELEASE_REPO` e os secrets pendentes, configurar o endpoint e executar a validação ponta a ponta
 - **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude`
-- **Work Item:** `WEBFIT-3` — spike G4; vínculo legado `PBI-001`
-- **Commit-base:** `3875c57` (`feat: implement G4 Tauri foundation spike and operational documentation`)
-- **Sincronização:** branch `feature/pbi-001-primeiro-incremento-saude` está alinhada com `origin/feature/pbi-001-primeiro-incremento-saude`; working tree limpo no início desta retomada; o commit consolidou as alterações do G4, evidências, spike e política de custo zero
+- **Work Item:** `WEBFIT-3` — spike G4 concluído em `Done`; vínculo legado `PBI-001`
+- **Commit-base:** `0de267b` (`docs: add operational status checkpoint for project handoff and tracking`); **HEAD atual:** `0de267b`
+- **Sincronização:** HEAD continua em `0de267b`; branch e upstream local conhecido correspondem ao checkpoint. Sem fetch/pull nesta revisão; estado remoto atual não foi consultado. Worktree contém alterações preexistentes e a simplificação documental local, sem commit/push automático. Antes de trocar de máquina, revisar, commitar e enviar intencionalmente.
 
 ## Última decisão aprovada
 
@@ -34,17 +35,16 @@ Em 2026-09-11, a aplicação de DEC-038 preservou DEC-028 a DEC-037 e registrou 
 
 Também em 2026-09-11, Maycon aprovou DEC-039: Spec Kit tornou-se a fonte operacional de SDD, o harness preservou governança e gates independentes, e `$project-task` tornou-se o entrypoint de novas demandas. A integração está pronta para smoke test posterior, sem feature criada.
 
+Em 2026-09-21, Maycon aprovou integralmente DEC-042: operação local/offline sem mensalidade, SQLCipher Community, DPAPI, backup portátil, credencial de recuperação offline, NSIS e manutenção manual no escopo vigente. A decisão aceitou o ADR-0001, fechou o G4 e autorizou a preparação do G5, sem autorizar implementação. Na mesma data, aprovou o ADR-0002/DEC-043: merges revisados na `main` publicam o canal piloto; o updater assinado mostra ícone e solicita confirmação; backup, download, validação, instalação e reinício seguem automaticamente após a confirmação; runner Windows próprio e repositório público separado de artefatos; canal estável posterior. A execução externa ainda está pendente.
+
 ## Próxima ação exata
 
-Submeter à aprovação humana a política registrada em [cost-free-operation.md](../operations/cost-free-operation.md): operação local/offline sem mensalidade, componentes gratuitos/open source, SQLCipher Community com avisos de licença, backup local com cópia externa opcional, credencial de recuperação offline sob custódia de Maycon, NSIS como instalador, atualizações manuais e ausência de nuvem/telemetria. Depois, registrar a decisão final do G4 e atualizar o ADR-0001 antes de preparar o G5.
+T075–T081 da trilha de preparação do updater/pipeline foram executados localmente. O repositório de releases e o runner foram preparados, mas T082/T083 ainda não estão concluídos. A próxima ação é resolver o serviço do runner, confirmar o estado dos secrets, configurar o endpoint e executar a validação ponta a ponta.
 
-A execução técnica do G4 passou. O ciclo manual completo da UI deve ser repetido quando o controlador estiver disponível; a instalação NSIS, abertura do app e persistência automatizada passaram. O MSI, a assinatura de código e a nuvem não bloqueiam o MVP privado, mas permanecem fora da decisão atual.
+Depois dessa validação, revisar os artefatos do primeiro incremento e solicitar a aprovação específica para iniciar o G5. ADR-0002 já está aceito; a preparação T081 consta como aprovada e executada no registro existente de `.harness/PROJECT-STATE.md`. Essa evidência não autoriza novas instalações, configuração externa, publicação, release, deploy ou implementação de produto. Recuperar a autorização específica aplicável antes de cada ação pendente, sem reabrir o aceite arquitetural.
 
-D-AUTO-001/002, DEC-040 e DEC-041 estão aceitos por Maycon para o comportamento/direção do spike; ainda não autorizam schema físico, autenticação administrativa de produção ou implementação integral do produto.
+DEC-040, DEC-041 e DEC-042, juntamente com o ADR-0001, encerram o G4. DEC-043 e ADR-0002 estão aceitos; o wiring do updater, o repositório e o runner foram preparados, mas endpoint, ativação, publicação e validação ponta a ponta permanecem pendentes.
 
-A proposta econômica está registrada, mas ainda não é decisão aprovada: [cost-free-operation.md](../operations/cost-free-operation.md) e [cost-free-operation-approval.md](../operations/cost-free-operation-approval.md). O custo recorrente obrigatório projetado é R$ 0; mídia externa e assinatura de código para eventual distribuição pública são custos opcionais.
-
-`PLANE / SOURCE-OF-TRUTH MISMATCH`: a demanda nasceu como `PBI-001` antes da integração Plane. O Work Item `WEBFIT-3` usa `external_id=PBI-001`; branch, specification e requisitos canônicos preservam o identificador legado para evitar renomeação destrutiva durante o planejamento.
 ## Gates
 
 | Gate | Objetivo | Estado | Evidência/condição seguinte |
@@ -52,8 +52,8 @@ A proposta econômica está registrada, mas ainda não é decisão aprovada: [co
 | G1 | aprovar visão, autoridade e MVP Saúde | **aprovado em 2026-08-20** | entrevista e DEC-013 |
 | G2 | aprovar baseline rastreável do primeiro incremento | **aprovado em 2026-09-17 por Amanda e Maycon** | requisitos, testes e rastreabilidade aprovados; execução técnica e evidências permanecem pendentes |
 | G3 | criar plano executável | **aprovado em 2026-09-17 por Maycon** | artefatos Spec Kit aprovados; executar spike G4 |
-| G4 | validar arquitetura e spike | **execução técnica concluída; decisão pendente** | aprovar política sem custo recorrente, licenciamento, recuperação de chaves/backups e riscos residuais |
-| G5 | construir incremento vertical | não iniciado | depende do G4 aplicável |
+| G4 | validar arquitetura e spike | **aprovado por Maycon em 2026-09-21** | ADR-0001 aceito; política sem custo recorrente e riscos residuais aprovados |
+| G5 | construir incremento vertical | **em preparação; implementação não iniciada** | ADR-0002 aceito; resolver lacunas do workflow e pendências do runner/configuração com autorização específica, validar ponta a ponta e obter aprovação de implementação |
 | G6 | validar release candidate | não iniciado | requisitos críticos verificados |
 | G7 | liberar para dados reais | não iniciado | restauração exercitada e riscos aceitos |
 
@@ -69,7 +69,7 @@ A proposta econômica está registrada, mas ainda não é decisão aprovada: [co
 | 5B | Necessidade energética e metas | **aprovado por Amanda em 2026-09-10** | RF-PRE-005, RN-PRE-011 a RN-PRE-024 e TA-PRE-008 a TA-PRE-016 |
 | 6 | Rascunhos | **aprovado por Maycon em 2026-09-10** | RF-DRF-001, RN-DRF-001 a RN-DRF-005 e TA-DRF-001 a TA-DRF-004 |
 | 7 | Auditoria | **baseline aprovada; D-AUTO-001/002 aceitos em 2026-09-17** | RF-AUD-001, UC-AUD-001, RN-AUD-001 a RN-AUD-017, TA-AUD-001 a TA-AUD-015 e D-AUTO-001/002 |
-| 8 | Backup e restauração | **baseline aprovada; prova técnica executada** | snapshot comum, backup SQLCipher, pacote portátil, checksum, restauração separada, auditoria e integridade passaram; política de credencial administrativa de produção pendente |
+| 8 | Backup e restauração | **baseline e direção técnica aprovadas** | snapshot, SQLCipher, pacote portátil, checksum, restauração, auditoria e política de credencial offline aprovados; implementação pertence ao G5 |
 | 9 | Requisitos não funcionais | **baseline documentada** | RNF-* do incremento; medição pendente |
 | 10 | Testes e rastreabilidade | **artefatos preparados** | TA-*, matriz e tasks; execução pendente |
 | 11 | Aprovação final do G2 | **aprovado em 2026-09-17 por Amanda e Maycon** | aceite funcional conjunto de Amanda e Maycon |
@@ -96,10 +96,11 @@ A proposta econômica está registrada, mas ainda não é decisão aprovada: [co
 ## Pendências que não devem ser esquecidas
 
 - No discovery de arquivos, definir limites, categorias, duplicidade, miniaturas e retenção.
-- Criptografia, diretório de dados, chaves e pacote de backup foram validados tecnicamente no spike; decisão operacional final e aplicação em produção dependem do fechamento do G4.
+- Criptografia, diretório de dados, chaves e pacote de backup foram validados e aprovados no G4; detalhes de implementação e testes de produção pertencem ao G5/G6.
 - Pen drive ou SSD externo deve ser decidido antes do G7.
-- A política de custo zero está proposta, mas requer aprovação antes do G5; ver `docs/operations/cost-free-operation.md`.
+- A política de custo zero foi aprovada em 2026-09-21; ver `docs/operations/cost-free-operation.md`.
 - Incluir avisos de licença e inventário de componentes antes do release.
+- ADR-0002/DEC-043 aceitos: dependências, chave, workflow, repositório e runner foram preparados; endpoint, ativação e validação ponta a ponta ainda estão pendentes.
 - Retenção clínica definitiva precisa de avaliação antes de dados reais.
 - Educação e serviços em nuvem exigem novo ciclo/ADR.
 
@@ -142,7 +143,13 @@ Ao final de cada sessão, atualizar pelo menos: data, branch, commit-base, sincr
 
 ## Inventário local desta sessão
 
+- 2026-09-30: instruções do harness e `project-task` simplificadas por solicitação humana; correções documentais preservam gates, Plane/Branch Safety, Spec Kit oficial e estágio PLANNING. Relatório better-harness preservado como baseline; achados do pipeline ainda pendentes. Não houve alteração no workflow, spike, dependências do projeto ou configuração externa nesta etapa. Evidência: [harness proporcional](../../.harness/evidence/harness-proporcional-2026-09-30.md).
+
 - Alterações preexistentes preservadas nos registros do G4, no spike e nas evidências.
 - Documento novo: `docs/operations/cost-free-operation.md`.
 - Documento novo: `docs/operations/cost-free-operation-approval.md`.
-- O commit `3875c57` está presente localmente e na origem; não houve merge, PR ou implementação do produto.
+- Documento novo: docs/operations/update-release-strategy.md.
+- Documento novo: docs/operations/update-pipeline-design.md, com workflow local em `.github/workflows/pilot-release.yml`.
+- Preparação local T081 executada: `@tauri-apps/plugin-updater`, `tauri-plugin-updater`, chave fora do repositório, configuração de assinatura, UI de verificação e build assinado; repositório `webfit-desktop-releases` criado; runner `DESKTOP-GEUP094` registrado em `C:\actions-runner`; execução manual aprovada, serviço automático pendente por erro 1068; T082/T083 permanecem pendentes.
+- ADR aceito: docs/architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md.
+- O commit-base `0de267b` está presente localmente e na origem; as alterações desta análise ainda não foram commitadas nem enviadas; não houve merge, PR, release, publicação, deploy ou implementação do produto.

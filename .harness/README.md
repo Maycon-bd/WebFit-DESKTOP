@@ -41,6 +41,8 @@ Uma alteração documental simples pode ser LIGHT; uma feature comum é STANDARD
 
 ## Uso rápido
 
+Comece pela primeira etapa pendente, conforme o checkpoint, e aplique a [condução proporcional](GOVERNANCE.md#condução-proporcional-e-retomada). O diagrama acima descreve o ciclo completo de uma demanda; ele não manda reiniciar o ciclo a cada conversa. LIGHT documental usa fonte, alteração, revisão e evidência breve. Nas demais demandas, reutilize artefatos válidos e execute as skills da fase atual no mesmo chat. Perguntas e gates condicionais exigem um motivo concreto.
+
 1. Ler PROJECT-STATE.md, GOVERNANCE.md e os documentos canônicos relacionados.
 2. Classificar a demanda, aplicar a matriz de autonomia e distinguir fato, inferência, `AGENT-PROVISIONAL` e `NEEDS-HUMAN-DECISION`.
 3. Para STANDARD ou STRICT real, concluir o Branch Safety antes de criar qualquer alteração versionável; se não for seguro, parar em `BRANCH SETUP BLOCKED`.

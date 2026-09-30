@@ -1,6 +1,6 @@
 # Registro de decisões
 
-Este registro consolida decisões e pendências. ADRs detalham decisões arquiteturais; itens pendentes não autorizam implementação. `ACCEPTED` vale somente para o escopo registrado na decisão e em sua evidência; em particular, DEC-003 a DEC-006 permanecem aceitas apenas para spike, não para produção.
+Este registro consolida decisões e pendências. ADRs detalham decisões arquiteturais; itens pendentes não autorizam implementação. `ACCEPTED` vale somente para o escopo registrado na decisão e em sua evidência. DEC-003 a DEC-006 registram a autorização histórica do spike; a direção de produção foi aceita posteriormente por DEC-042 e pelo ADR-0001.
 
 ## Decisões registradas
 
@@ -55,6 +55,25 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 - **Aprovação:** Maycon, em 2026-09-17.
 - **Evidência:** teste `portable_backup`, com nuvem simulada, restauração separada, auditoria SUCCESS/DENIED e ausência de segredo no log.
 
+## DEC-042 — política sem custo recorrente e fechamento do G4
+
+- **Status:** ACCEPTED.
+- **Decisão:** operar local/offline, com custo recorrente obrigatório de R$ 0, SQLCipher Community com avisos de licença, chave local protegida por DPAPI `CurrentUser`, backup local/portátil, credencial de recuperação offline sob custódia de Maycon, NSIS e atualizações manuais no escopo vigente.
+- **Arquitetura:** aceitar o ADR-0001 como direção de produção e encerrar o G4; a implementação permanece condicionada ao G5.
+- **Exclusões no momento da aprovação:** não autoriza nuvem, telemetria, autenticação externa, updater conectado, pipeline de publicação, release ou deploy automático. A estratégia de atualizações foi posteriormente decidida por DEC-043 e ADR-0002.
+- **Aprovação:** Maycon, em 2026-09-21.
+- **Evidência:** spike G4, `docs/operations/cost-free-operation.md` e confirmação explícita do responsável técnico.
+
+## DEC-043 — estratégia de atualizações frequentes
+
+- **Status:** ACCEPTED.
+- **Problema:** permitir que a stakeholder use versões frequentes durante o desenvolvimento sem instalar cada commit e sem arriscar dados clínicos ou migrações.
+- **Decisão:** merges revisados na `main` publicam automaticamente o canal piloto. O Tauri Updater assinado mostra um ícone e solicita confirmação; após a confirmação, backup, download, validação, instalação e reinício são automáticos. Não há atualização forçada durante o uso.
+- **Custo:** usar runner Windows auto-hospedado e repositório público separado somente para artefatos assinados, `latest.json`, checksums e notas; nenhum código-fonte ou segredo é publicado.
+- **Estável:** ativar posteriormente, após G7 e promoção formal.
+- **Fonte:** `docs/operations/update-release-strategy.md` e ADR-0002.
+- **Decisores:** Maycon para arquitetura/publicação e Amanda para experiência/cadência percebida.
+
 ## Decisões provisórias do agente
 
 | ID | Decisão | Status | Fonte/evidência |
@@ -73,8 +92,9 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | Retenção clínica | qual política legal definitiva de retenção e eliminação? | produto e assessoria adequada | antes de G7 | aberta |
 | Migração | existe fonte confiável para os 80 pacientes? | Amanda e Maycon | antes da migração | aberta |
 | Backup externo | pen drive ou SSD e rotina operacional definitiva | Amanda | antes de G7 | aberta |
-| Proteção local | SQLCipher e chave por instalação protegida por DPAPI `CurrentUser` foram aprovados como direção; licenciamento, implementação e política operacional final ainda devem ser revisados | Maycon | G4 | direção aceita; detalhes pendentes |
+| Proteção local | SQLCipher Community, DPAPI `CurrentUser`, backup portátil e política operacional sem custo recorrente | Maycon | G4 | resolvida por DEC-040/041/042 e ADR-0001; detalhes de implementação seguem no G5 |
 | Educação | atores, entidades, regras, escopo e prioridade | Amanda e Maycon | novo ciclo G1/G2 | adiada |
-| Serviços conectados | arquitetura, segurança, custos e privacidade de atualização, reset remoto e nuvem | Amanda e Maycon | ADR futuro | adiada |
+| Atualizações conectadas | canais piloto/estável, gatilho na `main`, assinatura, hospedagem e experiência de confirmação | Amanda e Maycon | ADR-0002 | resolvida por DEC-043; spike e implementação pendentes |
+| Outros serviços conectados | reset remoto, nuvem e sincronização | Amanda e Maycon | ADR futuro | adiada |
 
 Novas decisões devem usar os estados `ACCEPTED`, `AGENT-PROVISIONAL`, `NEEDS-HUMAN-DECISION`, `REJECTED` ou `SUPERSEDED` e registrar autoridade, data, justificativa, consequências, evidência, confiança, impacto e reversibilidade quando aplicável.

@@ -74,6 +74,8 @@ Se houver lacuna material, retorne ao discovery/decisão pertinente antes de dec
 
 ## Saída para o humano
 
+Em trabalho já autorizado, avance até concluir o escopo ou alcançar um bloqueio real; não encerre o turno apenas para pedir a invocação da próxima skill ou anunciar uma transição de fase. Faça perguntas somente sobre lacunas materiais que ainda não tenham resposta. Agrupe decisões relacionadas dentro dos gates existentes, com o escopo de cada autorização claro. Enquanto uma resposta estiver pendente, continue o trabalho independente permitido. Use atualizações breves sobre resultado, incerteza e próximo passo, sem transformar o fluxo interno em uma sequência de aprovações.
+
 Mostre o que ajuda a compreender, decidir, acompanhar e validar: progresso breve, significado da etapa, motivo da necessidade e decisão necessária. Mantenha IDs internos, logs extensos, listas enormes de gates e raciocínio operacional nos artefatos apropriados. Cite um ID/ADR ou detalhe técnico quando ele esclarecer origem, evidência ou ação necessária. Não oculte bloqueadores, limitações ou decisões provisórias relevantes.
 
 ## Integração e manutenção

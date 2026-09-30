@@ -1,18 +1,18 @@
 # Implementation Plan: Primeiro incremento de Saúde
 
-**Branch**: `feature/pbi-001-primeiro-incremento-saude` | **Date**: 2026-09-15 | **Spec**: [spec.md](spec.md)
+**Branch**: `feature/pbi-001-primeiro-incremento-saude` | **Date**: 2026-09-21 | **Spec**: [spec.md](spec.md)
 
 **Input**: Feature specification from `/specs/001-primeiro-incremento-saude/spec.md`
 
 ## Summary
 
-O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma instalação local e offline: autenticação e sessão, perfil profissional, pacientes, rascunhos protegidos, plano alimentar/orientações, auditoria e backup/restauração. O plano organiza a execução vertical desses fluxos, mas mantém a composição técnica como hipótese sujeita ao spike do ADR-0001 e aos gates G4/G5. Educação, sincronização entre máquinas, nuvem e colaboração ficam fora.
+O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma instalação local e offline: autenticação e sessão, perfil profissional, pacientes, rascunhos protegidos, plano alimentar/orientações, auditoria e backup/restauração. O plano organiza a execução vertical desses fluxos, mas mantém a composição técnica como hipótese sujeita ao spike do ADR-0001 e aos gates G4/G5. Educação, sincronização entre máquinas, nuvem e colaboração ficam fora. A distribuição do canal piloto é uma trilha operacional separada, aprovada pelo ADR-0002, sem alterar o escopo clínico.
 
 ## Technical Context
 
-**Language/Version**: A validar no spike G4; hipótese autorizada para teste: Rust na fronteira local e TypeScript na interface.
+**Language/Version**: Rust na fronteira local e TypeScript na interface; direção aceita pelo ADR-0001, com versões exatas a serem fixadas no G5.
 
-**Primary Dependencies**: Nenhuma dependência nova aprovada. A necessidade e a versão de cada dependência devem ser justificadas e submetidas ao gate ASK-FIRST.
+**Primary Dependencies**: A fundação aceita Tauri 2, React, TypeScript, Vite, Rust, SQLite/SQLCipher e DPAPI. As dependências do updater foram instaladas somente no spike descartável após T081; o produto ainda não recebeu essas dependências, e versão, licença e segredo correspondente exigem avaliação própria.
 
 **Storage**: Persistência local embarcada; SQLite é a proposta do ADR-0001 para o spike. Não usar banco em pasta de rede ou sincronizada.
 
@@ -30,11 +30,11 @@ O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma ins
 
 ## Constitution Check
 
-*GATE: PASS para pesquisa e design; implementação permanece bloqueada até G4/G5 e aprovação humana.*
+*GATE: PASS para preparação e design; G4/ADR-0001 estão aceitos, mas implementação permanece bloqueada até aprovação específica do G5 e gates sensíveis.*
 
 - Specification antes de implementação: PASS. A spec referencia RFs, RNFs, regras e TAs aprovados.
 - Segurança e privacidade: PASS com controles a comprovar no spike. Nenhum dado real será usado.
-- Decisões explícitas: PASS. ADR-0001 continua proposta para o spike; D-AUTO-001/002 foram aceitos por Amanda e Maycon em 2026-09-17.
+- Decisões explícitas: PASS. ADR-0001 foi aceito no G4; ADR-0002/DEC-043 aprovam o canal piloto e mantêm o updater sujeito a spike e gates de implementação; D-AUTO-001/002 foram aceitos por Amanda e Maycon em 2026-09-17.
 - Complexidade mínima: PASS. Não há servidor, sincronização ou dependência externa no incremento.
 - Rastreabilidade: PASS para o design; tasks, testes e Evidence ainda serão produzidos nas fases seguintes.
 - Mudança controlada: PASS. Schema, migrações, dependências, autenticação e arquitetura de produção exigem gate sensível.
@@ -71,7 +71,7 @@ A consolidação está em [research.md](research.md).
 - Submeter D-AUTO-001/D-AUTO-002 à validação humana.
 - Não instalar dependências nem executar migração do produto.
 
-### Phase 1 — Spike G4 da arquitetura
+### Phase 1 — Spike G4 da arquitetura (concluído)
 
 - Provar shell desktop, ciclo de vida e empacotamento Windows.
 - Provar persistência, foreign keys, transações, banco vazio e migração de versão.
@@ -79,7 +79,18 @@ A consolidação está em [research.md](research.md).
 - Provar proteção local de banco, arquivos, chaves e backup.
 - Provar criação de snapshot, checksums, restauração segura e falhas de permissão/espaço.
 - Medir os RNFs com dados fictícios.
-- Resultado possível: aceitar, revisar ou rejeitar ADR-0001; qualquer resultado exige registro e aprovação.
+- Resultado: ADR-0001 aceito, G4 encerrado e evidência registrada; detalhes de produção permanecem condicionados ao G5.
+
+### Phase 1A — Preparação do canal piloto do G5
+
+A decisão T081 permite a preparação local no spike descartável. A fundação vertical do produto continua separada; a configuração externa do runner/repositório e a primeira publicação permanecem em T082/T083.
+
+- definir contrato do canal piloto, SemVer pré-release, `latest.json`, notas, checksums e promoção para estável;
+- definir o fluxo de `main` → runner Windows → artefato assinado → repositório público separado;
+- definir custódia, recuperação e rotação da chave privada do updater;
+- preparar casos de teste para assinatura inválida, rede indisponível, backup pré-atualização, migração, interrupção e retorno;
+- registrar inventário de dependências, licenças, permissões Tauri e critérios de custo zero;
+- registrar a configuração externa de runner, repositório, secrets e endpoint em T082;
 
 ### Phase 2 — Fundação vertical
 
@@ -93,7 +104,7 @@ Entregar em ordem de dependência: perfil e espaço Saúde; pacientes e tags; ra
 
 Entregar consulta de auditoria e backup/restauração com os testes TA-AUD-* e TA-BKP-*, incluindo falhas e preservação do estado atual.
 
-### Phase 5 — Convergência e gates
+### Phase 5 — Convergência, atualização piloto e gates
 
 Executar checklist, Tasks, Analyze, Human Gate, Implement, Converge, Verification, Review, Security Gate condicional, Evidence e aprovação final. Nenhum commit, push, merge ou release é automático.
 
@@ -127,8 +138,8 @@ tests/
 
 ## Constitution Check — Post-Design
 
-- PASS: o design não cria requisitos aceitos, não altera o schema e não escolhe dependências.
+- PASS: o design não cria requisitos clínicos aceitos nem altera o schema do produto; a preparação de dependências ficou restrita ao spike descartável e a trilha do updater está documentada no ADR-0002.
 - PASS: o modelo separa Saúde de Educação e não assume sincronização.
 - PASS: contratos proíbem acesso genérico a dados pela interface e exigem autorização.
 - PASS: backup/restauração, auditoria, logs e dados fictícios estão cobertos.
-- PENDING HUMAN: proteção criptográfica, resultado do ADR-0001 e aprovação de implementação após o spike G4.
+- PENDING HUMAN: aprovação específica para iniciar a implementação do G5; T082/T083 ainda exigem configuração externa e validação do canal piloto.

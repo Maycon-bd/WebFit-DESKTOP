@@ -1,0 +1,76 @@
+name: Publish WebFit pilot
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish-pilot:
+    runs-on: [self-hosted, windows, x64]
+    permissions:
+      contents: read
+    env:
+      WEBFIT_RELEASE_REPO: ${{ vars.WEBFIT_RELEASE_REPO }}
+
+    steps:
+      - name: Validate release configuration
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:WEBFIT_RELEASE_REPO)) {
+            throw "Repository variable WEBFIT_RELEASE_REPO is required."
+          }
+          if ($env:WEBFIT_RELEASE_REPO -eq "WebFit-DESKTOP") {
+            throw "Pilot artifacts must use a separate release-only repository."
+          }
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set pilot version
+        shell: pwsh
+        working-directory: spikes/g4-tauri-foundation
+        env:
+          WEBFIT_PILOT_VERSION: 0.1.0-pilot.${{ github.run_number }}
+        run: |
+          npm version --no-git-tag-version $env:WEBFIT_PILOT_VERSION
+          $cargo = Get-Content -Raw src-tauri/Cargo.toml
+          $cargo = [regex]::Replace($cargo, '(?m)^version = ".*"$', 'version = "' + $env:WEBFIT_PILOT_VERSION + '"', 1)
+          [IO.File]::WriteAllText((Resolve-Path src-tauri/Cargo.toml), $cargo, (New-Object Text.UTF8Encoding($false)))
+          $tauri = Get-Content -Raw src-tauri/tauri.conf.json
+          $tauri = [regex]::Replace($tauri, '"version": ".*"', '"version": "' + $env:WEBFIT_PILOT_VERSION + '"', 1)
+          [IO.File]::WriteAllText((Resolve-Path src-tauri/tauri.conf.json), $tauri, (New-Object Text.UTF8Encoding($false)))
+
+      - name: Install frontend dependencies
+        working-directory: spikes/g4-tauri-foundation
+        run: npm ci
+
+      - name: Publish signed pilot release
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.WEBFIT_RELEASE_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: spikes/g4-tauri-foundation
+          owner: Maycon-bd
+          repo: ${{ vars.WEBFIT_RELEASE_REPO }}
+          releaseCommitish: main
+          tagName: pilot-v__VERSION__
+          releaseName: WebFit pilot v__VERSION__
+          releaseBody: Generated from reviewed main merge. Pilot channel only.
+          releaseDraft: false
+          prerelease: false
+          uploadUpdaterJson: true
+          updaterJsonPreferNsis: true
+          uploadUpdaterSignatures: true
+          tauriScript: npm run tauri --

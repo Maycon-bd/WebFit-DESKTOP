@@ -15,7 +15,7 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 ## Accepted
 
 - DEC-001 a DEC-002: novo repositório e pausa do WebFit Web.
-- DEC-003 a DEC-006: Tauri 2, React/TypeScript/Vite, SQLite e Rust, aceitos somente para o spike do ADR-0001.
+- DEC-003 a DEC-006: autorização histórica do spike; a direção de produção correspondente foi aceita por DEC-042 e ADR-0001.
 - DEC-007 a DEC-010: curadoria documental, requisitos rastreáveis, gates e Git Flow.
 - DEC-013 a DEC-021: MVP Saúde, papéis, primeiro incremento, backup e prescrição/cardápio.
 - DEC-022 a DEC-027: regras clínicas, rascunho automático, auditoria e planejamento de arquivos.
@@ -24,6 +24,8 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 - DEC-039: integrar Spec Kit como fonte operacional SDD, manter governança/gates no harness e usar `$project-task` como entrypoint.
 - DEC-040: SQLCipher como direção de proteção local e chave aleatória por instalação protegida pelo DPAPI `CurrentUser`, aprovada por Maycon em 2026-09-17 para o escopo do spike e detalhamento posterior.
 - DEC-041: backup portátil com chave encapsulada, credencial administrativa separada, manifesto, checksum e auditoria; nuvem real permanece fora desta prova.
+- DEC-042: política operacional sem custo recorrente aprovada, ADR-0001 aceito, G4 fechado e preparação do G5 autorizada por Maycon em 2026-09-21.
+- DEC-043: merges revisados na `main` publicam automaticamente o canal piloto; o aplicativo usa updater assinado, mostra ícone, aguarda confirmação e executa backup, download, validação, instalação e reinício; runner Windows próprio e repositório público separado de artefatos; canal estável posterior. Aprovada por Maycon em 2026-09-21.
 
 ## Agent-provisional ledger
 
@@ -69,7 +71,7 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 ## Needs-human-decision / abertas
 
-- Licenciamento, implementação e operação final do SQLCipher/DPAPI; credencial administrativa, rotação e recuperação.
+
 - Integração de nuvem, retenção clínica, backup externo, documentos e migração.
 - Retenção clínica, backup externo, documentos e migração.
 

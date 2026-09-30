@@ -4,12 +4,12 @@
 
 - Nome: WebFit Desktop.
 - Objetivo: gestão local e offline de consultório e acompanhamento nutricional.
-- Estágio: PROJECT STAGE: PLANNING; G1, G2 e G3 aprovados; execução técnica do G4 concluída e decisão humana pendente.
+- Estágio: PROJECT STAGE: PLANNING; G1, G2, G3 e G4 aprovados; preparação do G5 em andamento, sem implementação de produto.
 - Domínio: Saúde no MVP; Educação é um espaço futuro.
 - Usuários aprovados no MVP: nutricionista e administrador, ambos com acesso total.
 - Operação: Windows-first, um computador por instalação, sem hospedagem ou mensalidade obrigatória.
 
-Ainda não existe aplicação de produto. Existe somente o spike técnico descartável do G4 em `spikes/g4-tauri-foundation/`, com dependências, banco fictício, testes e instaladores de prova; ele não autoriza implementação nem arquitetura de produção.
+Ainda não existe aplicação de produto. Existe somente o spike técnico descartável do G4 em `spikes/g4-tauri-foundation/`, com dependências, banco fictício, testes e instaladores de prova. O ADR-0001 foi aceito como direção de produção em 2026-09-21; o spike não deve ser promovido a produto e o início da implementação continua condicionado ao G5.
 
 ## Fonte de verdade
 
@@ -37,11 +37,11 @@ Quando uma solicitação contiver a frase “Vamos continuar onde paramos”, in
 5. retome pela seção Próxima ação exata;
 6. antes de encerrar trabalho material, atualize data, branch, commit-base, sincronização, última etapa concluída, próxima ação e checklist do Gate no mesmo arquivo.
 
-## Arquitetura em validação
+## Arquitetura aprovada para a fundação
 
-Tauri 2, React + TypeScript + Vite, Rust e SQLite são a composição proposta no ADR-0001, aprovada somente para spike. O spike deve validar shell, persistência, migrações, autorização, proteção local, arquivos, backup e restauração antes de qualquer implementação.
+Tauri 2, React + TypeScript + Vite, Rust, SQLite/SQLCipher Community e DPAPI são a direção de fundação aceita no ADR-0001 após o G4. A implementação deve seguir os requisitos, o plano e as tarefas aprovadas do G5, sem reutilizar o spike descartável como código de produto.
 
-Não trate a proposta como decisão de produção nem importe a arquitetura do WebFit Web. Não introduza Supabase, Firebase, backend remoto, localStorage de domínio ou acesso SQL genérico pela WebView sem nova decisão arquitetural aprovada.
+Não importe a arquitetura do WebFit Web. Não introduza Supabase, Firebase, backend remoto, localStorage de domínio, acesso SQL genérico pela WebView ou atualização conectada sem nova decisão arquitetural aprovada. O ADR-0002 de atualizações foi aceito em 2026-09-21; sua aceitação não substitui os gates específicos de execução, publicação ou implementação.
 
 ## Processo obrigatório
 

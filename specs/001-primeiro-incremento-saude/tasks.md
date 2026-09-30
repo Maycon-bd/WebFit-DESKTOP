@@ -5,11 +5,11 @@ description: "Task list for the first Health increment"
 # Tasks: Primeiro incremento de Saúde
 
 **Input**: Design documents from /specs/001-primeiro-incremento-saude/
-**Status**: planejamento aprovado; spike G4 autorizado. Implementação de produto permanece bloqueada até conclusão do G4, aprovação do G5 e aprovação das mudanças sensíveis aplicáveis.
+**Status**: G4 concluído; T081 aprovado e preparação local do updater executada. Implementação de produto e publicação externa permanecem bloqueadas até o gate específico do G5 e as evidências T082/T083.
 
 ## Phase 1: Setup and architecture readiness
 
-- [ ] T001 Record G4 spike acceptance evidence and open decisions in docs/architecture/adr/ADR-0001-desktop-tauri-sqlite.md
+- [x] T001 Record G4 spike acceptance evidence and open decisions in docs/architecture/adr/ADR-0001-desktop-tauri-sqlite.md
 - [ ] T002 [P] Update RF/RNF/TA traceability in docs/requirements/traceability.md
 - [ ] T003 [P] Define approved quality commands in docs/quality/test-plan.md
 - [ ] T004 [P] Prepare candidate src/, src-tauri/ and tests/ directories only after G4 accepts the architecture
@@ -126,10 +126,31 @@ description: "Task list for the first Health increment"
 - [ ] T071 Run speckit-analyze, harness Verification and Review; update docs/project/risk-register.md
 - [ ] T072 Update docs/project/status.md with stage, evidence, exact next action and remaining human gates
 
+## Phase 10: Pilot update foundation (G5 preparation)
+
+**Purpose**: preparar a publicação frequente aprovada em DEC-043/ADR-0002 sem misturar atualização com o escopo clínico e sem iniciar configuração sensível antes do gate.
+
+**Execution gate**: T073–T074 documentam decisões já consolidadas; T075–T080 exigem planejamento e avaliação; T081 foi aprovado; T082/T083 concluem a configuração externa e a evidência do canal piloto.
+
+- [x] T073 Reconcile the approved updater behavior and technology inventory in docs/architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md and docs/operations/update-release-strategy.md
+- [x] T074 Document the pilot/stable channels, merge trigger, confirmation flow and zero-cost constraints in docs/project/git-workflow.md and docs/project/status.md
+- [x] T075 Define updater spike acceptance scenarios for invalid signature, unavailable network, backup before migration, interrupted installation and compatible rollback in docs/quality/update-spike-test-plan.md
+- [x] T076 Inventory updater and pipeline dependencies, versions, licenses and Tauri permissions in docs/architecture/update-component-inventory.md
+- [x] T077 Define private-key custody, recovery, rotation and GitHub secret handling without storing secrets in the repository in docs/security/update-signing.md
+- [x] T078 Specify the static `latest.json` contract, SemVer pilot numbering, artifact naming, checksums and stable promotion in docs/operations/update-manifest-contract.md
+- [x] T079 Design the Windows runner and release-only repository workflow, including offline fallback and no-token-in-app constraints in docs/operations/update-pipeline-design.md
+- [x] T080 Prepare updater and pipeline traceability from DEC-043/ADR-0002 to tests and evidence in docs/requirements/traceability.md and .harness/evidence/update-pilot/
+- [x] T081 Record implementation approval and sensitive-change approval before adding updater dependencies, generating keys, configuring the runner or creating release automation in docs/project/status.md
+- [ ] T082 Configure the separate public release repository, Windows self-hosted runner, GitHub variable/secrets and final updater endpoint in docs/operations/update-pipeline-design.md
+- [ ] T083 Execute the first pilot publication and end-to-end update check, including confirmation, backup, signature verification, installation and restart evidence in docs/quality/update-spike-test-plan.md
+
+---
+
 ## Dependencies & Execution Order
 
 - Phase 1 is planning/setup; it does not authorize implementation.
-- Phase 2 blocks all stories and requires G4/G5.
+- Phase 10 is the G5 update-foundation track; T081 authorizes the local preparation, while T082 and T083 are required before the pilot channel is considered operational.
+- Phase 2 blocks all stories and requires the G5 implementation approval plus completion of the applicable sensitive gates.
 - US1 depends on Phase 2; US2 depends on US1 workspace/session context.
 - US3 depends on US1 and an active patient from US2.
 - US4 depends on forms from US1, US2 and US3.
@@ -151,11 +172,13 @@ Parallel opportunities: T002/T003/T013; T006–T012 by specialty after spike app
 ## Implementation Strategy
 
 1. Complete G4 spike and Human Decision Review before schema or dependencies.
-2. Complete Phase 2 and stop for implementation approval.
-3. Deliver US1, validate independently, then add patients and nutrition.
-4. Add drafts, audit and recovery with negative tests.
-5. Run cross-cutting validation, Verification, Review, Security Gate and Evidence.
-6. No commit, push, merge, release or deploy is automatic.
+2. Complete the Phase 10 update-foundation track through T083; T081 is approved and the local wiring is prepared, while T082/T083 still require external setup and evidence.
+3. Complete Phase 2 and stop for implementation approval.
+4. Complete Phase 2 and stop for implementation approval.
+5. Deliver US1, validate independently, then add patients and nutrition.
+6. Add drafts, audit and recovery with negative tests.
+7. Run cross-cutting validation, Verification, Review, Security Gate and Evidence.
+8. A reviewed merge into `main` may publish the pilot only after the approved pipeline exists; installation requires user confirmation, and no commit, push, release or deploy is automatic.
 
 ## Notes
 

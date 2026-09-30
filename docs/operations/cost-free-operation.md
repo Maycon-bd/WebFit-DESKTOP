@@ -1,6 +1,6 @@
 # Política operacional sem custo recorrente
 
-**Status:** proposta operacional; validação humana pendente antes do G5.
+**Status:** aprovado por Maycon em 2026-09-21 para fechamento do G4 e preparação do G5.
 
 ## Objetivo
 
@@ -18,7 +18,7 @@ O WebFit Desktop deve atender uma única instalação Windows, usada pela nutric
 | Chave local | DPAPI `CurrentUser`, uma chave aleatória por instalação | R$ 0 |
 | Instalador | NSIS | R$ 0 |
 | Backup | armazenamento local e cópia manual em mídia externa | R$ 0, se já houver mídia |
-| Atualizações | aplicação manual pelo responsável técnico | R$ 0 |
+| Atualizações | pipeline piloto após merge revisado na `main`, updater assinado e confirmação da usuária; runner próprio | R$ 0 |
 | Telemetria, login e nuvem | não usar no MVP | R$ 0 |
 
 SQLite é domínio público. Tauri é distribuído sob MIT/Apache-2.0. O SQLCipher Community é a opção gratuita, mas exige preservação dos avisos e atribuições de licença; a edição Commercial não faz parte desta proposta.
@@ -37,7 +37,7 @@ SQLite é domínio público. Tauri é distribuído sob MIT/Apache-2.0. O SQLCiph
 
 O NSIS será o instalador primário do MVP. Para uso privado em uma máquina conhecida, não será obrigatório comprar certificado de assinatura. O Windows pode exibir aviso do SmartScreen para um instalador não assinado; o responsável técnico deverá validar a origem e o checksum antes da instalação.
 
-Atualizações serão preparadas e aplicadas manualmente por Maycon. Cada atualização deve preservar migrações, backup de segurança e possibilidade de restauração. Não haverá auto-update, analytics ou dependência de conta externa.
+Atualizações piloto serão publicadas após merge revisado na `main` e aplicadas pelo updater assinado após confirmação da nutricionista. Cada atualização deve preservar migrações, backup de segurança e possibilidade de restauração. Não haverá instalação forçada durante o uso, analytics ou dependência de conta externa. O runner Windows próprio e o repositório público separado de artefatos preservam a política de custo recorrente igual a R$ 0.
 
 ## O que não será sacrificado para economizar
 
@@ -61,13 +61,15 @@ Atualizações serão preparadas e aplicadas manualmente por Maycon. Cada atuali
 | manutenção depender de Maycon | manter manual de operação, instalador, backups e procedimento de restauração |
 | custo futuro de distribuição pública | somente avaliar assinatura de código se o produto sair do uso privado |
 
-## Aprovações necessárias
+## Aprovação registrada
 
-Antes de iniciar o G5, confirmar explicitamente:
+Maycon aprovou integralmente em 2026-09-21:
 
 1. modelo local, offline e sem mensalidade;
 2. SQLCipher Community e seus avisos de licença;
 3. backup local com cópia externa opcional;
 4. credencial de recuperação mantida offline por Maycon;
 5. NSIS como instalador primário;
-6. atualizações manuais, sem telemetria, nuvem ou serviço de autenticação externo.
+6. atualizações piloto automatizadas pelo pipeline aprovado, com confirmação da usuária, sem telemetria, nuvem ou serviço de autenticação externo.
+
+A aprovação autoriza o fechamento do G4 e a preparação do G5. A decisão posterior DEC-043/ADR-0002 autoriza a direção do updater e do pipeline piloto; instalação de dependências, credenciais e implementação continuam condicionadas ao planejamento e ao gate do G5.

@@ -18,4 +18,4 @@
 - testar caminho com espaços e acentos;
 - registrar versão, tamanho, permissões e limitações.
 
-Atualização conectada é futura e exige ADR; não faz parte do instalador do MVP inicial.
+Durante G5/G6, merges revisados na `main` publicarão versões piloto assinadas. O aplicativo mostrará um ícone e solicitará confirmação; após a confirmação, backup, download, validação, instalação e reinício serão automáticos. O uso piloto permanecerá em perfil/diretório separado e com dados fictícios ou controlados até o G7. O canal estável será ativado posteriormente. A estratégia está em [update-release-strategy.md](update-release-strategy.md) e no [ADR-0002](../architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md).

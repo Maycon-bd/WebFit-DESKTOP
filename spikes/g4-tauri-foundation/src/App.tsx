@@ -1,5 +1,6 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { check } from "@tauri-apps/plugin-updater";
 import "./App.css";
 
 interface Patient {
@@ -31,6 +32,7 @@ function App() {
   const [backup, setBackup] = useState<BackupVerification | null>(null);
   const [message, setMessage] = useState("Carregando a persistência local…");
   const [busy, setBusy] = useState(false);
+  const [updateStatus, setUpdateStatus] = useState("Updater configurado; endpoint do repositório ainda pendente.");
 
   const refresh = useCallback(async () => {
     const [nextPatients, nextStatus] = await Promise.all([
@@ -60,6 +62,16 @@ function App() {
       setMessage(String(error));
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function checkForUpdate() {
+    setUpdateStatus("Consultando o canal piloto…");
+    try {
+      const update = await check();
+      setUpdateStatus(update ? "Atualização disponível: " + update.version : "Nenhuma atualização disponível.");
+    } catch (error) {
+      setUpdateStatus("Consulta não concluída: " + String(error));
     }
   }
 
@@ -117,6 +129,14 @@ function App() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="panel" aria-labelledby="update-title">
+        <h2 id="update-title">Atualização piloto</h2>
+        <button disabled={busy} onClick={checkForUpdate} type="button">
+          Verificar atualização
+        </button>
+        <p className="update-status" role="status">{updateStatus}</p>
       </section>
 
       <section className="panel" aria-labelledby="backup-title">

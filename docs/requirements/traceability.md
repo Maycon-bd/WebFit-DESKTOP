@@ -27,3 +27,16 @@
 | RF-BKP-003 | estado do backup | aprovado | entrevista 01 | RN-BKP-001..004 | UC-BKP-001 | TA-BKP-005 | RSK-004/011 | PBI-006 | PENDENTE |
 
 Itens propostos do restante do MVP aparecem no [catálogo funcional](functional-requirements.md#backlog-do-restante-do-mvp-saúde) e só entram nesta matriz quando tiverem baseline suficiente.
+
+
+## Trilha operacional do updater piloto
+
+A atualização frequente é uma decisão operacional e arquitetural, não um requisito clínico novo do primeiro incremento.
+
+| Decisão/tarefa | Artefato | Testes/evidência | Gate |
+|---|---|---|---|
+| DEC-043 / ADR-0002 | docs/architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md | T075–T080; .harness/evidence/update-pilot/ | aprovação sensível e G5 |
+| Canal piloto e estável | docs/operations/update-release-strategy.md; docs/operations/update-manifest-contract.md | UPD-001, UPD-013, UPD-014 | G5/G7 |
+| Assinatura e custódia | docs/security/update-signing.md | UPD-002, UPD-015 | aprovação sensível |
+| Pipeline e runner | docs/operations/update-pipeline-design.md; docs/architecture/update-component-inventory.md | UPD-003, UPD-004, UPD-010, UPD-011 | aprovação sensível e G5 |
+| Backup/migração/retorno | docs/quality/update-spike-test-plan.md | UPD-007, UPD-008, UPD-009, UPD-012 | G5/G6 |

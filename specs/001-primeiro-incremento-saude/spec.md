@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-15
 
-**Status**: Aprovada para o spike G4; implementação de produto bloqueada até conclusão do G4 e aprovação do G5
+**Status**: Aprovada como baseline do primeiro incremento; G4 concluído; implementação de produto bloqueada até aprovação específica do G5 e gates sensíveis
 
 **Input**: User description: "Entregar o primeiro incremento funcional do WebFit Desktop para a operação de Saúde, local e offline, cobrindo acesso de usuários, perfil da nutricionista, pacientes, plano alimentar e orientações, auditoria e backup/restauração conforme requisitos aprovados."
 
@@ -187,8 +187,8 @@ Como responsável pela operação, quero criar e restaurar backups consistentes,
 - Saúde e Educação permanecem domínios isolados. O incremento disponibiliza apenas Saúde e não cria telas fictícias, entidades ou atalhos de Educação.
 - Os usuários aprovados são administrador e nutricionista, ambos com acesso total no MVP, sem recuperação remota de senha.
 - Os dados usados em desenvolvimento, testes, demonstrações e evidências são fictícios.
-- A proteção criptográfica final do banco, arquivos e backups será confirmada pelo spike arquitetural antes da implementação correspondente.
-- D-AUTO-001 e D-AUTO-002 permanecem `AGENT-PROVISIONAL` até validação humana; o Plan deve explicitar o ponto de decisão antes do modelo de dados e dos testes definitivos.
+- A direção de proteção criptográfica do banco, arquivos e backups foi aceita no G4/ADR-0001; os detalhes de implementação, migração e testes de produção pertencem ao G5/G6.
+- D-AUTO-001 e D-AUTO-002 foram aceitos por Amanda e Maycon; o modelo de dados e os testes definitivos devem preservar seus contratos.
 - A política de backup aceita é backup automático no primeiro uso diário e manual, retenção de 60 dias, RPO de 24 horas e RTO até o próximo dia útil.
 - PDF, impressão, exportações, agenda, anamnese, antropometria, arquivos clínicos, financeiro e demais itens propostos do backlog não fazem parte desta Specification.
 

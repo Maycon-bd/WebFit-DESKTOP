@@ -30,6 +30,16 @@ Use nomes em minúsculas, com hífens. O ID deve ser de requisito, risco, ADR ou
 6. Criar tag anotada `v<versão>` somente para uma release aprovada. Não há versão liberada nesta etapa.
 7. Proteger `main` e `develop` no GitHub com revisão obrigatória e checagens requeridas quando esses controles estiverem disponíveis.
 
+## Relação entre Git e atualização instalada
+
+- Commit ou merge em `feature/*` e `develop` nunca atualiza a máquina da stakeholder.
+- Merge revisado em `main` publica automaticamente o canal piloto por meio do pipeline aprovado; isso não instala sozinho na máquina da stakeholder.
+- Commit direto em `main` continua proibido.
+- A distribuição exige versão SemVer, tag `v<versão>`, artefato NSIS, verificações, notas e autorização humana específica.
+- Durante G5/G6, a publicação piloto é automática após o merge revisado; a instalação é semiautomática, com ícone e confirmação da nutricionista.
+- O updater consulta somente artefatos assinados no repositório público separado; não há instalação forçada durante uso clínico.
+- A estratégia completa está em [update-release-strategy.md](../operations/update-release-strategy.md) e depende do ADR-0002.
+
 ## Comandos usuais
 
 O utilitário `git-flow` não é necessário; a convenção usa Git nativo.

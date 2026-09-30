@@ -1,7 +1,7 @@
 # ADR-0001 — Desktop local com Tauri, Rust e SQLite
 
-- **Status:** proposto — spike concluído; decisão humana pendente
-- **Data:** 2026-08-13
+- **Status:** aceito em 2026-09-21 após conclusão e aprovação humana do G4
+- **Data:** 2026-08-13; decisão final em 2026-09-21
 - **Decisores:** Amanda — aprovadora funcional; Maycon — Product Owner e responsável técnico
 - **Decisões relacionadas:** DEC-003, DEC-004, DEC-005 e DEC-006
 
@@ -22,7 +22,7 @@ Validar por spike a seguinte composição:
 - arquivos clínicos no filesystem privado, com metadados e hashes no banco;
 - comandos pequenos e tipados, sem ponte SQL genérica para a WebView.
 
-Esta seção é uma hipótese técnica autorizada para teste, não uma decisão de produção comprovada.
+A composição foi inicialmente autorizada como hipótese de spike e, após as evidências do G4 e a aprovação de Maycon em 2026-09-21, tornou-se a direção arquitetural aceita para a fundação de produção. A implementação continua condicionada ao G5, aos requisitos aprovados e às tarefas do Spec Kit.
 
 ## Forças e restrições
 
@@ -74,4 +74,6 @@ As metas mensuráveis de desempenho, tamanho e tempos de recuperação ainda pre
 
 Evidência consolidada em [g4-spike-2026-09-17.md](../../../.harness/evidence/g4-spike-2026-09-17.md): shell Tauri, SQLite embutido, migração, foreign keys, comandos tipados, persistência, backup/restauração, SQLCipher, DPAPI, cenários adversos, CSP, testes, build e instalação/desinstalação NSIS passaram localmente.
 
-**Recomendação do spike: REVISAR.** A composição é tecnicamente viável, mas o ADR não deve ser aceito para produção até decisão explícita sobre SQLCipher/licenciamento, custódia e recuperação da chave, proteção/restauração de backups em outra conta ou máquina e aceitação dos riscos residuais. O ciclo manual completo da UI e a instalação MSI permanecem provas complementares; persistência automatizada e instalação NSIS já passaram.
+**Decisão final: ACEITAR.** Maycon aprovou integralmente em 2026-09-21 a política operacional sem custo recorrente, SQLCipher Community com avisos de licença, chave por instalação protegida por DPAPI `CurrentUser`, backup portátil com credencial de recuperação separada/offline, NSIS e manutenção manual. A aprovação fecha o G4 e autoriza a preparação do G5, mas não substitui a aprovação de implementação.
+
+Riscos residuais aceitos: MSI não é instalador primário; assinatura Windows paga está adiada para eventual distribuição pública; avisos LNK4099 do OpenSSL devem ser acompanhados antes do G7; o updater conectado exige ADR separado; e nenhuma versão com dados reais será usada antes do G7.

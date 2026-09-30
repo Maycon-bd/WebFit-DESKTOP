@@ -97,6 +97,10 @@ pub fn run() {
             role: Role::Administrator,
         })
         .setup(|app| {
+            #[cfg(desktop)]
+            app.handle()
+                .plugin(tauri_plugin_updater::Builder::new().build())
+                .map_err(|error| format!("inicialização do updater falhou: {error}"))?;
             let app_data = app
                 .path()
                 .app_data_dir()
