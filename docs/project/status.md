@@ -240,3 +240,11 @@ Branch feature/pbi-001-primeiro-incremento-saude; HEAD/commit-base fa70d8fa4eac7
 Última etapa: T108/T109 concluídos; próxima ação exata: instalar/atualizar com mesmo usuário Windows via .artifacts/mvp/2026-10-07/remember-0.1.7/WebFit-Desktop-0.1.7-teste-x64.exe e ensaiar T110/TA-AUT-005 com dados fictícios. Este candidato inclui refinamentos anteriores da árvore. Checklist G5: código/checks/pacote do nome lembrado concluídos; T110, ensaios anteriores, revisão independente, cobertura restante e G6/G7 pendentes. Distribuição manual vigente até validação/ativação do updater; nenhum gate final inferido.
 
 DEC-053, 2026-10-07: T112 código/checks/pacote concluídos; T113 preparação local concluída, review e execução pelo serviço pendentes. Git pelo usuário; oito Node frontend, seis Node release e 18 Rust passaram. Consulta em cada login e faixa superior; ensaio gráfico/ponta a ponta e gates finais pendentes. Fontes/evidência .harness/evidence/update-pilot/2026-10-07-banner-activation.md; guia docs/operations/own-runner-setup.md.
+
+## Checkpoint — portabilidade das skills, 2026-10-07
+
+- Branch observada: `main`; commit-base/HEAD: `667f1ae5b4e0b36f65be8ecd19118075f0c63f77`, posterior ao `a83998e` registrado no início deste arquivo. Divergência comunicada antes das edições.
+- Sincronização: comparação com upstream local `origin/main` em 0/0, sem fetch/pull ou consulta ao remoto vivo. Árvore limpa no início; esta sessão alterou somente este checkpoint e `.harness/integrations/codex-skill.md`, sem commit/push.
+- Última etapa concluída: conferência LIGHT das três skills próprias do WebFit e dez oficiais do Spec Kit, todas já versionadas em `.agents/skills/`; orientação de uso nas duas máquinas registrada na [integração Codex Skills](../../.harness/integrations/codex-skill.md#uso-nas-duas-máquinas). Nenhuma skill precisou ser copiada ou modificada.
+- Próxima ação desta manutenção: Maycon sincronizar a documentação pelo seu fluxo Git e conferir o catálogo no checkout da outra máquina. A próxima ação de produto permanece revisar WEBFIT-5 e obter as aprovações funcionais e de execução registradas acima.
+- Checklist do Gate: manutenção documental concluída; execução na segunda máquina não verificada. G5 segue em execução, G6/G7 não concluídos; nenhuma aprovação de produto ou publicação alterada.

@@ -12,3 +12,13 @@ Não duplicar nem modificar skills oficiais do Spec Kit. Customizações pertenc
 Os auxiliares podem ser usados diretamente ou pelo entrypoint; não acrescentam etapas duplicadas. Nomes antigos permanecem apenas em registros históricos e no relatório baseline. A descoberta na interface de uma sessão já aberta pode depender de nova leitura do catálogo; não foi verificada aqui.
 
 Não automatizar implementação, criar agente persistente ou executar loops nesta fase.
+
+## Uso nas duas máquinas
+
+As três skills próprias do WebFit acima e as dez skills oficiais `speckit-*` estão no repositório em `.agents/skills/`. Essa é a localização compartilhada do projeto; não é necessário manter cópias das skills do WebFit no perfil pessoal de cada máquina.
+
+Ao sincronizar o repositório pelo fluxo Git controlado por Maycon, preserve `.agents/skills/`, `.specify/`, `.harness/`, `docs/`, `specs/` e `AGENTS.md`: as skills referenciam esses recursos do projeto. Abra o checkout do WebFit no Codex da outra máquina e use `$webfit-task`, `$webfit-checkpoint` ou `$webfit-verificar`. Se uma sessão aberta ainda não mostrar o catálogo atualizado, inicie um novo chat no projeto e confira as skills disponíveis.
+
+Integrações externas, credenciais, runtimes e plugins instalados continuam sendo configuração de cada máquina; não são transportados por essas skills.
+
+Conferência LIGHT em 2026-10-07: 13 arquivos `SKILL.md` já rastreados por Git, nenhuma skill WebFit adicional encontrada em `.codex/skills` ou `.agents/skills` do perfil pessoal e nenhuma cópia necessária. As skills oficiais foram preservadas. A conferência local não executou a descoberta ou os workflows na segunda máquina.
