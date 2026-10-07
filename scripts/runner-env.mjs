@@ -80,6 +80,7 @@ async function main() {
     ...process.env,
     CARGO_HOME: cargoHome,
     RUSTUP_HOME: rustupHome,
+    RUSTUP_USE_CURL: '1',
     LC_ALL: 'C',
     LANG: 'C',
     TMP: testTemp,
@@ -128,6 +129,7 @@ async function main() {
   for (const [name, value] of Object.entries({
     CARGO_HOME: cargoHome,
     RUSTUP_HOME: rustupHome,
+    RUSTUP_USE_CURL: '1',
     RUSTUP_TOOLCHAIN: rustVersion,
     PERL: perlExe,
     LC_ALL: 'C',

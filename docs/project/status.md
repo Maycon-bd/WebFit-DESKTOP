@@ -7,13 +7,13 @@
 - **Data do checkpoint:** 2026-10-07
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
-- **Estado:** G5 em execução com dados fictícios. WEBFIT-4 integrada por Maycon na `main`; checks/review de código PASS, aceite Windows/WebView pendente. Runs piloto #2 e #3 falharam antes do bootstrap porque a política PowerShell bloqueia o script temporário das etapas. Correção local usa `cmd` em todas as etapas e Node no bootstrap, sem mudar a política. Nenhum build ou release foi produzido.
+- **Estado:** G5 em execução com dados fictícios. WEBFIT-4 integrada por Maycon na `main`; checks/review de código PASS, aceite Windows/WebView pendente. Runs #2/#3 falharam pela política PowerShell, corrigida com `cmd`; run #4 chegou ao bootstrap mas o download do Rust foi interrompido por erro de stream da rede. Correção local habilita o backend curl documentado no rustup. Nenhum build ou release foi produzido.
 - **Última etapa concluída:** WEBFIT-4: Implement/Converge/Verification/Review/Evidence; hambúrguer, Consultório, Configurações e opções pelo nome implementados. Oito Node, 18 Rust/SQLite, build sem bundle e 17 asserções frontend fixture PASS; dois P2 corrigidos. UI/UX integrado parcial. Evidência .harness/evidence/webfit-4/evidence.md.
 - **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o erro 1068 do serviço foi resolvido pela correção para `NT AUTHORITY\NetworkService`; Maycon confirmou `RUNNING` após reiniciar o Windows; nenhum segredo foi versionado no Git
 - **Próxima ação:** usuário revisa e integra a correção local do bootstrap no Git; acompanhar nova execução do Actions e corrigir eventual próximo erro. Após publicação bem-sucedida, testar faixa/instalação e concluir o aceite Windows/WebView da WEBFIT-4.
 - **Branch registrada:** `main` (observada em 2026-10-07; controle Git por Maycon, DEC-054)
 - **Work Item:** `WEBFIT-4` — navegação do Consultório, Review/aceite final pendente; `WEBFIT-3` permanece vínculo legado do spike G4 em Done.
-- **Commit-base / HEAD observado:** `222a79e0856c555f6a712394bc96bd9f031431af` (`origin/main`).
+- **Commit-base / HEAD observado:** `c394dc44f547c52dac7e66c7658d9ca31501fd79` (`origin/main`).
 - **Sincronização:** main e origin/main coincidem no HEAD observado, sem fetch/pull nesta sessão. Correção de shell e documentação estão sem commit; nenhuma operação Git mutável pelo agente.
 
 ## Última decisão aprovada
@@ -41,7 +41,7 @@ Em 2026-09-21, Maycon aprovou integralmente DEC-042: operação local/offline se
 
 WEBFIT-4 está em REVIEW: D-NAV-001/002 e execução aprovadas por Maycon em 2026-10-07; código/checks/revisão técnica concluídos. Maycon revisa e integra pelo seu fluxo Git; acompanhar pipeline e atualização na aplicação. Sem gerar instalador local. Após receber a versão, ensaiar hambúrguer/nome/engrenagem, teclado completo e zoom nativo com dados fictícios e registrar aceite final. Evidência e limites em .harness/evidence/webfit-4/{verification,review,evidence}.md. A simulação frontend não certifica distribuição ou aceite integrado. G5 em execução; G6/G7 pendentes.
 
-Pendência operacional: DEC-053, candidato updater 0.1.8, revisão independente e ensaio do pipeline/publicação assinada/latest.json, login/faixa/adiar/confirmar/backup/reinício/persistência. Os runs #2/#3 falharam em `shell: powershell`; evidências `.harness/evidence/update-pilot/2026-10-07-runner-execution-policy.md` e `.harness/evidence/update-pilot/2026-10-07-runner-powershell-shell.md`. Integração/commit/push/merge são do usuário. T082/T083/T105/T113 permanecem pendentes; notebook não bloqueia runner válido da empresa. Nenhuma release foi publicada.
+Pendência operacional: DEC-053, candidato updater 0.1.8, revisão independente e ensaio do pipeline/publicação assinada/latest.json, login/faixa/adiar/confirmar/backup/reinício/persistência. Runs #2/#3 falharam em `shell: powershell`; run #4 falhou durante download de componente Rust. Evidências `.harness/evidence/update-pilot/2026-10-07-runner-execution-policy.md`, `2026-10-07-runner-powershell-shell.md` e `2026-10-07-rust-download-stream.md`. Integração/commit/push/merge são do usuário. T082/T083/T105/T113 permanecem pendentes; notebook não bloqueia runner válido da empresa. Nenhuma release foi publicada.
 
 ## Gates
 
