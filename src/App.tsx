@@ -29,6 +29,13 @@ import { FoodPicker } from "./FoodPicker";
 import { GuidedTour } from "./GuidedTour";
 import { LoginInfo } from "./LoginInfo";
 import type { TourId } from "./onboarding";
+import {
+  auditQuery,
+  auditActor,
+  createAuditOpening,
+  emptyAuditFilters,
+} from "./audit-view";
+import type { AuditFilters } from "./audit-view";
 
 type Page = "patients" | "profile" | "audit" | "backup" | "access" | "settings";
 function NavigationIcon({ kind }: { kind: "menu" | "settings" | "chevron" }) {
@@ -1879,42 +1886,143 @@ function PrescriptionForm({
 function AuditPage({ token, task }: { token: string | null; task: Task }) {
   const [items, setItems] = useState<AuditEvent[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
-  const [filter, setFilter] = useState({
-    from: "",
-    to: "",
-    user: "",
-    action: "",
-    entity: "",
-    result: "",
+  const [filter, setFilter] = useState<AuditFilters>({ ...emptyAuditFilters });
+  const [applied, setApplied] = useState<AuditFilters>({
+    ...emptyAuditFilters,
   });
   const [users, setUsers] = useState<User[]>([]);
   const [detail, setDetail] = useState<Record<string, unknown> | null>(null);
-  async function load(next?: string, opened = false) {
-    const data = await api<{ items: AuditEvent[]; cursor: string | null }>(
-      token,
-      {
-        op: "audit",
-        filter: next
-          ? { cursor: next }
-          : {
-              open: opened,
-              ...Object.fromEntries(
-                Object.entries(filter).filter(([, v]) => v),
-              ),
-              from: filter.from ? new Date(filter.from).toISOString() : null,
-              to: filter.to ? new Date(filter.to).toISOString() : null,
-            },
-      },
-    );
-    setItems(data.items);
-    setCursor(data.cursor);
-  }
+  const [loading, setLoading] = useState(true);
+  const [queryError, setQueryError] = useState("");
+  const [detailError, setDetailError] = useState("");
+  const [detailId, setDetailId] = useState<string | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const lock = useRef(false);
+  const detailLock = useRef(false);
+  const alive = useRef(false);
+  const detailSection = useRef<HTMLElement>(null);
+  const detailTrigger = useRef<HTMLButtonElement | null>(null);
+  const opening = useRef<{
+    token: string | null;
+    load: () => Promise<{
+      users: User[];
+      items: AuditEvent[];
+      cursor: string | null;
+    }>;
+  } | null>(null);
+  const opened = useRef(false);
+
   useEffect(() => {
+    if (detailId) detailSection.current?.focus();
+  }, [detailId]);
+
+  useEffect(() => {
+    let active = true;
+    alive.current = true;
+    opened.current = false;
+    if (!opening.current || opening.current.token !== token) {
+      opening.current = {
+        token,
+        load: createAuditOpening(async () => {
+          const users = await api<User[]>(token, { op: "users" });
+          const page = await api<{
+            items: AuditEvent[];
+            cursor: string | null;
+          }>(token, {
+            op: "audit",
+            filter: { open: true },
+          });
+          return { users, ...page };
+        }),
+      };
+    }
+    const request = opening.current.load();
     void task(async () => {
-      setUsers(await api<User[]>(token, { op: "users" }));
-      await load(undefined, true);
+      try {
+        const data = await request;
+        if (!active) return;
+        opened.current = true;
+        setUsers(data.users);
+        setItems(data.items);
+        setCursor(data.cursor);
+      } catch (error) {
+        if (!active) return;
+        setQueryError(
+          "Não foi possível consultar os eventos. Tente novamente.",
+        );
+        throw error;
+      } finally {
+        if (active) setLoading(false);
+      }
     });
+    return () => {
+      active = false;
+      alive.current = false;
+    };
   }, [token]);
+
+  async function load(filters: AuditFilters, next?: string) {
+    if (lock.current) return;
+    lock.current = true;
+    setLoading(true);
+    setQueryError("");
+    setDetail(null);
+    setDetailId(null);
+    setApplied({ ...filters });
+    try {
+      // Cursors are consumed by the backend. After failure, retry the applied
+      // filters from the first page rather than reuse a consumed cursor.
+      const query = next
+        ? { cursor: next }
+        : { ...auditQuery(filters), open: !opened.current };
+      if (!opened.current) setUsers(await api<User[]>(token, { op: "users" }));
+      const data = await api<{ items: AuditEvent[]; cursor: string | null }>(
+        token,
+        {
+          op: "audit",
+          filter: query,
+        },
+      );
+      if (!alive.current) return;
+      opened.current = true;
+      setItems(data.items);
+      setCursor(data.cursor);
+    } catch (error) {
+      if (!alive.current) return;
+      setQueryError(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível consultar os eventos. Tente novamente.",
+      );
+      setCursor(null);
+      throw error;
+    } finally {
+      lock.current = false;
+      if (alive.current) setLoading(false);
+    }
+  }
+  async function showDetail(id: string) {
+    if (detailLock.current) return;
+    detailLock.current = true;
+    setDetailId(id);
+    setDetail(null);
+    setDetailError("");
+    setDetailLoading(true);
+    try {
+      const data = await api<Record<string, unknown>>(token, {
+        op: "audit_detail",
+        id,
+      });
+      if (alive.current) setDetail(data);
+    } catch (error) {
+      if (!alive.current) return;
+      setDetailError("Não foi possível abrir este evento. Tente novamente.");
+      throw error;
+    } finally {
+      detailLock.current = false;
+      if (alive.current) setDetailLoading(false);
+    }
+  }
   return (
     <>
       <Heading
@@ -1922,70 +2030,103 @@ function AuditPage({ token, task }: { token: string | null; task: Task }) {
         description="Metadados das ações. A consulta inicial cobre os últimos 30 dias."
       />
       <form
-        className="filter-grid"
+        className="audit-filters"
         onSubmit={(e) => {
           e.preventDefault();
-          void task(() => load());
+          void task(() => load(filter));
         }}
       >
-        <Field label="Usuário">
-          <select
-            value={filter.user}
-            onChange={(e) => setFilter({ ...filter, user: e.target.value })}
-          >
-            <option value="">Todos</option>
-            {users.map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.name}
-              </option>
-            ))}
-          </select>
-        </Field>
-        {Object.entries({
-          from: "De",
-          to: "Até",
-          action: "Ação",
-          entity: "Tipo de entidade",
-          result: "Resultado",
-        }).map(([key, label]) => (
-          <Field key={key} label={label}>
-            {["from", "to"].includes(key) ? (
-              <input
-                type={["from", "to"].includes(key) ? "datetime-local" : "text"}
-                value={filter[key as keyof typeof filter]}
-                onChange={(e) =>
-                  setFilter({ ...filter, [key]: e.target.value })
-                }
-              />
-            ) : (
-              <select
-                value={filter[key as keyof typeof filter]}
-                onChange={(e) =>
-                  setFilter({ ...filter, [key]: e.target.value })
-                }
-              >
-                <option value="">Todos</option>
-                {Object.entries(
-                  key === "action"
-                    ? auditActions
-                    : key === "entity"
-                      ? auditEntities
-                      : auditResults,
-                ).map(([value, title]) => (
-                  <option key={value} value={value}>
-                    {title}
-                  </option>
-                ))}
-              </select>
-            )}
+        <fieldset
+          className="filter-grid audit-filter-fields"
+          disabled={loading || detailLoading}
+        >
+          <Field label="Usuário">
+            <select
+              value={filter.user}
+              onChange={(e) => setFilter({ ...filter, user: e.target.value })}
+            >
+              <option value="">Todos</option>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name}
+                </option>
+              ))}
+            </select>
           </Field>
-        ))}
-        <button>Aplicar filtros</button>
+          {Object.entries({
+            from: "De",
+            to: "Até",
+            action: "Ação",
+            entity: "Tipo de entidade",
+            result: "Resultado",
+          }).map(([key, label]) => (
+            <Field key={key} label={label}>
+              {["from", "to"].includes(key) ? (
+                <input
+                  type={
+                    ["from", "to"].includes(key) ? "datetime-local" : "text"
+                  }
+                  value={filter[key as keyof typeof filter]}
+                  onChange={(e) =>
+                    setFilter({ ...filter, [key]: e.target.value })
+                  }
+                />
+              ) : (
+                <select
+                  value={filter[key as keyof typeof filter]}
+                  onChange={(e) =>
+                    setFilter({ ...filter, [key]: e.target.value })
+                  }
+                >
+                  <option value="">Todos</option>
+                  {Object.entries(
+                    key === "action"
+                      ? auditActions
+                      : key === "entity"
+                        ? auditEntities
+                        : auditResults,
+                  ).map(([value, title]) => (
+                    <option key={value} value={value}>
+                      {title}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </Field>
+          ))}
+          <button>Aplicar filtros</button>
+          <button
+            type="button"
+            onClick={() => {
+              setFilter({ ...emptyAuditFilters });
+              void task(() => load({ ...emptyAuditFilters }));
+            }}
+          >
+            Limpar filtros
+          </button>
+        </fieldset>
       </form>
-      {items.length === 0 ? (
+      {loading ? (
+        <p role="status">Consultando eventos…</p>
+      ) : queryError ? (
+        <section className="message error" role="alert">
+          <p>{queryError}</p>
+          <button onClick={() => void task(() => load(applied))}>
+            Tentar novamente
+          </button>
+        </section>
+      ) : items.length === 0 ? (
         <div className="empty">
-          <h2>Nenhum evento neste período</h2>
-          <p>Altere os filtros para consultar outros registros.</p>
+          <h2>
+            {Object.values(applied).some(Boolean)
+              ? "Nenhum resultado para estes filtros"
+              : "Nenhum evento nos últimos 30 dias"}
+          </h2>
+          <p>
+            {Object.values(applied).some(Boolean)
+              ? "Altere ou limpe os filtros para consultar outros registros."
+              : "Os registros de ações aparecerão aqui conforme o sistema for utilizado."}
+          </p>
         </div>
       ) : (
         <div className="table-wrap">
@@ -1995,6 +2136,7 @@ function AuditPage({ token, task }: { token: string | null; task: Task }) {
                 <th>Quando</th>
                 <th>Ator</th>
                 <th>Ação</th>
+                <th>Entidade</th>
                 <th>Resultado</th>
                 <th />
               </tr>
@@ -2003,21 +2145,18 @@ function AuditPage({ token, task }: { token: string | null; task: Task }) {
               {items.map((e) => (
                 <tr key={e.id}>
                   <td>{dateTime(e.at)}</td>
-                  <td>
-                    {e.user ??
-                      (e.actor === "SYSTEM" ? "Sistema" : "Não autenticado")}
-                  </td>
+                  <td>{auditActor(e.actor, e.user)}</td>
                   <td>{auditActions[e.action] ?? e.action}</td>
+                  <td>{auditEntities[e.entity] ?? e.entity}</td>
                   <td>{auditResults[e.result] ?? e.result}</td>
                   <td>
                     <button
-                      onClick={() =>
-                        void task(async () =>
-                          setDetail(
-                            await api(token, { op: "audit_detail", id: e.id }),
-                          ),
-                        )
-                      }
+                      disabled={detailLoading}
+                      aria-label={`Ver detalhes: ${auditActions[e.action] ?? e.action}, ${dateTime(e.at)}`}
+                      onClick={(event) => {
+                        detailTrigger.current = event.currentTarget;
+                        void task(() => showDetail(e.id));
+                      }}
                     >
                       Detalhes
                     </button>
@@ -2028,25 +2167,77 @@ function AuditPage({ token, task }: { token: string | null; task: Task }) {
           </table>
         </div>
       )}
-      {cursor && (
-        <button onClick={() => void task(() => load(cursor))}>
+      {!loading && !queryError && cursor && (
+        <button
+          disabled={detailLoading}
+          onClick={() => void task(() => load(applied, cursor))}
+        >
           Próxima página
         </button>
       )}
-      {detail && (
-        <section className="form-section">
+      {detailId && (
+        <section
+          className="form-section audit-detail"
+          ref={detailSection}
+          tabIndex={-1}
+          aria-label="Detalhes do evento"
+          aria-busy={detailLoading}
+        >
           <div className="section-heading">
             <h2>Metadados do evento</h2>
-            <button onClick={() => setDetail(null)}>Fechar detalhe</button>
+            <button
+              disabled={detailLoading}
+              onClick={() => {
+                setDetail(null);
+                setDetailId(null);
+                detailTrigger.current?.focus();
+              }}
+            >
+              Fechar detalhe
+            </button>
           </div>
-          <dl>
-            {Object.entries(detail).map(([key, value]) => (
-              <div key={key}>
-                <dt>{key}</dt>
-                <dd>{String(value ?? "—")}</dd>
-              </div>
-            ))}
-          </dl>
+          {detailLoading && <p role="status">Abrindo evento…</p>}
+          {detailError && (
+            <div role="alert">
+              <p>{detailError}</p>
+              <button onClick={() => void task(() => showDetail(detailId))}>
+                Tentar novamente
+              </button>
+            </div>
+          )}
+          {detail && (
+            <dl>
+              {[
+                ["Quando", dateTime(String(detail.at ?? ""))],
+                [
+                  "Ator",
+                  auditActor(
+                    String(detail.actor),
+                    users.find((user) => user.id === detail.userId)?.name,
+                  ),
+                ],
+                [
+                  "Ação",
+                  auditActions[String(detail.action)] ?? String(detail.action),
+                ],
+                [
+                  "Resultado",
+                  auditResults[String(detail.result)] ?? String(detail.result),
+                ],
+                [
+                  "Entidade",
+                  auditEntities[String(detail.entity)] ?? String(detail.entity),
+                ],
+                ["Identificador da entidade", String(detail.entityId ?? "—")],
+                ["Identificador do evento", String(detail.id ?? "—")],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </section>
       )}
     </>

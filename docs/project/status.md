@@ -8,13 +8,13 @@
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
 - **Estado:** G5 em execução com dados fictícios. O runner confirmou HEAD c4526f5 com .gitattributes presente, mas conservou arquivos antigos CRLF no checkout reutilizado. Correção LIGHT local em .prettierrc.json (endOfLine=auto); format:check passou nos alvos reais do runner e no workspace, mantendo rejeição de estilo inválido. Publicação/ensaio conectado pendentes.
-- **Última etapa concluída:** correção do Prettier para checkout Windows reaproveitado, vinculada a RF-UPD-001/T113. Validada em modo somente leitura nos arquivos do runner; controle negativo continuou rejeitado. Evidência .harness/evidence/update-pilot/2026-10-07-checkout-line-endings.md. Nenhuma lógica de produto ou workflow alterada.
+- **Última etapa concluída:** complemento local da Auditoria RF-AUD-001/T051/T056 parciais, incluindo estados, retry, metadados e foco de teclado. Após liberação de espaço, checks frontend (12 testes), Rust/SQLite (18 testes), formatação, Clippy e build frontend PASS. Evidência .harness/evidence/health-increment/2026-10-07-audit-ui.md. Ensaio visual e revisão independente pendentes; correção anterior de Prettier preservada.
 - **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o erro 1068 do serviço foi resolvido pela correção para `NT AUTHORITY\NetworkService`; Maycon confirmou `RUNNING` após reiniciar o Windows; nenhum segredo foi versionado no Git
-- **Próxima ação:** Maycon integra .prettierrc.json e documentação e executa novo run na main com essa configuração. Conferir passagem de Verify frontend format e etapas posteriores; depois da publicação, concluir ensaio Windows/WebView e aceite pendente.
+- **Próxima ação:** revisar e ensaiar Auditoria no Windows com dados fictícios; Maycon integra pelo seu fluxo Git. Acompanhar pipeline/publicação e concluir ensaio de atualização e aceite Windows/WebView pendente. Sem instalador local nesta entrega.
 - **Branch registrada:** main (observada em 2026-10-07; mudança humana em relação ao checkpoint feature/pbi-001, Git sob controle de Maycon/DEC-054).
 - **Work Item:** `WEBFIT-4` — navegação do Consultório, Review/aceite final pendente; `WEBFIT-3` permanece vínculo legado do spike G4 em Done.
-- **Commit-base / HEAD observado:** c4526f5384f4a479edf52ee589d98854614428c0.
-- **Sincronização:** branch main/HEAD conferidos, árvore inicialmente limpa; sem fetch/pull ou operação Git mutável. Alterações locais somente na configuração de formatter e documentação. HEAD do runner coincide com workspace; remoto vivo não consultado.
+- **Commit-base / HEAD observado:** 9f5a949aa479061fff7078ba82fc130467f7b2a6.
+- **Sincronização:** main acompanha origin/main na leitura local, sem fetch/pull. Alterações locais da Auditoria/documentação preservadas, sem commit; conferência Git e diff --check concluídas após recuperar executor. Nenhuma operação Git mutável pelo agente ou consulta ao remoto vivo.
 
 ## Última decisão aprovada
 
@@ -38,6 +38,18 @@ Também em 2026-09-11, Maycon aprovou DEC-039: Spec Kit tornou-se a fonte operac
 Em 2026-09-21, Maycon aprovou integralmente DEC-042: operação local/offline sem mensalidade, SQLCipher Community, DPAPI, backup portátil, credencial de recuperação offline, NSIS e manutenção manual no escopo vigente. A decisão aceitou o ADR-0001, fechou o G4 e autorizou a preparação do G5, sem autorizar implementação. Na mesma data, aprovou o ADR-0002/DEC-043: merges revisados na `main` publicam o canal piloto; o updater assinado mostra ícone e solicita confirmação; backup, download, validação, instalação e reinício seguem automaticamente após a confirmação; runner Windows próprio e repositório público separado de artefatos; canal estável posterior. A execução externa ainda está pendente.
 
 ## Próxima ação exata
+
+### Retomada do desenvolvimento — Auditoria, 2026-10-07
+
+Retomada posterior: Maycon liberou espaço e os checks finais passaram (frontend 12 testes, Rust/SQLite 18 testes, formatação, Clippy, build frontend e diff --check). Foco do detalhe implementado. Bloqueio histórico abaixo resolvido; próxima ação vigente é revisão/ensaio Windows, incluindo teclado, filtros, paginação e falha/retry. HEAD atual 9f5a949aa479061fff7078ba82fc130467f7b2a6. Checklist atualizado: [x] código e checks locais; [x] conferência final e format:check; [ ] ensaio visual/teclado; [ ] revisão independente/aceite integral. G5 segue em execução.
+
+RF-AUD-001 / T051/T056 parcialmente complementados na interface existente: carregamento, erro recuperável, vazios distintos, filtros/retry e detalhes de metadados em português. npm run check PASS (lint, TypeScript, 12 testes Node e build frontend); evidência .harness/evidence/health-increment/2026-10-07-audit-ui.md. G5 permanece em execução; T056/T057, revisão independente e G6/G7 não concluídos.
+
+Branch/commit-base observados antes das alterações: main, c4526f5384f4a479edf52ee589d98854614428c0; main acompanhava origin/main na leitura local, sem fetch/pull. .prettierrc.json preexistente preservado. Sem operações Git mutáveis pelo agente. Estado final Git não conferido: executor bloqueado por falta de espaço (os error 112) e depois native MXC unavailable; documentação concorrente preservada.
+
+Próxima ação desta entrega: recuperar espaço/execução de ferramentas, conferir diff e format:check, concluir checks aplicáveis e ensaiar Auditoria no Windows com dados fictícios, incluindo foco do detalhe, filtros, paginação e falha/retry. Não gerar instalador local; integração pelo usuário e distribuição pelo pipeline. Pendências de updater e WEBFIT-4 abaixo permanecem.
+
+Checklist do Gate nesta entrega: [x] código local e checks frontend; [ ] conferência final e format:check; [ ] ensaio visual/teclado; [ ] revisão independente/aceite integral. Sem aprovação de novo Gate.
 
 WEBFIT-4 está em REVIEW: D-NAV-001/002 e execução aprovadas por Maycon em 2026-10-07; código/checks/revisão técnica concluídos. Maycon revisa e integra pelo seu fluxo Git; acompanhar pipeline e atualização na aplicação. Sem gerar instalador local. Após receber a versão, ensaiar hambúrguer/nome/engrenagem, teclado completo e zoom nativo com dados fictícios e registrar aceite final. Evidência e limites em .harness/evidence/webfit-4/{verification,review,evidence}.md. A simulação frontend não certifica distribuição ou aceite integrado. G5 em execução; G6/G7 pendentes.
 

@@ -887,3 +887,12 @@ input[readonly] {
     min-height: 60px;
   }
 }
+.audit-filter-fields {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.audit-detail dd {
+  overflow-wrap: anywhere;
+}

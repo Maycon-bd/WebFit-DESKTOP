@@ -31,6 +31,8 @@ Itens propostos do restante do MVP aparecem no [catálogo funcional](functional-
 
 ## Trilha operacional do updater piloto
 
+Complemento RF-AUD-001 → TA-AUD-001..015 → T051/T056 parciais em 2026-10-07: src/App.tsx, src/audit-view.ts e tests/unit/audit-view.test.ts. Estados de consulta, filtros/retry, detalhes de metadados e foco. Checks frontend/Rust aprovados; ensaio integrado e revisão pendentes. Evidência .harness/evidence/health-increment/2026-10-07-audit-ui.md. Não representa execução integral dos critérios TA-AUD.
+
 RF-UPD-001 / DEC-050 → T101–T105 → src-tauri/src/update.rs, service.rs, src/UpdatePanel.tsx e scripts de release. Testes locais: autorização/backup/bloqueio em tests.rs, origem/versão em update.rs, assinatura/manifesto/checksums em pilot-release.test.mjs e versão em prepare-pilot.test.mjs. Evidência: .harness/evidence/update-pilot/2026-10-07-product-preparation.md. UPD-001–UPD-015 permanecem sujeitos aos ensaios integrados; código construído não comprova publicação ou instalação real.
 
 A atualização frequente é uma decisão operacional e arquitetural, não um requisito clínico novo do primeiro incremento.

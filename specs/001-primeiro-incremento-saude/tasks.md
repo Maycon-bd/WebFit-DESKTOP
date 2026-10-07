@@ -100,6 +100,8 @@ description: "Task list for the first Health increment"
 - [ ] T054 [US5] Implement immutable events and controlled catalogs in src-tauri/src/audit/events.rs
 - [ ] T055 [US5] Implement authorized UTC-window query, AND filters, page size 50 and opaque cursor in src-tauri/src/audit/query.rs
 - [ ] T056 [P] [US5] Implement audit list, filters, pagination, detail and distinct error states in src/pages/health/AuditPage.tsx
+
+  Progresso 2026-10-07: interface existente em src/App.tsx complementada com carregamento/erros/vazios, filtros/retry, detalhes legíveis e foco de teclado; auxiliares/testes em src/audit-view.ts e tests/unit/audit-view.test.ts. Checks frontend (12 testes), Rust (18 testes), formatação, lint e build frontend PASS. T051/T056 parciais; cobertura completa, ensaio Windows e revisão pendentes. Evidência .harness/evidence/health-increment/2026-10-07-audit-ui.md.
 - [ ] T057 [US5] Execute TA-AUD-001..015 and record results in .harness/evidence/health-increment/
 
 ## Phase 8: User Story 6 - Protect and restore data (P1)
