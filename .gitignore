@@ -37,3 +37,6 @@ Thumbs.db
 
 .artifacts/
 src-tauri/gen/
+
+# Python reference importer cache
+__pycache__/

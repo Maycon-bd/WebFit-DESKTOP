@@ -1,6 +1,8 @@
 # Fluxo Git
 
-O repositório adota Git Flow a partir de 2026-08-13. Esta convenção organiza a entrega incremental; ela não substitui os gates, a rastreabilidade ou a aprovação de requisitos.
+O repositório adotou Git Flow em 2026-08-13 (DEC-010). **A DEC-054, aceita por Maycon em 2026-10-07, transfere o controle de Git ao humano e substitui as exigências de branch por demanda para o agente.** Toda demanda será feita na branch atualmente ativa, sem exigir criação/troca, base `develop` ou árvore limpa. Inspeção somente leitura continua permitida para preservar trabalho e registrar evidências. Os gates de produto e rastreabilidade permanecem.
+
+O agente não executa operações que alteram Git por iniciativa própria; autorização posterior precisa descrever a operação específica. As convenções, proteções remotas e comandos abaixo são referência para Maycon administrar integração e releases, não instruções automáticas nem bloqueios de edição local.
 
 ## Ramos permanentes
 

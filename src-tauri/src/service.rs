@@ -23,6 +23,12 @@ pub enum Action {
         input: crate::energy::EnergyInput,
     },
     Status,
+    RememberedLogin {
+        administrator: bool,
+    },
+    RememberLogin {
+        remember: bool,
+    },
     Setup {
         admin_name: String,
         admin_password: String,
@@ -161,6 +167,7 @@ pub struct Service {
     session: Option<Session>,
     failed: u32,
     next_login: Option<Instant>,
+    updating: bool,
     audit_queries: std::collections::HashMap<String, (AuditFilter, String, String)>,
 }
 pub fn normalize(text: &str) -> String {
@@ -274,6 +281,7 @@ impl Service {
             session: None,
             failed: 0,
             next_login: None,
+            updating: false,
             audit_queries: Default::default(),
         })
     }
@@ -306,9 +314,78 @@ impl Service {
         }
         Ok(session.user.clone())
     }
+    pub fn authorize_update(&mut self, token: &str) -> Result<()> {
+        self.authorized(Some(token), false, false).map(|_| ())
+    }
+    pub fn begin_update(&mut self, token: &str) -> Result<()> {
+        if self.updating {
+            return Err(Error::validation("Já existe uma atualização em andamento."));
+        }
+        let user = self.authorized(Some(token), false, true)?;
+        self.create_backup(None, Some(&user))?;
+        let tx = self.db.transaction()?;
+        audit(
+            &tx,
+            Some(&user),
+            "UPDATE_PREPARE",
+            "WORKSPACE",
+            None,
+            "SUCCESS",
+        )?;
+        tx.commit()?;
+        self.updating = true;
+        Ok(())
+    }
+    pub fn finish_update(&mut self, success: bool) -> Result<()> {
+        self.updating = false;
+        let tx = self.db.transaction()?;
+        audit(
+            &tx,
+            None,
+            "UPDATE_INSTALL",
+            "WORKSPACE",
+            None,
+            if success { "SUCCESS" } else { "FAILURE" },
+        )?;
+        tx.commit()?;
+        Ok(())
+    }
+    pub fn update_ready(&mut self, token: &str) -> Result<()> {
+        let user = self.authorized(Some(token), false, false)?;
+        let tx = self.db.transaction()?;
+        audit(
+            &tx,
+            Some(&user),
+            "UPDATE_INSTALL_START",
+            "WORKSPACE",
+            None,
+            "SUCCESS",
+        )?;
+        tx.commit()?;
+        self.db.execute_batch("PRAGMA wal_checkpoint(TRUNCATE)")?;
+        Ok(())
+    }
     pub fn execute(&mut self, request: Command) -> Result<Value> {
+        if self.updating {
+            return Err(Error::validation(
+                "A atualização está em andamento. Aguarde a conclusão.",
+            ));
+        }
         use Action::*;
         match request.command {
+            RememberedLogin { administrator } => {
+                let role = if administrator {
+                    "ADMIN"
+                } else {
+                    "NUTRITIONIST"
+                };
+                let name = self.db.query_row(
+                    "SELECT u.name FROM settings s JOIN users u ON u.id=s.value WHERE s.name=?1 AND u.role=?2 AND u.active=1",
+                    params![format!("login:remembered:{role}"), role],
+                    |r| r.get::<_, String>(0),
+                ).optional()?;
+                Ok(json!({"name":name}))
+            }
             Status => Ok(
                 json!({"initialized":self.db.query_row("SELECT count(*) FROM users",[],|r|r.get::<_,i64>(0))?>0}),
             ),
@@ -413,7 +490,10 @@ impl Service {
             other => {
                 let authorization = self.authorized(
                     request.token.as_deref(),
-                    matches!(other, ChangePassword { .. } | Logout | Touch),
+                    matches!(
+                        other,
+                        ChangePassword { .. } | Logout | Touch | RememberLogin { .. }
+                    ),
                     !matches!(other, Touch),
                 );
                 let user = match authorization {
@@ -426,6 +506,16 @@ impl Service {
                     }
                 };
                 match other {
+                    RememberLogin { remember } => {
+                        let key = format!("login:remembered:{}", user.role);
+                        if remember {
+                            self.db.execute("INSERT INTO settings(name,value) VALUES(?1,?2) ON CONFLICT(name) DO UPDATE SET value=excluded.value", params![key, user.id])?;
+                        } else {
+                            self.db
+                                .execute("DELETE FROM settings WHERE name=?1", [key])?;
+                        }
+                        Ok(json!({"saved":true}))
+                    }
                     CalculateEnergy { input } => {
                         Ok(serde_json::to_value(crate::energy::calculate(input)?)?)
                     }

@@ -3,6 +3,7 @@ import type { FormEvent, ReactNode } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { UpdatePanel } from "./UpdatePanel";
 import {
   api,
   emptyPatient,
@@ -26,6 +27,7 @@ import { displayName, menuComposition } from "./nutrition";
 import { EnergyForm } from "./EnergyForm";
 import { FoodPicker } from "./FoodPicker";
 import { GuidedTour } from "./GuidedTour";
+import { LoginInfo } from "./LoginInfo";
 import type { TourId } from "./onboarding";
 
 type Page = "patients" | "profile" | "audit" | "backup" | "access";
@@ -154,6 +156,7 @@ function Heading({
 
 export default function App() {
   const [initialized, setInitialized] = useState<boolean | null>(null);
+  const [adminAccess, setAdminAccess] = useState(false);
   const [session, setSession] = useState<{ token: string; user: User } | null>(
     null,
   );
@@ -377,13 +380,19 @@ export default function App() {
         </section>
         <section className="access-form">
           <h2>
-            {initialized === false
-              ? "Prepare o primeiro acesso"
-              : "Entre no Saúde"}
+            {adminAccess
+              ? initialized === false
+                ? "Prepare este computador"
+                : "Acesso do administrador"
+              : initialized === false
+                ? "Bem-vinda ao WebFit Desktop"
+                : "Entre no Saúde"}
           </h2>
           <p>
             {initialized === false
-              ? "Crie o acesso administrativo e o acesso da nutricionista."
+              ? adminAccess
+                ? "Defina as senhas e prepare o acesso da nutricionista."
+                : "Peça ao administrador para preparar os acessos deste computador pela opção de informações no canto inferior direito."
               : "Use o acesso preparado neste computador."}
           </p>
           {error && (
@@ -391,29 +400,66 @@ export default function App() {
               {error}
             </div>
           )}
-          {initialized === false ? (
+          {initialized === false && adminAccess ? (
             <SetupForm
               busy={busy}
               onSubmit={(data) =>
                 task(async () => {
                   await api(null, { op: "setup", ...data });
                   setInitialized(true);
+                  setAdminAccess(false);
                   setNotice("Acessos preparados. Entre com um deles.");
                 })
               }
             />
-          ) : (
+          ) : initialized !== false ? (
             <LoginForm
+              key={adminAccess ? "admin" : "professional"}
+              adminAccess={adminAccess}
               busy={busy || initialized === null}
-              onSubmit={(name, password) =>
-                task(async () =>
-                  loggedIn(await api(null, { op: "login", name, password })),
-                )
+              onSubmit={(name, password, remember) =>
+                task(async () => {
+                  const result = await api<{ token: string; user: User }>(
+                    null,
+                    { op: "login", name, password },
+                  );
+                  let preferenceFailed = false;
+                  try {
+                    await api(result.token, { op: "remember_login", remember });
+                  } catch {
+                    preferenceFailed = true;
+                  }
+                  await loggedIn(result);
+                  if (preferenceFailed)
+                    setNotice(
+                      "Você entrou, mas não foi possível atualizar o nome lembrado. Tente novamente no próximo acesso.",
+                    );
+                })
               }
             />
-          )}{" "}
+          ) : null}
+          {adminAccess && (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => {
+                setAdminAccess(false);
+                setError("");
+              }}
+            >
+              Voltar ao acesso da nutricionista
+            </button>
+          )}
           {notice && <p role="status">{notice}</p>}
         </section>
+        <LoginInfo
+          busy={busy || initialized === null}
+          onAdmin={() => {
+            setAdminAccess(true);
+            setError("");
+            setNotice("");
+          }}
+        />
       </main>
     );
   return (
@@ -443,6 +489,7 @@ export default function App() {
             {session.user.role === "ADMIN" ? "Administrador" : "Nutricionista"}
           </small>
           <button
+            disabled={busy}
             onClick={() =>
               void task(async () => {
                 if (draftRef.current && draftDirty.current)
@@ -462,6 +509,20 @@ export default function App() {
         </div>
       </aside>
       <main className="workspace-main">
+        {!session.user.must_change && (
+          <UpdatePanel
+            key={session.token}
+            token={session.token}
+            blocked={
+              busy ||
+              page !== "patients" ||
+              patient !== null ||
+              prescription !== null
+            }
+            run={task}
+          />
+        )}
+
         {!session.user.must_change && (
           <GuidedTour token={session.token} screen={tourScreen} />
         )}
@@ -668,21 +729,68 @@ type Task = <T>(run: () => Promise<T>) => Promise<T | undefined>;
 function LoginForm({
   busy,
   onSubmit,
+  adminAccess = false,
 }: {
   busy: boolean;
-  onSubmit: (name: string, password: string) => void;
+  adminAccess?: boolean;
+  onSubmit: (name: string, password: string, remember: boolean) => void;
 }) {
+  const [name, setName] = useState(adminAccess ? "admin" : "");
+  const [remember, setRemember] = useState(false);
+  const [loadingPreference, setLoadingPreference] = useState(true);
+  const [preferenceError, setPreferenceError] = useState(false);
+  const edited = useRef(false);
+  useEffect(() => {
+    let active = true;
+    void api<{ name: string | null }>(null, {
+      op: "remembered_login",
+      administrator: adminAccess,
+    }).then(
+      (result) => {
+        if (!active) return;
+        if (!edited.current && result.name !== null) {
+          setName(result.name);
+          setRemember(true);
+        }
+        setLoadingPreference(false);
+      },
+      () => {
+        if (!active) return;
+        setPreferenceError(true);
+        setLoadingPreference(false);
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [adminAccess]);
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         const d = new FormData(e.currentTarget);
-        onSubmit(String(d.get("name")), String(d.get("password")));
+        if (!busy && !loadingPreference)
+          onSubmit(String(d.get("name")), String(d.get("password")), remember);
       }}
     >
       <Field label="Nome de acesso">
-        <input name="name" required autoComplete="username" autoFocus />
+        <input
+          name="name"
+          required
+          autoComplete="username"
+          autoFocus
+          value={name}
+          onChange={(e) => {
+            edited.current = true;
+            setName(e.target.value);
+          }}
+        />
       </Field>
+      {adminAccess && (
+        <p className="hint">
+          Se o administrador foi cadastrado com outro nome, use o nome original.
+        </p>
+      )}
       <Field label="Senha">
         <input
           name="password"
@@ -691,7 +799,29 @@ function LoginForm({
           autoComplete="current-password"
         />
       </Field>
-      <button className="primary" disabled={busy}>
+      <label className="remember-login">
+        <input
+          type="checkbox"
+          checked={remember}
+          disabled={busy || loadingPreference}
+          onChange={(e) => {
+            edited.current = true;
+            setRemember(e.target.checked);
+          }}
+          aria-describedby="remember-login-hint"
+        />
+        Lembrar de mim
+      </label>
+      <p id="remember-login-hint" className="hint">
+        Salvar apenas o nome de acesso. A senha será pedida sempre.
+      </p>
+      {preferenceError && (
+        <p role="status" className="hint">
+          Não foi possível consultar o nome lembrado. Você pode preencher o
+          acesso e entrar.
+        </p>
+      )}
+      <button className="primary" disabled={busy || loadingPreference}>
         Entrar no Saúde
       </button>
     </form>
@@ -716,9 +846,10 @@ function SetupForm({
         );
       }}
     >
-      <Field label="Nome de acesso do administrador">
-        <input name="admin_name" required autoComplete="off" />
-      </Field>
+      <input name="admin_name" type="hidden" value="admin" />
+      <p>
+        Nome de acesso do administrador: <strong>admin</strong>
+      </p>
       <Field label="Senha do administrador (mínimo 6 caracteres)">
         <input
           name="admin_password"

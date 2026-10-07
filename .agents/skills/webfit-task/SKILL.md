@@ -21,6 +21,8 @@ The former name was `project-task`; use `webfit-task` for current invocations. F
 
 Apply the [Human Interaction Contract](../../../.harness/HUMAN-INTERACTION-CONTRACT.md) once per chat and when its content changes. Use brief execution updates; ask only about material gaps, explain decisions and batch related approvals. Recover previous answers and sufficient authorization. DEC-038 permits proportional autonomy for internal choices; meaningful product behavior still needs discovery and the applicable human owner.
 
+Make progress understandable: distinguish the demand's current phase from the overall project stage, and say whether work was registered, planned, implemented or verified. Before ending, execute the next necessary authorized action if one exists. At a real blocker, apply the contract's continuity guidance: give a concrete recommended resolution and ask the specific missing decision instead of merely repeating the blocker. Partial answers resolve only their scope; carry them forward and address the remaining gap.
+
 Before `READY FOR IMPLEMENTATION`, verify understandable behavior and acceptance criteria, discussed decisions and absence of silent assumptions within the existing review. Keep operational details in artifacts.
 
 ## Plane Work Item Contract
@@ -28,9 +30,9 @@ Before `READY FOR IMPLEMENTATION`, verify understandable behavior and acceptance
 Read [Plane integration](../../../.harness/integrations/plane.md) only when the task uses Plane or requires its identity/state contract. Plane manages work; canonical engineering sources remain in docs/, ADRs and Spec Kit.
 
 - Existing Work Item: read the necessary metadata and locate canonical sources.
-- Explicit new STANDARD/STRICT demand: create exactly one item in WebFit, use its ID throughout branch/Spec/Evidence, and synchronize only that item at the prescribed gates. Preserve human priority; use modules only with evidence. No unrelated or bulk writes.
+- Explicit new STANDARD/STRICT demand: create exactly one item in WebFit, use its ID throughout Spec/Evidence and record the observed current branch, and synchronize only that item at the prescribed gates. Preserve human priority; use modules only with evidence. No unrelated or bulk writes.
 - LIGHT does not require a Work Item. Do not contact Plane solely to complete a documentary correction.
-- Known ID with unavailable Plane: `PLANE SYNC DEGRADED`; continue safe local work and record pending sync. New STANDARD/STRICT without the required ID: `PLANE ID REQUIRED`; stop before Branch Safety.
+- Known ID with unavailable Plane: `PLANE SYNC DEGRADED`; continue safe local work and record pending sync. New STANDARD/STRICT without the required ID: `PLANE ID REQUIRED`; stop before creating demand artifacts.
 - `Done` requires final human approval. Approval of a phase is not approval of the entire demand.
 
 ## Initialize Context and Resume
@@ -40,7 +42,7 @@ Follow [proportional execution](../../../.harness/GOVERNANCE.md#condução-propo
 1. Read AGENTS.md, docs/project/status.md, Governance, Autonomy Policy and Human Interaction Contract on entry when not already current in this chat. These own stage, authority and permission boundaries.
 2. Classify from the objective and effects. For LIGHT documentation, locate the affected owner and its source; do not preload domain catalogs, the full decision ledger or unrelated integrations.
 3. For product planning/changes, perform all reads required by AGENTS.md and locate relevant canonical requirements, rules, acceptance, traceability and ADRs. Consult PROJECT-STATE and the ledger for related decisions, without duplicating their contents.
-4. For STANDARD/STRICT branch setup, read Git workflow and Git integration; for Plane identity/sync, read its contract. Expand context only as the next phase needs it.
+4. Apply the current-branch policy (DEC-054), reading Git integration when needed; for Plane identity/sync, read its contract. Expand context only as the next phase needs it.
 5. Recover the demand ID, existing artifacts, approvals and first unfinished phase. Continue there; do not restart Specification/Plan/Tasks on each turn. Reopen stages when scope, relevant inputs, conflicts or approvals change.
 
 Reuse already-read context only while files, scope, branch and authority remain valid. New chats and machine changes require fresh checks. The mandatory “Vamos continuar onde paramos” trigger still requires the full operational checkpoint and comparison with Git.
@@ -57,11 +59,13 @@ State the classification and one-sentence rationale before proceeding.
 
 When uncertain between levels, use the higher level and explain why. Classification does not authorize an ASK-FIRST action.
 
-## Establish Branch Safety
+## Work in the Current Branch
 
-For every real STANDARD/STRICT demand, obtain its Plane ID and satisfy [Governance branch protection](../../../.harness/GOVERNANCE.md#proteção-de-branches) and [Git integration](../../../.harness/integrations/github.md) before the first versionable write, including Spec Kit artifacts. Recover the approved ID, acceptance/status, associated branch, correct base and dirty-worktree attribution. Preserve DEC-010: feature from develop; approved hotfix from main. No fetch/pull/push/commit/PR/merge/tag/release automatically.
+Apply DEC-054 and [Git integration](../../../.harness/integrations/github.md): Maycon owns Git. Perform all demands on the current branch; do not require a dedicated branch, demand ID in its name, develop ancestry or a clean worktree. Read-only Git inspection is for context, traceability and preserving existing changes.
 
-Reuse a safe associated branch. Create/switch locally only when the canonical checks pass. Unrelated/uncertain changes, unsafe base or missing evidence produce `BRANCH SETUP BLOCKED`; name the precise blocker and safe next action. Do not stash/reset/clean/discard or write demand artifacts to bypass it. LIGHT documentary work may remain on the current branch when policy permits. Branch setup grants no human approval.
+Do not create/switch branches or worktrees, fetch/pull, stash/reset/clean, commit/push/merge, create PRs, tags or releases on your own initiative. A later explicit human instruction may authorize a specific operation. Record the observed branch in artifacts while keeping the Plane ID as the demand identity.
+
+Unrelated changes, branch name and base do not trigger BRANCH SETUP BLOCKED. Continue scoped work while preserving preexisting changes; stop only the affected edit if a concrete content conflict or overwrite cannot be resolved safely. Product and sensitive-change gates still apply.
 
 ## Apply Autonomous Decision Policy
 
@@ -83,13 +87,13 @@ Use the installed official skills as the operational implementation of Spec Kit.
 
 Run source check, scoped change, proportional verification/review and brief evidence. An explicit request authorizes its reversible local documentary correction; do not insert a generic continuation or implementation approval. External actions and product gates retain their own authorization. A formal feature Specification/Plan/Tasks chain MAY be omitted only when there is no material behavior change. Record why omission is safe.
 
-Purely documentary LIGHT work MAY remain on the current branch when consistent with the approved Git policy. If LIGHT begins producing code or a material change, reclassify it or apply Establish Branch Safety before the first such write.
+All work remains on the current branch under DEC-054. If LIGHT begins producing code or a material change, reclassify it and apply the relevant product workflow and gates.
 
 ### STANDARD — Before Implementation (resume at the pending stage)
 
-1. Perform read-only intake and targeted investigation; obtain the approved traceable ID required by Git policy.
-2. Complete **Establish Branch Safety** and verify the demand branch is active.
-3. Invoke `$speckit-specify` with the demand and recovered canonical context, keeping its feature metadata associated with the active branch ID/slug.
+1. Perform intake and targeted investigation; obtain the traceable Plane ID required for STANDARD/STRICT.
+2. Apply **Work in the Current Branch**, preserving existing changes without Git mutations.
+3. Invoke `$speckit-specify` with the demand and recovered canonical context, keeping its feature metadata associated with the Plane ID and recording the current branch. If an official helper would create/switch a branch, use its supported no-branch path or explicit feature selection; never change the official skill or silently run a Git mutation.
 4. Invoke `$speckit-clarify` only when the autonomy policy cannot resolve a material ambiguity.
 5. Perform Architecture Review or create/update an ADR only when the demand contains a material architecture decision.
 6. Invoke `$speckit-plan`.
@@ -148,9 +152,11 @@ Codex skills are instructions. Read the available official `$speckit-*` SKILL.md
 
 Record in the evidence/handoff as applicable; the user-facing report selects what helps understanding, decision, progress and validation under the Human Interaction Contract:
 
+For material work, the final response must identify the current phase, actual result, remaining work and concrete next action in plain language. Give a grounded recommendation when it helps resolve a blocker or choose the next step; ask only when human input is needed. Do not end at a phase transition while necessary authorized work remains. Do not imply implementation from a Plane registration or a discovery answer.
+
 - classification and rationale;
 - Plane Work Item ID, initial/final state and synchronization result;
-- current branch, intended branch/base, and Branch Safety result;
+- observed current branch and preservation of preexisting changes under DEC-054;
 - canonical sources used;
 - Spec Kit artifacts created or updated;
 - decisions made by the agent and their statuses;
@@ -161,7 +167,7 @@ Record in the evidence/handoff as applicable; the user-facing report selects wha
 ## Done When
 
 - [ ] The demand has a LIGHT, STANDARD, or STRICT classification.
-- [ ] Every real STANDARD/STRICT demand passed Branch Safety before versionable writes, or stopped as `BRANCH SETUP BLOCKED`.
+- [ ] Work stayed on the current branch under DEC-054, preserving preexisting changes without unauthorized Git mutations.
 - [ ] Canonical sources and accepted decisions were applied.
 - [ ] Official Spec Kit skills were orchestrated without duplicated workflow logic.
 - [ ] Provisional and human-required decisions are explicit.

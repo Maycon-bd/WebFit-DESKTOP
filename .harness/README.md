@@ -10,7 +10,7 @@ O [HUMAN INTERACTION CONTRACT](HUMAN-INTERACTION-CONTRACT.md) rege a comunicaç�
 
 ## Estado
 
-PROJECT STAGE: PLANNING. Spec Kit e `$webfit-task` estão integrados; a proteção local de branches corrige a lacuna encontrada no smoke test. Plane está ACTIVE somente como camada controlada de gestão do trabalho; MCP/Plane usa OAuth, leitura validada e escrita limitada ao Work Item da execução atual de `$webfit-task`. Obsidian está ACTIVE somente como camada de navegação e conhecimento sobre os mesmos arquivos locais; não é fonte paralela da verdade e não requer MCP. As demais integrações externas e automação permanecem PREPARED — NOT ACTIVE. O repositório não contém código de aplicação.
+PROJECT STAGE: IMPLEMENTING. G5 está em execução autorizada pela DEC-045, com produto em `src/` e `src-tauri/` e somente dados fictícios; G5/G6/G7 ainda não foram concluídos. Consulte [o checkpoint canônico](../docs/project/status.md) para o estado operacional, autorizações e próxima ação. Spec Kit e `$webfit-task` estão integrados. Plane permanece como camada controlada de gestão do trabalho e Obsidian como navegação sobre os mesmos arquivos; a disponibilidade de cada integração é descrita em seu contrato, sem ativação automática por este README.
 
 ## Fluxo oficial
 
@@ -18,7 +18,7 @@ IDEA / DEMANDA
 ↓ INTAKE
 ↓ PLANE INTAKE / WORK ITEM, para STANDARD ou STRICT reais
 ↓ RESEARCH, quando necessário
-↓ BRANCH SAFETY: ID + STATUS + WORKTREE + BASE + BRANCH LOCAL
+↓ CONTEXTO LOCAL: ID + BRANCH ATUAL + PRESERVAÇÃO (DEC-054)
 ↓ $speckit-specify
 ↓ $speckit-clarify, quando necessário
 ↓ ARCHITECTURE REVIEW / ADR, quando necessário
@@ -47,7 +47,7 @@ Comece pela primeira etapa pendente, conforme o checkpoint, e aplique a [conduç
 
 1. Ler PROJECT-STATE.md, GOVERNANCE.md e os documentos canônicos relacionados.
 2. Classificar a demanda, aplicar a matriz de autonomia e distinguir fato, inferência, `AGENT-PROVISIONAL` e `NEEDS-HUMAN-DECISION`.
-3. Para STANDARD ou STRICT real, concluir o Branch Safety antes de criar qualquer alteração versionável; se não for seguro, parar em `BRANCH SETUP BLOCKED`.
+3. Executar toda demanda na branch atual, com Git controlado por Maycon (DEC-054). Preservar alterações preexistentes; nome/base da branch e árvore suja não bloqueiam o fluxo.
 4. Usar `$webfit-task` como entrypoint e as skills oficiais `$speckit-*` para criar ou atualizar os artefatos canônicos da feature.
 5. Obter o gate humano antes de condições ASK-FIRST; decisões provisórias não sensíveis podem sustentar especificação, plano e review.
 6. Executar verificação, review independente e gates condicionais.

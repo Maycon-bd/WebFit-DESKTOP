@@ -60,17 +60,13 @@ Essas orientações reduzem repetição operacional; não concedem G5, aprovaç�
 
 ## Proteção de branches
 
-A convenção canônica permanece DEC-010 e [docs/project/git-workflow.md](../docs/project/git-workflow.md): `main` e `develop` são permanentes; `feature/<id>-<resumo>` nasce de `develop`; `hotfix/<id>-<resumo>` nasce de `main` somente no caso aprovado. `main`, `master`, `develop` e qualquer outro ramo protegido definido pelo projeto não recebem diretamente alterações versionáveis de demandas reais STANDARD ou STRICT.
+**DEC-054 — ACCEPTED por Maycon em 2026-10-07:** Git é responsabilidade humana. Todas as demandas são conduzidas na branch atualmente ativa, independentemente do nome, associação ao ID, base ou presença de alterações de outras demandas. Esta decisão substitui as exigências anteriores de setup por demanda e a parte correspondente da DEC-010 para atuação do agente.
 
-Antes da primeira escrita versionável da demanda, `$webfit-task` deve identificar branch atual, branch já associada, estado do worktree, ID rastreável, slug e base correta. Para `feature/`, o ID, critérios de aceite e status aprovado exigidos pela política canônica devem existir; se ainda não existirem, o fluxo permanece em intake somente leitura e para como `BRANCH SETUP BLOCKED` antes de criar Specification ou outros arquivos.
+O agente não cria/troca branches ou worktrees e não executa fetch/pull, stash/reset/clean, commit/push/merge, PR, tag ou release por iniciativa própria. Inspeção somente leitura é permitida para contexto, rastreabilidade e preservação. Mudança explícita de autorização posterior deve delimitar a operação.
 
-Criar ou selecionar branch exclusivamente local é operação autônoma, reversível e sem efeito externo quando o worktree estiver seguro. Se `develop` não existir localmente, mas `origin/develop` já existir como referência remota conhecida, é permitido criar o tracking local sem executar fetch ou push. Base ausente, divergente ou sem origem comprovada bloqueia o setup.
+Worktree sujo, branch compartilhada, base diferente de `develop` e nome protegido não produzem `BRANCH SETUP BLOCKED`. Preserve alterações existentes, limite o diff ao escopo e bloqueie somente a edição afetada por conflito concreto no conteúdo, sobrescrita ou atribuição que impeça preservação segura; explique a condição ao humano. Não exija resolver todo o trabalho anterior para continuar.
 
-Com worktree sujo, continuar somente quando a branch atual já estiver associada à demanda ou quando todas as alterações puderem ser atribuídas com segurança à mesma demanda e a criação local preservar a base correta. Alteração não relacionada, atribuição incerta, conflito potencial ou necessidade de stash/reset/clean resulta em `BRANCH SETUP BLOCKED`. Nunca apagar, sobrescrever, resetar ou esconder mudanças automaticamente.
-
-Demandas LIGHT puramente documentais podem permanecer na branch atual quando a política Git permitir. Se produzirem código ou mudança material, devem ser reclassificadas ou passar pela mesma proteção.
-
-Branch local não concede Implementation Approval, Sensitive Change Approval ou Final Approval. Push, PR, merge, tag, release e deploy continuam operações humanas ou explicitamente autorizadas.
+STANDARD/STRICT mantêm ID Plane, especificação, critérios de aceite e gates aplicáveis. A rastreabilidade usa ID nos artefatos e registra a branch observada, sem exigir ID no nome da branch. Git Flow e proteções remotas são administrados por Maycon; este ajuste não altera configurações do GitHub nem ativa publicação.
 
 ## Estados e autoridade decisória
 

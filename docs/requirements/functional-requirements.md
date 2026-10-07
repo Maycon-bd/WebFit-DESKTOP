@@ -4,6 +4,17 @@
 
 ## Autenticação
 
+### RF-UX-002 — Informações no login e preparação administrativa
+
+- **Descrição:** botão de informação no canto inferior direito do acesso abre nome WebFit Desktop, versão atual, crédito “Desenvolvido por Eng. Maycon Garcia Silva” e opção Acesso do administrador.
+- **Ator:** visitante; administrador na preparação e autenticação.
+- **Fluxo:** instalação nova orienta procurar o administrador; preparação fica no acesso administrativo e predefine o nome admin, com senha definida localmente por Maycon. Instalação preparada apresenta login normal; o acesso administrativo usa as mesmas credenciais e autorização do backend.
+- **Compatibilidade:** preservar nomes e senhas existentes; não renomear administrador de instalações anteriores. Orientar usar o nome já cadastrado.
+- **Critérios:** TA-UX-002; botão acessível por teclado, painel fechável por Escape e Fechar com retorno do foco; versão obtida do aplicativo; nenhuma senha exibida nas informações ou embutida no código.
+- **Prioridade:** alta — refinamento do incremento 1.
+- **Status:** aprovado por Maycon em 2026-10-07 nesta conversa; ver DEC-049. Aceite visual pendente.
+- **Regras:** RN-AUT-001 a RN-AUT-005; RF-AUT-001/002 e RF-BKP-001 preservados.
+
 ### RF-AUT-001 — Primeiro acesso e usuários locais
 
 - **Descrição:** permitir preparar os usuários locais nutricionista e administrador sem depender de servidor.
@@ -242,3 +253,16 @@ PDF, impressão e exportação não pertencem ao incremento 1.
 | RF-PLN-001 | criar, concluir e reabrir tarefas administrativas | prioridade e recorrência | proposto |
 
 Esses itens não podem ser implementados até receberem detalhamento, critérios de aceite e status aprovado.
+
+## Atualização piloto — RF-UPD-001
+
+**Status:** aprovado por DEC-043/ADR-0002; preparação local retomada por DEC-050 em 2026-10-07. **Prioridade:** P1 operacional. Nutricionista e administrador autenticados podem consultar versão, ler notas, adiar ou confirmar atualização assinada do canal piloto. Instalação aguarda edição/atividade encerrada; cria backup local consistente e valida pacote antes de instalar. Rede indisponível não bloqueia o trabalho. Publicação ocorre após integração revisada em main e ativação aprovada; não envia dados de domínio. **Aceite:** UPD-001–UPD-015 em docs/quality/update-spike-test-plan.md; migração/retorno e publicação externa exigem ensaio específico. **Rastreabilidade:** T101–T105, DEC-050, ADR-0002.
+
+### RF-AUT-004 — Lembrar nome de acesso
+
+- **Descrição:** checkbox Lembrar de mim no login salva apenas o nome de acesso após autenticação bem-sucedida. Ao reabrir, preenche esse nome e mantém senha vazia/obrigatória.
+- **Ator:** nutricionista ou administrador.
+- **Critérios:** TA-AUT-005; marcado persiste após reiniciar; desmarcado remove preferência após login; falha de login não salva nome; preferências separadas entre acesso normal e administrativo; nenhum token/senha persistido por essa função; sessão/bloqueio permanecem obrigatórios.
+- **Status:** aprovado por Maycon em 2026-10-07 nesta conversa, escolhendo explicitamente preencher somente nome e continuar pedindo senha.
+- **Prioridade:** alta — refinamento do incremento 1. Regras RN-AUT-001..005 preservadas; DEC-052.
+Refinamento vigente RF-UPD-001 / DEC-053 / TA-UPD-UI-002: faixa superior em lugar de ícone/modal, consulta em cada login, adiar/confirmar pelo aviso; offline/sem versão não mostram aviso e não bloqueiam trabalho. Substitui apresentação e frequência anteriores, mantendo proteção/backup/assinatura. Ativação preparada localmente; Git e integração pelo usuário.

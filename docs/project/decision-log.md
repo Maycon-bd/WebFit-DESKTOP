@@ -145,3 +145,35 @@ Novas decisões devem usar os estados `ACCEPTED`, `AGENT-PROVISIONAL`, `NEEDS-HU
 ### Complemento da DEC-044/DEC-048 — vigência da distribuição manual
 
 **ACCEPTED por Maycon em 2026-10-07:** até implementar, validar e ativar a atualização automática com pipeline/runner e updater, toda nova versão seguirá a distribuição por instalador. Fechar o aplicativo, executar a nova versão com o mesmo usuário Windows e selecionar Atualizar mantendo os dados, sem desinstalação manual. A instalação prévia do runner não encerra essa política. Não autoriza ativação externa, publicação ou alteração dos gates; somente consolida o procedimento vigente. Fontes: docs/operations/installation.md, update-release-strategy.md e update-pipeline-design.md.
+
+## DEC-049 — informações no login e preparação administrativa
+
+- **Status:** ACCEPTED, Maycon, 2026-10-07 nesta conversa: concordou com preparação local pelo administrador sem senha no código e solicitou botão (i), nome, versão, crédito exato e forma de acesso administrativo.
+- **Escopo:** RF-UX-002/TA-UX-002, refinamento do incremento em execução. Nome admin predefinido para instalações novas; senha escolhida localmente pelo administrador antes de entregar à nutricionista. Informações públicas nunca contêm senha.
+- **Limites:** autorização e contas existentes preservadas; sem credencial universal, migração, dependências, publicação ou aceite final. Preparação continua criando ambos os acessos e recuperação, apenas dentro da opção administrativa.
+
+## DEC-050 — retomar atualizações com runners próprios
+
+**ACCEPTED por Maycon em 2026-10-07 nesta conversa:** após explicação de runners próprios versus hospedados, escolheu continuar com o GitHub Actions Runner instalado no Windows, aproveitando secrets/variável já cadastrados. Retoma a preparação local do pipeline e atualizador do produto, anteriormente adiada pela DEC-044, conforme ADR-0002/DEC-043 e autorização G5 DEC-045. Pode preparar dependências previstas, código, testes e documentação locais; não autoriza commit/push/merge/release nem ativação externa sem a revisão final. Distribuição manual continua vigente até validação ponta a ponta e ativação. Dois runners registrados separadamente poderão receber o mesmo job, sem promessa de executar no computador que enviou o código; disponibilidade e ambiente do segundo runner ainda precisam de validação.
+## DEC-051 — atualizações em modal com fundo desfocado
+
+**ACCEPTED por Maycon em 2026-10-07:** substituir opções expandidas da barra lateral por modal central com desfoque do aplicativo ao fundo. Refinamento STANDARD de RF-UPD-001/T103, execução local explicitamente solicitada; manter consulta, mensagens, confirmação, progresso e proteção da instalação. Aceite TA-UPD-UI-001: abrir pelo botão Atualizações, fundo desfocado/inativo, navegação por teclado contida, Escape/Fechar devolvem foco, consulta falha sem bloquear trabalho após fechar; durante instalação, fechamento indisponível. Não autoriza publicação/ativação externa. Sem dependência, schema ou autorização backend nova.
+
+## DEC-052 — lembrar somente nome de acesso
+
+ACCEPTED por Maycon em 2026-10-07: checkbox Lembrar de mim preenche somente o nome; senha continua obrigatória. Gravar/remover apenas após login válido, derivando usuário/papel no backend; usar settings criptografada existente com preferências separadas por papel, sem migração ou dependência. Não armazenar senha/token, não criar sessão persistente nem login automático. Refinamento STRICT do incremento G5; implementação local autorizada pela solicitação e esclarecimento explícito; ensaio/aceite e gates finais pendentes.
+## DEC-053 — faixa superior, consulta por login e ativação
+
+**ACCEPTED por Maycon em 2026-10-07:** supersede o modal/ícone de DEC-051: aviso de atualização em faixa superior somente quando houver nova versão, consulta a cada login, confirmação/progresso no aviso. Ativação do atualizador solicitada. Resposta explícita posterior: **preparação local; operações de Git pelo usuário**. Autoriza habilitar workflow no arquivo local e preparar artefatos/ambiente, sem commit/push/merge pelo agente nem declarar remoto ativo antes de integração/publicação. Revisão independente solicitada, resposta pendente. Não ampliar autorizações de dados reais; G5/G6/G7 permanecem abertos.
+
+RF-UPD-001 / TA-UPD-UI-002: consulta por sessão autenticada nova, sem cache diário; React StrictMode não perde resultado nem duplica consulta da mesma sessão. Login seguinte consulta novamente. Faixa no topo informa atualização disponível e oferece Atualizar agora/Mais tarde; instalação confirmada preserva backup/assinatura/bloqueio. Sem nova versão ou internet, não exibir aviso de atualização nem bloquear o trabalho. DEC-051 fica SUPERSEDED apenas para apresentação; evidência e candidatos anteriores preservados.
+
+
+## DEC-054 — Git sob controle humano e demandas na branch atual
+
+- **Status:** ACCEPTED. **Autoridade/data:** Maycon, responsável técnico e PO, em 2026-10-07 neste chat.
+- **Fonte:** “N quero q faça controle de git, eu q vou fazer, então todas as demandas serão feitas na branch atual que estivermos”.
+- **Decisão:** o agente executa todas as demandas na branch ativa. Criação/troca de branches, base `develop`, branch exclusiva ou com ID e árvore limpa deixam de ser pré-condições do fluxo. Git fica sob controle de Maycon; inspeção somente leitura permanece para contexto, preservação e evidência.
+- **Consequências:** substitui o setup obrigatório/BRANCH SETUP BLOCKED e a atuação autônoma sobre branches da DEC-010. Convenções históricas Git Flow e proteções remotas podem continuar sendo administradas pelo humano. O agente não cria/troca branches ou worktrees, fetch/pull, stash/reset/clean, commit/push/merge, PR, tag ou release por iniciativa própria; instrução explícita posterior pode autorizar uma operação específica.
+- **Preservação:** alterações anteriores não são apagadas/escondidas nem atribuídas integralmente a uma demanda. Conflito concreto no conteúdo bloqueia somente a edição dependente, quando não for possível preservar com segurança.
+- **Limites:** não altera arquitetura, dados, requisitos de produto, aprovações de implementação/mudança sensível/aceite, Plane ou gates G5/G6/G7. Não ativa publicação nem altera configuração do GitHub. Dispensa do bloqueio de branch não equivale a implementar WEBFIT-4.

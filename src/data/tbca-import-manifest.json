@@ -1,0 +1,633 @@
+{
+  "date": "2026-10-07",
+  "source": "TBCA 7.3",
+  "queries": [
+    "arroz",
+    "feijão",
+    "banana",
+    "maçã",
+    "laranja",
+    "mamão",
+    "abacate",
+    "aveia",
+    "batata",
+    "mandioca",
+    "cenoura",
+    "tomate",
+    "alface",
+    "brócolis",
+    "frango",
+    "carne, bovina",
+    "ovo",
+    "leite",
+    "iogurte",
+    "queijo",
+    "pão",
+    "azeite",
+    "lentilha",
+    "peixe, tilápia",
+    "peixe, sardinha",
+    "peixe, atum",
+    "ovo, galinha, inteiro",
+    "leite, vaca",
+    "carne, frango, peito",
+    "aveia, flocos",
+    "pão, francês",
+    "arroz, polido",
+    "feijão, carioca",
+    "feijão, preto"
+  ],
+  "selection": "First three matching-prefix records per query; bounded initial catalog, not complete TBCA",
+  "count": 88,
+  "previousRecordsPreserved": 5,
+  "sources": [
+    {
+      "code": "BRC0012A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=qVFrIUJyMsGsU0SmbrckEQ%3D%3D",
+      "responseSha256": "dabf157cffec94a4580594371532ebb439e515da839587757a9c51130785d345",
+      "query": "arroz",
+      "indexResponseSha256": "1d6ed7e70a68de4217eab15d9518b3c36e99c848c8816efadd80d6af90a901c4"
+    },
+    {
+      "code": "BRC0013A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Gw4yCBfDDmzNpHt%2BLOCdeg%3D%3D",
+      "responseSha256": "c4c30e8b4fecbbeb2adb451a5512642bf2f7af7d40e195f7a9375afd43897166",
+      "query": "arroz",
+      "indexResponseSha256": "1d6ed7e70a68de4217eab15d9518b3c36e99c848c8816efadd80d6af90a901c4"
+    },
+    {
+      "code": "BRC0014A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=FdAf0QvBIgbr6nuKVdf5bA%3D%3D",
+      "responseSha256": "7a4427eda6a00f112f4603c9a2ebf352d8b4b94c0dd6c2d3ed919eca2f43b769",
+      "query": "arroz",
+      "indexResponseSha256": "1d6ed7e70a68de4217eab15d9518b3c36e99c848c8816efadd80d6af90a901c4"
+    },
+    {
+      "code": "BRC0074B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=iWnzpv1OFadn8GtbMVTvCQ%3D%3D",
+      "responseSha256": "4464025b0781a0feb2772abcd5af4e00e9ffdd24ae5f729b1c6bdd9f7f69bc8b",
+      "query": "feijão",
+      "indexResponseSha256": "0b09004f5308902384eaac8218f500b6f69cf33a45d5c83b48cac472e9a549ab"
+    },
+    {
+      "code": "BRC0275B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=mZD2B%2BxITBB%2BEM3VM8aqTQ%3D%3D",
+      "responseSha256": "ec902ee496b74407871d53d7f1fb8670e617ac8f994d31c10ccc02bb561e0f51",
+      "query": "feijão",
+      "indexResponseSha256": "0b09004f5308902384eaac8218f500b6f69cf33a45d5c83b48cac472e9a549ab"
+    },
+    {
+      "code": "BRC0276B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=vRaJkloH%2F%2B8fmSirnBINDA%3D%3D",
+      "responseSha256": "f946d854e720f595e08f22d232ed6931a082db2a05cf41f1d4fba063a6dc7623",
+      "query": "feijão",
+      "indexResponseSha256": "0b09004f5308902384eaac8218f500b6f69cf33a45d5c83b48cac472e9a549ab"
+    },
+    {
+      "code": "BRC0006C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=UTTj06YU%2FU0UMLd9Mhcdlw%3D%3D",
+      "responseSha256": "ea57192920d78c0202f1d0e9379e3835ebed8c9f2bd732ae32bf856a9940a81c",
+      "query": "banana",
+      "indexResponseSha256": "aafa09ede834df574db64e2249313193b4988a7b04676d4fefffdcbca2909f3b"
+    },
+    {
+      "code": "BRC0007C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=KGvb1hdRIlqLZYPtkx%2FrrA%3D%3D",
+      "responseSha256": "2fc107659d370297d3f47405b804af4687bba49112c6539189df332bc4148c3e",
+      "query": "banana",
+      "indexResponseSha256": "aafa09ede834df574db64e2249313193b4988a7b04676d4fefffdcbca2909f3b"
+    },
+    {
+      "code": "BRC0008C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=RiXKpEL2K3ymi%2FuckdmKgA%3D%3D",
+      "responseSha256": "7d44c74902fe1bea04ed5d492725e33d60119ce5b7f1cee0532f642c7283e982",
+      "query": "banana",
+      "indexResponseSha256": "aafa09ede834df574db64e2249313193b4988a7b04676d4fefffdcbca2909f3b"
+    },
+    {
+      "code": "BRC0017C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=V9Myyl0zSZc%2BSB02vmOH8g%3D%3D",
+      "responseSha256": "a5f21cd382426bb3076bce5caabf53df6ec81e1ac2e90df100a8b4091986c040",
+      "query": "laranja",
+      "indexResponseSha256": "eb1f560c38ccbb8a139ed12216e79920c5634787f0a4552ddba3f8d6b53e2c9d"
+    },
+    {
+      "code": "BRC0018C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=7kRhpqju4lMpe3w8IxxT%2Bw%3D%3D",
+      "responseSha256": "864b3187cce6d616c36ee1a5fa86ee2c5a6fc4e0bd451420c54e20dc3b528d46",
+      "query": "laranja",
+      "indexResponseSha256": "eb1f560c38ccbb8a139ed12216e79920c5634787f0a4552ddba3f8d6b53e2c9d"
+    },
+    {
+      "code": "BRC0019C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Dz0YPKyplY8FD2ydLa1v%2Fg%3D%3D",
+      "responseSha256": "51637926168561a8e98946adb80e92380fc323e5ab9d2d99b780ea708e25b0e3",
+      "query": "laranja",
+      "indexResponseSha256": "eb1f560c38ccbb8a139ed12216e79920c5634787f0a4552ddba3f8d6b53e2c9d"
+    },
+    {
+      "code": "BRC0045C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=N%2BgREPajSjWOCcTNi5hX7g%3D%3D",
+      "responseSha256": "f84cab7648a7b3d3c86bfa18c62c332b44946b752ca107461ae727ceb5d03dfb",
+      "query": "mamão",
+      "indexResponseSha256": "7b93ba9c9c79ea93546019579cddfa26d306ba98559a42c92d5f6ae2aaaefb4f"
+    },
+    {
+      "code": "BRC0044C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=FCuxISbHexbaadWY8y%2BLsQ%3D%3D",
+      "responseSha256": "d4f8d5d0c82f745e531c5a373bd02beac67b4f1e7e2bc8184fb1f51b1da9348a",
+      "query": "mamão",
+      "indexResponseSha256": "7b93ba9c9c79ea93546019579cddfa26d306ba98559a42c92d5f6ae2aaaefb4f"
+    },
+    {
+      "code": "BRC0024C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Txw5LiGarGxuDQM1mnk3ng%3D%3D",
+      "responseSha256": "43b926a13ada44faa8007f99f790ca5cf739fb1e39b9d7ebb6abdc1db9d373fd",
+      "query": "mamão",
+      "indexResponseSha256": "7b93ba9c9c79ea93546019579cddfa26d306ba98559a42c92d5f6ae2aaaefb4f"
+    },
+    {
+      "code": "BRC0001C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=QagWPGGLCefQ%2BGqdjKbs2w%3D%3D",
+      "responseSha256": "a7d0662c1cea97efa9dc2cd42b6d4661742c9d3947e83e9f291188d82a7d2876",
+      "query": "abacate",
+      "indexResponseSha256": "e7c0f3999f63d0a7c737e15422716f69e6ef2e572a87004a5dc85b87908dcd93"
+    },
+    {
+      "code": "BRC0019A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=tNq7xksMyFIuYlUGpBf4kg%3D%3D",
+      "responseSha256": "a2feaaeef74e25ca77463f19e1cc4c1df75e42ba76e5dd71b237373a550ab9d0",
+      "query": "aveia",
+      "indexResponseSha256": "90c82fa93733244530868724a523d182906efecc574ea1a0d67d6d238b44c58b"
+    },
+    {
+      "code": "BRC0020A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=WL1mBnQ4fShv4AZvyA5NzQ%3D%3D",
+      "responseSha256": "54dcbb331f5fdf54c7b028f2c9fe63b60f387dbf318c76c8c513537e86fc0d0c",
+      "query": "aveia",
+      "indexResponseSha256": "90c82fa93733244530868724a523d182906efecc574ea1a0d67d6d238b44c58b"
+    },
+    {
+      "code": "BRC0022A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=DUYciFkLmbvlilTWVLY8hw%3D%3D",
+      "responseSha256": "e4cc345795f0cfb6619ecc9b38922c9027a13e5f3a31178610256d2bb2e91c5b",
+      "query": "aveia",
+      "indexResponseSha256": "90c82fa93733244530868724a523d182906efecc574ea1a0d67d6d238b44c58b"
+    },
+    {
+      "code": "BRC0012B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=g3JFHdLBcKAkvPo5fT%2FIQg%3D%3D",
+      "responseSha256": "f7138b7383c4664434080badc5f40545650bdba4c312aa7af95ce174009fddfc",
+      "query": "batata",
+      "indexResponseSha256": "2021a06c5d9ac269ed7bbe3c209ac1e2c0d8e86f9e8d33785eeae48a88d0d7d2"
+    },
+    {
+      "code": "BRC0013B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=DyaJtmJF9YGxzAuxHoxSZg%3D%3D",
+      "responseSha256": "9ac3af9701c3d690692a2938a6291de4414e3ce92da9cbcaf04f68c8021b8066",
+      "query": "batata",
+      "indexResponseSha256": "2021a06c5d9ac269ed7bbe3c209ac1e2c0d8e86f9e8d33785eeae48a88d0d7d2"
+    },
+    {
+      "code": "BRC0028B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Wu%2Fa4%2B%2F2jOUe32o7ZTCmOA%3D%3D",
+      "responseSha256": "6c7d714d5b3e80fa0f6f428a9497ac9bf7219e3f0e1b7e8fbf05bb3aa607f218",
+      "query": "batata",
+      "indexResponseSha256": "2021a06c5d9ac269ed7bbe3c209ac1e2c0d8e86f9e8d33785eeae48a88d0d7d2"
+    },
+    {
+      "code": "BRC0027B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=tf7Yrvb%2BorH%2FS5XxTsj3cA%3D%3D",
+      "responseSha256": "cc43bac5d8a943422174ab82ce6d19affeaea79613d99e5a4f1648c2c2a8d3e5",
+      "query": "mandioca",
+      "indexResponseSha256": "385abf977ce874c2f0ac1006820ac1e084d458b5c276ff0d7c546dd147ed0e38"
+    },
+    {
+      "code": "BRC0053B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=vk193sCVD7uyHsjYZpa8vg%3D%3D",
+      "responseSha256": "26d08bec3e41e8edfcd57989a9d5bf783bae0b2ef93e77062eb11afa61b2886c",
+      "query": "mandioca",
+      "indexResponseSha256": "385abf977ce874c2f0ac1006820ac1e084d458b5c276ff0d7c546dd147ed0e38"
+    },
+    {
+      "code": "BRC0091B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=pW0PTRlvnKSAv4ZKo0OfBg%3D%3D",
+      "responseSha256": "dc329b6d8b1e170ab3c935f7042353bbf1b401acdb7de2dc70ccf1bd98b0b516",
+      "query": "mandioca",
+      "indexResponseSha256": "385abf977ce874c2f0ac1006820ac1e084d458b5c276ff0d7c546dd147ed0e38"
+    },
+    {
+      "code": "BRC0020B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Enkb319hE39lkBlQ653LNQ%3D%3D",
+      "responseSha256": "2e855ed62ec5fd037c85feba2196498be55f74f445bcfe749bcc0a86579ae932",
+      "query": "cenoura",
+      "indexResponseSha256": "7d73e7a742f1bbf5e3d6645b4a09e112c6463f8b76561cbcc99ddced17f0de41"
+    },
+    {
+      "code": "BRC0047B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=358%2FC7NbFriqEFLbs4LQlA%3D%3D",
+      "responseSha256": "97e9d15b05dad201fcb1c80b4efcf7238d9f5441b8f33bbd9a1570464aac4417",
+      "query": "cenoura",
+      "indexResponseSha256": "7d73e7a742f1bbf5e3d6645b4a09e112c6463f8b76561cbcc99ddced17f0de41"
+    },
+    {
+      "code": "BRC0340B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=hLaITX3tW81oSflGlRfQag%3D%3D",
+      "responseSha256": "28157fbee94d9a5bc4713439ee5419af0ca39d275b1dbfbc8fb48b7c7caeb621",
+      "query": "cenoura",
+      "indexResponseSha256": "7d73e7a742f1bbf5e3d6645b4a09e112c6463f8b76561cbcc99ddced17f0de41"
+    },
+    {
+      "code": "BRC0035B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=0qP6TPuuLlp52oyveljmug%3D%3D",
+      "responseSha256": "9249c5e9f882a8854f5b790631a933346e3991cf2b5a1b72901dec29fc8228ef",
+      "query": "tomate",
+      "indexResponseSha256": "fdf8b94a40ef1935f0acbaa7d0bb69ad6e78f2e7ce92ca5122c492aa2933964c"
+    },
+    {
+      "code": "BRC0098B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=pX5wVWOXZJI9kK1zSzFl3g%3D%3D",
+      "responseSha256": "019e64524ecaebc963e145ef872d99f0782afbc2ec2fc917a53c6c2af03db820",
+      "query": "tomate",
+      "indexResponseSha256": "fdf8b94a40ef1935f0acbaa7d0bb69ad6e78f2e7ce92ca5122c492aa2933964c"
+    },
+    {
+      "code": "BRC0099B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Z07HVOyy7QAv2YYXis%2BIMg%3D%3D",
+      "responseSha256": "daaa9a49490de5e012a383ce6cb6effdb787da9116748c3de531e85999c193c5",
+      "query": "tomate",
+      "indexResponseSha256": "fdf8b94a40ef1935f0acbaa7d0bb69ad6e78f2e7ce92ca5122c492aa2933964c"
+    },
+    {
+      "code": "BRC0009B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=xPXGryn5%2BLTCDCmLaCRxVw%3D%3D",
+      "responseSha256": "f2a60863add89dd7297ac686f0c13e4f56c5107fd65d9cdfccd89e6052a94e87",
+      "query": "alface",
+      "indexResponseSha256": "d1e636ad2e8ca6eaa4361c9c3e9715e83cadd0beffe981ecbc01104f9ceed5d2"
+    },
+    {
+      "code": "BRC0060B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=SlDKZ7oxgL%2FyOINmk8OR5A%3D%3D",
+      "responseSha256": "0778d16dac7caeab45f19e0e0ce26e867c4fbf284c8e106bf3b50352cbb57227",
+      "query": "alface",
+      "indexResponseSha256": "d1e636ad2e8ca6eaa4361c9c3e9715e83cadd0beffe981ecbc01104f9ceed5d2"
+    },
+    {
+      "code": "BRC0061B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=tjwlP%2BkoVMlfJfHf%2Ftc%2FVA%3D%3D",
+      "responseSha256": "448a7b871afd0a5031d3e4b94479c69b80f2cffc48ca34a13e38a162f8d5ad8a",
+      "query": "alface",
+      "indexResponseSha256": "d1e636ad2e8ca6eaa4361c9c3e9715e83cadd0beffe981ecbc01104f9ceed5d2"
+    },
+    {
+      "code": "BRC0016B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=OWbrIFEs23YHCEcQNknivA%3D%3D",
+      "responseSha256": "64a11e5b048e023962de2864117b978fbc56c74d52ec351d8643bd5f3018a2cb",
+      "query": "brócolis",
+      "indexResponseSha256": "38f3bd9ab4163af68011f4785a5c074502c0de20f53a9e624cff318c1495a060"
+    },
+    {
+      "code": "BRC0045B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=GZzu8FRyInu2h2jsgc8xrQ%3D%3D",
+      "responseSha256": "b9dd53e619832ae389d3d94c3abe5f560c505634a2d4735e3ace7a91315e5099",
+      "query": "brócolis",
+      "indexResponseSha256": "38f3bd9ab4163af68011f4785a5c074502c0de20f53a9e624cff318c1495a060"
+    },
+    {
+      "code": "BRC0150B",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=BhVf3UiBaNnIZ3DZrDT4yg%3D%3D",
+      "responseSha256": "eedc02e235d9e3159ea3adb68a0fdaad7f7061a0c691487afd8c054c437b6cc8",
+      "query": "brócolis",
+      "indexResponseSha256": "38f3bd9ab4163af68011f4785a5c074502c0de20f53a9e624cff318c1495a060"
+    },
+    {
+      "code": "BRC0226F",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=3VIWYMs3b1u8t%2BGF0PyOpw%3D%3D",
+      "responseSha256": "94b0ddd3f75abf56706022530d4f939aeabc2e3b287f35ccf4556323195ecbce",
+      "query": "frango",
+      "indexResponseSha256": "925c94df1db620b3891ced6f4d932d9698ca9ddbb0404fe0f5a96764a0aa5ec9"
+    },
+    {
+      "code": "BRC0554F",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=mXG3uQwGNvihIiJC0V%2FZDA%3D%3D",
+      "responseSha256": "9504a2ed58d9ee5d88ed1712da7d994efb485c13f9d77c4ea92db61e2ec8a335",
+      "query": "frango",
+      "indexResponseSha256": "925c94df1db620b3891ced6f4d932d9698ca9ddbb0404fe0f5a96764a0aa5ec9"
+    },
+    {
+      "code": "BRC0555F",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=RdmDpWX3qGyR7%2FUhNZlHeg%3D%3D",
+      "responseSha256": "7c429b2f337523b8babf5386a9b8e071b72651645faa7aa0b8539ddbd7372e57",
+      "query": "frango",
+      "indexResponseSha256": "925c94df1db620b3891ced6f4d932d9698ca9ddbb0404fe0f5a96764a0aa5ec9"
+    },
+    {
+      "code": "BRC0018F",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Ada2r06IeSUXtGy4OMT56Q%3D%3D",
+      "responseSha256": "c4403327ab4f63d731a962b6063304375b43ed5ac7a62e05433d902cc214bd0b",
+      "query": "carne, bovina",
+      "indexResponseSha256": "8b85f9521557902ab7e0d01008afd6ca6385e61f6cfafc07f8f857cfb9efde99"
+    },
+    {
+      "code": "BRC0025F",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Yf7s6M8W793vjJdMRRP%2F3g%3D%3D",
+      "responseSha256": "402d970fee8d29d481f478590d7d412f2e15ba4c4eff4645537ba00736dd9457",
+      "query": "carne, bovina",
+      "indexResponseSha256": "8b85f9521557902ab7e0d01008afd6ca6385e61f6cfafc07f8f857cfb9efde99"
+    },
+    {
+      "code": "BRC0035F",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=l%2FOaDiUqfGbgo1W80XUJmw%3D%3D",
+      "responseSha256": "2a5cf944fec97ab7dcb27decefa8ba71af0d3975db637e44db876410d769e3d9",
+      "query": "carne, bovina",
+      "indexResponseSha256": "8b85f9521557902ab7e0d01008afd6ca6385e61f6cfafc07f8f857cfb9efde99"
+    },
+    {
+      "code": "BRC0006J",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=%2FrN%2FVVIhKdK5JDCSKnyGJg%3D%3D",
+      "responseSha256": "713228ba868c6284049957c8bd7fea4f615f09360ec2ccf0b69a0887eeb46a42",
+      "query": "ovo",
+      "indexResponseSha256": "7759a65a2eaaf302011492eabb27d95edcac20c765cc6a4409dc25dacd1f2f94"
+    },
+    {
+      "code": "BRC0007J",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=ENS%2BUIKA7Bn4E8zFjpQKSw%3D%3D",
+      "responseSha256": "1305572d8be5805ede006a5beee5e2714b6b1ecbf0b92621b0bf96534a05bfc6",
+      "query": "ovo",
+      "indexResponseSha256": "7759a65a2eaaf302011492eabb27d95edcac20c765cc6a4409dc25dacd1f2f94"
+    },
+    {
+      "code": "BRC0008J",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=o%2BNdxDDeICA%2Ba%2BwQ0RF3Uw%3D%3D",
+      "responseSha256": "d2c1310e7548041afcfdb0aad43b553a29a6f201c7818614fc8a2f35d655178a",
+      "query": "ovo",
+      "indexResponseSha256": "7759a65a2eaaf302011492eabb27d95edcac20c765cc6a4409dc25dacd1f2f94"
+    },
+    {
+      "code": "BRC0025G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=AKI7k%2F9h8EWgG48eCEmreg%3D%3D",
+      "responseSha256": "0debc1234192f2245bee7495f4587343bdc46f3ea8fc0ca97374f1dc04185a20",
+      "query": "leite",
+      "indexResponseSha256": "3ac6b96a87230208e1f9b5c60cdeb39c8c25e6e213807bbb56860f0ae71f4dce"
+    },
+    {
+      "code": "BRC0026G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=jX10q0BmmgjLbZq5Twhcqw%3D%3D",
+      "responseSha256": "ba3349702f61c9cc8bc23c2185f63be665db73461fc044347580ff618431117d",
+      "query": "leite",
+      "indexResponseSha256": "3ac6b96a87230208e1f9b5c60cdeb39c8c25e6e213807bbb56860f0ae71f4dce"
+    },
+    {
+      "code": "BRC0027G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=UXrxujwl7gdUKZlue2hHbA%3D%3D",
+      "responseSha256": "d4cc5c25a958f4df71c818f935a90520617270edfa262c2929252c1299fe60e8",
+      "query": "leite",
+      "indexResponseSha256": "3ac6b96a87230208e1f9b5c60cdeb39c8c25e6e213807bbb56860f0ae71f4dce"
+    },
+    {
+      "code": "BRC0011G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=JDa9ZlgX1M%2FQ2yMLoLopxw%3D%3D",
+      "responseSha256": "db4cb0ac964aabf68c03fe6cef711ba8e0823c79fa6bfd1c32984bd960a5eea1",
+      "query": "iogurte",
+      "indexResponseSha256": "296b01577f79424f0c003e1bc90c7cedff74dffa360fce05341c467f0eae0255"
+    },
+    {
+      "code": "BRC0012G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=NYSQ0cR39GQ9aES7ZUto3w%3D%3D",
+      "responseSha256": "c9ba53dd96d9f976672a6a8b6800f637aa63813e1258ea852412b331728000a9",
+      "query": "iogurte",
+      "indexResponseSha256": "296b01577f79424f0c003e1bc90c7cedff74dffa360fce05341c467f0eae0255"
+    },
+    {
+      "code": "BRC0013G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=JArEZufRJ8gqoMxXQuO72g%3D%3D",
+      "responseSha256": "5b2091946208f9e779dbca13996de78f408f3dcb3749ccab15099f1ace914156",
+      "query": "iogurte",
+      "indexResponseSha256": "296b01577f79424f0c003e1bc90c7cedff74dffa360fce05341c467f0eae0255"
+    },
+    {
+      "code": "BRC0258C",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=eSEIi4HvjE7FJUOlDzDjmA%3D%3D",
+      "responseSha256": "319e7c837ce2c04da2f2ade155f118c91ee4bbcd31756597eed0c653f3d1b2ff",
+      "query": "queijo",
+      "indexResponseSha256": "cff767f33ee08ccd075dffc7719ae3ff6c5ac32d8c078040b01a0462bdc30e42"
+    },
+    {
+      "code": "BRC0048G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=WymNRFVVtA3%2BdUtDoGc%2Bew%3D%3D",
+      "responseSha256": "e5a7f1df3e296fbd72a2e987874979c675a248e5dc690249d5b8c5cf43836cb8",
+      "query": "queijo",
+      "indexResponseSha256": "cff767f33ee08ccd075dffc7719ae3ff6c5ac32d8c078040b01a0462bdc30e42"
+    },
+    {
+      "code": "BRC0145A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=ZcG8T%2F4HaRn4aIIwDY69Wg%3D%3D",
+      "responseSha256": "52e84374515ee77b31b5a405c8c533873033eca67823b3b5d86797c5766577eb",
+      "query": "pão",
+      "indexResponseSha256": "56d87e921bae20020426f6ed206f4b01d5173ccfb5541445b40fdc898870d073"
+    },
+    {
+      "code": "BRC0146A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Je073o%2FJAQo4p4cmKem0pA%3D%3D",
+      "responseSha256": "ef01b28df2c719e74a7b798b6108f165ee57b862557ad291a25cb96b91ae6c8c",
+      "query": "pão",
+      "indexResponseSha256": "56d87e921bae20020426f6ed206f4b01d5173ccfb5541445b40fdc898870d073"
+    },
+    {
+      "code": "BRC0147A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=s%2BhzTAq4Q6oZl3nfyVnhXg%3D%3D",
+      "responseSha256": "b1772b8c29aab2065aec4c084f4685c162726ca1c6210d34f8027e40c8679143",
+      "query": "pão",
+      "indexResponseSha256": "56d87e921bae20020426f6ed206f4b01d5173ccfb5541445b40fdc898870d073"
+    },
+    {
+      "code": "BRC0001D",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=WFAAODS%2FUDff6UUWBog6RQ%3D%3D",
+      "responseSha256": "5cabc4d547c63bc8dc28bcb03ee784e84b68de6f2279ef24ebab45e086ac0e39",
+      "query": "azeite",
+      "indexResponseSha256": "6aae099fd9f0099fefc669f85d87f8f194a61d8d60799e63bde3c4822f95025a"
+    },
+    {
+      "code": "BRC0002D",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=w7W2G%2BufgdZTOD9pMqaihw%3D%3D",
+      "responseSha256": "52e8efcb4e4dd9e7ae4afa675973fbd42d821e2b5ac6302302196694a38d14c0",
+      "query": "azeite",
+      "indexResponseSha256": "6aae099fd9f0099fefc669f85d87f8f194a61d8d60799e63bde3c4822f95025a"
+    },
+    {
+      "code": "BRC0039D",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Yu%2FxYf%2FG5V5ap5Y3kmyO2w%3D%3D",
+      "responseSha256": "9a66600a28f02ebb0b21f4701c2690883c4119f6f7a340527e093bb06ddfc062",
+      "query": "azeite",
+      "indexResponseSha256": "6aae099fd9f0099fefc669f85d87f8f194a61d8d60799e63bde3c4822f95025a"
+    },
+    {
+      "code": "BRC0018T",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=tvDyZHPt6vjZm%2FNdOVIQVw%3D%3D",
+      "responseSha256": "d9e0ba42655fefad4b80cf03e37fef5699e571bff9ff7ca794457b00697e6092",
+      "query": "lentilha",
+      "indexResponseSha256": "191367561c7a21b879646ab4a8a182a4956acb91c09545a4d76bf5f0093a067d"
+    },
+    {
+      "code": "BRC0019T",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=29QP2iPTDoG%2FZGK7WyTm6g%3D%3D",
+      "responseSha256": "bb8dca6ebc7f3ee8109d6f01d0675e8435b198a54a63ae28a588d3d05d8ceeb0",
+      "query": "lentilha",
+      "indexResponseSha256": "191367561c7a21b879646ab4a8a182a4956acb91c09545a4d76bf5f0093a067d"
+    },
+    {
+      "code": "BRC0077T",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=IrFkje7Bwo1wk9E%2B2V0ksA%3D%3D",
+      "responseSha256": "10dd1f564b03e4a3d02089a4c6ca1b20a7a3dffcb5798afb8ee4c967d54698f2",
+      "query": "lentilha",
+      "indexResponseSha256": "191367561c7a21b879646ab4a8a182a4956acb91c09545a4d76bf5f0093a067d"
+    },
+    {
+      "code": "BRC0076E",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=PoS32qrGlZ1GOEeMIEvNiQ%3D%3D",
+      "responseSha256": "39c4f4711df151fd32528a81ebdfe48dbe6d87949533fd6169a90a0ed85cae68",
+      "query": "peixe, sardinha",
+      "indexResponseSha256": "7f348224c2f7450a0eb4ef3383439ee0c4c2af53f8195312831795905db4534e"
+    },
+    {
+      "code": "BRC0010J",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=eLfu6UDeKVunpDwry%2FKA1A%3D%3D",
+      "responseSha256": "56384919bedbc04ea5ccfda172af1ab44068843e9d94548bbeba665dcb8e3512",
+      "query": "ovo, galinha, inteiro",
+      "indexResponseSha256": "7bb6c289ff5e1248ccc8786c22b6a55f1a3b7571515af5765b700b4e59d4d8e7"
+    },
+    {
+      "code": "BRC0011J",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=Mifbz4bl31rmLqlyRxQirA%3D%3D",
+      "responseSha256": "845748dcf0de8e2021edce045c461c01a818534cd60d61501d69889a136450c2",
+      "query": "ovo, galinha, inteiro",
+      "indexResponseSha256": "7bb6c289ff5e1248ccc8786c22b6a55f1a3b7571515af5765b700b4e59d4d8e7"
+    },
+    {
+      "code": "BRC0023J",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=sP2CXGaT24P7PJjezs9pLw%3D%3D",
+      "responseSha256": "f1ad7c6ee1c480047b350b2cfea242814b76d1566b163cd3d5f5f14b450323ed",
+      "query": "ovo, galinha, inteiro",
+      "indexResponseSha256": "7bb6c289ff5e1248ccc8786c22b6a55f1a3b7571515af5765b700b4e59d4d8e7"
+    },
+    {
+      "code": "BRC0030G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=FkCqhwbZMzjbmpgnzrMotg%3D%3D",
+      "responseSha256": "2afaf9f4f4d291c0239414d62cfc39733c4d03376ad2564564a579585a2db4a3",
+      "query": "leite, vaca",
+      "indexResponseSha256": "3478a044c9936e43460e3f90c94e94453aa056b2267a5679859fbd66f587968b"
+    },
+    {
+      "code": "BRC0031G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=vsXPrUNXEtoCQHysqTUR3Q%3D%3D",
+      "responseSha256": "704f738e0aeb8fb25bf09fb7a795980bb2daeb29eb62f45adc1eb8c2e06f329e",
+      "query": "leite, vaca",
+      "indexResponseSha256": "3478a044c9936e43460e3f90c94e94453aa056b2267a5679859fbd66f587968b"
+    },
+    {
+      "code": "BRC0032G",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=WmvZFVvVHx%2BfWFA%2Faiwwww%3D%3D",
+      "responseSha256": "391370351e80c7974ce4982b25d170b0c00df327daba7afb755022f537e8b731",
+      "query": "leite, vaca",
+      "indexResponseSha256": "3478a044c9936e43460e3f90c94e94453aa056b2267a5679859fbd66f587968b"
+    },
+    {
+      "code": "BRC0112F",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=rRy2pImEx006A9LIVtCv6A%3D%3D",
+      "responseSha256": "060f6c42fc727d879b0f0f3f91b100df9db8b29b932b6e2625d6bbca25d63156",
+      "query": "carne, frango, peito",
+      "indexResponseSha256": "73d636e61d5926672580b087ce9434ac3e7084eea617d4091aea9b683ea6286a"
+    },
+    {
+      "code": "BRC0113F",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=sXf9gOdKlQkr%2FDC7iNwNWg%3D%3D",
+      "responseSha256": "f3b940c3b573e0ca56efcb46d00c6ebc785d03cf816fa00ec20a126a0d0fa068",
+      "query": "carne, frango, peito",
+      "indexResponseSha256": "73d636e61d5926672580b087ce9434ac3e7084eea617d4091aea9b683ea6286a"
+    },
+    {
+      "code": "BRC0024A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=bP3l70deMwVISrW6JYIzPg%3D%3D",
+      "responseSha256": "8be818d6ff1b8c1bdd5a18a18525d98edf30c9eb0fc29a9992afc3fcfcfce91f",
+      "query": "aveia, flocos",
+      "indexResponseSha256": "9dd0f9b3a97968c1e9d314b1097fd62ee8650bea38eb0bd58f1b7712d2538a1c"
+    },
+    {
+      "code": "BRC0025A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=K0FBjlBG732%2BsIV8BGR9BA%3D%3D",
+      "responseSha256": "e2108c700db5d444569cd7ea3af92ec094251c6801597ef6535c5713c6294129",
+      "query": "aveia, flocos",
+      "indexResponseSha256": "9dd0f9b3a97968c1e9d314b1097fd62ee8650bea38eb0bd58f1b7712d2538a1c"
+    },
+    {
+      "code": "BRC0026A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=QUeZqwcspWYPvRv8B7RJzQ%3D%3D",
+      "responseSha256": "706d9363e43960557c177562ce71fb97066b0591de2641ac9c98f8d8c71457a9",
+      "query": "aveia, flocos",
+      "indexResponseSha256": "9dd0f9b3a97968c1e9d314b1097fd62ee8650bea38eb0bd58f1b7712d2538a1c"
+    },
+    {
+      "code": "BRC0880A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=N0GuoSzon8fd4ZVg%2BIEmXw%3D%3D",
+      "responseSha256": "6280833032ff2b41d84c375ccd0400572692f0e109dbd097ceadf6f6ee789522",
+      "query": "pão, francês",
+      "indexResponseSha256": "cf261d100485ab2cdd4c1a0fc94b4c71cf6c8a3220ff85f12ae37db23c924156"
+    },
+    {
+      "code": "BRC0001A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=IuWNWJLGLyCVKxGOsgJTsg%3D%3D",
+      "responseSha256": "a0169cf9e36cf0fc9829f7e094b094dd5b46e441fdedf53a1adf50982460584d",
+      "query": "arroz, polido",
+      "indexResponseSha256": "32083c5a1ff12569ec9767243e9960dfad445edd9a3d0ddd3a283547e34b5e71"
+    },
+    {
+      "code": "BRC1211A",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=KHYQ80c5Deiflo%2BIl7jbMQ%3D%3D",
+      "responseSha256": "253c5895616e1d19b3ea8a51254112935b54a858c4a683c249ae0a3424fea3ac",
+      "query": "arroz, polido",
+      "indexResponseSha256": "32083c5a1ff12569ec9767243e9960dfad445edd9a3d0ddd3a283547e34b5e71"
+    },
+    {
+      "code": "BRC0002T",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=c%2Fl54eYuA4ZPVaWwfhq%2FyQ%3D%3D",
+      "responseSha256": "aa0ad78ee41d1dac1db8627e5baa28fb6a1c8e3f67c2ee92000d60fe33c8bf20",
+      "query": "feijão, carioca",
+      "indexResponseSha256": "adf4ef984fdfdae77a096d181dae55287b9778aa91be08aae7f71f01e496922d"
+    },
+    {
+      "code": "BRC0062T",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=M4R4hI3EcGHGFTSGWMbL8A%3D%3D",
+      "responseSha256": "c3d1ad43483208b77f4c173da8612afa6c2cc152bed621d3b7a10cbdd2ec2578",
+      "query": "feijão, carioca",
+      "indexResponseSha256": "adf4ef984fdfdae77a096d181dae55287b9778aa91be08aae7f71f01e496922d"
+    },
+    {
+      "code": "BRC0008T",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=2IXAgzFwNLDYhSUsIuzR%2FQ%3D%3D",
+      "responseSha256": "34d533e280b4bac878aeff2700044f7049803ff4ecc967a0821709aa6a56edd8",
+      "query": "feijão, preto",
+      "indexResponseSha256": "b5b3b3cee266444e562e70437a014b9349511de5845e3f429f59c471bfc88a27"
+    },
+    {
+      "code": "BRC0009T",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=emkmpw%2FUGTNqHJAbH4rGSw%3D%3D",
+      "responseSha256": "abb8a99526fcbb1262644278479be6466ee69d33a17aca4e598a8871d4e8e57b",
+      "query": "feijão, preto",
+      "indexResponseSha256": "b5b3b3cee266444e562e70437a014b9349511de5845e3f429f59c471bfc88a27"
+    },
+    {
+      "code": "BRC0107T",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=215kHlI%2BcBzz5SAZAlOP5Q%3D%3D",
+      "responseSha256": "fc030eb55366174205522364c5ed4465c67151c1c0c68c8bbc0529d003cb7e2f",
+      "query": "feijão, preto",
+      "indexResponseSha256": "b5b3b3cee266444e562e70437a014b9349511de5845e3f429f59c471bfc88a27"
+    }
+  ],
+  "excluded": [
+    {
+      "code": "BRC0047G",
+      "reason": "Quantitative macronutrient unavailable: BRC0047G fiber",
+      "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=ilyhgUA3kUlXWFDViIJ7Ng%3D%3D"
+    }
+  ]
+}

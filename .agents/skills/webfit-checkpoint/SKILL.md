@@ -19,7 +19,7 @@ Execute `git status --short --branch`, `git rev-parse HEAD` e `git branch --show
 
 Compare branch, commit-base, sincronização registrada, worktree e fase. Informe divergências antes de editar. Um upstream local alinhado não comprova o remoto atual. Commit mais novo não invalida automaticamente aprovações: localize a mudança relevante; não redefina gate por inferência.
 
-Worktree sujo não significa perda nem autorização para troca de branch. Preserve alterações e aplique Branch Safety antes de uma demanda STANDARD/STRICT. Não use stash/reset/clean, commit, push ou operações externas para facilitar a retomada.
+Worktree sujo não significa perda nem bloqueio por si só. DEC-054 mantém toda demanda na branch atual, com Git controlado por Maycon. Preserve alterações; não crie/troque branches ou worktrees nem use operações Git mutáveis para facilitar a retomada. Pause somente a edição afetada por conflito concreto que impeça preservação segura.
 
 ## Retomar sem reiniciar
 

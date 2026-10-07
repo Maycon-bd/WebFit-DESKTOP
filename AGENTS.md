@@ -54,7 +54,7 @@ Não importe a arquitetura do WebFit Web. Não introduza Supabase, Firebase, bac
 - Atualize documentação na mesma mudança que altera comportamento.
 - Preserve alterações preexistentes e não faça ações destrutivas sem autorização explícita.
 - Siga o fluxo em .harness/README.md e use LIGHT, STANDARD ou STRICT.
-- Em demanda real STANDARD ou STRICT, aplique a proteção de branches da .harness/GOVERNANCE.md antes da primeira alteração versionável: não trabalhe diretamente em `main`, `master`, `develop` ou outro ramo protegido.
+- Git é controlado por Maycon (DEC-054): execute todas as demandas na branch atualmente ativa, inclusive STANDARD/STRICT. Não crie/troque branches nem exija branch exclusiva, base `develop` ou árvore limpa. Inspeção somente leitura serve para preservar alterações e rastrear a entrega; conflito concreto no conteúdo deve ser esclarecido.
 - Orquestre as skills oficiais do Spec Kit sem modificá-las; customizações do projeto pertencem à Constitution, ao harness e à skill local `webfit-task`.
 - Siga .harness/AUTONOMY-POLICY.md para decidir, registrar e validar escolhas; nunca represente `AGENT-PROVISIONAL` como aprovação humana.
 - Não ative loops autônomos; o harness atual é preparatório.
@@ -85,7 +85,7 @@ Antes de concluir uma entrega, execute os comandos disponíveis para formataçã
 
 ## Política de ferramentas
 
-- ALLOW: leitura, pesquisa, análise, criação de artefatos do harness, checks locais não destrutivos e criação/troca de branch Git exclusivamente local quando a política de branches declarar o estado seguro.
+- ALLOW: leitura, pesquisa, análise, criação de artefatos do harness e checks locais não destrutivos. Git somente leitura para contexto e preservação; operações que alteram Git ficam sob controle de Maycon (DEC-054).
 - ASK: dependências, inicializações com risco de sobrescrita, migrações/schema, autenticação, integrações externas, infraestrutura, operações Plane/GitHub fora do contrato controlado de `$webfit-task` e mudanças arquiteturais materiais.
 - DENY sem autorização explícita e ambiente apropriado: produção, resets destrutivos, apagar trabalho, revelar secrets, bypass de segurança, pentest não autorizado, reproducer no host e deploy automático.
 - Nunca imprimir, versionar ou solicitar secrets em texto claro.
@@ -112,5 +112,5 @@ Antes de concluir uma entrega, execute os comandos disponíveis para formataçã
 - Não instale dependências sem aprovação.
 - Não altere banco de forma destrutiva, não acesse produção e não revele secrets.
 - Não faça commit, push ou deploy automaticamente.
-- Não faça merge, PR ou release automaticamente. Branch local segura não substitui nenhum human gate.
+- Não faça criação/troca de branch, worktree, fetch/pull, stash/reset/clean, commit/push/merge, PR, tag ou release por iniciativa própria. Maycon controla Git; uma instrução explícita posterior pode autorizar uma operação específica. Trabalhar na branch atual não substitui nenhum gate de produto.
 - Preserve o trabalho preexistente e confira git status antes e depois.

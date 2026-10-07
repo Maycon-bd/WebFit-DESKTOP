@@ -22,10 +22,10 @@ As fontes canônicas continuam em `docs/`, ADRs, Decisions Register, Spec Kit e 
 Toda demanda real STANDARD ou STRICT possui um Work Item Plane. Seu identificador humano, como `WEBFIT-12`, é usado na cadeia:
 
 ```text
-Plane → branch → Spec Kit → artefatos → Evidence
+Plane → Spec Kit → artefatos → Evidence (branch atual registrada)
 ```
 
-Branch, Specification e Evidence devem referenciar o mesmo ID. A convenção Git continua DEC-010, por exemplo `feature/webfit-12-cadastro-paciente`.
+Specification e Evidence devem referenciar o mesmo ID e registrar a branch atual. DEC-054 dispensa ID no nome da branch e nova branch por demanda; Git fica sob controle de Maycon.
 
 ## Entrada pelo `$webfit-task`
 
@@ -103,6 +103,6 @@ Ao entrar em `Blocked`, registrar somente motivo resumido, gate bloqueante e pr�
 
 Leitura de projeto, Work Item, estado, módulo e metadata necessária ao fluxo é automática. Operações humanas-only incluem excluir, arquivar, cancelar sem pedido humano, modificar outras demandas, bulk update, criar ciclo, alterar configuração, estados, módulos ou membros e mudar prioridade ou datas relevantes.
 
-Se o MCP Plane estiver indisponível, registrar `PLANE SYNC DEGRADED`. Com Work Item/ID conhecido, continuar quando for seguro e registrar sincronização pendente. Se uma nova demanda STANDARD/STRICT exigir novo ID e não for possível criá-lo, registrar `PLANE ID REQUIRED` e parar antes de Branch Safety.
+Se o MCP Plane estiver indisponível, registrar `PLANE SYNC DEGRADED`. Com Work Item/ID conhecido, continuar quando for seguro e registrar sincronização pendente. Se uma nova demanda STANDARD/STRICT exigir novo ID e não for possível criá-lo, registrar `PLANE ID REQUIRED` e parar antes de criar artefatos da demanda.
 
 Não fazer chamadas de escrita durante a ativação desta integração. O contrato passa a valer somente em uma execução real de `$webfit-task` explicitamente iniciada.

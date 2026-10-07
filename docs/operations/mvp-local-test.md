@@ -1,6 +1,8 @@
-# Teste local do MVP — WebFit Desktop 0.1.3
+# Teste local do MVP — WebFit Desktop 0.1.8
 
 **Autoridade:** DEC-044 e DEC-045, Maycon, 2026-10-06. Instalação manual, Windows 10 x64, somente dados fictícios. Este ensaio não conclui G5/G6/G7.
+
+DEC-050 retoma preparação local do atualizador. O candidato 0.1.5 inclui catálogo/busca, informações do login e painel Atualizações. A publicação automática ainda está desativada: instalar este candidato manualmente com **Atualizar mantendo os dados**, usando o mesmo usuário Windows. Uma consulta sem release disponível pode falhar sem impedir o trabalho offline. O ensaio conectado depende da primeira publicação aprovada.
 
 1. Copie o instalador `.exe` fornecido para o computador de Amanda e execute-o com o usuário habitual do Windows.
 2. No primeiro acesso, crie dois nomes de acesso diferentes, suas senhas e uma senha de recuperação dos backups. Guarde a recuperação no cofre já preparado.
@@ -14,7 +16,7 @@ O banco fica no diretório local do aplicativo do usuário do Windows, protegido
 
 ## Limites desta construção
 
-- Catálogo inicial offline de cinco alimentos TBCA 7.3, com fonte, código, preparação, medidas disponíveis e composição por 100 g. Base completa e fallback TACO ainda pendentes; outros itens permitem composição personalizada explícita.
+- Catálogo offline de 88 alimentos TBCA 7.3, com fonte, código, preparação, medidas disponíveis e composição por 100 g. Base completa e fallback TACO ainda pendentes; outros itens permitem composição personalizada explícita.
 - Dados ausentes/traços de micronutrientes aparecem como indisponíveis, preservando os valores de origem.
 - Sem PDF, impressão, agenda, financeiro, nuvem ou atualização automática, conforme escopo/DEC-044.
 - Instalador sem assinatura Authenticode; assinatura de updater não corresponde à assinatura de executável. O comportamento do Windows e a instalação no computador-alvo precisam de ensaio manual.
@@ -26,7 +28,7 @@ Dependências da interface: `npm ci`. Verificações: `npm run check`, `cargo fm
 
 ## Fontes da composição e energia
 
-- [TBCA, USP/FoRC, versão 7.3, São Paulo, 2025](https://www.tbca.net.br/): consulta em 2026-10-06, códigos BRC0208A, BRC0001T, BRC0011C, BRC0114F e BRC0041B. Cada registro preserva a URL específica. Importação explícita em `scripts/import-tbca.ps1`; o aplicativo funciona sem consultar a internet.
+- [TBCA, USP/FoRC, versão 7.3, São Paulo, 2025](https://www.tbca.net.br/): cinco registros iniciais consultados em 2026-10-06 e 83 adicionados em 2026-10-07. Cada registro preserva a URL específica. Importação inicial em `scripts/import-tbca.ps1`, expansão em `scripts/expand-tbca.py`, com hashes de respostas públicas em `src/data/tbca-import-manifest.json`; o aplicativo funciona sem consultar a internet. Não se trata da base completa.
 - [Roza e Shizgal, 1984](https://pubmed.ncbi.nlm.nih.gov/6741850/): protocolo aprovado no registro clínico do projeto.
 - [NASEM, Dietary Reference Intakes for Energy, 2023](https://www.nationalacademies.org/read/26818/chapter/7): equações/tabelas 5-15 a 5-19, conforme baseline aprovada.
 - Fibras e demais regras seguem `docs/project/energy-planning-decisions-2026-08-21.md`; ensaio técnico não representa validação clínica nova.
@@ -55,3 +57,31 @@ Senhas de acesso: mínimo de seis caracteres para criação, troca e redefiniç�
 Não desinstale antes de atualizar. Feche o aplicativo e execute o novo instalador com o mesmo usuário do Windows. Se encontrar a versão anterior, o instalador mostra Instalação encontrada: selecione **Atualizar mantendo os dados** e avance. A alternativa Remover versão anterior e reinstalar é outra operação; a escolha padrão ainda é a do NSIS, por isso confira a seleção. O mesmo número de versão oferece Reparar arquivos. Sem instalação existente, o assistente segue a instalação normal.
 
 Ensaio de aceite: crie/salve um paciente fictício na versão instalada, conclua/pule um tutorial e crie um backup pelo aplicativo; execute a nova versão escolhendo Atualizar mantendo os dados; entre com a mesma senha e confira cadastro, perfil, prescrições e preferências do tutorial. Confira também que permanece uma única instalação/atalho e que a versão exibida no Windows é a nova. Não marque Apagar também os dados do aplicativo em uma desinstalação. A atualização manual não exige criar os acessos novamente quando o banco existente é preservado.
+
+## Catálogo e busca — versão 0.1.4 (RF-PRE-002)
+
+Na prescrição, abra Buscar alimento na TBCA 7.3. Pesquise `feijao cozido`, `cozido feijão` e `BRC0208A`; confira a preparação e o código antes de incluir. A busca combina todas as palavras e ignora acentos/maiúsculas. Mostrar mais alimentos amplia a lista em grupos de 24. Uma busca sem resultados orienta a refinar os termos ou preencher a composição personalizada com origem explícita.
+
+Inclua BRC0006C (banana, média de variedades), selecione 50 g e confira 54,5 kcal antes da apresentação arredondada, proteína 0,635 g, carboidratos 13,35 g, lipídios 0,095 g, fibras 1,12 g e potássio 173 mg. Os valores exibidos seguem o arredondamento aprovado; o cálculo mantém precisão. Confira também conversão da unidade de 65 g disponível para esse alimento. Salve/reabra a prescrição e confirme alimento/porção preservados. O aplicativo não precisa de internet para isso.
+
+Atualize pelo instalador 0.1.4 com o mesmo usuário Windows, usando Atualizar mantendo os dados. Esta versão não altera o schema nem os cinco registros anteriores. O retorno geral de Maycon em 2026-10-07 foi positivo, sem roteiro/versão detalhados; os critérios específicos de interface, atualização, senha e tours continuam pendentes de evidência.
+
+## Informações no login — TA-UX-002 (próximo candidato)
+
+- Abrir o botão de informações no canto inferior direito com mouse e teclado; conferir WebFit Desktop, versão instalada e Desenvolvido por Eng. Maycon Garcia Silva.
+- Fechar por Fechar e Escape, conferir retorno do foco e zoom 200%.
+- Instalação vazia: preparação aparece somente via Acesso do administrador; definir as credenciais fictícias e recuperação; reiniciar e conferir login.
+- Atualização: abrir acesso administrativo, usar nome anterior se diferente de admin, conferir sucesso com senha correta e rejeição da incorreta. Dados e credenciais devem persistir.
+- O candidato anterior de catálogo 0.1.4 não inclui este fluxo; aguardar pacote novo.
+
+## Modal de atualizações — DEC-051 / TA-UPD-UI-001
+
+Na versão 0.1.6, Atualizações abre modal central com fundo desfocado. Conferir teclado/Tab, Escape e retorno de foco; Verificar atualização apresenta resultado dentro do modal; Continuar trabalhando fecha e permite usar pacientes. Durante instalação, fechamento indisponível. Não há publicação automática ativa; erro de consulta ainda pode ocorrer sem manifesto publicado. Atualizar manualmente mantendo os dados para receber este refinamento.
+
+## Nome lembrado — TA-AUT-005 / candidato 0.1.7
+
+Entrar com dados fictícios e Lembrar de mim marcado; fechar/reabrir e conferir nome preenchido e senha vazia. Tentar senha errada e confirmar que o nome lembrado não muda. Entrar desmarcado; fechar/reabrir e conferir remoção. Administrador e nutricionista possuem preferências separadas. Logout/bloqueio continuam exigindo senha; checkbox não cria login automático.
+
+## Faixa e consulta por login — DEC-053 / TA-UPD-UI-002
+
+O modal/ícone de atualização foi retirado. A versão 0.1.8 consulta atualizações a cada login e só mostra faixa superior se detectar versão mais nova. Mais tarde oculta a faixa até a sessão seguinte; Atualizar agora exige edição encerrada e usa backup/assinatura. Offline ou sem nova versão, não há aviso e o trabalho continua. Workflow habilitado no arquivo local; só atua depois da integração Git pelo usuário e publicação assinada. Testar primeiro login, logout/login, adiar, backup e persistência, usando dados fictícios.

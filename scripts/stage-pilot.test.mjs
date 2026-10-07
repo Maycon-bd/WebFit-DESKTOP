@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { generateKeyPairSync, createHash, sign } from 'node:crypto';
+import { mkdir, mkdtemp, writeFile, readFile, copyFile, readdir } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
+import { resolve } from 'node:path';
+
+test('staging verifies signed bytes before producing a complete release and refuses stale output', async () => {
+  await mkdir('.artifacts/release-tests',{recursive:true});
+  const root=await mkdtemp(resolve('.artifacts/release-tests/stage-'));
+  for (const folder of ['scripts','src-tauri/target/release/bundle/nsis','docs/operations']) await mkdir(`${root}/${folder}`,{recursive:true});
+  for (const file of ['stage-pilot.mjs','pilot-release.mjs']) await copyFile(`scripts/${file}`,`${root}/scripts/${file}`);
+  const {publicKey,privateKey}=generateKeyPairSync('ed25519');
+  const id=Buffer.from('0102030405060708','hex');
+  const key=Buffer.concat([Buffer.from('Ed'),id,publicKey.export({format:'der',type:'spki'}).subarray(-32)]);
+  const pubkey=Buffer.from(`comment\n${key.toString('base64')}\n`).toString('base64');
+  const bytes=Buffer.from('fictitious installer');
+  const signature=sign(null,createHash('blake2b512').update(bytes).digest(),privateKey);
+  const comment='timestamp:1';
+  const envelope=`comment\n${Buffer.concat([Buffer.from('ED'),id,signature]).toString('base64')}\ntrusted comment: ${comment}\n${sign(null,Buffer.concat([signature,Buffer.from(comment)]),privateKey).toString('base64')}\n`;
+  const name='WebFit_0.1.6-pilot.1.1_x64-setup.exe';
+  const installer=`${root}/src-tauri/target/release/bundle/nsis/${name}`;
+  await writeFile(`${root}/src-tauri/tauri.conf.json`,JSON.stringify({version:'0.1.6-pilot.1.1',plugins:{updater:{pubkey}}}));
+  await writeFile(`${root}/docs/operations/mvp-local-test.md`,'Fictitious test guide');
+  await writeFile(`${installer}.sig`,Buffer.from(envelope).toString('base64'));
+  await writeFile(installer,'tampered');
+  const run=()=>spawnSync(process.execPath,['scripts/stage-pilot.mjs'],{cwd:root,encoding:'utf8'});
+  assert.notEqual(run().status,0);
+  await writeFile(installer,bytes);
+  const valid=run();
+  assert.equal(valid.status,0,valid.stderr);
+  assert.equal((await readdir(`${root}/.artifacts/pilot`)).length,5);
+  const manifest=JSON.parse(await readFile(`${root}/.artifacts/pilot/latest.json`,'utf8'));
+  assert.equal(manifest.version,'0.1.6-pilot.1.1');
+  assert.ok(manifest.platforms['windows-x86_64'].signature);
+  assert.notEqual(run().status,0);
+});

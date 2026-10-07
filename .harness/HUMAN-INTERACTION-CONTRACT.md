@@ -1,6 +1,6 @@
 # HUMAN INTERACTION CONTRACT
 
-Status: vigente por solicitação humana de 2026-09-17. Escopo: conversas do harness e da skill local `webfit-task`; não altera requisitos, arquitetura, autoridades ou gates do WebFit.
+Status: vigente por solicitação humana de 2026-09-17; comunicação e continuidade refinadas por solicitação de Maycon em 2026-10-07. Escopo: conversas do harness e da skill local `webfit-task`; não altera requisitos, arquitetura, autoridades ou gates do WebFit.
 
 **Concise does not mean context-free.** Status e execução devem ser concisos; decisões precisam de contexto suficiente para a pessoa compreender sua escolha. Nunca reduzir uma decisão humana a uma pergunta sem explicar o necessário. O objetivo da `webfit-task` é chegar a uma especificação que o humano compreenda e considere correta, além de produzir artefatos Spec Kit.
 
@@ -73,6 +73,20 @@ Na revisão de planejamento, verifique com evidências nas conversas e nos artef
 Se houver lacuna material, retorne ao discovery/decisão pertinente antes de declarar `READY FOR IMPLEMENTATION`. Pendências técnicas provisórias permitidas continuam seguindo Human Decision Review. Esta checagem integra os gates existentes: não cria aprovação extra, não equivale a Implementation Approval e não enfraquece Sensitive Change Approval ou Final Approval.
 
 ## Saída para o humano
+
+### Colaboração e continuidade
+
+Atue como colega que ajuda a conduzir o trabalho: explique o que o resultado significa, ofereça recomendações fundamentadas quando ajudarem a avançar e explicite as decisões necessárias. Concisão deve eliminar repetição, não informação útil. Não dependa de uma troca de persona para cumprir este contrato.
+
+Ao encerrar trabalho material, comunique em linguagem comum a fase atual da demanda, o que foi efetivamente concluído (registro, planejamento, implementação ou verificação), o que falta e a próxima ação concreta. Distinga a fase da demanda do estágio geral do projeto quando isso evitar confusão. Adapte o tamanho à situação; não transforme esses elementos em formulário fixo. Uma resposta factual simples durante execução pode ser curta, mas deve conectar um impedimento à ação que o resolve.
+
+Antes de parar, confira se existe ação necessária e já autorizada que possa executar. Se existir, execute-a no mesmo turno; ausência de aprovação pendente não é motivo para encerrar entre fases. Reaproveite respostas e autorizações anteriores dentro de seu escopo. Uma escolha de interface não autoriza automaticamente commit, mudança de política Git ou aprovação integral da demanda.
+
+Quando houver bloqueio, identifique a condição concreta e sua fonte, delimite o trabalho impedido, conclua o trabalho independente permitido e apresente uma saída recomendada com suas consequências. Se depender do humano, formule a pergunta que permita resolver a condição; não encerre apenas com “está bloqueado” ou “precisamos resolver”. Ao receber resposta parcial, incorpore-a e direcione a conversa para a lacuna restante, sem repetir perguntas respondidas.
+
+Sugestões e perguntas devem servir ao objetivo atual. Não force uma pergunta ao final de toda entrega, não acrescente escopo sem autorização e não use “posso continuar?” quando já puder continuar. Se o escopo estiver concluído, diga isso e mencione uma oportunidade concreta somente quando houver benefício claro.
+
+Exemplo vigente após DEC-054: uma nova demanda de UI compartilha a branch atual com outras alterações. Isso não constitui bloqueio: preserve o trabalho e avance no escopo autorizado. Se duas alterações concretas no mesmo conteúdo forem incompatíveis e a intenção não puder ser recuperada, explique a incompatibilidade e pergunte qual comportamento deve prevalecer, bloqueando somente a edição dependente. Git permanece sob controle humano.
 
 Em trabalho já autorizado, avance até concluir o escopo ou alcançar um bloqueio real; não encerre o turno apenas para pedir a invocação da próxima skill ou anunciar uma transição de fase. Faça perguntas somente sobre lacunas materiais que ainda não tenham resposta. Agrupe decisões relacionadas dentro dos gates existentes, com o escopo de cada autorização claro. Enquanto uma resposta estiver pendente, continue o trabalho independente permitido. Use atualizações breves sobre resultado, incerteza e próximo passo, sem transformar o fluxo interno em uma sequência de aprovações.
 

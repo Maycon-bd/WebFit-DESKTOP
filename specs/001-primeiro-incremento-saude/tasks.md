@@ -141,8 +141,8 @@ description: "Task list for the first Health increment"
 - [x] T079 Design the Windows runner and release-only repository workflow, including offline fallback and no-token-in-app constraints in docs/operations/update-pipeline-design.md
 - [x] T080 Prepare updater and pipeline traceability from DEC-043/ADR-0002 to tests and evidence in docs/requirements/traceability.md and .harness/evidence/update-pilot/
 - [x] T081 Record implementation approval and sensitive-change approval before adding updater dependencies, generating keys, configuring the runner or creating release automation in docs/project/status.md
-- [ ] T082 **ADIADO por DEC-044; não bloqueia G5.** Configure the separate public release repository, Windows self-hosted runner, GitHub variable/secrets and final updater endpoint in docs/operations/update-pipeline-design.md
-- [ ] T083 **ADIADO por DEC-044; não bloqueia G5.** Execute the first pilot publication and end-to-end update check, including confirmation, backup, signature verification, installation and restart evidence in docs/quality/update-spike-test-plan.md
+- [ ] T082 **RETOMADO localmente por DEC-050; ativação/execução externa pendentes.** Configure the separate public release repository, Windows self-hosted runner, GitHub variable/secrets and final updater endpoint in docs/operations/update-pipeline-design.md
+- [ ] T083 **RETOMADO localmente por DEC-050; ativação/execução externa pendentes.** Execute the first pilot publication and end-to-end update check, including confirmation, backup, signature verification, installation and restart evidence in docs/quality/update-spike-test-plan.md
 
 ---
 
@@ -186,7 +186,7 @@ Every task has a checkbox, sequential ID, and repository path. [P] marks only in
 
 ## Evidência de execução — 2026-10-06
 
-As caixas de implementação acima significam código construído, sem representar execução integral de aceite, revisão independente ou conclusão do G5. Mapeamento dos caminhos previstos para módulos reais e cobertura/pendências: `.harness/evidence/health-increment/2026-10-06-candidate.md`. T038 permanece parcial: catálogo TBCA inicial de cinco itens, sem TACO integrada. T006 e os ensaios de interface/Windows 10 continuam pendentes. T082/T083 continuam ADIADOS.
+As caixas de implementação acima significam código construído, sem representar execução integral de aceite, revisão independente ou conclusão do G5. Mapeamento dos caminhos previstos para módulos reais e cobertura/pendências: `.harness/evidence/health-increment/2026-10-06-candidate.md`. T038 permanece parcial: catálogo TBCA ampliado de cinco para 88 itens em 2026-10-07, sem base completa ou TACO integrada. T006 e os ensaios de interface/Windows 10 continuam pendentes. T082/T083 retomados por DEC-050, sem ativação/publicação externa.
 
 
 ## Refinamento RF-UX-001 — DEC-046, 2026-10-06
@@ -209,3 +209,34 @@ As caixas de implementação acima significam código construído, sem represent
 - [x] T091 Configurar tradução de manutenção NSIS em src-tauri/installer/PortugueseBR.nsh e src-tauri/tauri.conf.json; preservar identidade, registro e escopo currentUser.
 - [x] T092 Verificar template/idioma gerados, checks existentes e build NSIS 0.1.3; evidência .harness/evidence/health-increment/2026-10-07-installer-update.md.
 - [ ] T093 Maycon testa instalação limpa, atualização 0.1.1/0.1.2 para 0.1.3 com paciente/tour fictícios preservados e reparação da mesma versão, conforme docs/operations/mvp-local-test.md.
+
+## Continuação de T038 — RF-PRE-002, DEC-045, 2026-10-07
+
+- [x] T094 Ampliar seleção oficial offline em src/data/tbca.json via scripts/expand-tbca.py, preservando os cinco registros anteriores, código, fonte, preparação, unidades, valores originais e proveniência em src/data/tbca-import-manifest.json.
+- [x] T095 Melhorar pesquisa por palavras/acentos/código, lista progressiva e estado vazio em src/FoodPicker.tsx e src/food-search.ts; conferir integridade, importação e autoridade/proporção no backend em tests/unit/food-search.test.ts, tests/unit/tbca-import.test.py e src-tauri/src/acceptance_tests.rs.
+- [x] T096 Gerar/verificar instalador 0.1.4 e registrar evidência em .harness/evidence/health-increment/2026-10-07-food-catalog.md.
+- [ ] T097 Ensaiar busca, medida caseira, porção, persistência e atualização no Windows 10 x64, conforme docs/operations/mvp-local-test.md. T038 ainda exige cobertura completa e fallback TACO conforme RN-PRE-002, sem inferir ausência na TBCA a partir desta seleção local.
+
+## Refinamento RF-UX-002 — DEC-049, 2026-10-07
+
+- [x] T098 Implementar informações do login, versão atual, crédito e entrada administrativa em src/LoginInfo.tsx, src/App.tsx e src/style.css; preservar autenticação/backend e acessos existentes.
+- [x] T099 Verificar formatação, lint, TypeScript, testes e build; registrar RF-UX-002/TA-UX-002 em .harness/evidence/health-increment/2026-10-07-login-info.md.
+- [ ] T100 Ensaiar TA-UX-002 no Windows: primeira instalação, atualização com administrador de nome anterior, foco/Escape, zoom e login negado; validar candidato antes da distribuição.
+
+## Retomada do produto e pipeline — DEC-050, ADR-0002
+
+- [ ] T101 Adaptar workflow piloto da raiz e verificador em .github/workflows/pilot-release.yml e scripts/, preservando bloqueio de ativação até revisão final; conferir pré-requisitos dos dois runners próprios.
+- [x] T102 Implementar consulta e instalação autorizadas do updater no backend do produto, backup consistente antes da instalação, rejeição de origem/versão e bloqueio de operações concorrentes em src-tauri/src/update.rs e service.rs. Código/testes locais concluídos; ensaio real T105 pendente.
+- [ ] T103 **Parcial:** painel com aviso/ícone, confirmar/adiar/progresso e acesso manual implementado em src/UpdatePanel.tsx; ensaio visual, frequência persistente e bandeja Windows pendentes.
+- [ ] T104 **Parcial:** checks, assinatura de fixture, staging e instalador inicial 0.1.5 verificados; assinatura real no serviço do runner pendente. Evidência em .harness/evidence/update-pilot/2026-10-07-product-preparation.md.
+- [ ] T105 Validar segundo runner, autorizar ativação/publicação e executar T082/T083 com duas versões fictícias; somente então considerar atualização operacional.
+- [x] T106 RF-UPD-001/TA-UPD-UI-001/DEC-051: substituir expansão lateral por modal nativo com blur, foco e fechamento protegido em src/UpdatePanel.tsx e src/style.css.
+- [x] T107 Verificar frontend/build, gerar candidato 0.1.6 e registrar evidência local e ensaio Windows pendente do modal.
+
+## RF-AUT-004 — DEC-052
+
+- [x] T108 Implementar leitura/gravação autenticada de nome lembrado em src-tauri/src/service.rs; testar opt-in, reabertura, remoção, falha de login e isolamento/autorização em src-tauri/src/tests.rs.
+- [x] T109 Adicionar checkbox e preenchimento sem senha em src/App.tsx/src/style.css; verificar checks e registrar .harness/evidence/health-increment/2026-10-07-remember-login.md.
+- [ ] T110 Ensaiar TA-AUT-005 no próximo candidato Windows, incluindo reabertura, desmarcar, senha vazia, foco/teclado e atualização.
+- [x] T112 RF-UPD-001 / DEC-053 / TA-UPD-UI-002: remover modal/ícone, criar faixa superior com consulta por login, adiar/confirmar/progresso; testar deduplicação StrictMode e sessão nova.
+- [ ] T113 **Preparação local concluída; revisão/execução real pendentes:** Habilitar workflow local, preparar diagnóstico/ambiente do runner da empresa e candidato inicial; registrar checks e comandos para integração Git pelo usuário. Remoto ativo somente após execução/publicação comprovadas.

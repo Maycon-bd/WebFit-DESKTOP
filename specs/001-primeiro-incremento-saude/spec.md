@@ -12,6 +12,8 @@
 
 ## User Scenarios & Testing
 
+Refinamento aprovado em 2026-10-07: RF-UX-002/DEC-049 organiza as informações do login e o acesso administrativo; critérios TA-UX-002. Preparação de instalação nova pelo administrador via botão de informações, nome admin predefinido sem senha no código; acessos anteriores preservados. Integra o incremento em execução, sem nova feature ou item de spike reaberto.
+
 ### User Story 1 - Acessar o espaço Saúde com segurança (Priority: P1)
 
 Como administrador ou nutricionista, quero acessar o espaço Saúde com uma credencial local, encerrar ou retomar minha sessão com segurança e manter meu perfil profissional, para trabalhar sem servidor ou internet.
@@ -220,3 +222,9 @@ Senha de acesso mínima de seis caracteres em preparação, troca e redefiniçã
 **Status:** aprovado por Maycon em 2026-10-07, DEC-048. **Prioridade:** P1 (refinamento de distribuição para teste).
 
 Ao executar uma versão nova do instalador com uma instalação anterior do mesmo usuário Windows, detectar a instalação e apresentar Atualizar mantendo os dados. Essa opção deve substituir arquivos sem desinstalação manual, preservando banco, usuários, senhas e tutoriais. Sem instalação, fluxo normal; mesma versão, reparação dos arquivos. Identidade/escopo da instalação devem permanecer estáveis. Não ativar consulta/download automático; atualização manual permanece vigente. Ensaio com paciente fictício persistido antes/depois é obrigatório para aceite no alvo.
+Refinamento aprovado DEC-051 / RF-UPD-001 / TA-UPD-UI-001: opções de atualização em modal central com fundo desfocado; abertura pelo menu, foco contido e retorno ao botão ao fechar, Escape fora de instalação e bloqueio de fechamento durante instalação. Mensagens/progresso no modal, sem ampliar barra lateral; erro de consulta não impede trabalhar após fechar. Implementação local autorizada pelo pedido explícito de Maycon; publicação permanece pendente.
+
+## Refinamento RF-AUT-004 — DEC-052
+
+Login permite lembrar somente nome. TA-AUT-005 define persistência opt-in após autenticação válida, remoção após login desmarcado, separação dos papéis e preservação do bloqueio/senha obrigatória. A preferência não é credencial nem sessão e não concede acesso a dados.
+DEC-053 supersede apresentação DEC-051 / TA-UPD-UI-001. RF-UPD-001 / TA-UPD-UI-002 aprovado: faixa superior quando nova versão existe, consulta automática em cada login, sem cache diário; resultado de sessão anterior não reaparece no login seguinte. Ações Atualizar agora e Mais tarde na faixa; proteção backend, backup e assinatura preservados; indisponibilidade de rede não bloqueia login/operação. Preparação local da ativação autorizada; usuário executa Git.

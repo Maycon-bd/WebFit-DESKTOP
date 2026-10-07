@@ -7,14 +7,14 @@
 - **Data do checkpoint:** 2026-10-07
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
-- **Estado:** produto novo criado na raiz, separado do spike: Tauri/React, SQLCipher/DPAPI, autenticação, perfil, pacientes, prescrições, rascunhos, auditoria e backup. Tours RF-UX-001 adicionados às oito telas autenticadas; instalador local 0.1.3 gerado em `.artifacts/mvp/2026-10-07/update-0.1.3/`, preservando candidatos anteriores; somente dados fictícios. Atualização automática adiada por DEC-044; distribuição por instalador e Atualizar mantendo os dados permanecem vigentes até pipeline/runner e updater implementados, validados e ativados (reafirmação humana em 2026-10-07).
-- **Última etapa concluída:** RF-DIS-001/DEC-048: tradução do NSIS mostra Atualizar mantendo os dados e Reparar arquivos. Registro deste host confirmou instalação 0.1.1; template gerado confirmado com detecção SemVer e atualização sem desinstalador. Pacote 0.1.3 x64 gerado: 218.875.060 bytes, SHA256 `f58b9956d85ee5154bf17099d658fa23ada776de3faec604b8c9f75fa4cfe29b`. Checks de formatação/lint/TypeScript/build/clippy, 14 Rust e 4 Node passaram. Authenticode NotSigned. Ensaio gráfico e preservação dinâmica na atualização ainda pendentes em T093. Política transitória de distribuição manual consolidada nos documentos operacionais e na DEC-044/DEC-048, conforme solicitação de Maycon.
+- **Estado:** G5 em execução com dados fictícios; candidato 0.1.8 reúne catálogo/login lembrado e updater com faixa superior por login DEC-053, supersedendo modal DEC-051. Workflow habilitado localmente; usuário fará Git. Nenhuma ativação/publicação remota pelo agente; manual vigente até ensaio conectado. Empresa é a máquina do runner; notebook adicional depois.
+- **Última etapa concluída:** T112 faixa/consulta por sessão e T113 preparação local: oito Node frontend, seis Node release, 18 Rust, lint/TypeScript/build/format/Clippy, sintaxe PowerShell e YAML passaram. NSIS 0.1.8 em .artifacts/mvp/2026-10-07/banner-0.1.8/; 219636147 bytes; SHA256 ee7de1328689815181fcbb899999bbf634ed823c37ec37fa98e5013f3d133d06; NotSigned. Secrets existentes e variável correta confirmados por API sem valores. Ferramentas no serviço, revisão independente e atualização ponta a ponta pendentes. Evidência .harness/evidence/update-pilot/2026-10-07-banner-activation.md.
 - **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o erro 1068 do serviço foi resolvido pela correção para `NT AUTHORITY\NetworkService`; Maycon confirmou `RUNNING` após reiniciar o Windows; nenhum segredo foi versionado no Git
-- **Próxima ação:** Maycon instala o candidato `.artifacts/mvp/2026-10-07/update-0.1.3/WebFit-Desktop-0.1.3-teste-x64.exe` no Windows 10 x64 de Amanda e executa o roteiro `docs/operations/mvp-local-test.md` com dados fictícios. Em paralelo à evolução G5, completar catálogo/TACO, critérios de aceite e ensaios de interface/desempenho, sem reabrir autorização coberta pela DEC-045.
+- **Próxima ação:** revisão independente do atualizador/pipeline (autorização de agente pendente); usuário revisa/commita/envia/integra na main conforme fluxo Git, preservando trabalhos paralelos. Após integração, observar job piloto e validar publicação assinada/latest.json, instalar 0.1.8 e testar login/faixa/adiar/confirmar/backup/reinício/persistência.
 - **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude`
 - **Work Item:** `WEBFIT-3` — spike G4 concluído em `Done`; vínculo legado `PBI-001`
-- **Commit-base:** `66f886fe2be407803298918c08798af6791fffda` (`Simplify project task workflow guidance`); **HEAD atual:** `66f886f`
-- **Sincronização:** em 2026-10-07, `git status --short --branch` confirma a branch registrada com upstream local conhecido, sem indicação de ahead/behind; `git rev-parse HEAD` confirma o commit-base acima. Worktree com alterações documentais preexistentes de criação/renomeação de skills e manutenção do harness, preservadas, mais implementação nova na raiz e esta atualização do checkpoint. Sem fetch/pull; remoto atual não consultado. Sem commit/push automático.
+- **Commit-base:** `fa70d8fa4eac712801c2f3297d29e78a0f130bdb` (`Defer pilot publication and harden release verification`); **HEAD atual:** `fa70d8f`.
+- **Sincronização:** feature/pbi-001-primeiro-incremento-saude, HEAD fa70d8f, upstream local 0/0 sem fetch. Alterações paralelas de harness/Impeccable/login preservadas; IDs conflitantes desta continuação corrigidos para DEC-053/T112/T113, versão 0.1.8. API GitHub somente leitura; nenhum commit/push/merge/release, instalação no host ou configuração remota alterada.
 
 ## Última decisão aprovada
 
@@ -39,9 +39,7 @@ Em 2026-09-21, Maycon aprovou integralmente DEC-042: operação local/offline se
 
 ## Próxima ação exata
 
-Maycon aprovou DEC-044: focar no MVP útil para Amanda com instalação e atualização manuais. T082/T083 e ativação do updater/pipeline estão ADIADOS, sem exigência de publicação piloto antes do produto. Workflow desativado somente no arquivo local; nenhuma configuração remota alterada. Chave/segredos e preparação técnica preservados; custódia no Bitwarden confirmada pelo usuário.
-
-Próxima ação: Maycon instala/atualiza manualmente o candidato 0.1.3 em `.artifacts/mvp/2026-10-07/update-0.1.3/`, selecionando Atualizar mantendo os dados quando houver versão anterior, e confirma preservação de cadastros/senhas/tours (T093) no Windows 10 x64 de Amanda e confirma senhas de acesso com seis caracteres/recuperação com doze (T090), além dos tours, incluindo Pular, Escape, replay, persistência por usuário, foco e zoom, conforme `docs/operations/mvp-local-test.md`; consolidar resultados e continuar as pendências G5 nas evidências `2026-10-06-candidate.md` e `2026-10-06-onboarding.md`. T087 visual permanece pendente. Dependências previstas, schema/migrações e ferramentas de compilação (Perl incluído) estão autorizados no ambiente de teste. Testar com dados fictícios, sem promover spike a produto. T082/T083 continuam adiados. Revisão independente, aceite G6 e liberação G7 continuam pendentes; não publicar, fazer commit/push ou usar dados reais.
+DEC-053 substitui modal/ícone por faixa superior e consulta por login. Preparação local da ativação concluída, candidato 0.1.8 pronto. Maycon executará Git; não fazer commit/push/merge/release pelo agente. Revisão independente ainda pendente, pergunta sobre agente revisor aguardando resposta. Revisar conjunto do produto/pipeline, separar alterações paralelas do harness, integrar até main pelo fluxo aprovado; observar primeiro job e corrigir eventual falha. Testar publicação assinada, manifesto e atualização com dados fictícios. T082/T083/T105/T113 integrados pendentes; notebook não bloqueia usar um runner válido da empresa. G5 em execução; G6/G7 pendentes.
 
 ## Gates
 
@@ -122,6 +120,12 @@ Próxima ação: Maycon instala/atualiza manualmente o candidato 0.1.3 em `.arti
 
 ## Documentos de apoio
 
+### Harness e demanda de navegação — 2026-10-07
+
+- DEC-054 aceita por Maycon: Git sob controle humano; demandas na branch atualmente ativa, sem setup obrigatório ou bloqueio por nome/base/árvore suja. Inspeção somente leitura e preservação de alterações permanecem. Branch/commit-base acima preservados; nenhuma sincronização remota ou operação Git mutável nesta correção.
+- Última etapa desta correção: política documental e skills locais alinhadas; WEBFIT-4 retornou de Blocked para Planning. Evidência: `.harness/evidence/2026-10-07-human-git-control.md`.
+- WEBFIT-4 está no intake/discovery, sem Specification ou implementação. Menu recolhe toda a lateral e deixa somente o ícone hambúrguer para reabrir; agrupamento por módulos pendente. Próxima ação dessa demanda: concluir discovery e preparar Spec Kit na branch atual. G5/G6/G7 e a próxima ação operacional do updater acima não são concluídos nem reautorizados por este ajuste.
+
 - [Escopo](../product/scope.md)
 - [Requisitos funcionais](../requirements/functional-requirements.md)
 - [Regras de negócio](../requirements/business-rules.md)
@@ -170,10 +174,10 @@ Ao final de cada sessão, atualizar pelo menos: data, branch, commit-base, sincr
 
 ## Artefato local de teste — 2026-10-06
 
-- Instalador: `.artifacts/mvp/2026-10-07/update-0.1.3/WebFit-Desktop-0.1.3-teste-x64.exe`.
+- Instalador: `.artifacts/mvp/2026-10-07/catalog-0.1.4/WebFit-Desktop-0.1.4-teste-x64.exe`; candidatos anteriores preservados.
 - Roteiro, SHA256 e manifesto de fontes acompanham o arquivo na mesma pasta (ignorada no Git).
 - Evidência: `.harness/evidence/health-increment/2026-10-06-candidate.md`.
-- G5 continua em execução; G6/G7 não iniciados. Catálogo TBCA inicial de cinco itens, TACO e cobertura completa ainda pendentes.
+- G5 continua em execução; G6/G7 não iniciados. Catálogo TBCA de 88 itens; T038 base completa/TACO, cobertura integral e revisão independente pendentes.
 
 Refinamento mais recente: DEC-046/RF-UX-001, solicitado por Maycon em 2026-10-06, permite tours simples no MVP. Detalhamento reversível por usuário/tela é AGENT-PROVISIONAL; não altera gates clínicos, arquitetura ou distribuição manual. Checklist G5: T084–T086 verificados; T087 ensaio visual Windows 10 pendente.
 
@@ -182,3 +186,37 @@ Refinamento 2026-10-07: DEC-047 altera somente o mínimo de acesso da RN-AUT-001
 Distribuição mais recente: DEC-048/RF-DIS-001; T091/T092 verificados, T093 manual pendente. Executar nova versão sem desinstalação manual e selecionar explicitamente Atualizar mantendo os dados; escolha padrão do NSIS preservada. Evidência `.harness/evidence/health-increment/2026-10-07-installer-update.md`.
 
 Política vigente até a automação: toda nova versão é entregue por instalador; executar com o mesmo usuário Windows e selecionar Atualizar mantendo os dados, sem desinstalação manual. Vigência até pipeline com runner e updater implementados, validados e ativados. Fonte operacional: `docs/operations/installation.md`; pedido explícito de Maycon em 2026-10-07.
+
+Continuação mais recente: RF-PRE-002/T038; checklist G5: T094/T095 verificados, T096 instalador local gerado em .artifacts/mvp/2026-10-07/catalog-0.1.4/, T097 ensaio Windows 10 pendente. Nenhum Gate foi concluído com o retorno geral de uso. Evidência: .harness/evidence/health-increment/2026-10-07-food-catalog.md.
+
+Conferência final desta entrega: alterações paralelas RF-UX-002/DEC-049 apareceram em documentos/Spec Kit e tela de login; preservadas. O pacote de catálogo 0.1.4 foi gerado antes delas, com manifesto das fontes compiladas, e não contém o refinamento de login. Verificação desse trabalho pertence à sua entrega correspondente; não sobrescrever nem atribuir os checks do catálogo à árvore alterada em paralelo.
+
+Pesquisa de distribuição, 2026-10-07: Maycon solicitou análise detalhada de franquias gratuitas e alternativas para publicar atualizações após integrar na main. Relatório em docs/operations/update-hosting-analysis-2026-10-07.md, com fontes oficiais GitHub, Azure, CircleCI, GitLab, AppVeyor e Tauri. Recomendação para decisão: Windows padrão hospedado pelo GitHub, Releases separado e runner próprio como contingência; orçamento bloqueante e consumo real da conta precisam ser conferidos. A escolha vigente de runner próprio não foi substituída por aprovação presumida. Sem ativação, cobrança, credenciais ou publicação. HEAD fa70d8f e upstream local 0/0 sem fetch; trabalho de produto/login preservado. Próximo passo desta pesquisa: validar escolha de provedor e preparar adaptação do pipeline da raiz e updater conforme ADR-0002, antes de ativação externa. Checklist de gates permanece: G5 em execução, G6/G7 pendentes; pesquisa não conclui T082/T083.
+
+## Checkpoint complementar — RF-UX-002 / DEC-049, 2026-10-07
+
+- Data: 2026-10-07. Branch feature/pbi-001-primeiro-incremento-saude; commit-base/HEAD fa70d8fa4eac712801c2f3297d29e78a0f130bdb; upstream local 0/0, sem fetch ou consulta remota.
+- Última etapa concluída: T098/T099, informações no canto inferior direito do login, versão Tauri, crédito e acesso administrativo; preparação retirada do acesso inicial normal e nome admin predefinido para instalação nova. Senhas escolhidas localmente; contas existentes preservadas. Evidência .harness/evidence/health-increment/2026-10-07-login-info.md.
+- Sincronização: alterações de catálogo/versão/docs/testes já presentes ou produzidas paralelamente preservadas; este refinamento altera interface e documentação, sem backend/schema/dependências. Nenhum commit/push/PR/publicação.
+- Próxima ação exata deste refinamento: gerar novo candidato que inclua RF-UX-002 e ensaiar T100/TA-UX-002 no Windows 10 x64, com dados fictícios. O instalador catalog-0.1.4 gerado antes não contém RF-UX-002; não tratá-lo como atualizado por este código.
+- Checklist G5: T098/T099 concluídos; T100, revisão independente, aceite visual, cobertura restante e G6/G7 pendentes. Atualização manual DEC-044 preservada.
+- Verificação: lint/TypeScript/build, seis Node, formatação TS/CSS/Rust, clippy e 15 Rust passaram. Rust com TMP/TEMP apontando para .artifacts/test-temp-login-info; no TEMP padrão houve erro STORAGE no teste de backup. Não confundir esse resultado com ensaio no instalador ou investigação definitiva do ambiente.
+
+Refinamento DEC-051 / TA-UPD-UI-001 em 2026-10-07: T106/T107 concluídos como código/checks/pacote; aceite gráfico e revisão independente pendentes. Branch/HEAD fa70d8f e upstream local 0/0 preservados sem fetch. Trabalho paralelo preservado, sem commit/push/publicação. Instalador 0.1.6 precisa de atualização manual enquanto pipeline não ativo.
+
+## Checkpoint complementar — critique/audit frontend, 2026-10-07
+
+- Solicitação: revisão com impeccable; análise LIGHT documental, sem implementação. Alvo src/App.tsx e demais componentes/CSS da árvore local 0.1.6; avaliações independentes de UX e técnica concluídas.
+- Branch/commit-base/HEAD: feature/pbi-001-primeiro-incremento-saude, fa70d8fa4eac712801c2f3297d29e78a0f130bdb. Sincronização: trabalho preexistente preservado, sem fetch/commit/push ou operação remota; upstream local registrado anteriormente 0/0 não implica nova consulta remota.
+- Última etapa concluída: critique 24/40 e audit 12/20 provisórios; nove achados (quatro P1, cinco P2). Lint, TypeScript e build passaram; JS único 525,74 kB com aviso Vite. Detector src retornou zero achados. Snapshot arquivado em .impeccable/critique/ para alvo src-app-tsx.
+- Limite: duas tentativas independentes CUA localhost:1420 falharam com timeout. Sem inspeção visual, teclado/zoom ou aceite Windows. Servidor Vite iniciado para a revisão foi encerrado.
+- Próxima ação desta revisão: priorizar correções de edição durante salvamento, estado da meta energética, recuperação de erros e contraste, pelo fluxo vigente; depois ensaiar interface/teclado em 1366×768 a 200%. A Próxima ação exata de updater/piloto permanece vigente.
+- Checklist de Gate: G5 segue em execução; ensaio visual, cobertura integral, review/aceite permanecem pendentes; G6/G7 não iniciados. A auditoria não conclui T087/T100/T107 nem aprova design system ou muda RF-UX-002/DEC-049. Nenhum código, banco, dependência ou decisão clínica alterado.
+
+## Checkpoint — nome lembrado, 2026-10-07
+
+Branch feature/pbi-001-primeiro-incremento-saude; HEAD/commit-base fa70d8fa4eac712801c2f3297d29e78a0f130bdb; upstream local 0/0, sem fetch/consulta remota. Alterações anteriores/paralelas preservadas; esta sessão adicionou RF-AUT-004/DEC-052, frontend/backend/teste, documentação e candidato 0.1.7. Sem commit/push/PR/merge/publicação/instalação no host. Evidência .harness/evidence/health-increment/2026-10-07-remember-login.md.
+
+Última etapa: T108/T109 concluídos; próxima ação exata: instalar/atualizar com mesmo usuário Windows via .artifacts/mvp/2026-10-07/remember-0.1.7/WebFit-Desktop-0.1.7-teste-x64.exe e ensaiar T110/TA-AUT-005 com dados fictícios. Este candidato inclui refinamentos anteriores da árvore. Checklist G5: código/checks/pacote do nome lembrado concluídos; T110, ensaios anteriores, revisão independente, cobertura restante e G6/G7 pendentes. Distribuição manual vigente até validação/ativação do updater; nenhum gate final inferido.
+
+DEC-053, 2026-10-07: T112 código/checks/pacote concluídos; T113 preparação local concluída, review e execução pelo serviço pendentes. Git pelo usuário; oito Node frontend, seis Node release e 18 Rust passaram. Consulta em cada login e faixa superior; ensaio gráfico/ponta a ponta e gates finais pendentes. Fontes/evidência .harness/evidence/update-pilot/2026-10-07-banner-activation.md; guia docs/operations/own-runner-setup.md.

@@ -1,0 +1,13 @@
+# Atualizações em modal — DEC-051
+
+2026-10-07. RF-UPD-001 / TA-UPD-UI-001, T106/T107. STANDARD, refinamento do incremento já aprovado; implementação local solicitada explicitamente por Maycon. Branch feature/pbi-001-primeiro-incremento-saude, HEAD fa70d8fa4eac712801c2f3297d29e78a0f130bdb, develop ancestral, worktree anterior/paralelo preservado. Sem nova feature, dependência, schema, segredo, commit/push ou publicação.
+
+Substituída expansão lateral por dialog HTML nativo em portal para body. Mantido botão no menu; título, notas, resultado, progresso e ações no modal. ::backdrop desfoca 6 px e escurece o aplicativo; showModal fornece fundo inativo/foco contido e fechamento padrão por Escape com retorno ao botão. Cancel é prevenido durante instalação; fechamento por botão desabilitado nesse estado. SVG de atualização acompanha padrão do login; largura até 560 px, altura limitada ao viewport e rolagem interna. Nenhuma alteração no backend ou mecanismo de atualização.
+
+Verificação: npm run check passou (lint/TypeScript/seis Node/build), npm run format:check passou. Build Tauri NSIS 0.1.6 passou, com Perl portátil/locale C já aprovados. Testes Rust de autorização/backup e seis testes de release da preparação anterior permanecem referência para código backend/scripts inalterados; não atribuídos ao ensaio gráfico do modal.
+
+Inspeção estática confrontou TA-UPD-UI-001 com dialog/showModal, portal, CSS ::backdrop e cancel/close. Prévia de componente criada apenas em .artifacts/modal-preview (fixture sem backend/dados), servidor iniciado e encerrado. Navegador CUA falhou com net::ERR_CONNECTION_TIMED_OUT nas duas URLs localhost/127.0.0.1; não foi possível capturar ou verificar visualmente o modal. Ensaio Windows de foco, Escape, blur, zoom e fechamento durante instalação continua pendente; não simular sucesso nem review independente. Publicação automática permanece guardada; a falha de consulta relatada por Maycon em 0.1.5 não comprova updater ponta a ponta.
+
+Análise limitada da extensão DEC-051: um critério, plano dialog/portal e tarefas T106/T107 coerentes; cobre modal/blur/fechamento, sem arquitetura nova. Convergência local do código satisfeita; verificação visual não executada pelo bloqueio do navegador, mantida como pendência explícita. G5 em execução, G6/G7 pendentes; dados fictícios.
+
+Pacote: .artifacts/mvp/2026-10-07/modal-0.1.6/WebFit-Desktop-0.1.6-teste-x64.exe; bytes: 219629719; SHA256: 3f95697f0c714881c5542a1e89be20bc24f581ee47a37afa01cd3eb9c8659d39; Authenticode: NotSigned. Roteiro, checksum e manifesto de fontes acompanham. Sem instalação local automática. Avisos existentes de PDB OpenSSL/STATIC_VCRUNTIME e chunk Vite não impediram build. git diff --check passou.

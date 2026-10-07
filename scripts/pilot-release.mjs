@@ -56,7 +56,7 @@ async function request(url, options = {}) {
 async function main() {
   const { WEBFIT_RELEASE_REPO: repo, RELEASE_ID: id, RELEASE_VERSION: version, GITHUB_TOKEN: token } = process.env;
   requireCondition(repo === 'webfit-desktop-releases' && /^\d+$/.test(id ?? '') && token, 'Invalid release configuration.');
-  requireCondition(/^0\.1\.0-pilot\.\d+\.\d+$/.test(version ?? ''), 'Invalid pilot version.');
+  requireCondition(/^\d+\.\d+\.\d+-pilot\.\d+\.\d+$/.test(version ?? ''), 'Invalid pilot version.');
   const base = `https://api.github.com/repos/Maycon-bd/${repo}`;
   // Credentials are sent only to the GitHub API, never to manifest/download URLs.
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
@@ -69,7 +69,7 @@ async function main() {
   const files = new Map();
   for (const asset of assets) {
     requireCondition(asset.browser_download_url.startsWith(prefix), 'Unexpected asset URL.');
-    if (asset.name === 'SHA256SUMS') throw new Error('Release already has checksums; refusing overwrite.');
+    if (asset.name === 'SHA256SUMS' || asset.name === 'TESTE-LOCAL.md') continue;
     const bytes = Buffer.from(await (await request(asset.browser_download_url)).arrayBuffer());
     requireCondition(bytes.length === asset.size && bytes.length > 0, 'Asset size mismatch.');
     files.set(asset.name, bytes);
@@ -77,7 +77,7 @@ async function main() {
   requireCondition(files.has('latest.json'), 'Missing latest.json.');
   const manifestBytes = files.get('latest.json');
   const manifest = JSON.parse(manifestBytes.toString('utf8'));
-  const config = JSON.parse(await readFile('spikes/g4-tauri-foundation/src-tauri/tauri.conf.json', 'utf8'));
+  const config = JSON.parse(await readFile('src-tauri/tauri.conf.json', 'utf8'));
   const entries = validateManifest(manifest, version, assets, prefix);
   for (const asset of assets.filter((a) => /\.(exe|msi)$/.test(a.name))) {
     requireCondition(files.has(`${asset.name}.sig`), 'Missing installer signature asset.');
@@ -93,12 +93,9 @@ async function main() {
   const publicManifest = Buffer.from(await (await request(endpoint)).arrayBuffer());
   requireCondition(publicManifest.equals(manifestBytes), 'Latest endpoint does not serve this release.');
   const body = Buffer.from(checksums(files));
-  const uploadUrl = `https://uploads.github.com/repos/Maycon-bd/${repo}/releases/${id}/assets?name=SHA256SUMS`;
-  const uploaded = await (await request(uploadUrl, {
-    method: 'POST', headers: { ...headers, 'Content-Type': 'text/plain' }, body, redirect: 'error',
-  })).json();
-  requireCondition(uploaded.browser_download_url === `${prefix}SHA256SUMS`, 'Unexpected checksum URL.');
-  const downloaded = Buffer.from(await (await request(uploaded.browser_download_url)).arrayBuffer());
+  const checksumAsset = assets.find(asset => asset.name === 'SHA256SUMS');
+  requireCondition(checksumAsset?.browser_download_url === `${prefix}SHA256SUMS`, 'Missing checksum asset.');
+  const downloaded = Buffer.from(await (await request(checksumAsset.browser_download_url)).arrayBuffer());
   requireCondition(downloaded.equals(body), 'Published checksum content mismatch.');
   console.log(`Verified public pilot ${version}: manifest, installer signatures and ${files.size} SHA256 checksums.`);
 }

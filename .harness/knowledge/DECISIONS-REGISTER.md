@@ -16,7 +16,8 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 - DEC-001 a DEC-002: novo repositório e pausa do WebFit Web.
 - DEC-003 a DEC-006: autorização histórica do spike; a direção de produção correspondente foi aceita por DEC-042 e ADR-0001.
-- DEC-007 a DEC-010: curadoria documental, requisitos rastreáveis, gates e Git Flow.
+- DEC-007 a DEC-010: curadoria documental, requisitos rastreáveis, gates e Git Flow histórico; a exigência de setup por demanda para o agente foi substituída pela DEC-054.
+- [DEC-054](../../docs/project/decision-log.md#dec-054--git-sob-controle-humano-e-demandas-na-branch-atual): ACCEPTED por Maycon em 2026-10-07; Git humano, demandas na branch ativa, sem bloqueio por nome/base ou árvore suja. Preservação e gates de produto permanecem.
 - DEC-013 a DEC-021: MVP Saúde, papéis, primeiro incremento, backup e prescrição/cardápio.
 - DEC-022 a DEC-027: regras clínicas, rascunho automático, auditoria e planejamento de arquivos.
 - DEC-028 a DEC-037: consulta de auditoria, filtros, ordenação, paginação, período, catálogos, entidade, detalhe, meta-auditoria e estados.

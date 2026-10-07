@@ -1,10 +1,10 @@
 # Estratégia de atualização e releases
 
-## Revisão vigente — 2026-10-07 (DEC-044/DEC-048)
+## Revisão vigente — 2026-10-07 (DEC-053)
 
-Maycon aprovou priorizar o MVP útil para Amanda, com instalação e atualização manuais. Atualizações automáticas, runner e primeira publicação piloto estão ADIADOS e não bloqueiam o primeiro incremento. Preparação existente preservada, sem ativação. SQLCipher/DPAPI e backup/restauração permanecem aprovados. Os detalhes de atualização automática abaixo descrevem a estratégia futura suspensa; DEC-044 prevalece quanto ao momento de execução. Esta revisão não autoriza publicação nem ativação do updater; a execução local do produto segue a DEC-045.
+Maycon solicitou faixa superior, consulta por login e ativação. Escolheu preparação local e operações de Git por sua conta. O workflow está habilitado no arquivo local; execução/publicação remotas só após integração revisada na main e checks. Empresa tem o runner registrado; notebook pode ser preparado depois, pois um runner válido basta. Procedimento manual vigente até ensaio integrado. Orientações: [preparação e integração](own-runner-setup.md).
 
-**Status:** decisão aceita `ACCEPTED`; implementação do updater ainda depende do planejamento e do gate específico do G5.
+**Status:** decisão aceita `ACCEPTED`; implementação local em G5, publicação e ensaio integrado pendentes em T082/T083/T105.
 
 ## Procedimento vigente até a atualização automática
 
@@ -27,10 +27,10 @@ Permitir evolução frequente do WebFit Desktop com participação contínua da 
 
 - `DEC-020` foi refinada por `DEC-043` e pelo ADR-0002 aceito: atualização conectada é permitida no canal piloto sob as condições registradas.
 - `docs/operations/installation.md` já foi alinhado ao ADR-0002; a implementação do updater ainda depende do G5.
-- A política de custo zero mantém o runner próprio e a ausência de serviços pagos; a automação piloto é uma direção aprovada, ainda adiada e sem ativação.
-- Produto em construção na raiz, com instalador local de teste 0.1.3; spike G4 permanece descartável e separado. Pipeline/updater não estão ativos.
+- A política de custo zero mantém runners próprios; automação retomada localmente pela DEC-050, sem ativação externa.
+- Produto 0.1.8 incorpora updater Rust 2.12.0 e faixa por login. Workflow da raiz habilitado localmente usa runners próprios, ferramentas isoladas, build assinado e publicação por rascunho; não foi enviado/ativado no remoto pelo agente. Spike G4 continua separado.
 
-A atualização **manual pelo instalador** permanece vigente até o fluxo automático estar implementado, validado e ativado. A publicação piloto após merge revisado na `main` e a confirmação no aplicativo descrevem o fluxo futuro aprovado, atualmente suspenso.
+A atualização **manual pelo instalador** permanece vigente até o fluxo automático estar implementado, validado e ativado. A publicação piloto após integração revisada na `main` e confirmação no aplicativo está em preparação, sem execução externa.
 
 ## Princípio central do fluxo automático futuro
 

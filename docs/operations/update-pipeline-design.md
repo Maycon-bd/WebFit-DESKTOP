@@ -1,8 +1,8 @@
 # Desenho do pipeline de atualização piloto
 
-## Revisão vigente — 2026-10-07 (DEC-044/DEC-048)
+## Revisão vigente — 2026-10-07 (DEC-053)
 
-Maycon aprovou priorizar o MVP útil para Amanda, com instalação e atualização manuais. Atualizações automáticas, runner e primeira publicação piloto estão ADIADOS e não bloqueiam o primeiro incremento. Preparação existente preservada, sem ativação. SQLCipher/DPAPI e backup/restauração permanecem aprovados. Os detalhes de atualização automática abaixo descrevem a estratégia futura suspensa; DEC-044 prevalece quanto ao momento de execução. Esta revisão não autoriza publicação nem ativação do updater; a execução local do produto segue a DEC-045.
+Workflow da raiz habilitado localmente para main conforme DEC-053; usuário escolheu executar Git. Runtime Node/Rust preparado no cache do runner, Perl completo e TMP/TEMP dedicados ao job. Primeira execução no serviço/publicação/ensaio conectado pendentes; não declarar remoto ativo pelo arquivo local. Um runner válido basta; notebook adicional depois. Distribuição manual vigente até validação completa. [Guia de integração](own-runner-setup.md).
 
 **Status:** preparação G5; wiring local preparado, configuração externa e primeira publicação ainda pendentes.
 
@@ -10,7 +10,7 @@ Maycon aprovou priorizar o MVP útil para Amanda, com instalação e atualizaç�
 
 Até o pipeline com runner Windows e o updater serem implementados, validados e ativados, as novas versões serão entregues por instalador e aplicadas manualmente com **Atualizar mantendo os dados**, sem desinstalação manual. Esta regra foi reafirmada por Maycon em 2026-10-07. Runner já instalado não equivale a atualização automática ativa. Procedimento completo em [installation.md](installation.md) e [update-release-strategy.md](update-release-strategy.md).
 
-## Gatilho futuro — fluxo adiado
+## Gatilho preparado — ativação pendente
 
 1. feature é revisada e integrada em develop;
 2. release é estabilizada;
@@ -24,11 +24,11 @@ Até o pipeline com runner Windows e o updater serem implementados, validados e 
 3. gerar NSIS e artefatos do updater;
 4. assinar os artefatos com segredo do pipeline;
 5. gerar latest.json e publicar artefatos, assinaturas e metadados no repositório público separado;
-6. baixar os arquivos públicos e conferir versão, plataforma Windows x64, URLs, tamanhos e assinaturas com a chave pública do spike;
+6. baixar os arquivos públicos e conferir versão, plataforma Windows x64, URLs, tamanhos e assinaturas com a chave pública configurada no produto;
 7. conferir que o endpoint latest entrega o mesmo manifesto;
-8. calcular SHA256 dos bytes publicados, publicar SHA256SUMS e conferir seu conteúdo por download público.
+8. comparar SHA256 dos bytes publicados com SHA256SUMS preparado e enviado com os demais assets.
 
-Preparação local autorizada em 2026-10-06: o workflow executa build TypeScript/Vite, rustfmt, Clippy, testes Rust/SQLite e os testes existentes de SQLCipher/backup antes de assinar e publicar. Os testes do verificador usam apenas Node nativo. Não existem scripts separados de lint ou testes frontend no spike; testes de aceite do aplicativo continuam pendentes. O build Tauri permanece na ação de publicação. Uma compilação limpa de SQLCipher exige uma distribuição Perl completa disponível ao serviço do runner; nenhuma instalação foi feita nesta etapa.
+Preparação local retomada em 2026-10-07: checkout do commit exato em main, npm ci, format/lint/TypeScript/testes/build frontend, rustfmt/Clippy/testes Rust/SQLite, versão única acima do bootstrap, NSIS assinado, verificação local e staging vazio. Scripts Node nativos criam release em rascunho, conferem tamanho/estado de cada upload, publicam e verificam o endpoint público sem enviar token aos downloads. Versão deve avançar sobre a última publicação. SQLCipher exige Perl completo acessível à conta do serviço. A chave privada só é disponibilizada ao passo de build; token só aos passos de publicação/verificação. Falha posterior à publicação pode deixar a release pública e exige inspeção, sem rollback automático.
 
 Execução manual é limitada à main, publicações são serializadas e a versão inclui número da execução e tentativa para evitar sobrescrever uma release anterior em reexecuções. Isso não substitui proteção de branch nem comprova que o merge foi revisado. A verificação ocorre depois que a ação publica: uma falha marca o job como falho, mas não remove a release nem impede que o manifesto já público seja consultado. Não há rollback automático. Essa limitação deve ser avaliada antes da primeira publicação. Evidência: [workflow local](../../.harness/evidence/update-pilot/2026-10-06-workflow-verification.md).
 

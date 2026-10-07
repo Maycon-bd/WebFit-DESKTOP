@@ -6,13 +6,15 @@
 
 ## Summary
 
+RF-UX-002: reutilizar Setup/Login e autorização existentes, sem migração ou dependência nova. Componente LoginInfo com botão SVG e dialog nativo para foco/Escape; getVersion da API Tauri para versão instalada e package.json como fallback de preview web. Nome admin fixado somente no payload de preparação de instalações novas, sem renomear contas existentes. Formulário administrativo separado da tela normal de acesso.
+
 O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma instalação local e offline: autenticação e sessão, perfil profissional, pacientes, rascunhos protegidos, plano alimentar/orientações, auditoria e backup/restauração. O plano organiza a execução vertical desses fluxos, mas segue a direção aceita pelo ADR-0001 e a execução G5 autorizada pela DEC-045. Educação, sincronização entre máquinas, nuvem e colaboração ficam fora. A distribuição do canal piloto é uma trilha operacional separada, aprovada pelo ADR-0002, sem alterar o escopo clínico.
 
 ## Technical Context
 
 **Language/Version**: Rust na fronteira local e TypeScript na interface; direção aceita pelo ADR-0001, com versões exatas a serem fixadas no G5.
 
-**Primary Dependencies**: A fundação aceita Tauri 2, React, TypeScript, Vite, Rust, SQLite/SQLCipher e DPAPI. As dependências do updater foram instaladas somente no spike descartável após T081; o produto ainda não recebeu essas dependências, e versão, licença e segredo correspondente exigem avaliação própria.
+**Primary Dependencies**: A fundação aceita Tauri 2, React, TypeScript, Vite, Rust, SQLite/SQLCipher e DPAPI. DEC-050 retoma o updater nativo no produto com tauri-plugin-updater 2.12.0 e lockfile fixado; origem/licença/permissões no inventário de componentes. Spike continua separado. Segredos já cadastrados segundo confirmação do usuário; uso no pipeline, ativação e distribuição externa exigem revisão final.
 
 **Storage**: Persistência local embarcada; SQLCipher Community com DPAPI CurrentUser é a direção aceita pelo ADR-0001. Não usar banco em pasta de rede ou sincronizada.
 
@@ -160,3 +162,13 @@ Tours curtos nas oito telas autenticadas, componentes React locais sem dependên
 ## RF-DIS-001 — atualização manual (DEC-048)
 
 Usar customLanguageFiles do NSIS/Tauri para tornar explícita a opção de atualização já existente no template oficial. Comparação SemVer e registro Windows continuam fornecidos pelo bundler; nome WebFit Desktop, identificador br.webfit.desktop e currentUser preservados. Sem template próprio, hook, execução externa ou alteração de banco. Opção de atualização usa o ramo sem desinstalar; opção de reparação para mesma versão. Escolha padrão permanece a do NSIS. allowDowngrades=false desabilita sobrescrita direta por versão anterior, sem representar bloqueio total de downgrade por desinstalação. Ensaio de preservação manual em T093.
+
+## Retomada DEC-050 — 2026-10-07
+
+Retomar trilha local T081–T083 no produto novo, sem promover código do spike. Integração nativa Rust com tauri-plugin-updater 2.12.0 (MIT/Apache-2.0), já avaliado no spike; nenhuma permissão genérica de updater concedida à WebView. Comandos de consulta/instalação exigem sessão válida no Service. Instalação confirmada exige edição encerrada, bloqueio de operações, backup consistente, download com verificação e nova autorização antes do instalador. Configuração pública da chave/endpoint é reaproveitada como dado de configuração, sem acesso a segredo. Produto atual é candidato piloto com identificador br.webfit.desktop preservado; futuro estável terá identidade/dados separados antes de G7, conforme ADR-0002. Pipeline usa checkout isolado de main, runners próprios, versão única e verificações locais antes de publicar; bloqueio explícito mantido até final approval. Sem migração de schema. Subtarefas T101–T105; cenários UPD-001 a UPD-015 do plano existente permanecem aplicáveis.
+DEC-051: usar dialog HTML nativo em portal para body, showModal e ::backdrop com blur. Reutiliza padrão do login, estilos/tokens e semântica nativa de foco/inert; cancel prevenido durante instalação. Sem biblioteca adicional ou alteração backend.
+
+## RF-AUT-004 — nome lembrado
+
+Comandos fechados RememberedLogin (leitura pública somente do nome escolhido neste computador) e RememberLogin (gravação autenticada, usuário/papel da sessão); settings existentes referenciam UUID do usuário ativo, uma preferência por papel. Frontend busca a preferência na abertura do formulário, protege texto digitado contra resposta tardia, e salva após login válido sem persistir senha/token. Sem dependência, schema ou localStorage; backup existente pode transportar a preferência, mas nunca concede autenticação.
+DEC-053 substitui dialog/portal/blur por faixa UpdatePanel no início de workspace-main. Consulta cacheada somente por token de sessão, reutilizando promessa no remontar StrictMode; novo token inicia nova consulta. Sem persistir token ou dados de domínio. Workflow habilitado localmente para main, integração pelo usuário. Ferramentas do runner preparadas independentemente do notebook, que não bloqueia usar o da empresa.

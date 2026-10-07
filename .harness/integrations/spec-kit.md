@@ -43,7 +43,7 @@ INTAKE
   ↓
 RESEARCH, quando necessário
   ↓
-BRANCH SAFETY: ID + STATUS + WORKTREE + BASE + BRANCH LOCAL
+CONTEXTO LOCAL: ID + BRANCH ATUAL + PRESERVAÇÃO (DEC-054)
   ↓
 $speckit-specify
   ↓
@@ -78,15 +78,17 @@ EVIDENCE
 HUMAN APPROVAL
 ```
 
-`$webfit-task` é o entrypoint. A entrada pode referenciar um Work Item existente (`WEBFIT-12`) ou uma nova demanda explícita. Para STANDARD/STRICT, o ID Plane deve preceder Branch Safety e ser preservado nos artefatos. Skills são instruções: quando seus arquivos estão disponíveis, leia a skill oficial necessária e siga seu procedimento no mesmo chat; uma API programável de chamadas aninhadas não é pré-requisito. Handoff só ocorre diante de instrução, ferramenta, ambiente ou autoridade realmente indisponível, com bloqueio concreto e próxima ação. Nunca declare uma etapa executada apenas por ler seu arquivo.
+`$webfit-task` é o entrypoint. A entrada pode referenciar um Work Item existente (`WEBFIT-12`) ou uma nova demanda explícita. Para STANDARD/STRICT, o ID Plane deve ser obtido antes de criar os artefatos da demanda e preservado neles; a branch ativa é registrada sob DEC-054. Skills são instruções: quando seus arquivos estão disponíveis, leia a skill oficial necessária e siga seu procedimento no mesmo chat; uma API programável de chamadas aninhadas não é pré-requisito. Handoff só ocorre diante de instrução, ferramenta, ambiente ou autoridade realmente indisponível, com bloqueio concreto e próxima ação. Nunca declare uma etapa executada apenas por ler seu arquivo.
 
 Na retomada, confirme a fase e reutilize Specification, Plan, Tasks e aprovações válidos. Não refaça a cadeia completa por novo turno. Ao mudar escopo ou uma entrada material, revise os artefatos dependentes e execute novamente as etapas afetadas. A [condução proporcional](../GOVERNANCE.md#condução-proporcional-e-retomada) preserva os controles de STANDARD/STRICT e a independência de Verification e Review.
 
 ## Branch Association
 
-Demandas reais STANDARD ou STRICT devem estar em branch local associada antes de `$speckit-specify` ou de qualquer outra escrita versionável. A associação usa o mesmo ID/slug nos metadados da demanda e em `feature/<id>-<resumo>`, preservando DEC-010 e a origem `develop`.
+DEC-054 governs execution: all demands remain on the currently active branch, managed by Maycon. Specification, Plan, Tasks and Evidence use the Plane ID as demand identity and record the observed branch. They do not require a dedicated branch, matching branch name, develop base or clean worktree.
 
-Se a branch atual já corresponder à demanda, o fluxo reutiliza-a. Caso contrário, a skill verifica branches locais e referências remotas já conhecidas antes de criar uma branch local. Ela não executa fetch, pull, push ou PR automaticamente. Se requisito/tarefa aprovada, base correta ou segurança do worktree não puderem ser comprovados, o resultado é `BRANCH SETUP BLOCKED` e o Spec Kit não é iniciado.
+Do not let official Spec Kit helpers create/switch branches. Use a supported no-branch option or explicit feature selection when available, without modifying official skills. If the helper cannot comply, report that concrete tool limitation and continue independent permitted work; do not reinstate the retired BRANCH SETUP BLOCKED policy. Preserve existing features and avoid selecting a different feature merely because it shares the current branch.
+
+Product gates, Plane identity and safe preservation remain applicable. Historical evidence keeps the policy used at its date.
 
 ## LIGHT / STANDARD / STRICT
 

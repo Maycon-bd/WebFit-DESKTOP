@@ -114,6 +114,29 @@ mod tests {
         assert!(p["micronutrientTotals"]["Vitamina A (RAE):mcg"].is_null());
     }
     #[test]
+    fn expanded_catalog_preserves_authority_and_proportions() {
+        // TBCA BRC0006C, composition per 100 g; independently read from source.
+        let mut p = json!({"meals":[{"name":"Lanche","items":[{"code":"BRC0006C","grams":50,"kcal":99999,"source":"alterada"}]}]});
+        nutrition::composition(&mut p, true).unwrap();
+        assert_eq!(p["meals"][0]["items"][0]["source"], "TBCA 7.3");
+        assert_eq!(p["totals"]["kcal"], 54.5);
+        assert_eq!(p["totals"]["protein"], 0.635);
+        assert_eq!(p["totals"]["carbs"], 13.35);
+        assert_eq!(p["totals"]["fat"], 0.095);
+        assert_eq!(p["totals"]["fiber"], 1.12);
+        assert_eq!(p["micronutrientTotals"]["Potássio:mg"], 173.0);
+        let food = &p["meals"][0]["items"][0];
+        for key in ["kcal", "protein", "carbs", "fat", "fiber"] {
+            assert_eq!(
+                p["totals"][key].as_f64().unwrap(),
+                food[key].as_f64().unwrap() / 2.0
+            );
+        }
+        let mut invalid =
+            json!({"meals":[{"name":"Lanche","items":[{"code":"BRC999999Z","grams":100}]}]});
+        assert!(nutrition::composition(&mut invalid, true).is_err());
+    }
+    #[test]
     fn prescription_is_immutable_and_versioned_and_archived_patient_is_protected() {
         let tmp = tempfile::tempdir().unwrap();
         let mut s = Service::open(tmp.path().to_owned()).unwrap();

@@ -40,12 +40,131 @@ mod integration {
         result["token"].as_str().unwrap().to_owned()
     }
     #[test]
+    fn remembered_login_is_opt_in_authorized_and_scoped_without_credentials() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().to_owned();
+        let mut service = Service::open(root.clone()).unwrap();
+        setup(&mut service);
+        let read = |service: &mut Service, administrator| {
+            call(service, None, Action::RememberedLogin { administrator }).unwrap()
+        };
+        assert!(read(&mut service, true)["name"].is_null());
+        assert!(call(&mut service, None, Action::RememberLogin { remember: true }).is_err());
+        let authenticated = call(
+            &mut service,
+            None,
+            Action::Login {
+                name: "Administrador de teste".into(),
+                password: "senha ficticia segura".into(),
+            },
+        )
+        .unwrap();
+        let admin = authenticated["token"].as_str().unwrap();
+        call(
+            &mut service,
+            Some(admin),
+            Action::RememberLogin { remember: true },
+        )
+        .unwrap();
+        assert_eq!(read(&mut service, true)["name"], "Administrador de teste");
+        assert!(read(&mut service, false)["name"].is_null());
+        service.lock();
+        assert!(call(
+            &mut service,
+            None,
+            Action::Login {
+                name: "Administrador de teste".into(),
+                password: "incorreta".into(),
+            }
+        )
+        .is_err());
+        assert_eq!(read(&mut service, true)["name"], "Administrador de teste");
+        drop(service);
+        let mut service = Service::open(root).unwrap();
+        assert_eq!(read(&mut service, true)["name"], "Administrador de teste");
+        assert!(call(&mut service, None, Action::Profile).is_err());
+        let professional = call(
+            &mut service,
+            None,
+            Action::Login {
+                name: "Nutricionista de teste".into(),
+                password: "outra senha ficticia".into(),
+            },
+        )
+        .unwrap();
+        let token = professional["token"].as_str().unwrap();
+        call(
+            &mut service,
+            Some(token),
+            Action::RememberLogin { remember: true },
+        )
+        .unwrap();
+        assert_eq!(read(&mut service, false)["name"], "Nutricionista de teste");
+        assert_eq!(read(&mut service, true)["name"], "Administrador de teste");
+        let id: String = service
+            .db
+            .query_row(
+                "SELECT value FROM settings WHERE name='login:remembered:NUTRITIONIST'",
+                [],
+                |r| r.get(0),
+            )
+            .unwrap();
+        assert_eq!(id, professional["user"]["id"].as_str().unwrap());
+        call(
+            &mut service,
+            Some(token),
+            Action::RememberLogin { remember: false },
+        )
+        .unwrap();
+        assert!(read(&mut service, false)["name"].is_null());
+        assert_eq!(read(&mut service, true)["name"], "Administrador de teste");
+        drop(service);
+        let mut service = Service::open(temp.path().to_owned()).unwrap();
+        assert!(read(&mut service, false)["name"].is_null());
+    }
+    #[test]
     fn credentials_are_hashed_and_tampering_fails() {
         let hash = security::hash_password("senha ficticia de teste").unwrap();
         assert!(security::verify_password("senha ficticia de teste", &hash));
         assert!(!security::verify_password("senha diferente", &hash));
         assert!(!hash.contains("ficticia"));
         assert!(security::hash_password("curta").is_err());
+    }
+    #[test]
+    fn updater_requires_session_and_valid_backup_and_freezes_operations() {
+        let temp = tempfile::tempdir().unwrap();
+        let mut service = Service::open(temp.path().to_owned()).unwrap();
+        assert!(service.authorize_update("invalid").is_err());
+        assert!(service.begin_update("invalid").is_err());
+        let token = setup(&mut service);
+        service.authorize_update(&token).unwrap();
+        service.begin_update(&token).unwrap();
+        assert!(service.begin_update(&token).is_err());
+        assert!(call(&mut service, Some(&token), Action::Profile).is_err());
+        assert!(service
+            .root
+            .join("backups")
+            .read_dir()
+            .unwrap()
+            .any(|entry| entry
+                .unwrap()
+                .path()
+                .extension()
+                .is_some_and(|extension| extension == "webfit-backup")));
+        service.update_ready(&token).unwrap();
+        service.finish_update(false).unwrap();
+        assert!(call(&mut service, Some(&token), Action::Profile).is_ok());
+        let temp = tempfile::tempdir().unwrap();
+        let mut service = Service::open(temp.path().to_owned()).unwrap();
+        let token = setup(&mut service);
+        // Replace the empty managed backup folder with a file to force a safe backup failure.
+        for entry in service.root.join("backups").read_dir().unwrap() {
+            std::fs::remove_file(entry.unwrap().path()).unwrap();
+        }
+        std::fs::remove_dir(service.root.join("backups")).unwrap();
+        std::fs::write(service.root.join("backups"), b"fixture obstruction").unwrap();
+        assert!(service.begin_update(&token).is_err());
+        assert!(call(&mut service, Some(&token), Action::Profile).is_ok());
     }
     #[test]
     fn cpf_validation_rejects_equal_digits_and_wrong_checks() {

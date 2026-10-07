@@ -31,6 +31,8 @@ Itens propostos do restante do MVP aparecem no [catálogo funcional](functional-
 
 ## Trilha operacional do updater piloto
 
+RF-UPD-001 / DEC-050 → T101–T105 → src-tauri/src/update.rs, service.rs, src/UpdatePanel.tsx e scripts de release. Testes locais: autorização/backup/bloqueio em tests.rs, origem/versão em update.rs, assinatura/manifesto/checksums em pilot-release.test.mjs e versão em prepare-pilot.test.mjs. Evidência: .harness/evidence/update-pilot/2026-10-07-product-preparation.md. UPD-001–UPD-015 permanecem sujeitos aos ensaios integrados; código construído não comprova publicação ou instalação real.
+
 A atualização frequente é uma decisão operacional e arquitetural, não um requisito clínico novo do primeiro incremento.
 
 | Decisão/tarefa | Artefato | Testes/evidência | Gate |
@@ -52,3 +54,9 @@ RN-AUT-001 revisada por Maycon na DEC-047 (2026-10-07): mínimo de seis caracter
 
 
 RF-DIS-001 aprovado por Maycon, DEC-048 (2026-10-07): detectar instalação e oferecer atualização manual clara. T091–T093; src-tauri/installer/PortugueseBR.nsh, src-tauri/tauri.conf.json e template NSIS gerado oficial. Checks/template/build em .harness/evidence/health-increment/2026-10-07-installer-update.md; preservação de dados após atualização e fluxo gráfico no alvo pendentes.
+
+RF-UX-002 / DEC-049 -> TA-UX-002 -> T098–T100 -> src/LoginInfo.tsx, src/App.tsx, src/style.css -> .harness/evidence/health-increment/2026-10-07-login-info.md. Construído localmente; ensaio Windows/revisão independente pendentes. O candidato de catálogo 0.1.4 anterior não contém este refinamento.
+RF-UPD-001 / DEC-051 / TA-UPD-UI-001 → T106/T107, UpdatePanel.tsx e style.css; refinamento para modal nativo com blur. Evidência .harness/evidence/update-pilot/2026-10-07-update-modal.md. Não altera proteção backend, assinatura, publicação ou schema.
+
+RF-AUT-004 / DEC-052 -> TA-AUT-005 -> T108–T110 -> src/App.tsx, src/style.css, src-tauri/src/service.rs e src-tauri/src/tests.rs (remembered_login_is_opt_in_authorized_and_scoped_without_credentials) -> .harness/evidence/health-increment/2026-10-07-remember-login.md. Candidato local 0.1.7; aceite Windows pendente.
+RF-UPD-001 / DEC-053 / TA-UPD-UI-002 → T112/T113, UpdatePanel.tsx/App.tsx/style.css, update-check.ts e tests/unit/update-check.test.ts; workflow habilitado localmente, runner-env.ps1 prepara ferramentas por conta. Evidência .harness/evidence/update-pilot/2026-10-07-banner-activation.md. Substitui apresentação em modal, sem invalidar histórico de builds.

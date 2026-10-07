@@ -173,6 +173,7 @@ a {
   position: sticky;
   top: 0;
   height: 100vh;
+  overflow-y: auto;
   background: #e9eee5;
   padding: 30px 18px;
   display: flex;
@@ -652,4 +653,103 @@ input[readonly] {
 }
 .tour-warning {
   font-size: 0.875rem;
+}
+
+.access-shell {
+  position: relative;
+  padding-bottom: 64px;
+}
+.access-footer {
+  position: absolute;
+  bottom: 12px;
+  right: 20px;
+}
+.login-info-button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+}
+.login-info-dialog {
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 28px;
+  background: #fffef8;
+  color: #20332b;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.login-info-dialog::backdrop {
+  background: rgba(20, 35, 28, 0.35);
+}
+.login-info-dialog hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 24px 0;
+}
+.login-info-dialog h3 {
+  font-size: 1rem;
+}
+.login-info-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+.update-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  background: #e1eedf;
+  border-left: 4px solid var(--green);
+  color: #20332b;
+}
+.update-banner-copy {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+.update-banner p {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+.update-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.update-banner-actions button {
+  min-height: 44px;
+}
+.update-notes {
+  white-space: pre-wrap;
+  max-height: 120px;
+  overflow-y: auto;
+}
+.update-banner progress {
+  width: 100%;
+  margin-top: 12px;
+  accent-color: var(--green);
+}
+.remember-login {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.remember-login input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--green);
 }

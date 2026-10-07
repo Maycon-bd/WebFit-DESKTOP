@@ -2,6 +2,8 @@
 
 **Status:** testes de aceite do primeiro incremento aprovados; resultado será preenchido após execução.
 
+TA-UX-002 (RF-UX-002, aprovado por Maycon em 2026-10-07): abrir informações por clique/teclado no login; conferir nome, versão instalada e crédito exato; fechar por Escape/Fechar e conferir retorno de foco; selecionar Acesso do administrador; em instalação nova preparar admin com senha local e recuperação; em instalação existente autenticar com nome/senha já cadastrados; senha errada continua negada pelo backend; preparação não aparece diretamente para a nutricionista. Ensaio gráfico no Windows pendente.
+
 | ID | Requisito | Cenário e resultado esperado | Status |
 |---|---|---|---|
 | TA-AUT-001 | RF-AUT-001 | preparar nutricionista e administrador localmente; reiniciar e confirmar usuários sem senha em claro | aprovado |
@@ -59,3 +61,10 @@
 | TA-BKP-005 | RF-BKP-003 | exibir sucesso recente, falha imediata e alerta após mais de 24 h sem backup válido | aprovado |
 
 Dados de teste são totalmente fictícios. Evidência, executor, data e resultado serão preenchidos na execução.
+# Preparação retomada do updater — 2026-10-07
+
+RF-UPD-001 aprovado por DEC-043/ADR-0002, execução local DEC-050. Critérios UPD-001–UPD-015 continuam em docs/quality/update-spike-test-plan.md; testes locais e pendências em .harness/evidence/update-pilot/2026-10-07-product-preparation.md. Não atribuir aceite de atualização Windows aos testes unitários ou de backup isolado. G5/G6/G7 permanecem abertos.
+TA-UPD-UI-001 / RF-UPD-001 / DEC-051, aprovado por Maycon em 2026-10-07: abrir Atualizações em modal central, fundo desfocado e inativo; Tab permanece no modal; Escape/Continuar trabalhando fecham e devolvem foco; consulta/progresso/mensagens no modal; fechar indisponível durante instalação. Falha de consulta não impede uso após fechar. Aceite gráfico Windows pendente.
+
+TA-AUT-005 / RF-AUT-004 (aprovado por Maycon, 2026-10-07): login válido marcado -> reiniciar -> nome preenchido e senha vazia; login válido desmarcado -> reiniciar -> sem nome lembrado; login inválido -> preferência anterior preservada; acesso não autenticado não pode gravar preferências; admin e nutricionista não sobrescrevem a preferência do outro; logout/bloqueio continuam exigindo senha. Falha de leitura/gravação da preferência recebe mensagem sem impedir login válido.
+TA-UPD-UI-002 / RF-UPD-001 / DEC-053, aprovado 2026-10-07: nova consulta a cada login, uma requisição por sessão mesmo sob StrictMode, sem cache diário. Só exibir faixa superior se nova versão; Atualizar agora confirma, Mais tarde oculta nesta sessão. Sem modal/ícone; offline não bloqueia login/trabalho. Backup/assinatura/bloqueio preservados; ensaio integrado de publicação/instalação ainda obrigatório. Supersede TA-UPD-UI-001 para apresentação.

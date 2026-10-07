@@ -6,6 +6,7 @@ mod recovery;
 mod security;
 mod service;
 mod tests;
+mod update;
 
 use serde::Serialize;
 use std::sync::Mutex;
@@ -66,6 +67,7 @@ async fn operate(
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             let root = app.path().app_local_data_dir()?;
             let service = service::Service::open(root).map_err(|_| {
@@ -86,7 +88,11 @@ pub fn run() {
             });
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![operate])
+        .invoke_handler(tauri::generate_handler![
+            operate,
+            update::check_update,
+            update::install_update
+        ])
         .run(tauri::generate_context!())
         .expect("Falha ao iniciar WebFit Desktop.");
 }
