@@ -8,7 +8,7 @@
 
 ## Resultado
 
-Contrato central em [HUMAN-INTERACTION-CONTRACT.md](../HUMAN-INTERACTION-CONTRACT.md), integrado à [skill local](../../.agents/skills/project-task/SKILL.md), governança, autonomia, README, integração local Spec Kit e prompts de intake, plan, planning-review, architecture-review, implementation e review. Preservadas as skills oficiais.
+Contrato central em [HUMAN-INTERACTION-CONTRACT.md](../HUMAN-INTERACTION-CONTRACT.md), integrado à [skill local](../../.agents/skills/webfit-task/SKILL.md), governança, autonomia, README, integração local Spec Kit e prompts de intake, plan, planning-review, architecture-review, implementation e review. Preservadas as skills oficiais. Link atualizado em 2026-09-30 pela renomeação de `project-task`; o relato histórico abaixo permanece original.
 
 Foram incorporados modos internos DISCOVERY/DECISION/EXECUTION, perguntas relacionadas em rodadas, contexto antes de decisão, labels de proveniência, cadeia de origem, fronteira detalhe técnico/comportamento de produto, checagem de compreensão antes de READY FOR IMPLEMENTATION e saída humana proporcional. Protocolos de perguntas das skills oficiais permanecem próprios; o harness fornece contexto sem alterá-los.
 

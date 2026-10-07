@@ -13,7 +13,7 @@ O acesso total do administrador é uma decisão consciente de simplificação do
 
 ## Autenticação
 
-- Senha mínima de 8 caracteres; recomendar frases-senha.
+- Senha de acesso mínima de 6 caracteres (DEC-047, Maycon, 2026-10-07); recomendar frases-senha.
 - Hash forte com salt individual e parâmetros versionados; nunca criptografia reversível de senha.
 - Espera progressiva após falhas; sem bloqueio permanente automático.
 - Bloqueio após 1 hora de inatividade e ao bloquear o Windows.

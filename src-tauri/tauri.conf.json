@@ -1,0 +1,52 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "WebFit Desktop",
+  "version": "0.1.3",
+  "identifier": "br.webfit.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "WebFit Desktop — ambiente de teste",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src ipc: http://ipc.localhost; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    }
+  },
+  "bundle": {
+    "resources": {
+      "licenses/THIRD-PARTY-LICENSES.txt": "licenses/THIRD-PARTY-LICENSES.txt",
+      "../docs/operations/third-party-notices.md": "licenses/COMPONENTS.md",
+      "../docs/operations/mvp-local-test.md": "TESTE-LOCAL.md"
+    },
+    "active": true,
+    "targets": ["nsis"],
+    "createUpdaterArtifacts": false,
+    "icon": ["icons/icon.ico"],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "offlineInstaller",
+        "silent": true
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": ["PortugueseBR"],
+        "customLanguageFiles": {
+          "PortugueseBR": "installer/PortugueseBR.nsh"
+        }
+      },
+      "allowDowngrades": false
+    }
+  }
+}

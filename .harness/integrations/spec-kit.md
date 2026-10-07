@@ -14,7 +14,7 @@ Responsável por intake, pesquisa, investigation, decisão autônoma supervision
 
 ### Plane
 
-Plane está ACTIVE apenas como camada de gestão do trabalho. O Work Item fornece o ID operacional, backlog, prioridade, módulo, responsável e estado; não fornece requisitos, regras, ADRs, arquitetura, Specification, Plan, Tasks ou Evidence canônicos. A leitura é automática; a escrita é CONTROLLED e limitada ao Work Item da execução atual de `$project-task`, conforme [integrations/plane.md](plane.md).
+Plane está ACTIVE apenas como camada de gestão do trabalho. O Work Item fornece o ID operacional, backlog, prioridade, módulo, responsável e estado; não fornece requisitos, regras, ADRs, arquitetura, Specification, Plan, Tasks ou Evidence canônicos. A leitura é automática; a escrita é CONTROLLED e limitada ao Work Item da execução atual de `$webfit-task`, conforme [integrations/plane.md](plane.md).
 
 ### AGENTS.md
 
@@ -78,7 +78,7 @@ EVIDENCE
 HUMAN APPROVAL
 ```
 
-`$project-task` é o entrypoint. A entrada pode referenciar um Work Item existente (`WEBFIT-12`) ou uma nova demanda explícita. Para STANDARD/STRICT, o ID Plane deve preceder Branch Safety e ser preservado nos artefatos. Skills são instruções: quando seus arquivos estão disponíveis, leia a skill oficial necessária e siga seu procedimento no mesmo chat; uma API programável de chamadas aninhadas não é pré-requisito. Handoff só ocorre diante de instrução, ferramenta, ambiente ou autoridade realmente indisponível, com bloqueio concreto e próxima ação. Nunca declare uma etapa executada apenas por ler seu arquivo.
+`$webfit-task` é o entrypoint. A entrada pode referenciar um Work Item existente (`WEBFIT-12`) ou uma nova demanda explícita. Para STANDARD/STRICT, o ID Plane deve preceder Branch Safety e ser preservado nos artefatos. Skills são instruções: quando seus arquivos estão disponíveis, leia a skill oficial necessária e siga seu procedimento no mesmo chat; uma API programável de chamadas aninhadas não é pré-requisito. Handoff só ocorre diante de instrução, ferramenta, ambiente ou autoridade realmente indisponível, com bloqueio concreto e próxima ação. Nunca declare uma etapa executada apenas por ler seu arquivo.
 
 Na retomada, confirme a fase e reutilize Specification, Plan, Tasks e aprovações válidos. Não refaça a cadeia completa por novo turno. Ao mudar escopo ou uma entrada material, revise os artefatos dependentes e execute novamente as etapas afetadas. A [condução proporcional](../GOVERNANCE.md#condução-proporcional-e-retomada) preserva os controles de STANDARD/STRICT e a independência de Verification e Review.
 
@@ -128,11 +128,11 @@ Aprovação limita-se ao escopo apresentado. Nenhuma automação faz commit, pus
 
 ## Upgrade Safety
 
-Customizações ficam na Constitution, harness, `.agents/skills/project-task/` e documentos do projeto. Skills oficiais `.agents/skills/speckit-*/`, scripts e templates gerenciados não são editados. Após upgrade, validar manifests, reler contratos e executar smoke test separado.
+Customizações ficam na Constitution, harness, `.agents/skills/webfit-task/` e documentos do projeto. Skills oficiais `.agents/skills/speckit-*/`, scripts e templates gerenciados não são editados. Após upgrade, validar manifests, reler contratos e executar smoke test separado.
 
 ## Versioning
 
-Versionar `.agents/skills/speckit-*/SKILL.md`, `.agents/skills/project-task/SKILL.md`, `.specify/` respeitando seu `.gitignore`, e documentos do harness relacionados.
+Versionar `.agents/skills/speckit-*/SKILL.md`, `.agents/skills/webfit-task/SKILL.md`, `.specify/` respeitando seu `.gitignore`, e documentos do harness relacionados.
 
 Não versionar `.specify/feature.json`, `.specify/extensions/*/local-config.yml`, credenciais, tokens, segredos, dados clínicos reais, caches ou estado local futuro.
 

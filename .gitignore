@@ -29,3 +29,11 @@ coverage/
 .DS_Store
 Thumbs.db
 *.log
+
+# Ferramentas locais autorizadas
+.tools/
+.gen/
+*.webfit-recovery
+
+.artifacts/
+src-tauri/gen/

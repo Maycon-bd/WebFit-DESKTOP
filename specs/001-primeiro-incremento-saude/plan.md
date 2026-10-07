@@ -6,7 +6,7 @@
 
 ## Summary
 
-O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma instalação local e offline: autenticação e sessão, perfil profissional, pacientes, rascunhos protegidos, plano alimentar/orientações, auditoria e backup/restauração. O plano organiza a execução vertical desses fluxos, mas mantém a composição técnica como hipótese sujeita ao spike do ADR-0001 e aos gates G4/G5. Educação, sincronização entre máquinas, nuvem e colaboração ficam fora. A distribuição do canal piloto é uma trilha operacional separada, aprovada pelo ADR-0002, sem alterar o escopo clínico.
+O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma instalação local e offline: autenticação e sessão, perfil profissional, pacientes, rascunhos protegidos, plano alimentar/orientações, auditoria e backup/restauração. O plano organiza a execução vertical desses fluxos, mas segue a direção aceita pelo ADR-0001 e a execução G5 autorizada pela DEC-045. Educação, sincronização entre máquinas, nuvem e colaboração ficam fora. A distribuição do canal piloto é uma trilha operacional separada, aprovada pelo ADR-0002, sem alterar o escopo clínico.
 
 ## Technical Context
 
@@ -14,7 +14,7 @@ O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma ins
 
 **Primary Dependencies**: A fundação aceita Tauri 2, React, TypeScript, Vite, Rust, SQLite/SQLCipher e DPAPI. As dependências do updater foram instaladas somente no spike descartável após T081; o produto ainda não recebeu essas dependências, e versão, licença e segredo correspondente exigem avaliação própria.
 
-**Storage**: Persistência local embarcada; SQLite é a proposta do ADR-0001 para o spike. Não usar banco em pasta de rede ou sincronizada.
+**Storage**: Persistência local embarcada; SQLCipher Community com DPAPI CurrentUser é a direção aceita pelo ADR-0001. Não usar banco em pasta de rede ou sincronizada.
 
 **Testing**: Testes unitários de domínio, integração de persistência, contrato de comandos, aceitação dos TA-* e ensaios de backup/restauração; ferramentas definitivas dependem do spike.
 
@@ -30,7 +30,7 @@ O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma ins
 
 ## Constitution Check
 
-*GATE: PASS para preparação e design; G4/ADR-0001 estão aceitos, mas implementação permanece bloqueada até aprovação específica do G5 e gates sensíveis.*
+*GATE: PASS para iniciar execução G5: G4/ADR-0001 aceitos; Implementation Approval e Sensitive Change Approval previstos concedidos por DEC-045 em 2026-10-06. Não representa G5 concluído, revisão independente, G6 ou G7.*
 
 - Specification antes de implementação: PASS. A spec referencia RFs, RNFs, regras e TAs aprovados.
 - Segurança e privacidade: PASS com controles a comprovar no spike. Nenhum dado real será usado.
@@ -39,7 +39,7 @@ O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma ins
 - Rastreabilidade: PASS para o design; tasks, testes e Evidence ainda serão produzidos nas fases seguintes.
 - Mudança controlada: PASS. Schema, migrações, dependências, autenticação e arquitetura de produção exigem gate sensível.
 - STRICT: obrigatório por autenticação, dados clínicos, auditoria, backup e persistência.
-- Condições de parada: resolver o resultado do spike, validar decisões provisórias e obter Human Gate antes de schema ou implementação.
+- Condições de parada: novo escopo/arquitetura material fora da DEC-045; publicação e uso real permanecem fora da autorização.
 
 ## Research Strategy
 
@@ -143,3 +143,20 @@ tests/
 - PASS: contratos proíbem acesso genérico a dados pela interface e exigem autorização.
 - PASS: backup/restauração, auditoria, logs e dados fictícios estão cobertos.
 - PENDING HUMAN: aprovação específica para iniciar a implementação do G5; T082/T083 ainda exigem configuração externa e validação do canal piloto.
+## Revisão de prioridade — DEC-044, 2026-10-06
+
+Atualização automática e T082/T083 ADIADOS; instalação/atualização manual no MVP. Esta trilha não bloqueia G5. Arquitetura de dados, escopo clínico e critérios de aceite preservados. Próxima etapa: aprovação específica G5 e gates sensíveis aplicáveis antes da fundação; não reutilizar código do spike como produto.
+
+## Execução G5 — 2026-10-06
+
+DEC-045 autoriza produto novo, schema/migrações, dependências previstas e ferramentas de compilação, com dados fictícios. DEC-044 adia updater. Código novo em `src/` e `src-tauri/`, sem reaproveitar o spike. Node:test cobre cálculos de apresentação e Rust cobre comandos/persistência/recuperação. As unidades inicialmente previstas em subpastas são consolidadas em módulos pequenos de fundação e `service.rs`; o mapeamento e as lacunas ficam na evidência de implementação. Catálogo TBCA inicial limitado, sem alegação de base completa ou TACO já integrada.
+
+
+## Refinamento de interface RF-UX-001 (DEC-046)
+
+Tours curtos nas oito telas autenticadas, componentes React locais sem dependência nova. Preferência `tour:v1:<user UUID>:<tour id>` na tabela settings criptografada existente; comandos tipados TourState/CompleteTour, autenticados e sem user ID fornecido pelo frontend. IDs limitados pelo enum backend. Nenhuma migração ou alteração de dados clínicos; skip/replay permanece disponível e erros de preferência não bloqueiam o trabalho. Verificação e ensaio visual registrados em T084–T087.
+
+
+## RF-DIS-001 — atualização manual (DEC-048)
+
+Usar customLanguageFiles do NSIS/Tauri para tornar explícita a opção de atualização já existente no template oficial. Comparação SemVer e registro Windows continuam fornecidos pelo bundler; nome WebFit Desktop, identificador br.webfit.desktop e currentUser preservados. Sem template próprio, hook, execução externa ou alteração de banco. Opção de atualização usa o ramo sem desinstalar; opção de reparação para mesma versão. Escolha padrão permanece a do NSIS. allowDowngrades=false desabilita sobrescrita direta por versão anterior, sem representar bloqueio total de downgrade por desinstalação. Ensaio de preservação manual em T093.

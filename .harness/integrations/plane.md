@@ -27,15 +27,15 @@ Plane → branch → Spec Kit → artefatos → Evidence
 
 Branch, Specification e Evidence devem referenciar o mesmo ID. A convenção Git continua DEC-010, por exemplo `feature/webfit-12-cadastro-paciente`.
 
-## Entrada pelo `$project-task`
+## Entrada pelo `$webfit-task`
 
 ### Work Item existente
 
-Para `$project-task WEBFIT-12`, o fluxo deve consultar o Plane em modo de leitura, localizar o item e ler apenas o necessário: título, descrição resumida, estado, prioridade e módulo. Depois deve localizar as fontes canônicas relacionadas e continuar pelo harness. Plane não substitui a investigação documental.
+Para `$webfit-task WEBFIT-12`, o fluxo deve consultar o Plane em modo de leitura, localizar o item e ler apenas o necessário: título, descrição resumida, estado, prioridade e módulo. Depois deve localizar as fontes canônicas relacionadas e continuar pelo harness. Plane não substitui a investigação documental.
 
 ### Nova demanda
 
-Para `$project-task Nova demanda: ...`, a invocação explícita autoriza, sem confirmação adicional por sincronização:
+Para `$webfit-task Nova demanda: ...`, a invocação explícita autoriza, sem confirmação adicional por sincronização:
 
 1. intake e classificação LIGHT/STANDARD/STRICT;
 2. para STANDARD ou STRICT, criação de **um único** Work Item no projeto WebFit;
@@ -105,4 +105,4 @@ Leitura de projeto, Work Item, estado, módulo e metadata necessária ao fluxo �
 
 Se o MCP Plane estiver indisponível, registrar `PLANE SYNC DEGRADED`. Com Work Item/ID conhecido, continuar quando for seguro e registrar sincronização pendente. Se uma nova demanda STANDARD/STRICT exigir novo ID e não for possível criá-lo, registrar `PLANE ID REQUIRED` e parar antes de Branch Safety.
 
-Não fazer chamadas de escrita durante a ativação desta integração. O contrato passa a valer somente em uma execução real de `$project-task` explicitamente iniciada.
+Não fazer chamadas de escrita durante a ativação desta integração. O contrato passa a valer somente em uma execução real de `$webfit-task` explicitamente iniciada.

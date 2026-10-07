@@ -6,7 +6,7 @@
 
 | ID | Regra | Status |
 |---|---|---|
-| RN-AUT-001 | senha deve possuir no mínimo 8 caracteres; frases-senha são aceitas; senha nunca é armazenada ou registrada em texto claro | aprovado |
+| RN-AUT-001 | senha de acesso deve possuir no mínimo 6 caracteres (Maycon, DEC-047, 2026-10-07); frases-senha são aceitas; senha nunca é armazenada ou registrada em texto claro | aprovado |
 | RN-AUT-002 | existem os papéis nutricionista e administrador; ambos possuem acesso total por decisão dos aprovadores | aprovado |
 | RN-AUT-003 | após 4 falhas, aplicar esperas de 30 s, 1 min, 5 min e 15 min nas falhas subsequentes; não bloquear permanentemente | aprovado |
 | RN-AUT-004 | bloquear a sessão após 1 hora de inatividade e quando o Windows for bloqueado | aprovado |

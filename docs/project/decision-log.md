@@ -22,7 +22,7 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | DEC-014 | estruturar espaços Saúde e Educação, implementando apenas Saúde no MVP | ACCEPTED | validação histórica: aprovada; [entrevista 01](stakeholder-interview-round-01.md) |
 | DEC-015 | vincular o perfil profissional ao usuário | ACCEPTED | validação histórica: aprovada; [entrevista 01](stakeholder-interview-round-01.md) |
 | DEC-016 | admitir nutricionista e administrador, ambos com acesso total | ACCEPTED | validação histórica: aprovada; decisão Maycon/Amanda |
-| DEC-017 | exigir senha mínima de oito caracteres e espera progressiva | ACCEPTED | validação histórica: aprovada; decisão Maycon/Amanda |
+| DEC-017 | exigir senha mínima de oito caracteres e espera progressiva | PARTIALLY SUPERSEDED | mínimo substituído por seis na DEC-047; espera progressiva preservada; aprovação histórica Maycon/Amanda |
 | DEC-018 | incluir autenticação, auditoria, pacientes e backup mínimo no primeiro incremento | ACCEPTED | validação histórica: aprovada; [escopo](../product/scope.md) |
 | DEC-019 | adotar backup diário e manual, retenção de 60 dias, RPO de 24 horas e RTO até o próximo dia útil | ACCEPTED | validação histórica: aprovada; [entrevista 01](stakeholder-interview-round-01.md) |
 | DEC-020 | manter conectividade para atualização, recuperação remota e nuvem fora do MVP, sujeita a ADR | ACCEPTED | validação histórica: aprovada; decisão Maycon/Amanda |
@@ -98,3 +98,50 @@ Este registro consolida decisões e pendências. ADRs detalham decisões arquite
 | Outros serviços conectados | reset remoto, nuvem e sincronização | Amanda e Maycon | ADR futuro | adiada |
 
 Novas decisões devem usar os estados `ACCEPTED`, `AGENT-PROVISIONAL`, `NEEDS-HUMAN-DECISION`, `REJECTED` ou `SUPERSEDED` e registrar autoridade, data, justificativa, consequências, evidência, confiança, impacto e reversibilidade quando aplicável.
+
+## DEC-044 — priorizar MVP local e adiar atualização automática
+
+- **Status:** ACCEPTED para prioridade técnica e distribuição manual do MVP.
+- **Data e autoridade:** Maycon, em 2026-10-06, confirmou “Perfeito, vamos continuar” após a proposta explícita de adiar atualizações automáticas e focar no primeiro fluxo útil para Amanda.
+- **Decisão:** instalação e atualização manuais por instalador; runner, publicação automática e updater conectado ficam adiados, sem bloquear a construção do primeiro incremento.
+- **Preservação:** SQLCipher/DPAPI, autorização local, backup/restauração e requisitos clínicos aprovados permanecem vigentes. Não reduz proteção de dados nem altera escopo funcional. A preparação existente não será apagada.
+- **Consequências:** T082/T083 ficam ADIADOS, sem serem concluídos. Workflow local perde gatilho push e mantém job desativado; nenhuma configuração remota foi alterada. ADR-0002 permanece referência futura, com execução suspensa no MVP por esta decisão. Reativação exige revisão e autorização específica.
+- **Limite:** aprovação da repriorização não é aprovação específica de implementação G5, dependências, schema, publicação ou uso clínico real. Experiência futura do updater permanece sujeita à Amanda; esta decisão não atribui nova aprovação a ela.
+
+## DEC-045 — execução do MVP e instalador de teste
+
+- **Status:** ACCEPTED por Maycon em 2026-10-06, resposta “Autorizado” à seleção que descreveu construção do produto, banco/migrações, dependências previstas e ferramentas de compilação (incluindo Perl quando necessário).
+- **Implementation Approval G5:** concedida para o primeiro incremento aprovado, fundação e fluxos locais, sem reutilizar o spike como produto.
+- **Sensitive Change Approval:** dependências previstas, schema/migrações e controles locais de autenticação/segurança do plano, em ambiente de teste e com dados fictícios.
+- **Entrega:** instalador Windows para Maycon instalar no computador de Amanda e comunicar resultados. Windows 10 x64 permanece alvo.
+- **Limites:** não autoriza dados clínicos reais, produção, destruição de trabalho existente, commit/push/PR/merge, publicação externa ou ativação de updater; DEC-044 permanece vigente.
+- **Fonte:** autorização explícita anotada sobre os três pontos de execução, dados fictícios e instalação no computador da stakeholder.
+
+## DEC-046 — tutoriais simples no MVP
+
+- **Status:** ACCEPTED para o escopo solicitado por Maycon em 2026-10-06: indicativos no primeiro acesso às telas e botão Pular, para aprender enquanto usa.
+- **Rastreabilidade:** RF-UX-001, refinamento do incremento Saúde em execução, sem nova arquitetura ou integração externa.
+- **Detalhamento AGENT-PROVISIONAL:** preferência por usuário/tela, replay em Ver tutorial e oito tours curtos nas telas autenticadas. Reversível, na tabela settings existente; sem migração, dados clínicos ou dependências adicionais.
+- **Limites:** DEC-044/045 preservadas; nenhum gate clínico, publicação ou aceite final inferido desta solicitação.
+
+
+## DEC-047 — mínimo de seis caracteres para senhas de acesso
+
+- **Status:** ACCEPTED, solicitação explícita de Maycon em 2026-10-07 durante o teste do formulário de preparação da instalação.
+- **Decisão:** alterar RN-AUT-001 de oito para seis caracteres nas senhas de acesso do administrador e da nutricionista, incluindo troca e redefinição temporária. Login continua validando o hash da credencial existente.
+- **Critérios:** aceitar exatamente seis caracteres, rejeitar cinco ou menos na criação/troca/redefinição, manter hashes Argon2 e compatibilidade com senhas existentes; formulários e tutorial coerentes.
+- **Limites:** senha de recuperação dos backups preservada em doze caracteres; sem alteração de schema, criptografia, sessão, bloqueio progressivo, perfis ou dados existentes. Testes somente fictícios. Distribuição manual e gates anteriores preservados.
+
+
+## DEC-048 — atualização manual clara no instalador
+
+- **Status:** ACCEPTED, Maycon, 2026-10-07: detectar aplicação instalada e oferecer opção explícita de atualização no instalador, sem exigir desinstalação manual.
+- **Escopo:** RF-DIS-001, refinamento da distribuição manual vigente (DEC-044), não updater conectado. O NSIS Tauri já detecta registro e compara versões; customizar suas traduções oficiais para apresentar Atualizar mantendo os dados.
+- **Critérios:** sem instalação, fluxo de instalação normal; versão anterior, opção Atualizar mantendo os dados que substitui arquivos sem executar desinstalador; mesma versão, Reparar arquivos; identificador, nome e escopo currentUser estáveis; banco SQLCipher/DPAPI e preferências preservados. Confirmar atualização real no alvo com base fictícia.
+- **Detalhamento AGENT-PROVISIONAL:** desabilitar substituição direta por versão anterior na configuração Windows, para evitar chamar downgrade de atualização; escolha padrão da página permanece a do NSIS. Não criar template concorrente nem alterar mecanismo de manutenção.
+- **Limites:** preservar artefatos/alterações anteriores, dados fictícios e ausência de publicação/commit/push. Nenhuma instalação/desinstalação no host do agente; ensaio Windows 10 por Maycon.
+
+
+### Complemento da DEC-044/DEC-048 — vigência da distribuição manual
+
+**ACCEPTED por Maycon em 2026-10-07:** até implementar, validar e ativar a atualização automática com pipeline/runner e updater, toda nova versão seguirá a distribuição por instalador. Fechar o aplicativo, executar a nova versão com o mesmo usuário Windows e selecionar Atualizar mantendo os dados, sem desinstalação manual. A instalação prévia do runner não encerra essa política. Não autoriza ativação externa, publicação ou alteração dos gates; somente consolida o procedimento vigente. Fontes: docs/operations/installation.md, update-release-strategy.md e update-pipeline-design.md.

@@ -1,5 +1,9 @@
 # ADR-0002 — Atualizações e distribuição do aplicativo
 
+## Revisão vigente — 2026-10-06 (DEC-044)
+
+Maycon aprovou priorizar o MVP útil para Amanda, com instalação e atualização manuais. Atualizações automáticas, runner e primeira publicação piloto estão ADIADOS e não bloqueiam o primeiro incremento. Preparação existente preservada, sem ativação. SQLCipher/DPAPI e backup/restauração permanecem aprovados. Os detalhes de atualização automática abaixo descrevem a estratégia futura suspensa; DEC-044 prevalece quanto ao momento de execução. Nenhuma publicação ou implementação G5 foi autorizada por esta revisão.
+
 - **Status:** aceito — `ACCEPTED`
 - **Data:** 2026-09-21
 - **Decisor técnico:** Maycon

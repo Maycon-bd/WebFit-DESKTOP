@@ -70,7 +70,7 @@ Use `READY FOR HUMAN DECISION REVIEW` quando a fase técnica estiver completa e 
 
 ## Integração com Spec Kit
 
-A matriz aplica-se antes de `$speckit-clarify`. Ambiguidade com alternativa claramente superior, confiança suficiente, reversibilidade e ausência de ASK-FIRST deve ser registrada como `AGENT-PROVISIONAL` e pode sustentar Specification e Plan. Clarify ou decisão humana é reservado para informação material ausente, alternativas equilibradas ou tema sensível. A skill `$project-task` acumula decisões provisórias e as apresenta em lote no Human Decision Review.
+A matriz aplica-se antes de `$speckit-clarify`. Ambiguidade com alternativa claramente superior, confiança suficiente, reversibilidade e ausência de ASK-FIRST deve ser registrada como `AGENT-PROVISIONAL` e pode sustentar Specification e Plan. Clarify ou decisão humana é reservado para informação material ausente, alternativas equilibradas ou tema sensível. A skill `$webfit-task` acumula decisões provisórias e as apresenta em lote no Human Decision Review.
 
 ## Implementação e loops
 

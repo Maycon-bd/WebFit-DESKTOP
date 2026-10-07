@@ -1,8 +1,8 @@
 # HUMAN INTERACTION CONTRACT
 
-Status: vigente por solicitação humana de 2026-09-17. Escopo: conversas do harness e da skill local `project-task`; não altera requisitos, arquitetura, autoridades ou gates do WebFit.
+Status: vigente por solicitação humana de 2026-09-17. Escopo: conversas do harness e da skill local `webfit-task`; não altera requisitos, arquitetura, autoridades ou gates do WebFit.
 
-**Concise does not mean context-free.** Status e execução devem ser concisos; decisões precisam de contexto suficiente para a pessoa compreender sua escolha. Nunca reduzir uma decisão humana a uma pergunta sem explicar o necessário. O objetivo da `project-task` é chegar a uma especificação que o humano compreenda e considere correta, além de produzir artefatos Spec Kit.
+**Concise does not mean context-free.** Status e execução devem ser concisos; decisões precisam de contexto suficiente para a pessoa compreender sua escolha. Nunca reduzir uma decisão humana a uma pergunta sem explicar o necessário. O objetivo da `webfit-task` é chegar a uma especificação que o humano compreenda e considere correta, além de produzir artefatos Spec Kit.
 
 ## Modos de interação
 

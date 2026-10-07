@@ -1,0 +1,34 @@
+{
+  "name": "webfit-desktop",
+  "version": "0.1.3",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && vite build",
+    "lint": "eslint src",
+    "format": "prettier --write src tests/unit index.html package.json tsconfig.json vite.config.ts eslint.config.js src-tauri/tauri.conf.json src-tauri/capabilities/default.json",
+    "format:check": "prettier --check src tests/unit index.html package.json tsconfig.json vite.config.ts eslint.config.js src-tauri/tauri.conf.json src-tauri/capabilities/default.json",
+    "test": "node --experimental-strip-types --test tests/unit/*.test.ts",
+    "tauri": "tauri",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.12.1",
+    "@tauri-apps/plugin-dialog": "2.8.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.11.3",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "@vitejs/plugin-react": "6.0.2",
+    "eslint": "9.39.4",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.57.0",
+    "vite": "8.0.16"
+  }
+}

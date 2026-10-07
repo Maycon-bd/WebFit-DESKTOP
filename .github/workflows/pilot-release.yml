@@ -1,13 +1,15 @@
 name: Publish WebFit pilot
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   publish-pilot:
+    # DEC-044: publication deferred; preserve preparation without executing it.
+    if: ${{ false }}
+    concurrency:
+      group: webfit-pilot-publication
+      cancel-in-progress: false
     runs-on: [self-hosted, windows, x64]
     permissions:
       contents: read
@@ -35,12 +37,45 @@ jobs:
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Install frontend dependencies
+        working-directory: spikes/g4-tauri-foundation
+        run: npm ci
+
+      - name: Verify release verifier
+        run: node --test scripts/pilot-release.test.mjs
+
+      - name: Check TypeScript and frontend build
+        working-directory: spikes/g4-tauri-foundation
+        run: npm run build
+
+      - name: Check Rust formatting
+        working-directory: spikes/g4-tauri-foundation/src-tauri
+        run: cargo fmt --all -- --check
+
+      - name: Check Rust lint
+        working-directory: spikes/g4-tauri-foundation/src-tauri
+        run: cargo clippy --locked --all-targets -- -D warnings
+
+      - name: Test Rust and SQLite
+        working-directory: spikes/g4-tauri-foundation/src-tauri
+        run: cargo test --locked
+
+      - name: Test SQLCipher encryption
+        working-directory: spikes/g4-tauri-foundation/src-tauri
+        run: cargo test --locked --no-default-features --features sqlcipher-spike sqlcipher_encrypts_database_and_rejects_wrong_key
+
+      - name: Test SQLCipher portable backup
+        working-directory: spikes/g4-tauri-foundation/src-tauri
+        run: cargo test --locked --no-default-features --features sqlcipher-spike portable_backup
 
       - name: Set pilot version
         shell: pwsh
         working-directory: spikes/g4-tauri-foundation
         env:
-          WEBFIT_PILOT_VERSION: 0.1.0-pilot.${{ github.run_number }}
+          WEBFIT_PILOT_VERSION: 0.1.0-pilot.${{ github.run_number }}.${{ github.run_attempt }}
         run: |
           npm version --no-git-tag-version $env:WEBFIT_PILOT_VERSION
           $cargo = Get-Content -Raw src-tauri/Cargo.toml
@@ -50,11 +85,8 @@ jobs:
           $tauri = [regex]::Replace($tauri, '"version": ".*"', '"version": "' + $env:WEBFIT_PILOT_VERSION + '"', 1)
           [IO.File]::WriteAllText((Resolve-Path src-tauri/tauri.conf.json), $tauri, (New-Object Text.UTF8Encoding($false)))
 
-      - name: Install frontend dependencies
-        working-directory: spikes/g4-tauri-foundation
-        run: npm ci
-
       - name: Publish signed pilot release
+        id: pilot
         uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.WEBFIT_RELEASE_TOKEN }}
@@ -74,3 +106,10 @@ jobs:
           updaterJsonPreferNsis: true
           uploadUpdaterSignatures: true
           tauriScript: npm run tauri --
+
+      - name: Verify public release and publish checksums
+        env:
+          GITHUB_TOKEN: ${{ secrets.WEBFIT_RELEASE_TOKEN }}
+          RELEASE_ID: ${{ steps.pilot.outputs.releaseId }}
+          RELEASE_VERSION: ${{ steps.pilot.outputs.appVersion }}
+        run: node scripts/pilot-release.mjs

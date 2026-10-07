@@ -62,7 +62,7 @@ Essas orientações reduzem repetição operacional; não concedem G5, aprovaç�
 
 A convenção canônica permanece DEC-010 e [docs/project/git-workflow.md](../docs/project/git-workflow.md): `main` e `develop` são permanentes; `feature/<id>-<resumo>` nasce de `develop`; `hotfix/<id>-<resumo>` nasce de `main` somente no caso aprovado. `main`, `master`, `develop` e qualquer outro ramo protegido definido pelo projeto não recebem diretamente alterações versionáveis de demandas reais STANDARD ou STRICT.
 
-Antes da primeira escrita versionável da demanda, `$project-task` deve identificar branch atual, branch já associada, estado do worktree, ID rastreável, slug e base correta. Para `feature/`, o ID, critérios de aceite e status aprovado exigidos pela política canônica devem existir; se ainda não existirem, o fluxo permanece em intake somente leitura e para como `BRANCH SETUP BLOCKED` antes de criar Specification ou outros arquivos.
+Antes da primeira escrita versionável da demanda, `$webfit-task` deve identificar branch atual, branch já associada, estado do worktree, ID rastreável, slug e base correta. Para `feature/`, o ID, critérios de aceite e status aprovado exigidos pela política canônica devem existir; se ainda não existirem, o fluxo permanece em intake somente leitura e para como `BRANCH SETUP BLOCKED` antes de criar Specification ou outros arquivos.
 
 Criar ou selecionar branch exclusivamente local é operação autônoma, reversível e sem efeito externo quando o worktree estiver seguro. Se `develop` não existir localmente, mas `origin/develop` já existir como referência remota conhecida, é permitido criar o tracking local sem executar fetch ou push. Base ausente, divergente ou sem origem comprovada bloqueia o setup.
 
@@ -89,7 +89,7 @@ Aplicar o [HUMAN INTERACTION CONTRACT](HUMAN-INTERACTION-CONTRACT.md) em toda co
 - Amanda aprova domínio e aceite funcional.
 - Maycon é Product Owner, responsável técnico, administrador e aprovador técnico.
 - Mudança de escopo ou decisão relevante de produto requer aprovação conjunta. Análise, especificação e planejamento podem avançar com decisões técnicas provisórias permitidas pela política de autonomia.
-- A leitura do Plane é permitida automaticamente para o fluxo. A escrita fica autorizada somente no contrato controlado de `$project-task`: criar um único Work Item para uma nova demanda STANDARD/STRICT explicitamente iniciada e sincronizar apenas esse item nos gates previstos. Fora desse contrato, operações Plane continuam ASK-FIRST. Nenhuma ferramenta externa abre PR ou envia dados fora do escopo autorizado.
+- A leitura do Plane é permitida automaticamente para o fluxo. A escrita fica autorizada somente no contrato controlado de `$webfit-task`: criar um único Work Item para uma nova demanda STANDARD/STRICT explicitamente iniciada e sincronizar apenas esse item nos gates previstos. Fora desse contrato, operações Plane continuam ASK-FIRST. Nenhuma ferramenta externa abre PR ou envia dados fora do escopo autorizado.
 
 ## Plane como gestão operacional
 

@@ -1,6 +1,19 @@
 # Instalação
 
-**Status:** requisitos aprovados; instalador ainda não existe.
+**Status:** instalador de teste 0.1.3 disponível; distribuição manual vigente, somente dados fictícios. Ensaio Windows 10/aceite completo pendentes.
+
+## Procedimento vigente até a atualização automática
+
+**Aprovado por Maycon em 2026-10-07, como complemento da DEC-044/DEC-048.** Até o pipeline com runner Windows e o atualizador do aplicativo estarem implementados, validados e ativados, toda nova versão será distribuída por instalador e atualizada manualmente:
+
+1. Receber o instalador da nova versão e fechar o WebFit.
+2. Executar o instalador com o mesmo usuário do Windows da instalação existente.
+3. Na tela Instalação encontrada, selecionar **Atualizar mantendo os dados** e continuar. Não é necessário desinstalar manualmente.
+4. Reabrir o aplicativo e conferir os cadastros, senhas, prescrições e preferências existentes.
+
+Na mesma versão, usar **Reparar arquivos (manter os dados)** quando necessário. O objetivo da atualização é preservar os dados; o ensaio de atualização no computador-alvo continua necessário para aceite. Não apagar os dados do aplicativo. O teste atual permanece restrito a dados fictícios.
+
+A instalação do runner, por si só, não encerra este procedimento. A substituição pelo fluxo automático exige conclusão e ativação do pipeline e do updater conforme o [ADR-0002](../architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md), com os gates aplicáveis. Esta orientação não autoriza sua ativação antecipada.
 
 ## Ambiente-alvo
 
@@ -18,4 +31,4 @@
 - testar caminho com espaços e acentos;
 - registrar versão, tamanho, permissões e limitações.
 
-Durante G5/G6, merges revisados na `main` publicarão versões piloto assinadas. O aplicativo mostrará um ícone e solicitará confirmação; após a confirmação, backup, download, validação, instalação e reinício serão automáticos. O uso piloto permanecerá em perfil/diretório separado e com dados fictícios ou controlados até o G7. O canal estável será ativado posteriormente. A estratégia está em [update-release-strategy.md](update-release-strategy.md) e no [ADR-0002](../architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md).
+O fluxo automático futuro, atualmente adiado pela DEC-044, prevê que merges revisados na `main` publiquem versões piloto assinadas após sua implementação, validação e ativação. O aplicativo mostrará um ícone e solicitará confirmação; após a confirmação, backup, download, validação, instalação e reinício serão automáticos. O uso piloto permanecerá em perfil/diretório separado e com dados fictícios ou controlados até o G7. O canal estável será ativado posteriormente. A estratégia está em [update-release-strategy.md](update-release-strategy.md) e no [ADR-0002](../architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md).

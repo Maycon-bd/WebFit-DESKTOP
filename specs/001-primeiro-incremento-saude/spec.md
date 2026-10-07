@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-15
 
-**Status**: Aprovada como baseline do primeiro incremento; G4 concluído; implementação de produto bloqueada até aprovação específica do G5 e gates sensíveis
+**Status**: Aprovada como baseline do primeiro incremento; G4 concluído; implementação G5 autorizada pela DEC-045 em 2026-10-06, em execução com dados fictícios; aceite da entrega pendente
 
 **Input**: User description: "Entregar o primeiro incremento funcional do WebFit Desktop para a operação de Saúde, local e offline, cobrindo acesso de usuários, perfil da nutricionista, pacientes, plano alimentar e orientações, auditoria e backup/restauração conforme requisitos aprovados."
 
@@ -146,7 +146,7 @@ Como responsável pela operação, quero criar e restaurar backups consistentes,
 - **FR-005** (trace: RF-PRE-001..005): O sistema MUST permitir criar prescrição individual para paciente ativo, montar refeições e alimentos, calcular composição e metas por protocolos aprovados e manter versões e histórico.
 - **FR-006** (trace: RN-PRE-001..024): O sistema MUST preservar fonte e versão de alimentos, usar grama como quantidade canônica, registrar origem e versão de cálculos, manter precisão interna e validar alertas, limites e entradas obrigatórias.
 - **FR-007** (trace: RF-AUD-001): O sistema MUST registrar e consultar eventos críticos somente por usuários autenticados e autorizados, com metadados mínimos, filtros combinados, paginação estável e sem conteúdo clínico ou credenciais.
-- **FR-008** (trace: RN-AUD-001..017): A auditoria MUST ser imutável no incremento, não excluir automaticamente eventos, diferenciar estados vazios de falhas e aplicar as decisões provisórias D-AUTO-001/D-AUTO-002 somente após validação humana antes do modelo de dados definitivo.
+- **FR-008** (trace: RN-AUD-001..017): A auditoria MUST ser imutável no incremento, não excluir automaticamente eventos, diferenciar estados vazios de falhas e aplicar D-AUTO-001/D-AUTO-002, aceitas por Amanda e Maycon em 2026-09-17, preservando os critérios aprovados.
 - **FR-009** (trace: RF-BKP-001..003): O sistema MUST criar backup manual e automático diário, exibir seu estado, validar pacote em área temporária, preservar o estado atual até confirmação e rejeitar pacotes inválidos.
 - **FR-010** (trace: RN-BKP-001..007): Backup MUST atender RPO de 24 horas, retenção de 60 dias, snapshot consistente, manifesto, checksums e validação de integridade antes de rotação ou restauração.
 - **FR-011** (trace: RNF-SEG-001..004, RNF-PRI-001): O sistema MUST proteger autenticação, operações autorizadas, dados sensíveis, arquivos e backups; logs e evidências não podem conter senhas, CPF completo, prontuário, mensagem ou documento clínico.
@@ -192,9 +192,31 @@ Como responsável pela operação, quero criar e restaurar backups consistentes,
 - A política de backup aceita é backup automático no primeiro uso diário e manual, retenção de 60 dias, RPO de 24 horas e RTO até o próximo dia útil.
 - PDF, impressão, exportações, agenda, anamnese, antropometria, arquivos clínicos, financeiro e demais itens propostos do backlog não fazem parte desta Specification.
 
+## Refinamento aprovado — RF-UX-001: tutoriais por tela
+
+**Status:** aprovado por Maycon em 2026-10-06. **Prioridade:** P2 (AGENT-PROVISIONAL para ordenação; não bloqueia persistência clínica).
+
+Maycon solicitou e autorizou em 2026-10-06 tutoriais simples no primeiro acesso às telas, com indicativos de uso e botão Pular, no MVP em construção (DEC-046).
+
+Critérios de aceite: explicações curtas junto aos controles reais das telas autenticadas; avançar, voltar, concluir e pular; lembrar conclusão/pulo por usuário e tela após reabrir o aplicativo; repetir pelo botão Ver tutorial; teclado e Escape para pular; não executar operações clínicas, preencher formulários ou modificar cadastros. Falha ao guardar a preferência deve ser informada sem impedir o trabalho.
+
+Detalhamento AGENT-PROVISIONAL, reversível: tours independentes para lista de pacientes, novo cadastro, cadastro existente, perfil, prescrição, auditoria, backup e acesso; guardar somente identificador/versão do tour na tabela settings existente, sem migração ou dependência nova. Preparação da instalação e login mantêm instruções inline; troca obrigatória de senha precede os tours.
+
 ## Out of Scope
 
 - Sistema de Educação, cardápio escolar e pedidos.
 - Sincronização ou colaboração entre computador de mesa e notebook.
 - Servidor remoto, nuvem, hospedagem obrigatória ou mensalidade.
 - Importação/exportação de dados, PDF, impressão, agenda, financeiro e módulos clínicos ainda propostos.
+
+
+## Refinamento RN-AUT-001 — DEC-047, aprovado por Maycon em 2026-10-07
+
+Senha de acesso mínima de seis caracteres em preparação, troca e redefinição temporária. Aceitar exatamente seis e rejeitar cinco ou menos; preservar autenticação/Argon2, acesso com credenciais já cadastradas e recuperação de backups com mínimo de doze. Formulários e tour devem informar os limites corretos. Prioridade P1, correção do fluxo de primeiro acesso observado pelo usuário.
+
+
+## RF-DIS-001 — atualização manual no instalador
+
+**Status:** aprovado por Maycon em 2026-10-07, DEC-048. **Prioridade:** P1 (refinamento de distribuição para teste).
+
+Ao executar uma versão nova do instalador com uma instalação anterior do mesmo usuário Windows, detectar a instalação e apresentar Atualizar mantendo os dados. Essa opção deve substituir arquivos sem desinstalação manual, preservando banco, usuários, senhas e tutoriais. Sem instalação, fluxo normal; mesma versão, reparação dos arquivos. Identidade/escopo da instalação devem permanecer estáveis. Não ativar consulta/download automático; atualização manual permanece vigente. Ensaio com paciente fictício persistido antes/depois é obrigatório para aceite no alvo.

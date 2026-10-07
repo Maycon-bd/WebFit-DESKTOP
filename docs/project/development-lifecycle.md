@@ -543,3 +543,7 @@ Um requisito pode entrar em desenvolvimento quando:
 ## Resultado esperado da curadoria
 
 Ao final do Ciclo 0, o novo repositório não conterá uma cópia da documentação antiga. Ele conterá uma especificação nova, coerente e rastreável do WebFit Desktop. Cada requisito preservará sua fonte histórica quando útil, mas nenhuma tecnologia abandonada será carregada como obrigação do produto.
+
+## Aprovação de execução — 2026-10-06
+
+DEC-045 registra Implementation Approval G5 e Sensitive Change Approval para construir o primeiro incremento, banco/migrações, dependências previstas e ferramentas de compilação. Testes somente fictícios, entrega por instalador manual; publicação e dados reais excluídos. Aceite final G5/G6/G7 ainda não concedido.

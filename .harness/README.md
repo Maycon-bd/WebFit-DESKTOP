@@ -10,7 +10,7 @@ O [HUMAN INTERACTION CONTRACT](HUMAN-INTERACTION-CONTRACT.md) rege a comunicaç�
 
 ## Estado
 
-PROJECT STAGE: PLANNING. Spec Kit e `$project-task` estão integrados; a proteção local de branches corrige a lacuna encontrada no smoke test. Plane está ACTIVE somente como camada controlada de gestão do trabalho; MCP/Plane usa OAuth, leitura validada e escrita limitada ao Work Item da execução atual de `$project-task`. Obsidian está ACTIVE somente como camada de navegação e conhecimento sobre os mesmos arquivos locais; não é fonte paralela da verdade e não requer MCP. As demais integrações externas e automação permanecem PREPARED — NOT ACTIVE. O repositório não contém código de aplicação.
+PROJECT STAGE: PLANNING. Spec Kit e `$webfit-task` estão integrados; a proteção local de branches corrige a lacuna encontrada no smoke test. Plane está ACTIVE somente como camada controlada de gestão do trabalho; MCP/Plane usa OAuth, leitura validada e escrita limitada ao Work Item da execução atual de `$webfit-task`. Obsidian está ACTIVE somente como camada de navegação e conhecimento sobre os mesmos arquivos locais; não é fonte paralela da verdade e não requer MCP. As demais integrações externas e automação permanecem PREPARED — NOT ACTIVE. O repositório não contém código de aplicação.
 
 ## Fluxo oficial
 
@@ -41,12 +41,14 @@ Uma alteração documental simples pode ser LIGHT; uma feature comum é STANDARD
 
 ## Uso rápido
 
+Use `$webfit-task` para uma demanda, `$webfit-checkpoint` para retomar/salvar e `$webfit-verificar` para verificar mudanças. As auxiliares cumprem responsabilidades já existentes e não acrescentam gates. Ver [skills locais](integrations/codex-skill.md).
+
 Comece pela primeira etapa pendente, conforme o checkpoint, e aplique a [condução proporcional](GOVERNANCE.md#condução-proporcional-e-retomada). O diagrama acima descreve o ciclo completo de uma demanda; ele não manda reiniciar o ciclo a cada conversa. LIGHT documental usa fonte, alteração, revisão e evidência breve. Nas demais demandas, reutilize artefatos válidos e execute as skills da fase atual no mesmo chat. Perguntas e gates condicionais exigem um motivo concreto.
 
 1. Ler PROJECT-STATE.md, GOVERNANCE.md e os documentos canônicos relacionados.
 2. Classificar a demanda, aplicar a matriz de autonomia e distinguir fato, inferência, `AGENT-PROVISIONAL` e `NEEDS-HUMAN-DECISION`.
 3. Para STANDARD ou STRICT real, concluir o Branch Safety antes de criar qualquer alteração versionável; se não for seguro, parar em `BRANCH SETUP BLOCKED`.
-4. Usar `$project-task` como entrypoint e as skills oficiais `$speckit-*` para criar ou atualizar os artefatos canônicos da feature.
+4. Usar `$webfit-task` como entrypoint e as skills oficiais `$speckit-*` para criar ou atualizar os artefatos canônicos da feature.
 5. Obter o gate humano antes de condições ASK-FIRST; decisões provisórias não sensíveis podem sustentar especificação, plano e review.
 6. Executar verificação, review independente e gates condicionais.
 7. Produzir um Evidence Report antes da aprovação final.

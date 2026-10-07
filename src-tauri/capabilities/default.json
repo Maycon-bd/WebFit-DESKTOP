@@ -1,0 +1,11 @@
+{
+  "identifier": "main-window",
+  "description": "Janela principal: operações locais tipadas e seleção de backup.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-destroy",
+    "dialog:allow-open",
+    "dialog:allow-save"
+  ]
+}

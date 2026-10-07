@@ -1,0 +1,1176 @@
+[
+  {
+    "code": "BRC0208A",
+    "name": "Arroz, polido, cozido, c/ óleo de soja, cebola e alho, s/ sal, Brasil",
+    "source": "TBCA 7.3",
+    "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=qtqOHQ4EkR82Z0oZf8AKdA%3D%3D",
+    "grams": 100,
+    "measures": [
+      {
+        "grams": 55.0,
+        "name": "Colher servir cheia (55 g)"
+      },
+      {
+        "grams": 20.0,
+        "name": "Colher sopa cheia (20 g)"
+      }
+    ],
+    "nutrients": {
+      "Ácidos graxos poliinsaturados:g": {
+        "unit": "g",
+        "value": 0.77,
+        "original": "0,77"
+      },
+      ":Restaurar": {
+        "unit": "Restaurar",
+        "value": null,
+        "original": "Ok"
+      },
+      "Equivalente de folato:mcg": {
+        "unit": "mcg",
+        "value": 2.89,
+        "original": "2,89"
+      },
+      "Álcool:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Proteína vegetal:g": {
+        "unit": "g",
+        "value": 2.41,
+        "original": "2,41"
+      },
+      "Açúcar de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cobre:mg": {
+        "unit": "mg",
+        "value": 0.15,
+        "original": "0,15"
+      },
+      "Vitamina C:mg": {
+        "unit": "mg",
+        "value": 0.42,
+        "original": "0,42"
+      },
+      "Lipídios:g": {
+        "unit": "g",
+        "value": 1.6,
+        "original": "1,60"
+      },
+      "Zinco:mg": {
+        "unit": "mg",
+        "value": 0.51,
+        "original": "0,51"
+      },
+      "Carboidrato disponível:g": {
+        "unit": "g",
+        "value": 28.0,
+        "original": "28,0"
+      },
+      "Alfa-tocoferol (Vitamina E):mg": {
+        "unit": "mg",
+        "value": 0.07,
+        "original": "0,07"
+      },
+      "Ácidos graxos saturados:g": {
+        "unit": "g",
+        "value": 0.33,
+        "original": "0,33"
+      },
+      "Sal de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Vitamina B6:mg": {
+        "unit": "mg",
+        "value": 0.01,
+        "original": "0,01"
+      },
+      "Umidade:g": {
+        "unit": "g",
+        "value": 66.4,
+        "original": "66,4"
+      },
+      "Carboidrato total:g": {
+        "unit": "g",
+        "value": 29.2,
+        "original": "29,2"
+      },
+      "Niacina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Magnésio:mg": {
+        "unit": "mg",
+        "value": 23.7,
+        "original": "23,7"
+      },
+      "Vitamina A (RE):mcg": {
+        "unit": "mcg",
+        "value": null,
+        "original": "tr"
+      },
+      "Sódio:mg": {
+        "unit": "mg",
+        "value": 1.6,
+        "original": "1,60"
+      },
+      "Ácidos graxos monoinsaturados:g": {
+        "unit": "g",
+        "value": 0.33,
+        "original": "0,33"
+      },
+      "Tiamina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Vitamina A (RAE):mcg": {
+        "unit": "mcg",
+        "value": null,
+        "original": "tr"
+      },
+      "Fibra alimentar:g": {
+        "unit": "g",
+        "value": 1.28,
+        "original": "1,28"
+      },
+      "Cinzas:g": {
+        "unit": "g",
+        "value": 0.33,
+        "original": "0,33"
+      },
+      "Manganês:mg": {
+        "unit": "mg",
+        "value": 1.0,
+        "original": "1,00"
+      },
+      "Ferro:mg": {
+        "unit": "mg",
+        "value": 0.33,
+        "original": "0,33"
+      },
+      "Riboflavina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Fósforo:mg": {
+        "unit": "mg",
+        "value": 22.4,
+        "original": "22,4"
+      },
+      "Proteína:g": {
+        "unit": "g",
+        "value": 2.41,
+        "original": "2,41"
+      },
+      "Proteína animal:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kJ": {
+        "unit": "kJ",
+        "value": 586.0,
+        "original": "586"
+      },
+      "Vitamina D:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kcal": {
+        "unit": "kcal",
+        "value": 138.0,
+        "original": "138"
+      },
+      "Selênio:mcg": {
+        "unit": "mcg",
+        "value": 1.64,
+        "original": "1,64"
+      },
+      "Ácidos graxos trans:g": {
+        "unit": "g",
+        "value": 0.01,
+        "original": "0,01"
+      },
+      "Vitamina B12:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Colesterol:mg": {
+        "unit": "mg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cálcio:mg": {
+        "unit": "mg",
+        "value": 5.75,
+        "original": "5,75"
+      },
+      "Gordura de adição:g": {
+        "unit": "g",
+        "value": 1.2,
+        "original": "1,20"
+      },
+      "Potássio:mg": {
+        "unit": "mg",
+        "value": 30.2,
+        "original": "30,2"
+      }
+    },
+    "fat": 1.6,
+    "fiber": 1.28,
+    "kcal": 138.0,
+    "protein": 2.41,
+    "carbs": 29.2
+  },
+  {
+    "code": "BRC0001T",
+    "name": "Feijão, carioca, cozido (50% grão e 50% caldo), s/ óleo, s/ sal, Brasil",
+    "source": "TBCA 7.3",
+    "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=pIqRrKBm8h1amgooDYSLHw%3D%3D",
+    "grams": 100,
+    "measures": [
+      {
+        "grams": 35.0,
+        "name": "Colher servir cheia (35 g)"
+      },
+      {
+        "grams": 17.0,
+        "name": "Colher sopa cheia (17 g)"
+      },
+      {
+        "grams": 140.0,
+        "name": "Concha cheia (140 g)"
+      },
+      {
+        "grams": 80.0,
+        "name": "Concha rasa (80 g)"
+      }
+    ],
+    "nutrients": {
+      "Ácidos graxos poliinsaturados:g": {
+        "unit": "g",
+        "value": 0.3,
+        "original": "0,30"
+      },
+      ":Restaurar": {
+        "unit": "Restaurar",
+        "value": null,
+        "original": "Ok"
+      },
+      "Equivalente de folato:mcg": {
+        "unit": "mcg",
+        "value": 98.5,
+        "original": "98,5"
+      },
+      "Álcool:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Proteína vegetal:g": {
+        "unit": "g",
+        "value": 4.77,
+        "original": "4,77"
+      },
+      "Açúcar de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cobre:mg": {
+        "unit": "mg",
+        "value": 0.2,
+        "original": "0,20"
+      },
+      "Vitamina C:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Lipídios:g": {
+        "unit": "g",
+        "value": 0.54,
+        "original": "0,54"
+      },
+      "Zinco:mg": {
+        "unit": "mg",
+        "value": 0.76,
+        "original": "0,76"
+      },
+      "Carboidrato disponível:g": {
+        "unit": "g",
+        "value": 8.2,
+        "original": "8,20"
+      },
+      "Alfa-tocoferol (Vitamina E):mg": {
+        "unit": "mg",
+        "value": 0.78,
+        "original": "0,78"
+      },
+      "Ácidos graxos saturados:g": {
+        "unit": "g",
+        "value": 0.1,
+        "original": "0,10"
+      },
+      "Sal de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Vitamina B6:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Umidade:g": {
+        "unit": "g",
+        "value": 78.8,
+        "original": "78,8"
+      },
+      "Carboidrato total:g": {
+        "unit": "g",
+        "value": 15.3,
+        "original": "15,3"
+      },
+      "Niacina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Magnésio:mg": {
+        "unit": "mg",
+        "value": 45.7,
+        "original": "45,7"
+      },
+      "Vitamina A (RE):mcg": {
+        "unit": "mcg",
+        "value": null,
+        "original": "NA"
+      },
+      "Sódio:mg": {
+        "unit": "mg",
+        "value": 1.9,
+        "original": "1,90"
+      },
+      "Ácidos graxos monoinsaturados:g": {
+        "unit": "g",
+        "value": 0.1,
+        "original": "0,10"
+      },
+      "Tiamina:mg": {
+        "unit": "mg",
+        "value": 0.04,
+        "original": "0,04"
+      },
+      "Vitamina A (RAE):mcg": {
+        "unit": "mcg",
+        "value": null,
+        "original": "NA"
+      },
+      "Fibra alimentar:g": {
+        "unit": "g",
+        "value": 7.06,
+        "original": "7,06"
+      },
+      "Cinzas:g": {
+        "unit": "g",
+        "value": 0.67,
+        "original": "0,67"
+      },
+      "Manganês:mg": {
+        "unit": "mg",
+        "value": 0.31,
+        "original": "0,31"
+      },
+      "Ferro:mg": {
+        "unit": "mg",
+        "value": 1.39,
+        "original": "1,39"
+      },
+      "Riboflavina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Fósforo:mg": {
+        "unit": "mg",
+        "value": 93.7,
+        "original": "93,7"
+      },
+      "Proteína:g": {
+        "unit": "g",
+        "value": 4.77,
+        "original": "4,77"
+      },
+      "Proteína animal:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kJ": {
+        "unit": "kJ",
+        "value": 297.0,
+        "original": "297"
+      },
+      "Vitamina D:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kcal": {
+        "unit": "kcal",
+        "value": 71.0,
+        "original": "71"
+      },
+      "Selênio:mcg": {
+        "unit": "mcg",
+        "value": 0.02,
+        "original": "0,02"
+      },
+      "Ácidos graxos trans:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Vitamina B12:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Colesterol:mg": {
+        "unit": "mg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cálcio:mg": {
+        "unit": "mg",
+        "value": 28.7,
+        "original": "28,7"
+      },
+      "Gordura de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Potássio:mg": {
+        "unit": "mg",
+        "value": 274.0,
+        "original": "274"
+      }
+    },
+    "fat": 0.54,
+    "fiber": 7.06,
+    "kcal": 71.0,
+    "protein": 4.77,
+    "carbs": 15.3
+  },
+  {
+    "code": "BRC0011C",
+    "name": "Banana, prata, in natura, Brasil",
+    "source": "TBCA 7.3",
+    "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=2TForHUFkQoNZIv4AIRJVA%3D%3D",
+    "grams": 100,
+    "measures": [
+      {
+        "grams": 40.0,
+        "name": "Pedaço/ Unidade/ Fatia (M) (40 g)"
+      }
+    ],
+    "nutrients": {
+      "Ácidos graxos poliinsaturados:g": {
+        "unit": "g",
+        "value": 0.06,
+        "original": "0,06"
+      },
+      ":Restaurar": {
+        "unit": "Restaurar",
+        "value": null,
+        "original": "Ok"
+      },
+      "Equivalente de folato:mcg": {
+        "unit": "mcg",
+        "value": 22.4,
+        "original": "22,4"
+      },
+      "Álcool:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Proteína vegetal:g": {
+        "unit": "g",
+        "value": 1.11,
+        "original": "1,11"
+      },
+      "Açúcar de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cobre:mg": {
+        "unit": "mg",
+        "value": 0.05,
+        "original": "0,05"
+      },
+      "Vitamina C:mg": {
+        "unit": "mg",
+        "value": 21.6,
+        "original": "21,6"
+      },
+      "Lipídios:g": {
+        "unit": "g",
+        "value": 0.28,
+        "original": "0,28"
+      },
+      "Zinco:mg": {
+        "unit": "mg",
+        "value": 0.15,
+        "original": "0,15"
+      },
+      "Carboidrato disponível:g": {
+        "unit": "g",
+        "value": 24.0,
+        "original": "24,0"
+      },
+      "Alfa-tocoferol (Vitamina E):mg": {
+        "unit": "mg",
+        "value": 0.09,
+        "original": "0,09"
+      },
+      "Ácidos graxos saturados:g": {
+        "unit": "g",
+        "value": 0.09,
+        "original": "0,09"
+      },
+      "Sal de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Vitamina B6:mg": {
+        "unit": "mg",
+        "value": 0.1,
+        "original": "0,10"
+      },
+      "Umidade:g": {
+        "unit": "g",
+        "value": 71.9,
+        "original": "71,9"
+      },
+      "Carboidrato total:g": {
+        "unit": "g",
+        "value": 25.9,
+        "original": "25,9"
+      },
+      "Niacina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Magnésio:mg": {
+        "unit": "mg",
+        "value": 29.2,
+        "original": "29,2"
+      },
+      "Vitamina A (RE):mcg": {
+        "unit": "mcg",
+        "value": 32.4,
+        "original": "32,4"
+      },
+      "Sódio:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Ácidos graxos monoinsaturados:g": {
+        "unit": "g",
+        "value": null,
+        "original": "tr"
+      },
+      "Tiamina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Vitamina A (RAE):mcg": {
+        "unit": "mcg",
+        "value": 16.2,
+        "original": "16,2"
+      },
+      "Fibra alimentar:g": {
+        "unit": "g",
+        "value": 1.95,
+        "original": "1,95"
+      },
+      "Cinzas:g": {
+        "unit": "g",
+        "value": 0.76,
+        "original": "0,76"
+      },
+      "Manganês:mg": {
+        "unit": "mg",
+        "value": 0.42,
+        "original": "0,42"
+      },
+      "Ferro:mg": {
+        "unit": "mg",
+        "value": 0.38,
+        "original": "0,38"
+      },
+      "Riboflavina:mg": {
+        "unit": "mg",
+        "value": 0.02,
+        "original": "0,02"
+      },
+      "Fósforo:mg": {
+        "unit": "mg",
+        "value": 22.2,
+        "original": "22,2"
+      },
+      "Proteína:g": {
+        "unit": "g",
+        "value": 1.11,
+        "original": "1,11"
+      },
+      "Proteína animal:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kJ": {
+        "unit": "kJ",
+        "value": 453.0,
+        "original": "453"
+      },
+      "Vitamina D:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kcal": {
+        "unit": "kcal",
+        "value": 107.0,
+        "original": "107"
+      },
+      "Selênio:mcg": {
+        "unit": "mcg",
+        "value": 0.1,
+        "original": "0,10"
+      },
+      "Ácidos graxos trans:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Vitamina B12:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Colesterol:mg": {
+        "unit": "mg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cálcio:mg": {
+        "unit": "mg",
+        "value": 6.18,
+        "original": "6,18"
+      },
+      "Gordura de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Potássio:mg": {
+        "unit": "mg",
+        "value": 357.0,
+        "original": "357"
+      }
+    },
+    "fat": 0.28,
+    "fiber": 1.95,
+    "kcal": 107.0,
+    "protein": 1.11,
+    "carbs": 25.9
+  },
+  {
+    "code": "BRC0114F",
+    "name": "Carne, frango, peito, s/ pele, grelhada, s/ óleo, s/ sal, Brasil",
+    "source": "TBCA 7.3",
+    "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=DP42TQ4ecxn47Ihwru2%2FQw%3D%3D",
+    "grams": 100,
+    "measures": [
+      {
+        "grams": 110.0,
+        "name": "Pedaço/ Unidade/ Fatia (M) (110 g)"
+      }
+    ],
+    "nutrients": {
+      "Ácidos graxos poliinsaturados:g": {
+        "unit": "g",
+        "value": 0.3,
+        "original": "0,30"
+      },
+      ":Restaurar": {
+        "unit": "Restaurar",
+        "value": null,
+        "original": "Ok"
+      },
+      "Equivalente de folato:mcg": {
+        "unit": "mcg",
+        "value": 6.35,
+        "original": "6,35"
+      },
+      "Álcool:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Proteína vegetal:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Açúcar de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cobre:mg": {
+        "unit": "mg",
+        "value": 0.02,
+        "original": "0,02"
+      },
+      "Vitamina C:mg": {
+        "unit": "mg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Lipídios:g": {
+        "unit": "g",
+        "value": 2.45,
+        "original": "2,45"
+      },
+      "Zinco:mg": {
+        "unit": "mg",
+        "value": 0.78,
+        "original": "0,78"
+      },
+      "Carboidrato disponível:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Alfa-tocoferol (Vitamina E):mg": {
+        "unit": "mg",
+        "value": 0.54,
+        "original": "0,54"
+      },
+      "Ácidos graxos saturados:g": {
+        "unit": "g",
+        "value": 0.9,
+        "original": "0,90"
+      },
+      "Sal de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Vitamina B6:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Umidade:g": {
+        "unit": "g",
+        "value": 64.0,
+        "original": "64,0"
+      },
+      "Carboidrato total:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Niacina:mg": {
+        "unit": "mg",
+        "value": 24.8,
+        "original": "24,8"
+      },
+      "Magnésio:mg": {
+        "unit": "mg",
+        "value": 18.3,
+        "original": "18,3"
+      },
+      "Vitamina A (RE):mcg": {
+        "unit": "mcg",
+        "value": null,
+        "original": "tr"
+      },
+      "Sódio:mg": {
+        "unit": "mg",
+        "value": 50.2,
+        "original": "50,2"
+      },
+      "Ácidos graxos monoinsaturados:g": {
+        "unit": "g",
+        "value": 0.9,
+        "original": "0,90"
+      },
+      "Tiamina:mg": {
+        "unit": "mg",
+        "value": 0.11,
+        "original": "0,11"
+      },
+      "Vitamina A (RAE):mcg": {
+        "unit": "mcg",
+        "value": null,
+        "original": "tr"
+      },
+      "Fibra alimentar:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cinzas:g": {
+        "unit": "g",
+        "value": 1.44,
+        "original": "1,44"
+      },
+      "Manganês:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Ferro:mg": {
+        "unit": "mg",
+        "value": 0.33,
+        "original": "0,33"
+      },
+      "Riboflavina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Fósforo:mg": {
+        "unit": "mg",
+        "value": 295.0,
+        "original": "295"
+      },
+      "Proteína:g": {
+        "unit": "g",
+        "value": 32.1,
+        "original": "32,1"
+      },
+      "Proteína animal:g": {
+        "unit": "g",
+        "value": 32.0,
+        "original": "32,0"
+      },
+      "Energia:kJ": {
+        "unit": "kJ",
+        "value": 637.0,
+        "original": "637"
+      },
+      "Vitamina D:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kcal": {
+        "unit": "kcal",
+        "value": 150.0,
+        "original": "150"
+      },
+      "Selênio:mcg": {
+        "unit": "mcg",
+        "value": 13.1,
+        "original": "13,1"
+      },
+      "Ácidos graxos trans:g": {
+        "unit": "g",
+        "value": 0.04,
+        "original": "0,04"
+      },
+      "Vitamina B12:mcg": {
+        "unit": "mcg",
+        "value": 0.19,
+        "original": "0,19"
+      },
+      "Colesterol:mg": {
+        "unit": "mg",
+        "value": 89.1,
+        "original": "89,1"
+      },
+      "Cálcio:mg": {
+        "unit": "mg",
+        "value": 5.34,
+        "original": "5,34"
+      },
+      "Gordura de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Potássio:mg": {
+        "unit": "mg",
+        "value": 387.0,
+        "original": "387"
+      }
+    },
+    "fat": 2.45,
+    "fiber": 0.0,
+    "kcal": 150.0,
+    "protein": 32.1,
+    "carbs": 0.0
+  },
+  {
+    "code": "BRC0041B",
+    "name": "Batata, inglesa, s/ casca, cozida, drenada, s/ óleo, s/ sal, Brasil",
+    "source": "TBCA 7.3",
+    "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=F4WtDgVyc5YY7uFLcpKzxg%3D%3D",
+    "grams": 100,
+    "measures": [
+      {
+        "grams": 40.0,
+        "name": "Colher servir rasa (40 g)"
+      },
+      {
+        "grams": 30.0,
+        "name": "Colher sopa cheia (30 g)"
+      },
+      {
+        "grams": 50.0,
+        "name": "Escumadeira cheia (50 g)"
+      }
+    ],
+    "nutrients": {
+      "Ácidos graxos poliinsaturados:g": {
+        "unit": "g",
+        "value": 0.02,
+        "original": "0,02"
+      },
+      ":Restaurar": {
+        "unit": "Restaurar",
+        "value": null,
+        "original": "Ok"
+      },
+      "Equivalente de folato:mcg": {
+        "unit": "mcg",
+        "value": 5.64,
+        "original": "5,64"
+      },
+      "Álcool:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Proteína vegetal:g": {
+        "unit": "g",
+        "value": 1.33,
+        "original": "1,33"
+      },
+      "Açúcar de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cobre:mg": {
+        "unit": "mg",
+        "value": 0.06,
+        "original": "0,06"
+      },
+      "Vitamina C:mg": {
+        "unit": "mg",
+        "value": 3.89,
+        "original": "3,89"
+      },
+      "Lipídios:g": {
+        "unit": "g",
+        "value": 0.05,
+        "original": "0,05"
+      },
+      "Zinco:mg": {
+        "unit": "mg",
+        "value": 0.19,
+        "original": "0,19"
+      },
+      "Carboidrato disponível:g": {
+        "unit": "g",
+        "value": 10.8,
+        "original": "10,8"
+      },
+      "Alfa-tocoferol (Vitamina E):mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Ácidos graxos saturados:g": {
+        "unit": "g",
+        "value": 0.01,
+        "original": "0,01"
+      },
+      "Sal de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Vitamina B6:mg": {
+        "unit": "mg",
+        "value": 0.09,
+        "original": "0,09"
+      },
+      "Umidade:g": {
+        "unit": "g",
+        "value": 85.9,
+        "original": "85,9"
+      },
+      "Carboidrato total:g": {
+        "unit": "g",
+        "value": 12.3,
+        "original": "12,3"
+      },
+      "Niacina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Magnésio:mg": {
+        "unit": "mg",
+        "value": 5.62,
+        "original": "5,62"
+      },
+      "Vitamina A (RE):mcg": {
+        "unit": "mcg",
+        "value": null,
+        "original": "tr"
+      },
+      "Sódio:mg": {
+        "unit": "mg",
+        "value": 2.37,
+        "original": "2,37"
+      },
+      "Ácidos graxos monoinsaturados:g": {
+        "unit": "g",
+        "value": null,
+        "original": "tr"
+      },
+      "Tiamina:mg": {
+        "unit": "mg",
+        "value": 0.05,
+        "original": "0,05"
+      },
+      "Vitamina A (RAE):mcg": {
+        "unit": "mcg",
+        "value": null,
+        "original": "tr"
+      },
+      "Fibra alimentar:g": {
+        "unit": "g",
+        "value": 1.47,
+        "original": "1,47"
+      },
+      "Cinzas:g": {
+        "unit": "g",
+        "value": 0.45,
+        "original": "0,45"
+      },
+      "Manganês:mg": {
+        "unit": "mg",
+        "value": 0.07,
+        "original": "0,07"
+      },
+      "Ferro:mg": {
+        "unit": "mg",
+        "value": 0.2,
+        "original": "0,20"
+      },
+      "Riboflavina:mg": {
+        "unit": "mg",
+        "value": null,
+        "original": "tr"
+      },
+      "Fósforo:mg": {
+        "unit": "mg",
+        "value": 25.2,
+        "original": "25,2"
+      },
+      "Proteína:g": {
+        "unit": "g",
+        "value": 1.33,
+        "original": "1,33"
+      },
+      "Proteína animal:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kJ": {
+        "unit": "kJ",
+        "value": 220.0,
+        "original": "220"
+      },
+      "Vitamina D:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Energia:kcal": {
+        "unit": "kcal",
+        "value": 52.0,
+        "original": "52"
+      },
+      "Selênio:mcg": {
+        "unit": "mcg",
+        "value": 0.2,
+        "original": "0,20"
+      },
+      "Ácidos graxos trans:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Vitamina B12:mcg": {
+        "unit": "mcg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Colesterol:mg": {
+        "unit": "mg",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Cálcio:mg": {
+        "unit": "mg",
+        "value": 3.64,
+        "original": "3,64"
+      },
+      "Gordura de adição:g": {
+        "unit": "g",
+        "value": 0.0,
+        "original": "0,00"
+      },
+      "Potássio:mg": {
+        "unit": "mg",
+        "value": 232.0,
+        "original": "232"
+      }
+    },
+    "fat": 0.05,
+    "fiber": 1.47,
+    "kcal": 52.0,
+    "protein": 1.33,
+    "carbs": 12.3
+  }
+]

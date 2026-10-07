@@ -1,6 +1,6 @@
 ---
-name: "project-task"
-description: "Orchestrate a WebFit project demand through harness governance and the installed Spec Kit skills, classify it as LIGHT, STANDARD, or STRICT, and stop only at required human gates. Use when the user invokes $project-task or asks to run a new demand through the project's engineering workflow; do not use for a simple status question."
+name: "webfit-task"
+description: "Orchestrate a WebFit project demand through harness governance and the installed Spec Kit skills, classify it as LIGHT, STANDARD, or STRICT, and stop only at required human gates. Use when the user invokes $webfit-task or asks to run a new demand through the project's engineering workflow; do not use for a simple status question."
 ---
 
 ## User Input
@@ -14,6 +14,8 @@ You MUST consider the user input before proceeding. If it does not describe a de
 ## Role
 
 Act as the WebFit engineering entrypoint. Orchestrate the official Spec Kit skills and the harness; do not reproduce their internal workflows. Follow `.harness/integrations/spec-kit.md`.
+
+The former name was `project-task`; use `webfit-task` for current invocations. For resume/save requests, use [webfit-checkpoint](../webfit-checkpoint/SKILL.md); for focused checks or the Verification phase, use [webfit-verificar](../webfit-verificar/SKILL.md). These are operating procedures, not additional stages or approvals. Follow their instructions in this chat and reuse their outputs. Do not execute checkpoint or verification twice because both this router and a helper mention them.
 
 ## Human Interaction Contract
 

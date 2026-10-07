@@ -52,3 +52,6 @@
 ## Research conclusion
 
 O escopo está suficientemente definido para Plan e Tasks, mas não para implementação. O próximo bloqueio correto é G4: spike arquitetural e validação humana das decisões pendentes.
+## Atualização de autoridade — 2026-10-06
+
+As hipóteses de G3 acima são registros históricos. G4/ADR-0001 foram aceitos por DEC-042 em 2026-09-21; SQLCipher Community/DPAPI, pacote portátil, credencial offline e NSIS são a direção aprovada. DEC-045 autoriza a implementação e alterações sensíveis previstas em ambiente de teste; DEC-044 adia updater. Validação operacional no Windows 10 alvo, revisão independente e G6/G7 permanecem pendentes. Não existe novo bloqueio de autorização para executar o trabalho coberto pela DEC-045.

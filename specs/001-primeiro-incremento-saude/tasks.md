@@ -5,15 +5,15 @@ description: "Task list for the first Health increment"
 # Tasks: Primeiro incremento de Saúde
 
 **Input**: Design documents from /specs/001-primeiro-incremento-saude/
-**Status**: G4 concluído; T081 aprovado e preparação local do updater executada. Implementação de produto e publicação externa permanecem bloqueadas até o gate específico do G5 e as evidências T082/T083.
+**Status**: G4 concluído; T081 aprovado e preparação local do updater executada. DEC-044 adia atualizações automáticas e T082/T083; distribuição manual no MVP. Implementação G5 e mudanças sensíveis locais autorizadas em DEC-045; testes fictícios e instalador manual, sem publicação.
 
 ## Phase 1: Setup and architecture readiness
 
 - [x] T001 Record G4 spike acceptance evidence and open decisions in docs/architecture/adr/ADR-0001-desktop-tauri-sqlite.md
-- [ ] T002 [P] Update RF/RNF/TA traceability in docs/requirements/traceability.md
-- [ ] T003 [P] Define approved quality commands in docs/quality/test-plan.md
-- [ ] T004 [P] Prepare candidate src/, src-tauri/ and tests/ directories only after G4 accepts the architecture
-- [ ] T005 Record implementation-approval and sensitive-change gates in docs/project/development-lifecycle.md
+- [x] T002 [P] Update RF/RNF/TA traceability in docs/requirements/traceability.md
+- [x] T003 [P] Define approved quality commands in docs/quality/test-plan.md
+- [x] T004 [P] Prepare candidate src/, src-tauri/ and tests/ directories only after G4 accepts the architecture
+- [x] T005 Record implementation-approval and sensitive-change gates in docs/project/development-lifecycle.md
 
 ## Phase 2: Foundational prerequisites
 
@@ -22,12 +22,12 @@ description: "Task list for the first Health increment"
 - [ ] T006 Validate clean Windows installation and offline startup in tests/spike/desktop-shell.md
 - [ ] T007 Validate local persistence, foreign keys, transactions, empty database and migration upgrade in tests/spike/sqlite-persistence.md
 - [ ] T008 Validate the trusted command boundary and reject generic SQL/direct filesystem access in tests/security/command-boundary.md
-- [ ] T009 Define safe domain errors and diagnostics in src-tauri/src/shared/errors.rs
-- [ ] T010 Define session, authorization and Health workspace context in src-tauri/src/security/context.rs
-- [ ] T011 Define mandatory audit writes and failure behavior in src-tauri/src/audit/writer.rs
-- [ ] T012 Define consistent snapshot, manifest and checksum boundary in src-tauri/src/recovery/backup_package.rs
-- [ ] T013 [P] Create fictitious fixtures with no real health data in tests/fixtures/fictitious-health-data/
-- [ ] T014 Re-run Constitution Check and record G4/G5 approval in specs/001-primeiro-incremento-saude/plan.md
+- [x] T009 Define safe domain errors and diagnostics in src-tauri/src/shared/errors.rs
+- [x] T010 Define session, authorization and Health workspace context in src-tauri/src/security/context.rs
+- [x] T011 Define mandatory audit writes and failure behavior in src-tauri/src/audit/writer.rs
+- [x] T012 Define consistent snapshot, manifest and checksum boundary in src-tauri/src/recovery/backup_package.rs
+- [x] T013 [P] Create fictitious fixtures with no real health data in tests/fixtures/fictitious-health-data/
+- [x] T014 Re-run Constitution Check and record G4/G5 approval in specs/001-primeiro-incremento-saude/plan.md
 
 ## Phase 3: User Story 1 - Access Health safely (P1, MVP)
 
@@ -36,12 +36,12 @@ description: "Task list for the first Health increment"
 
 - [ ] T015 [P] [US1] Add authentication acceptance tests in tests/acceptance/authentication/
 - [ ] T016 [P] [US1] Add profile and Health workspace acceptance tests in tests/acceptance/profile-workspace/
-- [ ] T017 [US1] Implement local users and password derivation in src-tauri/src/identity/users.rs
-- [ ] T018 [US1] Implement authentication, progressive delays, logout and timeout in src-tauri/src/identity/session.rs
-- [ ] T019 [US1] Implement administrative temporary-password reset in src-tauri/src/identity/password_reset.rs
-- [ ] T020 [US1] Implement authorized Health workspace entry in src-tauri/src/workspaces/health.rs
-- [ ] T021 [P] [US1] Implement professional profile validation/persistence in src-tauri/src/profile/professional_profile.rs
-- [ ] T022 [P] [US1] Implement login and profile screens in src/pages/auth/LoginPage.tsx and src/pages/health/ProfilePage.tsx
+- [x] T017 [US1] Implement local users and password derivation in src-tauri/src/identity/users.rs
+- [x] T018 [US1] Implement authentication, progressive delays, logout and timeout in src-tauri/src/identity/session.rs
+- [x] T019 [US1] Implement administrative temporary-password reset in src-tauri/src/identity/password_reset.rs
+- [x] T020 [US1] Implement authorized Health workspace entry in src-tauri/src/workspaces/health.rs
+- [x] T021 [P] [US1] Implement professional profile validation/persistence in src-tauri/src/profile/professional_profile.rs
+- [x] T022 [P] [US1] Implement login and profile screens in src/pages/auth/LoginPage.tsx and src/pages/health/ProfilePage.tsx
 - [ ] T023 [US1] Add login, reset, profile and workspace audit events in src-tauri/src/audit/catalog.rs
 - [ ] T024 [US1] Execute TA-AUT-001..004 and TA-CLI-001..002; store evidence in .harness/evidence/health-increment/
 
@@ -53,12 +53,12 @@ description: "Task list for the first Health increment"
 - [ ] T025 [P] [US2] Add patient validation/persistence tests in tests/acceptance/patients/
 - [ ] T026 [P] [US2] Add search, edit, archive, restore and tag tests in tests/acceptance/patients/
 - [ ] T027 [P] [US2] Add draft recovery test TA-PAT-007 in tests/acceptance/drafts/
-- [ ] T028 [US2] Implement patient validation and responsible-person rules in src-tauri/src/health/patients.rs
-- [ ] T029 [US2] Implement patient persistence and non-destructive archive/restore in src-tauri/src/health/patient_repository.rs
-- [ ] T030 [US2] Implement normalized search and masked list projection in src-tauri/src/health/patient_search.rs
-- [ ] T031 [P] [US2] Implement patient and tag screens in src/pages/health/PatientsPage.tsx and src/pages/health/PatientFormPage.tsx
-- [ ] T032 [US2] Implement tag lifecycle and historical associations in src-tauri/src/health/tags.rs
-- [ ] T033 [US2] Add patient and tag audit events in src-tauri/src/audit/catalog.rs
+- [x] T028 [US2] Implement patient validation and responsible-person rules in src-tauri/src/health/patients.rs
+- [x] T029 [US2] Implement patient persistence and non-destructive archive/restore in src-tauri/src/health/patient_repository.rs
+- [x] T030 [US2] Implement normalized search and masked list projection in src-tauri/src/health/patient_search.rs
+- [x] T031 [P] [US2] Implement patient and tag screens in src/pages/health/PatientsPage.tsx and src/pages/health/PatientFormPage.tsx
+- [x] T032 [US2] Implement tag lifecycle and historical associations in src-tauri/src/health/tags.rs
+- [x] T033 [US2] Add patient and tag audit events in src-tauri/src/audit/catalog.rs
 - [ ] T034 [US2] Execute TA-PAT-001..007; store evidence in .harness/evidence/health-increment/
 
 ## Phase 5: User Story 3 - Create plan and guidance (P1)
@@ -70,10 +70,10 @@ description: "Task list for the first Health increment"
 - [ ] T036 [P] [US3] Add food source, unit conversion and composition tests in tests/acceptance/nutrition/
 - [ ] T037 [P] [US3] Add energy, goal, special-condition and adequacy tests in tests/acceptance/nutrition/
 - [ ] T038 [US3] Implement food source/version/origin and gram-canonical rules in src-tauri/src/nutrition/foods.rs
-- [ ] T039 [US3] Implement prescription, meal, item and version persistence in src-tauri/src/nutrition/prescriptions.rs
-- [ ] T040 [US3] Implement composition calculations and presentation rounding in src-tauri/src/nutrition/composition.rs
-- [ ] T041 [US3] Implement approved energy and goal protocols with provenance in src-tauri/src/nutrition/energy_goals.rs
-- [ ] T042 [P] [US3] Implement prescription editor and goal screens in src/pages/health/PrescriptionPage.tsx
+- [x] T039 [US3] Implement prescription, meal, item and version persistence in src-tauri/src/nutrition/prescriptions.rs
+- [x] T040 [US3] Implement composition calculations and presentation rounding in src-tauri/src/nutrition/composition.rs
+- [x] T041 [US3] Implement approved energy and goal protocols with provenance in src-tauri/src/nutrition/energy_goals.rs
+- [x] T042 [P] [US3] Implement prescription editor and goal screens in src/pages/health/PrescriptionPage.tsx
 - [ ] T043 [US3] Add prescription lifecycle and manual-adjustment audit events in src-tauri/src/audit/catalog.rs
 - [ ] T044 [US3] Execute TA-PRE-001..016; store evidence in .harness/evidence/health-increment/
 
@@ -83,9 +83,9 @@ description: "Task list for the first Health increment"
 **Independent Test**: TA-DRF-001..004 across profile, patient and prescription forms.
 
 - [ ] T045 [P] [US4] Add autosave timing, failure, scope and expiration tests in tests/acceptance/drafts/
-- [ ] T046 [US4] Implement temporary draft lifecycle and approximately 30-second safe-navigation save in src-tauri/src/drafts/automatic_drafts.rs
-- [ ] T047 [US4] Implement scoped recovery/discard prompt in src/pages/shared/DraftRecoveryDialog.tsx
-- [ ] T048 [US4] Integrate autosave failure state in src/shared/drafts/
+- [x] T046 [US4] Implement temporary draft lifecycle and approximately 30-second safe-navigation save in src-tauri/src/drafts/automatic_drafts.rs
+- [x] T047 [US4] Implement scoped recovery/discard prompt in src/pages/shared/DraftRecoveryDialog.tsx
+- [x] T048 [US4] Integrate autosave failure state in src/shared/drafts/
 - [ ] T049 [US4] Execute TA-DRF-001..004; store evidence in .harness/evidence/health-increment/
 
 ## Phase 7: User Story 5 - Consult audit safely (P2)
@@ -141,8 +141,8 @@ description: "Task list for the first Health increment"
 - [x] T079 Design the Windows runner and release-only repository workflow, including offline fallback and no-token-in-app constraints in docs/operations/update-pipeline-design.md
 - [x] T080 Prepare updater and pipeline traceability from DEC-043/ADR-0002 to tests and evidence in docs/requirements/traceability.md and .harness/evidence/update-pilot/
 - [x] T081 Record implementation approval and sensitive-change approval before adding updater dependencies, generating keys, configuring the runner or creating release automation in docs/project/status.md
-- [ ] T082 Configure the separate public release repository, Windows self-hosted runner, GitHub variable/secrets and final updater endpoint in docs/operations/update-pipeline-design.md
-- [ ] T083 Execute the first pilot publication and end-to-end update check, including confirmation, backup, signature verification, installation and restart evidence in docs/quality/update-spike-test-plan.md
+- [ ] T082 **ADIADO por DEC-044; não bloqueia G5.** Configure the separate public release repository, Windows self-hosted runner, GitHub variable/secrets and final updater endpoint in docs/operations/update-pipeline-design.md
+- [ ] T083 **ADIADO por DEC-044; não bloqueia G5.** Execute the first pilot publication and end-to-end update check, including confirmation, backup, signature verification, installation and restart evidence in docs/quality/update-spike-test-plan.md
 
 ---
 
@@ -172,14 +172,40 @@ Parallel opportunities: T002/T003/T013; T006–T012 by specialty after spike app
 ## Implementation Strategy
 
 1. Complete G4 spike and Human Decision Review before schema or dependencies.
-2. Complete the Phase 10 update-foundation track through T083; T081 is approved and the local wiring is prepared, while T082/T083 still require external setup and evidence.
-3. Complete Phase 2 and stop for implementation approval.
-4. Complete Phase 2 and stop for implementation approval.
+2. DEC-044: defer Phase 10 T082/T083; use manual installation/update for the MVP. Preserve local preparation without activating publication.
+3. Obtain specific G5 implementation approval and applicable sensitive gates before product code, dependencies or schema.
+4. Complete Phase 2 foundation with fictitious fixtures before clinical stories.
 5. Deliver US1, validate independently, then add patients and nutrition.
 6. Add drafts, audit and recovery with negative tests.
 7. Run cross-cutting validation, Verification, Review, Security Gate and Evidence.
-8. A reviewed merge into `main` may publish the pilot only after the approved pipeline exists; installation requires user confirmation, and no commit, push, release or deploy is automatic.
+8. DEFERRED by DEC-044: A reviewed merge into `main` may publish the pilot only after the approved pipeline exists; installation requires user confirmation, and no commit, push, release or deploy is automatic.
 
 ## Notes
 
 Every task has a checkbox, sequential ID, and repository path. [P] marks only independent files. This plan is a work breakdown and does not grant permission to implement.
+
+## Evidência de execução — 2026-10-06
+
+As caixas de implementação acima significam código construído, sem representar execução integral de aceite, revisão independente ou conclusão do G5. Mapeamento dos caminhos previstos para módulos reais e cobertura/pendências: `.harness/evidence/health-increment/2026-10-06-candidate.md`. T038 permanece parcial: catálogo TBCA inicial de cinco itens, sem TACO integrada. T006 e os ensaios de interface/Windows 10 continuam pendentes. T082/T083 continuam ADIADOS.
+
+
+## Refinamento RF-UX-001 — DEC-046, 2026-10-06
+
+- [x] T084 Implementar tours contextualizados, Pular/Concluir/Voltar/Próximo, repetição e posicionamento em src/GuidedTour.tsx e src/onboarding.ts; ligar os controles reais em src/App.tsx e src/EnergyForm.tsx.
+- [x] T085 Persistir somente a preferência por usuário/tela na tabela settings existente, com autorização e catálogo fechado no backend src-tauri/src/service.rs; testar reabertura, isolamento e acesso negado em src-tauri/src/tests.rs.
+- [x] T086 Verificar lint/TypeScript/build, formatação, testes Node/Rust e clippy; documentar a entrega em .harness/evidence/health-increment/2026-10-06-onboarding.md.
+- [ ] T087 Confirmar os balões, foco, navegação, skip/replay e atualização manual no Windows 10 x64 conforme docs/operations/mvp-local-test.md. Automação visual indisponível neste host por falha do sandbox do navegador.
+
+
+## Refinamento RN-AUT-001 — DEC-047, 2026-10-07
+
+- [x] T088 Ajustar validação de criação/troca/redefinição para seis caracteres em src-tauri/src/security.rs e src/App.tsx; atualizar copy/tutorial e RN-AUT-001, preservando recuperação em doze e hashes existentes.
+- [x] T089 Verificar limites cinco/seis, setup, login, troca e redefinição via src-tauri/src/tests.rs; registrar checks/build 0.1.2 em .harness/evidence/health-increment/2026-10-07-password-length.md.
+- [ ] T090 Maycon confirma no instalador 0.1.2 primeiro acesso com seis caracteres e recuperação com doze conforme docs/operations/mvp-local-test.md.
+
+
+## RF-DIS-001 — DEC-048, atualização manual clara
+
+- [x] T091 Configurar tradução de manutenção NSIS em src-tauri/installer/PortugueseBR.nsh e src-tauri/tauri.conf.json; preservar identidade, registro e escopo currentUser.
+- [x] T092 Verificar template/idioma gerados, checks existentes e build NSIS 0.1.3; evidência .harness/evidence/health-increment/2026-10-07-installer-update.md.
+- [ ] T093 Maycon testa instalação limpa, atualização 0.1.1/0.1.2 para 0.1.3 com paciente/tour fictícios preservados e reparação da mesma versão, conforme docs/operations/mvp-local-test.md.

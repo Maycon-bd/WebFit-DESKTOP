@@ -1,6 +1,23 @@
 # Estratégia de atualização e releases
 
+## Revisão vigente — 2026-10-07 (DEC-044/DEC-048)
+
+Maycon aprovou priorizar o MVP útil para Amanda, com instalação e atualização manuais. Atualizações automáticas, runner e primeira publicação piloto estão ADIADOS e não bloqueiam o primeiro incremento. Preparação existente preservada, sem ativação. SQLCipher/DPAPI e backup/restauração permanecem aprovados. Os detalhes de atualização automática abaixo descrevem a estratégia futura suspensa; DEC-044 prevalece quanto ao momento de execução. Esta revisão não autoriza publicação nem ativação do updater; a execução local do produto segue a DEC-045.
+
 **Status:** decisão aceita `ACCEPTED`; implementação do updater ainda depende do planejamento e do gate específico do G5.
+
+## Procedimento vigente até a atualização automática
+
+**Aprovado por Maycon em 2026-10-07, como complemento da DEC-044/DEC-048.** Até o pipeline com runner Windows e o atualizador do aplicativo estarem implementados, validados e ativados, toda nova versão será distribuída por instalador e atualizada manualmente:
+
+1. Receber o instalador da nova versão e fechar o WebFit.
+2. Executar o instalador com o mesmo usuário do Windows da instalação existente.
+3. Na tela Instalação encontrada, selecionar **Atualizar mantendo os dados** e continuar. Não é necessário desinstalar manualmente.
+4. Reabrir o aplicativo e conferir os cadastros, senhas, prescrições e preferências existentes.
+
+Na mesma versão, usar **Reparar arquivos (manter os dados)** quando necessário. O objetivo da atualização é preservar os dados; o ensaio de atualização no computador-alvo continua necessário para aceite. Não apagar os dados do aplicativo. O teste atual permanece restrito a dados fictícios.
+
+A instalação do runner, por si só, não encerra este procedimento. A substituição pelo fluxo automático exige conclusão e ativação do pipeline e do updater conforme o [ADR-0002](../architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md), com os gates aplicáveis. Esta orientação não autoriza sua ativação antecipada.
 
 ## Objetivo
 
@@ -10,12 +27,12 @@ Permitir evolução frequente do WebFit Desktop com participação contínua da 
 
 - `DEC-020` foi refinada por `DEC-043` e pelo ADR-0002 aceito: atualização conectada é permitida no canal piloto sob as condições registradas.
 - `docs/operations/installation.md` já foi alinhado ao ADR-0002; a implementação do updater ainda depende do G5.
-- A política de custo zero mantém o runner próprio e a ausência de serviços pagos; a atualização piloto agora é automatizada pelo pipeline aprovado.
-- Não existe aplicação de produto nem pipeline de release; existe somente o spike descartável do G4.
+- A política de custo zero mantém o runner próprio e a ausência de serviços pagos; a automação piloto é uma direção aprovada, ainda adiada e sem ativação.
+- Produto em construção na raiz, com instalador local de teste 0.1.3; spike G4 permanece descartável e separado. Pipeline/updater não estão ativos.
 
-Portanto, a política anterior de atualização **manual** foi substituída para o canal piloto por publicação automática após merge revisado na `main`, mantendo confirmação antes da instalação.
+A atualização **manual pelo instalador** permanece vigente até o fluxo automático estar implementado, validado e ativado. A publicação piloto após merge revisado na `main` e a confirmação no aplicativo descrevem o fluxo futuro aprovado, atualmente suspenso.
 
-## Princípio central
+## Princípio central do fluxo automático futuro
 
 Um commit direto em `main` continua proibido. Um merge revisado na `main` passa a ser o gatilho autorizado para publicar o canal piloto; a instalação na máquina da nutricionista continua exigindo confirmação explícita.
 

@@ -4,12 +4,12 @@
 
 - Nome: WebFit Desktop.
 - Objetivo: gestão local e offline de consultório e acompanhamento nutricional.
-- Estágio: PROJECT STAGE: PLANNING; G1, G2, G3 e G4 aprovados; preparação do G5 em andamento, sem implementação de produto.
+- Estágio: PROJECT STAGE: IMPLEMENTING; G1, G2, G3 e G4 aprovados; G5 em execução autorizada pela DEC-045 em 2026-10-06, com dados fictícios.
 - Domínio: Saúde no MVP; Educação é um espaço futuro.
 - Usuários aprovados no MVP: nutricionista e administrador, ambos com acesso total.
 - Operação: Windows-first, um computador por instalação, sem hospedagem ou mensalidade obrigatória.
 
-Ainda não existe aplicação de produto. Existe somente o spike técnico descartável do G4 em `spikes/g4-tauri-foundation/`, com dependências, banco fictício, testes e instaladores de prova. O ADR-0001 foi aceito como direção de produção em 2026-09-21; o spike não deve ser promovido a produto e o início da implementação continua condicionado ao G5.
+A aplicação de produto está em construção na raiz (`src/` e `src-tauri/`), autorizada pela DEC-045. O spike técnico descartável do G4 em `spikes/g4-tauri-foundation/` continua separado e não deve ser promovido a produto. O ADR-0001 foi aceito em 2026-09-21. G5, G6 e G7 ainda não foram concluídos; somente dados fictícios estão autorizados.
 
 ## Fonte de verdade
 
@@ -24,7 +24,9 @@ Leia antes de planejar ou alterar o produto:
 
 Hierarquia operacional detalhada: .harness/GOVERNANCE.md. Documentos legados são fontes de descoberta, não requisitos aprovados.
 
-O Spec Kit é a fonte operacional para Constitution, Specification, Clarify, Plan, Checklist, Tasks, Analyze, Implement e Converge. O harness mantém intake, investigação, decisões, gates, Verification, Review e Evidence. Use `$project-task` como entrypoint de novas demandas e consulte `.harness/integrations/spec-kit.md`; não crie specifications concorrentes dentro do harness.
+O Spec Kit é a fonte operacional para Constitution, Specification, Clarify, Plan, Checklist, Tasks, Analyze, Implement e Converge. O harness mantém intake, investigação, decisões, gates, Verification, Review e Evidence. Use `$webfit-task` como entrypoint de novas demandas e consulte `.harness/integrations/spec-kit.md`; não crie specifications concorrentes dentro do harness.
+
+Skills locais auxiliares: `$webfit-checkpoint` para retomar/salvar o checkpoint entre chats e máquinas; `$webfit-verificar` para checks proporcionais e evidência. Não adicionam gates nem substituem review independente. O nome anterior do entrypoint era `project-task`; registros históricos preservam esse nome.
 
 ## Retomada obrigatória entre máquinas e chats
 
@@ -53,7 +55,7 @@ Não importe a arquitetura do WebFit Web. Não introduza Supabase, Firebase, bac
 - Preserve alterações preexistentes e não faça ações destrutivas sem autorização explícita.
 - Siga o fluxo em .harness/README.md e use LIGHT, STANDARD ou STRICT.
 - Em demanda real STANDARD ou STRICT, aplique a proteção de branches da .harness/GOVERNANCE.md antes da primeira alteração versionável: não trabalhe diretamente em `main`, `master`, `develop` ou outro ramo protegido.
-- Orquestre as skills oficiais do Spec Kit sem modificá-las; customizações do projeto pertencem à Constitution, ao harness e à skill local `project-task`.
+- Orquestre as skills oficiais do Spec Kit sem modificá-las; customizações do projeto pertencem à Constitution, ao harness e à skill local `webfit-task`.
 - Siga .harness/AUTONOMY-POLICY.md para decidir, registrar e validar escolhas; nunca represente `AGENT-PROVISIONAL` como aprovação humana.
 - Não ative loops autônomos; o harness atual é preparatório.
 
@@ -84,7 +86,7 @@ Antes de concluir uma entrega, execute os comandos disponíveis para formataçã
 ## Política de ferramentas
 
 - ALLOW: leitura, pesquisa, análise, criação de artefatos do harness, checks locais não destrutivos e criação/troca de branch Git exclusivamente local quando a política de branches declarar o estado seguro.
-- ASK: dependências, inicializações com risco de sobrescrita, migrações/schema, autenticação, integrações externas, infraestrutura, operações Plane/GitHub fora do contrato controlado de `$project-task` e mudanças arquiteturais materiais.
+- ASK: dependências, inicializações com risco de sobrescrita, migrações/schema, autenticação, integrações externas, infraestrutura, operações Plane/GitHub fora do contrato controlado de `$webfit-task` e mudanças arquiteturais materiais.
 - DENY sem autorização explícita e ambiente apropriado: produção, resets destrutivos, apagar trabalho, revelar secrets, bypass de segurança, pentest não autorizado, reproducer no host e deploy automático.
 - Nunca imprimir, versionar ou solicitar secrets em texto claro.
 
