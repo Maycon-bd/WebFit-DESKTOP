@@ -79,3 +79,7 @@ Em 2026-10-06, Maycon autorizou substituir a chave de assinatura local do piloto
 A recuperação DPAPI exige o mesmo perfil Windows. Cadastro dos secrets confirmado pelo usuário e pela imagem; custódia portátil segura e teste de assinatura no pipeline continuam pendentes; nenhum valor deve ser exibido no chat ou versionado. Instaladores antigos do spike precisam ser substituídos para confiar na nova chave pública. Esta preparação não conclui T082/T083 nem autoriza publicação ou implementação de produto.
 
 Custódia no Bitwarden confirmada por Maycon em 2026-10-06: chave e senha salvas em nota segura e reabertas após novo login. Conteúdo não consultado pelo agente; restauração criptográfica a partir do cofre ainda não testada.
+
+### Formatação no checkout Windows reutilizado
+
+.gitattributes define LF para fontes. Em runner próprio, arquivos inalterados podem continuar CRLF após integrar a regra; .prettierrc.json usa endOfLine=auto para evitar falso erro de final de linha. A etapa format:check permanece ativa e rejeita formatação inválida. Não apagar/recriar o checkout ou desativar validações para contornar esse caso. Evidência: .harness/evidence/update-pilot/2026-10-07-checkout-line-endings.md.

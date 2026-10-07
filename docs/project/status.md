@@ -7,14 +7,14 @@
 - **Data do checkpoint:** 2026-10-07
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
-- **Estado:** G5 em execução com dados fictícios. O run posterior avançou até dependências/testes de release e falhou em format:check: checkout Windows converteu arquivos LF para CRLF. Correção local adiciona .gitattributes para checkout LF e normaliza os arquivos do formatter; format:check PASS. Publicação e ensaio conectado ainda pendentes; histórico de correções do bootstrap preservado.
-- **Última etapa concluída:** correção LIGHT dos finais de linha do checkout para T113; format:check e atributos Git conferidos, sem mudança funcional. Evidência .harness/evidence/update-pilot/2026-10-07-checkout-line-endings.md. WEBFIT-4 mantém checks/review anteriores em .harness/evidence/webfit-4/evidence.md e aceite integrado pendente.
+- **Estado:** G5 em execução com dados fictícios. O runner confirmou HEAD c4526f5 com .gitattributes presente, mas conservou arquivos antigos CRLF no checkout reutilizado. Correção LIGHT local em .prettierrc.json (endOfLine=auto); format:check passou nos alvos reais do runner e no workspace, mantendo rejeição de estilo inválido. Publicação/ensaio conectado pendentes.
+- **Última etapa concluída:** correção do Prettier para checkout Windows reaproveitado, vinculada a RF-UPD-001/T113. Validada em modo somente leitura nos arquivos do runner; controle negativo continuou rejeitado. Evidência .harness/evidence/update-pilot/2026-10-07-checkout-line-endings.md. Nenhuma lógica de produto ou workflow alterada.
 - **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o erro 1068 do serviço foi resolvido pela correção para `NT AUTHORITY\NetworkService`; Maycon confirmou `RUNNING` após reiniciar o Windows; nenhum segredo foi versionado no Git
-- **Próxima ação:** usuário revisa e integra .gitattributes e documentação no Git; acompanhar um novo run do Actions após checkout atualizado. Depois de publicação bem-sucedida, testar faixa/instalação e concluir o aceite Windows/WebView da WEBFIT-4.
-- **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude` (observada em 2026-10-07; divergência do checkpoint main informada antes de editar, Git por Maycon/DEC-054)
+- **Próxima ação:** Maycon integra .prettierrc.json e documentação e executa novo run na main com essa configuração. Conferir passagem de Verify frontend format e etapas posteriores; depois da publicação, concluir ensaio Windows/WebView e aceite pendente.
+- **Branch registrada:** main (observada em 2026-10-07; mudança humana em relação ao checkpoint feature/pbi-001, Git sob controle de Maycon/DEC-054).
 - **Work Item:** `WEBFIT-4` — navegação do Consultório, Review/aceite final pendente; `WEBFIT-3` permanece vínculo legado do spike G4 em Done.
-- **Commit-base / HEAD observado:** `210d11d884626e15c8992b6ba050496432fb5f08`.
-- **Sincronização:** branch atual e upstream local coincidem no HEAD observado, sem fetch/pull; árvore inicialmente limpa. Correção de finais de linha/documentação sem commit. Nenhuma operação Git mutável pelo agente.
+- **Commit-base / HEAD observado:** c4526f5384f4a479edf52ee589d98854614428c0.
+- **Sincronização:** branch main/HEAD conferidos, árvore inicialmente limpa; sem fetch/pull ou operação Git mutável. Alterações locais somente na configuração de formatter e documentação. HEAD do runner coincide com workspace; remoto vivo não consultado.
 
 ## Última decisão aprovada
 
