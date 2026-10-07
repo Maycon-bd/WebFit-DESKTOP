@@ -1,0 +1,7 @@
+# Keep formatter-compatible line endings on every development machine and runner.
+# Git detects binary files automatically and leaves their bytes unchanged.
+* text=auto eol=lf
+
+# Native Windows batch scripts retain their conventional line endings.
+*.bat text eol=crlf
+*.cmd text eol=crlf

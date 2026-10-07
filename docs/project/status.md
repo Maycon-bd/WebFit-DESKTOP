@@ -7,14 +7,14 @@
 - **Data do checkpoint:** 2026-10-07
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
-- **Estado:** G5 em execução com dados fictícios. WEBFIT-4 integrada por Maycon na `main`; checks/review de código PASS, aceite Windows/WebView pendente. Runs #2/#3 falharam pela política PowerShell, corrigida com `cmd`; run #4 chegou ao bootstrap mas o download do Rust foi interrompido por erro de stream da rede. A tentativa posterior com curl falhou com transferência parcial. Correção local autorizada retorna ao backend padrão e adiciona três tentativas somente em falhas transitórias, mantendo checksum e versões; 23 testes Node e revisão independente PASS. Nenhum build ou release foi produzido.
-- **Última etapa concluída:** WEBFIT-4: Implement/Converge/Verification/Review/Evidence; hambúrguer, Consultório, Configurações e opções pelo nome implementados. Oito Node, 18 Rust/SQLite, build sem bundle e 17 asserções frontend fixture PASS; dois P2 corrigidos. UI/UX integrado parcial. Evidência .harness/evidence/webfit-4/evidence.md.
+- **Estado:** G5 em execução com dados fictícios. O run posterior avançou até dependências/testes de release e falhou em format:check: checkout Windows converteu arquivos LF para CRLF. Correção local adiciona .gitattributes para checkout LF e normaliza os arquivos do formatter; format:check PASS. Publicação e ensaio conectado ainda pendentes; histórico de correções do bootstrap preservado.
+- **Última etapa concluída:** correção LIGHT dos finais de linha do checkout para T113; format:check e atributos Git conferidos, sem mudança funcional. Evidência .harness/evidence/update-pilot/2026-10-07-checkout-line-endings.md. WEBFIT-4 mantém checks/review anteriores em .harness/evidence/webfit-4/evidence.md e aceite integrado pendente.
 - **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o erro 1068 do serviço foi resolvido pela correção para `NT AUTHORITY\NetworkService`; Maycon confirmou `RUNNING` após reiniciar o Windows; nenhum segredo foi versionado no Git
-- **Próxima ação:** usuário revisa e integra a correção local do bootstrap no Git; acompanhar nova execução do Actions e corrigir eventual próximo erro. Após publicação bem-sucedida, testar faixa/instalação e concluir o aceite Windows/WebView da WEBFIT-4.
-- **Branch registrada:** `main` (observada em 2026-10-07; controle Git por Maycon, DEC-054)
+- **Próxima ação:** usuário revisa e integra .gitattributes e documentação no Git; acompanhar um novo run do Actions após checkout atualizado. Depois de publicação bem-sucedida, testar faixa/instalação e concluir o aceite Windows/WebView da WEBFIT-4.
+- **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude` (observada em 2026-10-07; divergência do checkpoint main informada antes de editar, Git por Maycon/DEC-054)
 - **Work Item:** `WEBFIT-4` — navegação do Consultório, Review/aceite final pendente; `WEBFIT-3` permanece vínculo legado do spike G4 em Done.
-- **Commit-base / HEAD observado:** `aa5bd99c754c821087ec6b05d69ffeda29205a14` (HEAD observado antes da correção de retry; branch main).
-- **Sincronização:** main e origin/main coincidem no HEAD observado, sem fetch/pull nesta sessão. Correção de bootstrap/retry, testes e documentação estão sem commit; nenhuma operação Git mutável pelo agente.
+- **Commit-base / HEAD observado:** `210d11d884626e15c8992b6ba050496432fb5f08`.
+- **Sincronização:** branch atual e upstream local coincidem no HEAD observado, sem fetch/pull; árvore inicialmente limpa. Correção de finais de linha/documentação sem commit. Nenhuma operação Git mutável pelo agente.
 
 ## Última decisão aprovada
 

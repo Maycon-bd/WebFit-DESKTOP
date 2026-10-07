@@ -36,3 +36,7 @@ Até essa execução passar, não afirmar que a atualização conectada está op
 O candidato inicial 0.1.5 precisa de instalação manual uma vez para receber o novo atualizador. Depois, ensaiar duas versões piloto com dados fictícios: publicação, descoberta, adiar, confirmar, backup, assinatura, instalação/reinício e persistência. O fluxo só é considerado operacional após esses ensaios. Sem internet, o WebFit continua disponível.
 
 Publicações são seriadas; não se promete um instalador por chat. A unidade de publicação é a integração na main. O GitHub pode substituir um job pendente de um grupo de concorrência por outro mais recente; monitorar a versão efetivamente publicada. Se upload falhar, o rascunho fica para inspeção. Se a verificação pública falhar depois de publicar, a release pode já estar pública: não há remoção ou rollback automático.
+
+## Finais de linha no checkout Windows
+
+O repositório usa `.gitattributes` para manter textos em LF, compatíveis com o Prettier, independentemente de `core.autocrlf` da máquina. Scripts `.bat`/`.cmd` usam CRLF e binários continuam detectados automaticamente pelo Git. A regra precisa estar no commit que o runner baixa; executar novamente um commit anterior não aplica essa correção. A verificação de formatação continua obrigatória.
