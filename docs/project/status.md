@@ -7,14 +7,14 @@
 - **Data do checkpoint:** 2026-10-07
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
-- **Estado:** G5 em execução com dados fictícios; candidato 0.1.8 reúne catálogo/login lembrado e updater com faixa superior por login DEC-053, supersedendo modal DEC-051. Workflow habilitado localmente; usuário fará Git. Nenhuma ativação/publicação remota pelo agente; manual vigente até ensaio conectado. Empresa é a máquina do runner; notebook adicional depois.
-- **Última etapa concluída:** T112 faixa/consulta por sessão e T113 preparação local: oito Node frontend, seis Node release, 18 Rust, lint/TypeScript/build/format/Clippy, sintaxe PowerShell e YAML passaram. NSIS 0.1.8 em .artifacts/mvp/2026-10-07/banner-0.1.8/; 219636147 bytes; SHA256 ee7de1328689815181fcbb899999bbf634ed823c37ec37fa98e5013f3d133d06; NotSigned. Secrets existentes e variável correta confirmados por API sem valores. Ferramentas no serviço, revisão independente e atualização ponta a ponta pendentes. Evidência .harness/evidence/update-pilot/2026-10-07-banner-activation.md.
+- **Estado:** G5 em execução com dados fictícios. WEBFIT-4 implementada localmente após aprovação de Maycon; checks e review de código PASS, aceite Windows/WebView pendente. Candidato updater 0.1.8 e pendências integradas preservados. Nenhum instalador novo solicitado ou gerado.
+- **Última etapa concluída:** WEBFIT-4: Implement/Converge/Verification/Review/Evidence; hambúrguer, Consultório, Configurações e opções pelo nome implementados. Oito Node, 18 Rust/SQLite, build sem bundle e 17 asserções frontend fixture PASS; dois P2 corrigidos. UI/UX integrado parcial. Evidência .harness/evidence/webfit-4/evidence.md.
 - **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o erro 1068 do serviço foi resolvido pela correção para `NT AUTHORITY\NetworkService`; Maycon confirmou `RUNNING` após reiniciar o Windows; nenhum segredo foi versionado no Git
-- **Próxima ação:** revisão independente do atualizador/pipeline (autorização de agente pendente); usuário revisa/commita/envia/integra na main conforme fluxo Git, preservando trabalhos paralelos. Após integração, observar job piloto e validar publicação assinada/latest.json, instalar 0.1.8 e testar login/faixa/adiar/confirmar/backup/reinício/persistência.
-- **Branch registrada:** `feature/pbi-001-primeiro-incremento-saude`
-- **Work Item:** `WEBFIT-3` — spike G4 concluído em `Done`; vínculo legado `PBI-001`
-- **Commit-base:** `fa70d8fa4eac712801c2f3297d29e78a0f130bdb` (`Defer pilot publication and harden release verification`); **HEAD atual:** `fa70d8f`.
-- **Sincronização:** feature/pbi-001-primeiro-incremento-saude, HEAD fa70d8f, upstream local 0/0 sem fetch. Alterações paralelas de harness/Impeccable/login preservadas; IDs conflitantes desta continuação corrigidos para DEC-053/T112/T113, versão 0.1.8. API GitHub somente leitura; nenhum commit/push/merge/release, instalação no host ou configuração remota alterada.
+- **Próxima ação:** revisão/integração Git pelo usuário; observar pipeline e receber atualização na aplicação, então conferir navegação, teclado/zoom e conceder aceite final WEBFIT-4. Ensaio conectado do updater permanece pendente, sem publicação pelo agente.
+- **Branch registrada:** `main` (observada em 2026-10-07; controle Git por Maycon, DEC-054)
+- **Work Item:** `WEBFIT-4` — navegação do Consultório, Review/aceite final pendente; `WEBFIT-3` permanece vínculo legado do spike G4 em Done.
+- **Commit-base / HEAD observado:** `adcf693ffbb9f2658390b93c9682c54e67f78a0b`. Mudança humana desde feature/fa70d8f informada antes de editar; nenhuma operação Git mutável pelo agente.
+- **Sincronização:** main/HEAD adcf693, upstream local 0/0 sem fetch; código/documentação WEBFIT-4 não commitados. Nenhuma operação Git mutável ou sincronização remota pelo agente.
 
 ## Última decisão aprovada
 
@@ -39,7 +39,9 @@ Em 2026-09-21, Maycon aprovou integralmente DEC-042: operação local/offline se
 
 ## Próxima ação exata
 
-DEC-053 substitui modal/ícone por faixa superior e consulta por login. Preparação local da ativação concluída, candidato 0.1.8 pronto. Maycon executará Git; não fazer commit/push/merge/release pelo agente. Revisão independente ainda pendente, pergunta sobre agente revisor aguardando resposta. Revisar conjunto do produto/pipeline, separar alterações paralelas do harness, integrar até main pelo fluxo aprovado; observar primeiro job e corrigir eventual falha. Testar publicação assinada, manifesto e atualização com dados fictícios. T082/T083/T105/T113 integrados pendentes; notebook não bloqueia usar um runner válido da empresa. G5 em execução; G6/G7 pendentes.
+WEBFIT-4 está em REVIEW: D-NAV-001/002 e execução aprovadas por Maycon em 2026-10-07; código/checks/revisão técnica concluídos. Maycon revisa e integra pelo seu fluxo Git; acompanhar pipeline e atualização na aplicação. Sem gerar instalador local. Após receber a versão, ensaiar hambúrguer/nome/engrenagem, teclado completo e zoom nativo com dados fictícios e registrar aceite final. Evidência e limites em .harness/evidence/webfit-4/{verification,review,evidence}.md. A simulação frontend não certifica distribuição ou aceite integrado. G5 em execução; G6/G7 pendentes.
+
+Pendência operacional anterior preservada: DEC-053, candidato updater 0.1.8, revisão independente e ensaio do pipeline/publicação assinada/latest.json, login/faixa/adiar/confirmar/backup/reinício/persistência. Integração/commit/push/merge são do usuário. T082/T083/T105/T113 integrados pendentes; notebook não bloqueia runner válido da empresa. Nenhuma ativação/publicação remota nesta demanda.
 
 ## Gates
 
@@ -49,7 +51,7 @@ DEC-053 substitui modal/ícone por faixa superior e consulta por login. Prepara�
 | G2 | aprovar baseline rastreável do primeiro incremento | **aprovado em 2026-09-17 por Amanda e Maycon** | requisitos, testes e rastreabilidade aprovados; execução técnica e evidências permanecem pendentes |
 | G3 | criar plano executável | **aprovado em 2026-09-17 por Maycon** | artefatos Spec Kit aprovados; executar spike G4 |
 | G4 | validar arquitetura e spike | **aprovado por Maycon em 2026-09-21** | ADR-0001 aceito; política sem custo recorrente e riscos residuais aprovados |
-| G5 | construir incremento vertical | **em execução; DEC-045 autoriza implementação e alterações sensíveis previstas** | produto criado separado do spike; verificações, cobertura integral dos TA, revisão e aceite ainda pendentes. DEC-044 preserva distribuição manual |
+| G5 | construir incremento vertical | **em execução; DEC-045 autoriza implementação e alterações sensíveis previstas** | WEBFIT-4 código/checks/review concluídos; aceite Windows pendente. Instalador local dispensado nesta demanda; Git humano e pipeline/updater. Verificações e aceite gerais continuam pendentes |
 | G6 | validar release candidate | não iniciado | requisitos críticos verificados |
 | G7 | liberar para dados reais | não iniciado | restauração exercitada e riscos aceitos |
 
@@ -124,7 +126,7 @@ DEC-053 substitui modal/ícone por faixa superior e consulta por login. Prepara�
 
 - DEC-054 aceita por Maycon: Git sob controle humano; demandas na branch atualmente ativa, sem setup obrigatório ou bloqueio por nome/base/árvore suja. Inspeção somente leitura e preservação de alterações permanecem. Branch/commit-base acima preservados; nenhuma sincronização remota ou operação Git mutável nesta correção.
 - Última etapa desta correção: política documental e skills locais alinhadas; WEBFIT-4 retornou de Blocked para Planning. Evidência: `.harness/evidence/2026-10-07-human-git-control.md`.
-- WEBFIT-4 está no intake/discovery, sem Specification ou implementação. Menu recolhe toda a lateral e deixa somente o ícone hambúrguer para reabrir; agrupamento por módulos pendente. Próxima ação dessa demanda: concluir discovery e preparar Spec Kit na branch atual. G5/G6/G7 e a próxima ação operacional do updater acima não são concluídos nem reautorizados por este ajuste.
+- WEBFIT-4: discovery, Specification/Plan/Tasks/Analyze e execução aprovados por Maycon; Implement/Converge/checks/review concluídos. Consultório é único módulo, lateral totalmente recolhível, ferramentas em Configurações, conta pelo nome. D-NAV-001/002 ACCEPTED; instalador local dispensado. UI integrada/aceite, updater e G5/G6/G7 permanecem pendentes. Evidência .harness/evidence/webfit-4/evidence.md.
 
 - [Escopo](../product/scope.md)
 - [Requisitos funcionais](../requirements/functional-requirements.md)

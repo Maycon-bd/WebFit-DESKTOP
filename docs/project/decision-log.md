@@ -177,3 +177,15 @@ RF-UPD-001 / TA-UPD-UI-002: consulta por sessão autenticada nova, sem cache di�
 - **Consequências:** substitui o setup obrigatório/BRANCH SETUP BLOCKED e a atuação autônoma sobre branches da DEC-010. Convenções históricas Git Flow e proteções remotas podem continuar sendo administradas pelo humano. O agente não cria/troca branches ou worktrees, fetch/pull, stash/reset/clean, commit/push/merge, PR, tag ou release por iniciativa própria; instrução explícita posterior pode autorizar uma operação específica.
 - **Preservação:** alterações anteriores não são apagadas/escondidas nem atribuídas integralmente a uma demanda. Conflito concreto no conteúdo bloqueia somente a edição dependente, quando não for possível preservar com segurança.
 - **Limites:** não altera arquitetura, dados, requisitos de produto, aprovações de implementação/mudança sensível/aceite, Plane ou gates G5/G6/G7. Não ativa publicação nem altera configuração do GitHub. Dispensa do bloqueio de branch não equivale a implementar WEBFIT-4.
+
+
+## DEC-055 — Navegação do Consultório, Configurações e conta
+
+**ACCEPTED por Maycon em 2026-10-07 neste chat, para escopo de WEBFIT-4:** confirmou sua organização: hambúrguer recolhe toda a lateral, deixando somente ícone para reabrir; engrenagem adjacente ao nome abre Configurações com Auditoria e Backup/restauração; nome abre opções de Acesso e Perfil profissional; somente módulo Consultório por enquanto.
+
+RF-UX-003/TA-UX-NAV-001..008. Não cria novo espaço Saúde, papéis, módulos futuros, mudança de domínio/autorização, backup, migração ou dependência. D-NAV-001 (estado transitório, iniciar aberta) e D-NAV-002 (lista de opções pelo nome, índice de ferramentas/retorno) são AGENT-PROVISIONAL; execução do plano e validação em lote pendentes. G5/G6/G7 não concluídos. Não inferir aprovação de Amanda ou aceite final. DEC-054 mantém execução na branch ativa, sem operações Git pelo agente.
+
+
+### Aprovação de execução da DEC-055 — 2026-10-07
+
+Maycon respondeu “Aprovado” ao plano WEBFIT-4 e às escolhas D-NAV-001/002. **Implementation Approval concedida; ambas ACCEPTED, Validated by: Human, 2026-10-07.** Implementar e verificar localmente; não gerar instalador ao encerrar. Maycon fará Git/envio à main, e pipeline/updater existentes cuidam da distribuição. Não inferir publicação já realizada nem garantia ponta a ponta do runner. Sem novo backend, schema ou dependência; dados fictícios e aceite final preservados.

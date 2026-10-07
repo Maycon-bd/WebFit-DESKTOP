@@ -30,14 +30,34 @@ import { GuidedTour } from "./GuidedTour";
 import { LoginInfo } from "./LoginInfo";
 import type { TourId } from "./onboarding";
 
-type Page = "patients" | "profile" | "audit" | "backup" | "access";
-const labels: Record<Page, string> = {
-  patients: "Pacientes",
-  profile: "Perfil profissional",
-  audit: "Auditoria",
-  backup: "Backup e restauração",
-  access: "Acesso",
-};
+type Page = "patients" | "profile" | "audit" | "backup" | "access" | "settings";
+function NavigationIcon({ kind }: { kind: "menu" | "settings" | "chevron" }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {kind === "menu" ? (
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      ) : kind === "chevron" ? (
+        <path d="m9 5 7 7-7 7" />
+      ) : (
+        <>
+          <path d="m9 3-.6 2.3-2 .9-2.1-.6-2 3.4 1.6 1.7v2.6l-1.6 1.7 2 3.4 2.1-.6 2 .9L9 21h6l.6-2.3 2-.9 2.1.6 2-3.4-1.6-1.7v-2.6l1.6-1.7-2-3.4-2.1.6-2-.9L15 3z" />
+          <circle cx="12" cy="12" r="3" />
+        </>
+      )}
+    </svg>
+  );
+}
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="field">
@@ -146,7 +166,7 @@ function Heading({
   return (
     <header className="page-heading">
       <div>
-        <h1>{title}</h1>
+        <h1 tabIndex={-1}>{title}</h1>
         {description && <p>{description}</p>}
       </div>
       {children}
@@ -161,6 +181,15 @@ export default function App() {
     null,
   );
   const [page, setPage] = useState<Page>("patients");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountButton = useRef<HTMLButtonElement>(null);
+  const workspace = useRef<HTMLElement>(null);
+  const [navigationFocus, setNavigationFocus] = useState(0);
+  useEffect(() => {
+    if (navigationFocus > 0 && !document.querySelector(".tour-card"))
+      workspace.current?.querySelector("h1")?.focus({ preventScroll: true });
+  }, [navigationFocus]);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
@@ -178,7 +207,7 @@ export default function App() {
   } | null>(null);
   const draftDirty = useRef(false);
   const token = session?.token ?? null;
-  const tourScreen: TourId =
+  const tourScreen: TourId | null =
     page === "patients"
       ? prescription && patient
         ? "prescription"
@@ -187,7 +216,9 @@ export default function App() {
             ? "patient"
             : "patient-new"
           : "patients"
-      : page;
+      : page === "settings"
+        ? null
+        : page;
   useEffect(() => {
     const window = getCurrentWindow();
     const handler = window.onCloseRequested(async (event) => {
@@ -301,21 +332,23 @@ export default function App() {
     else draftRef.current = null;
   }, [patient, prescription, prescriptionId, page, profile, token]);
   async function navigate(next: Page) {
-    if (
-      await task(async () => {
-        if (draftRef.current && draftDirty.current)
-          await api(token, { op: "save_draft", ...draftRef.current });
-        draftDirty.current = false;
-        return true;
-      })
-    ) {
+    const result = await task(async () => {
+      if (draftRef.current && draftDirty.current)
+        await api(token, { op: "save_draft", ...draftRef.current });
+      draftDirty.current = false;
+      const stored =
+        next === "profile"
+          ? await api<Partial<Profile>>(token, { op: "profile" })
+          : null;
+      return { stored };
+    });
+    if (result) {
       setPatient(null);
       setPrescription(null);
-      if (next === "profile") {
-        const stored = await api<Partial<Profile>>(token, { op: "profile" });
-        setProfile({ ...emptyProfile, ...stored });
-      }
+      if (result.stored) setProfile({ ...emptyProfile, ...result.stored });
+      setAccountOpen(false);
       setPage(next);
+      setNavigationFocus((previous) => previous + 1);
     }
   }
   async function refreshDrafts() {
@@ -328,6 +361,8 @@ export default function App() {
     draftRef.current = null;
     draftDirty.current = false;
     setSession(result);
+    setSidebarOpen(true);
+    setAccountOpen(false);
     setPage("patients");
     setDrafts(await api<Draft[]>(result.token, { op: "drafts" }));
   }
@@ -463,31 +498,88 @@ export default function App() {
       </main>
     );
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
+    <div className={`app-shell${sidebarOpen ? "" : " sidebar-collapsed"}`}>
+      <aside className="sidebar" id="consultorio-sidebar" hidden={!sidebarOpen}>
         <div className="wordmark">
           webfit<span>desktop</span>
         </div>
-        <div className="workspace">
-          Saúde<span>Consultório local</span>
-        </div>
-        <nav aria-label="Navegação principal">
-          {Object.entries(labels).map(([key, label]) => (
-            <button
-              key={key}
-              aria-current={page === key ? "page" : undefined}
-              onClick={() => void navigate(key as Page)}
-              disabled={busy || session.user.must_change}
-            >
-              {label}
-            </button>
-          ))}
+        <nav aria-label="Módulos do consultório">
+          <h2 className="workspace">Consultório</h2>
+          <button
+            aria-current={page === "patients" ? "page" : undefined}
+            onClick={() => void navigate("patients")}
+            disabled={busy || session.user.must_change}
+          >
+            Pacientes
+          </button>
         </nav>
         <div className="sidebar-bottom">
-          <strong>{session.user.name}</strong>
-          <small>
-            {session.user.role === "ADMIN" ? "Administrador" : "Nutricionista"}
-          </small>
+          <div className="account-controls">
+            <button
+              ref={accountButton}
+              className="account-name"
+              aria-expanded={accountOpen}
+              aria-controls="account-options"
+              onKeyDown={(event) => {
+                if (event.key === "Escape" && accountOpen) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setAccountOpen(false);
+                }
+              }}
+              onClick={() => setAccountOpen(!accountOpen)}
+              disabled={busy || session.user.must_change}
+            >
+              <strong>{session.user.name}</strong>
+              <small>
+                {session.user.role === "ADMIN"
+                  ? "Administrador"
+                  : "Nutricionista"}
+              </small>
+            </button>
+            <button
+              className="settings-button"
+              aria-label="Configurações"
+              title="Configurações"
+              aria-current={
+                ["settings", "audit", "backup"].includes(page)
+                  ? "page"
+                  : undefined
+              }
+              disabled={busy || session.user.must_change}
+              onClick={() => void navigate("settings")}
+            >
+              <NavigationIcon kind="settings" />
+            </button>
+          </div>
+          <div
+            id="account-options"
+            className="account-options"
+            hidden={!accountOpen}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.preventDefault();
+                event.stopPropagation();
+                setAccountOpen(false);
+                accountButton.current?.focus();
+              }
+            }}
+          >
+            <button
+              disabled={busy || session.user.must_change}
+              aria-current={page === "access" ? "page" : undefined}
+              onClick={() => void navigate("access")}
+            >
+              Acesso
+            </button>
+            <button
+              disabled={busy || session.user.must_change}
+              aria-current={page === "profile" ? "page" : undefined}
+              onClick={() => void navigate("profile")}
+            >
+              Perfil profissional
+            </button>
+          </div>
           <button
             disabled={busy}
             onClick={() =>
@@ -503,12 +595,30 @@ export default function App() {
                 draftRef.current = null;
               })
             }
+            data-tour="logout"
           >
             Bloquear e sair
           </button>
         </div>
       </aside>
-      <main className="workspace-main">
+      <main className="workspace-main" ref={workspace}>
+        <div className="shell-toolbar">
+          <button
+            className="menu-toggle"
+            type="button"
+            aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
+            title={sidebarOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={sidebarOpen}
+            aria-controls="consultorio-sidebar"
+            data-tour="navigation-toggle"
+            onClick={() => {
+              setAccountOpen(false);
+              setSidebarOpen(!sidebarOpen);
+            }}
+          >
+            <NavigationIcon kind="menu" />
+          </button>
+        </div>
         {!session.user.must_change && (
           <UpdatePanel
             key={session.token}
@@ -523,7 +633,7 @@ export default function App() {
           />
         )}
 
-        {!session.user.must_change && (
+        {!session.user.must_change && tourScreen && (
           <GuidedTour token={session.token} screen={tourScreen} />
         )}
         <div className="test-banner">
@@ -559,6 +669,50 @@ export default function App() {
           />
         ) : (
           <>
+            {(page === "audit" || page === "backup") && (
+              <button
+                className="settings-return"
+                disabled={busy}
+                onClick={() => void navigate("settings")}
+              >
+                Voltar às Configurações
+              </button>
+            )}
+            {page === "settings" && (
+              <section aria-label="Configurações">
+                <Heading
+                  title="Configurações"
+                  description="Ferramentas para cuidar dos registros e das cópias do consultório."
+                />
+                <div className="settings-list">
+                  <button
+                    disabled={busy}
+                    onClick={() => void navigate("audit")}
+                  >
+                    <span>
+                      <strong>Auditoria</strong>
+                      <small>
+                        Consultar as ações realizadas no aplicativo.
+                      </small>
+                    </span>
+                    <NavigationIcon kind="chevron" />
+                  </button>
+                  <button
+                    disabled={busy}
+                    onClick={() => void navigate("backup")}
+                  >
+                    <span>
+                      <strong>Backup e restauração</strong>
+                      <small>
+                        Consultar suas cópias, criar um backup ou restaurar os
+                        dados.
+                      </small>
+                    </span>
+                    <NavigationIcon kind="chevron" />
+                  </button>
+                </div>
+              </section>
+            )}
             {drafts.length > 0 && (
               <section className="draft-panel">
                 <h2>Preenchimentos recuperáveis</h2>

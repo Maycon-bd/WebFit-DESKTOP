@@ -753,3 +753,137 @@ input[readonly] {
   margin: 0;
   accent-color: var(--green);
 }
+
+/* RF-UX-003: navigation state does not remount the workspace. */
+.app-shell.sidebar-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+.sidebar[hidden],
+.account-options[hidden] {
+  display: none;
+}
+.shell-toolbar {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+}
+.menu-toggle,
+.settings-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  flex-shrink: 0;
+}
+.sidebar .workspace {
+  margin: 42px 14px 12px;
+  font-size: 17px;
+}
+.account-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sidebar-bottom .account-name {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  width: auto;
+  padding: 8px 4px;
+  text-align: left;
+  background: transparent;
+  border-color: transparent;
+  font-size: 14px;
+}
+.account-name strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.account-name small {
+  font-size: 12px;
+  font-weight: 400;
+}
+.sidebar-bottom .settings-button {
+  margin: 0;
+  width: 44px;
+  background: transparent;
+  border-color: transparent;
+}
+.account-name:hover,
+.sidebar-bottom .settings-button:hover {
+  background: #d3e2cf;
+}
+.settings-button[aria-current="page"],
+.account-options button[aria-current="page"] {
+  background: #d3e2cf;
+  color: #173d2c;
+}
+.account-options {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.sidebar-bottom .account-options button {
+  display: block;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 10px 4px;
+}
+.sidebar-bottom .account-options button:hover {
+  background: #d3e2cf;
+}
+.settings-return {
+  margin-bottom: 24px;
+}
+.settings-list {
+  max-width: 760px;
+  border-top: 1px solid var(--line);
+}
+.settings-list > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  padding: 24px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+}
+.settings-list > button:hover {
+  background: #e9efe7;
+}
+.settings-list > button > span {
+  min-width: 0;
+}
+.settings-list svg {
+  flex-shrink: 0;
+}
+.settings-list strong {
+  font-size: 18px;
+}
+.settings-list small {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+@media (max-width: 700px) {
+  .sidebar nav {
+    flex-direction: column;
+  }
+  .sidebar .workspace {
+    margin: 15px 14px 8px;
+  }
+  .sidebar-bottom {
+    margin-top: 24px;
+  }
+  .shell-toolbar {
+    min-height: 60px;
+  }
+}

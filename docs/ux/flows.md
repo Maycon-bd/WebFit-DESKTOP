@@ -10,6 +10,15 @@ informar credenciais → validar no backend
 └── inválido → informar erro genérico → aplicar espera progressiva
 ```
 
+## Navegação do Consultório — RF-UX-003 / DEC-055
+
+- Hambúrguer → ocultar/reabrir toda a lateral; somente o ícone de menu permanece da navegação recolhida. A tela, seus campos, sessão, tutorial e atualização permanecem.
+- Consultório → Pacientes. Apenas este módulo é exibido no incremento.
+- Engrenagem junto ao nome → Configurações → Auditoria ou Backup e restauração → Voltar às Configurações. O índice não consulta ferramentas antes da seleção.
+- Nome do usuário → opções Acesso / Perfil profissional. Escape fecha e devolve foco ao nome. Selecionar destino salva o rascunho antes de navegar; falha mantém tela, dados e erro. Navegação bem-sucedida leva foco ao título, preservando foco de tutorial ativo.
+- Troca obrigatória de senha mantém destinos bloqueados. Logout e autorização backend continuam vigentes.
+- A lateral inicia aberta em cada sessão; recolhimento não persiste. Tours mantêm IDs existentes e usam alvo visível no hambúrguer quando Logout está oculto.
+
 ## Cadastro de paciente
 
 ```text

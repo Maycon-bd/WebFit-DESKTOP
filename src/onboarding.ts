@@ -1,14 +1,15 @@
 export interface TourStep {
   target: string;
+  fallbackTarget?: string;
   title: string;
   text: string;
 }
-export const tours = {
+const tourCatalog = {
   patients: [
     {
-      target: ".sidebar nav",
+      target: '[data-tour="navigation-toggle"]',
       title: "Seu consultório, por aqui",
-      text: "Use este menu para alternar entre pacientes, seu perfil e as ferramentas do consultório.",
+      text: "Use o botão de menu para abrir ou recolher a lateral. Pacientes fica em Consultório; seu nome abre Acesso e Perfil profissional, e a engrenagem abre Configurações.",
     },
     {
       target: ".page-heading .primary",
@@ -140,13 +141,15 @@ export const tours = {
       text: "Salvar e entrar novamente encerra a sessão para você entrar com a senha nova. Se for administrador, a redefinição do acesso da nutricionista aparece abaixo.",
     },
     {
-      target: ".sidebar-bottom button",
+      target: '[data-tour="logout"]',
+      fallbackTarget: '[data-tour="navigation-toggle"]',
       title: "Bloqueie ao sair",
-      text: "Use Bloquear e sair quando terminar o trabalho ou deixar o computador.",
+      text: "Abra o menu, se estiver recolhido, e use Bloquear e sair quando terminar o trabalho ou deixar o computador.",
     },
   ],
 } satisfies Record<string, TourStep[]>;
-export type TourId = keyof typeof tours;
+export type TourId = keyof typeof tourCatalog;
+export const tours: Record<TourId, TourStep[]> = tourCatalog;
 export function shouldShowTour(id: TourId, seen: string[]) {
   return !seen.includes(id);
 }

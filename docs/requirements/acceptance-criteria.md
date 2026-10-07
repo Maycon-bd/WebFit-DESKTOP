@@ -68,3 +68,19 @@ TA-UPD-UI-001 / RF-UPD-001 / DEC-051, aprovado por Maycon em 2026-10-07: abrir A
 
 TA-AUT-005 / RF-AUT-004 (aprovado por Maycon, 2026-10-07): login válido marcado -> reiniciar -> nome preenchido e senha vazia; login válido desmarcado -> reiniciar -> sem nome lembrado; login inválido -> preferência anterior preservada; acesso não autenticado não pode gravar preferências; admin e nutricionista não sobrescrevem a preferência do outro; logout/bloqueio continuam exigindo senha. Falha de leitura/gravação da preferência recebe mensagem sem impedir login válido.
 TA-UPD-UI-002 / RF-UPD-001 / DEC-053, aprovado 2026-10-07: nova consulta a cada login, uma requisição por sessão mesmo sob StrictMode, sem cache diário. Só exibir faixa superior se nova versão; Atualizar agora confirma, Mais tarde oculta nesta sessão. Sem modal/ícone; offline não bloqueia login/trabalho. Backup/assinatura/bloqueio preservados; ensaio integrado de publicação/instalação ainda obrigatório. Supersede TA-UPD-UI-001 para apresentação.
+
+
+## Navegação — WEBFIT-4
+
+RF-UX-003: comportamento definido por Maycon em 2026-10-07, execução/validação pendentes. Cenários derivam da solicitação e das invariantes aprovadas; detalhes provisórios do plan aguardam gate em lote.
+
+| ID | Cenário e resultado esperado | FR |
+|---|---|---|
+| TA-UX-NAV-001 | Fechar/reabrir por hambúrguer: só botão permanece da lateral; conteúdo ocupa espaço; mesma tela/campos sem remount ou navegação | FR-001 |
+| TA-UX-NAV-002 | Menu exibe somente Consultório e Pacientes; sem Educação/futuros ou duplicação de conta/ferramentas | FR-002 |
+| TA-UX-NAV-003 | Engrenagem junto ao nome abre Configurações com Auditoria e Backup e restauração | FR-003 |
+| TA-UX-NAV-004 | Índice não consulta/audita Auditoria nem executa backup; seleção abre ferramenta existente e retorno funciona; filtros, confirmações e encerramento de sessão na restauração preservados | FR-004/006 |
+| TA-UX-NAV-005 | Nome abre Acesso/Perfil sem navegar; seleção usa navegação segura; Escape fecha opções | FR-005 |
+| TA-UX-NAV-006 | Salvar rascunho antes de destino; falha mantém dados/página e mostra erro; busy, must_change, logout e backend preservados | FR-006 |
+| TA-UX-NAV-007 | Todos novos controles por teclado/nome acessível/foco/estado; zero controles laterais focáveis quando oculta; zoom 200%, nome longo/janela reduzida | FR-008 |
+| TA-UX-NAV-008 | Tours pacientes/acesso não apontam a controles ocultos/errados, Pular/Ver tutorial funcionam; faixa/consulta por sessão e bloqueios de instalação não reiniciam ao recolher | FR-007 |

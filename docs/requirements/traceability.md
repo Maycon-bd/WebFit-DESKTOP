@@ -60,3 +60,8 @@ RF-UPD-001 / DEC-051 / TA-UPD-UI-001 → T106/T107, UpdatePanel.tsx e style.css;
 
 RF-AUT-004 / DEC-052 -> TA-AUT-005 -> T108–T110 -> src/App.tsx, src/style.css, src-tauri/src/service.rs e src-tauri/src/tests.rs (remembered_login_is_opt_in_authorized_and_scoped_without_credentials) -> .harness/evidence/health-increment/2026-10-07-remember-login.md. Candidato local 0.1.7; aceite Windows pendente.
 RF-UPD-001 / DEC-053 / TA-UPD-UI-002 → T112/T113, UpdatePanel.tsx/App.tsx/style.css, update-check.ts e tests/unit/update-check.test.ts; workflow habilitado localmente, runner-env.ps1 prepara ferramentas por conta. Evidência .harness/evidence/update-pilot/2026-10-07-banner-activation.md. Substitui apresentação em modal, sem invalidar histórico de builds.
+
+
+## WEBFIT-4 — Navegação do Consultório
+
+RF-UX-003 / DEC-055 → TA-UX-NAV-001..008 → specs/002-webfit-4-navegacao-consultorio/spec.md, plan.md, tasks.md (T001..T017). Implementação: src/App.tsx, src/style.css, src/onboarding.ts, src/GuidedTour.tsx; regressão tests/unit/onboarding.test.ts. Estado: implementado localmente em 0.1.8; checks e review de código PASS, aceite visual/integrado pendente. HEAD-base adcf693ffbb9f2658390b93c9682c54e67f78a0b, branch observada main sob DEC-054. Evidência de planejamento: .harness/evidence/webfit-4/2026-10-07-planning.md; verificação/review/entrega em .harness/evidence/webfit-4/{verification,review,evidence}.md.

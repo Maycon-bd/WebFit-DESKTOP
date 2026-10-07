@@ -28,6 +28,8 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 - DEC-042: política operacional sem custo recorrente aprovada, ADR-0001 aceito, G4 fechado e preparação do G5 autorizada por Maycon em 2026-09-21.
 - DEC-043: merges revisados na `main` publicam automaticamente o canal piloto; o aplicativo usa updater assinado, mostra ícone, aguarda confirmação e executa backup, download, validação, instalação e reinício; runner Windows próprio e repositório público separado de artefatos; canal estável posterior. Aprovada por Maycon em 2026-09-21.
 
+- [DEC-055](../../docs/project/decision-log.md#dec-055--navegação-do-consultório-configurações-e-conta): escopo, plano/execução e D-NAV-001/002 aceitos por Maycon em 2026-10-07. Instalador local dispensado; Git e integração na main pelo usuário, distribuição pelo pipeline/updater. Aceite final e ensaio integrado continuam distintos desta aprovação.
+
 ## Agent-provisional ledger
 
 ### D-AUTO-001

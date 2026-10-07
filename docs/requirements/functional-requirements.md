@@ -266,3 +266,15 @@ Esses itens não podem ser implementados até receberem detalhamento, critérios
 - **Status:** aprovado por Maycon em 2026-10-07 nesta conversa, escolhendo explicitamente preencher somente nome e continuar pedindo senha.
 - **Prioridade:** alta — refinamento do incremento 1. Regras RN-AUT-001..005 preservadas; DEC-052.
 Refinamento vigente RF-UPD-001 / DEC-053 / TA-UPD-UI-002: faixa superior em lugar de ícone/modal, consulta em cada login, adiar/confirmar pelo aviso; offline/sem versão não mostram aviso e não bloqueiam trabalho. Substitui apresentação e frequência anteriores, mantendo proteção/backup/assinatura. Ativação preparada localmente; Git e integração pelo usuário.
+
+
+## Navegação do Consultório — WEBFIT-4
+
+### RF-UX-003 — Menu recolhível, Configurações e conta do usuário
+
+- **Descrição:** hambúrguer oculta toda a lateral e deixa somente seu botão para reabrir; menu principal contém apenas Consultório/Pacientes. Engrenagem ao lado do usuário abre tela Configurações com Auditoria e Backup e restauração. Nome clicável abre Acesso e Perfil profissional.
+- **Atores:** nutricionista e administrador autenticados, com permissões existentes.
+- **Prioridade:** incremento atual; ordem técnica das jornadas P1 em spec.md, sem atribuir prioridade humana alta/urgente no Plane.
+- **Status:** escopo explicitamente aceito por Maycon em 2026-10-07 (DEC-055); execução do plano e D-NAV-001/002 aprovadas por Maycon em 2026-10-07. Nenhuma aprovação clínica ou de Amanda inferida.
+- **Aceite:** TA-UX-NAV-001..008. Preservar rascunhos/erros, sessão/troca obrigatória, auditagem real de acesso, backup/restauração, tours e faixa de atualização. Consultório é grupo visual, Saúde continua espaço aprovado.
+- **Fonte operacional:** [Specification](../../specs/002-webfit-4-navegacao-consultorio/spec.md), [Plan](../../specs/002-webfit-4-navegacao-consultorio/plan.md) e [Tasks](../../specs/002-webfit-4-navegacao-consultorio/tasks.md).

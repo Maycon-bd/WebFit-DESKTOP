@@ -87,14 +87,24 @@ function Tour({
   }, [active]);
   useLayoutEffect(() => {
     if (!active) return;
-    const target = document.querySelector<HTMLElement>(current.target);
+    const candidates = [
+      document.querySelector<HTMLElement>(current.target),
+      current.fallbackTarget
+        ? document.querySelector<HTMLElement>(current.fallbackTarget)
+        : null,
+    ];
+    const visibleTarget = () =>
+      candidates.find(
+        (element) => element && element.getClientRects().length > 0,
+      );
+    const target = visibleTarget();
     target?.scrollIntoView({
       block: "center",
       inline: "nearest",
       behavior: "instant",
     });
     const update = () => {
-      const bounds = target?.getBoundingClientRect() ?? null;
+      const bounds = visibleTarget()?.getBoundingClientRect() ?? null;
       setRect(bounds);
       setPosition(
         positionTour(
@@ -110,7 +120,9 @@ function Tour({
     update();
     heading.current?.focus({ preventScroll: true });
     const observer = new ResizeObserver(update);
-    if (target) observer.observe(target);
+    for (const candidate of candidates) {
+      if (candidate) observer.observe(candidate);
+    }
     if (card.current) observer.observe(card.current);
     window.addEventListener("resize", update);
     window.addEventListener("scroll", update, true);

@@ -7,6 +7,17 @@ test("RF-UX-001: first visits and replay eligibility remain independent by scree
   assert.equal(shouldShowTour("patients", ["patients"]), false);
   assert.equal(shouldShowTour("patient-new", ["patients"]), true);
   assert.equal(shouldShowTour("patient", ["patient-new"]), true);
+  // RF-UX-003: reorganizing navigation preserves per-screen completion IDs.
+  assert.deepEqual(Object.keys(tours).sort(), [
+    "access",
+    "audit",
+    "backup",
+    "patient",
+    "patient-new",
+    "patients",
+    "prescription",
+    "profile",
+  ]);
   for (const steps of Object.values(tours)) {
     assert.ok(steps.length >= 2 && steps.length <= 4);
     assert.ok(steps.every((step) => step.title && step.text && step.target));
