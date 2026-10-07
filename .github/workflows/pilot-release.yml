@@ -16,7 +16,7 @@ jobs:
     runs-on: [self-hosted, windows, x64]
     defaults:
       run:
-        shell: powershell
+        shell: cmd
     permissions:
       contents: read
     env:
@@ -30,17 +30,9 @@ jobs:
         with:
           node-version: '22.18.0'
       - name: Prepare compiler environment
-        shell: powershell
-        run: |
-          node scripts/runner-env.mjs --initialize
-          $testTemp=Join-Path $env:RUNNER_TEMP 'webfit-tests'
-          New-Item -ItemType Directory -Path $testTemp -Force | Out-Null
-          'TMP=' + $testTemp | Out-File $env:GITHUB_ENV -Append -Encoding utf8
-          'TEMP=' + $testTemp | Out-File $env:GITHUB_ENV -Append -Encoding utf8
+        run: node scripts/runner-env.mjs --initialize
       - name: Validate release repository
-        shell: powershell
-        run: |
-          if ($env:WEBFIT_RELEASE_REPO -ne 'webfit-desktop-releases') { throw 'Unexpected release repository.' }
+        run: node -e "if (process.env.WEBFIT_RELEASE_REPO !== 'webfit-desktop-releases') throw new Error('Unexpected release repository.')"
       - name: Install locked frontend dependencies
         run: npm ci
       - name: Test release tooling

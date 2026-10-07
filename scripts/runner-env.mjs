@@ -71,12 +71,19 @@ async function main() {
   const rustupHome = join(toolRoot, 'rustup');
   const cargoBin = join(cargoHome, 'bin');
   const rustupExe = join(cargoBin, 'rustup.exe');
+  const testTemp = process.env.RUNNER_TEMP
+    ? join(process.env.RUNNER_TEMP, 'webfit-tests')
+    : null;
+  if (!testTemp) fail('RUNNER_TEMP is unavailable.');
+  await mkdir(testTemp, { recursive: true });
   const env = {
     ...process.env,
     CARGO_HOME: cargoHome,
     RUSTUP_HOME: rustupHome,
     LC_ALL: 'C',
     LANG: 'C',
+    TMP: testTemp,
+    TEMP: testTemp,
     PATH: `${cargoBin};${process.env.PATH ?? ''}`,
   };
 
@@ -125,6 +132,8 @@ async function main() {
     PERL: perlExe,
     LC_ALL: 'C',
     LANG: 'C',
+    TMP: testTemp,
+    TEMP: testTemp,
   })) {
     await appendGitHubFile(process.env.GITHUB_ENV, `${name}=${value}`);
   }
