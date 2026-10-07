@@ -1,5 +1,9 @@
 # Critérios e testes de aceite
 
+## Refinamento proposto WEBFIT-5
+
+TA-PAT-008..016 / RF-PAT-007: cadastro mínimo, CPF opcional múltiplo, rejeição dos três obrigatórios ausentes, validação dos opcionais informados, sexo por seleção acessível, edição preservando ID, migração/backup anterior e atual, sexo legado e responsável opcional. Cenários em [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md). Preparação autorizada por Maycon em 2026-10-07; aprovação funcional/execução e D-PAT-001/002 pendentes. Nenhum critério executado; não substitui ainda TA-PAT-001..007.
+
 **Status:** testes de aceite do primeiro incremento aprovados; resultado será preenchido após execução.
 
 TA-UX-002 (RF-UX-002, aprovado por Maycon em 2026-10-07): abrir informações por clique/teclado no login; conferir nome, versão instalada e crédito exato; fechar por Escape/Fechar e conferir retorno de foco; selecionar Acesso do administrador; em instalação nova preparar admin com senha local e recuperação; em instalação existente autenticar com nome/senha já cadastrados; senha errada continua negada pelo backend; preparação não aparece diretamente para a nutricionista. Ensaio gráfico no Windows pendente.

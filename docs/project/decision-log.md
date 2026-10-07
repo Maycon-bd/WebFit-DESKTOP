@@ -1,5 +1,16 @@
 # Registro de decisões
 
+## WEBFIT-5 — Refinamento do cadastro, 2026-10-07
+
+**Maycon solicitou:** somente nome, nascimento e sexo obrigatórios; Feminino/Masculino por seleção. **ACCEPTED apenas para registro/preparação:** respondeu “Sim” à autorização para registrar a demanda no Plane e preparar alteração com migração preservando cadastros. Escopo sensível previsto: CPF opcional mantendo validação/unicidade quando informado. Não há evidência de aprovação de Amanda nem de execução deste plano; não inferir aceite conjunto. RF-PAT-007 permanece proposta até validação aplicável, sem substituir a baseline anterior silenciosamente.
+
+Propostas para validação em lote:
+
+- **D-PAT-001 — AGENT-PROVISIONAL:** campos do responsável também opcionais; CPF/e-mail preenchidos validados. Alternativa: manter obrigatórios condicionais. Recomendação segue “apenas” três campos; confiança alta na interpretação, impacto médio de produto, exige validação antes de implementar.
+- **D-PAT-002 — AGENT-PROVISIONAL:** preservar sexo antigo; exibir equivalências inequívocas F/M/Feminino/Masculino e exigir escolha explícita ao salvar se valor vazio/diferente. Alternativas: apagar/converter automaticamente ou permitir texto livre; recomendação evita inferência e perda, confiança alta, impacto médio.
+
+Artefatos: [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md), [plan.md](../../specs/003-webfit-5-cadastro-paciente/plan.md), [tasks.md](../../specs/003-webfit-5-cadastro-paciente/tasks.md). Branch observada main, HEAD a83998ef33c032ea46e283322bbf7620c0051d49. Somente dados fictícios; sem Git mutável/publicação.
+
 Este registro consolida decisões e pendências. ADRs detalham decisões arquiteturais; itens pendentes não autorizam implementação. `ACCEPTED` vale somente para o escopo registrado na decisão e em sua evidência. DEC-003 a DEC-006 registram a autorização histórica do spike; a direção de produção foi aceita posteriormente por DEC-042 e pelo ADR-0001.
 
 ## Decisões registradas

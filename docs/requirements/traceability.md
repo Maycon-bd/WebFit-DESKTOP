@@ -1,5 +1,9 @@
 # Matriz de rastreabilidade
 
+## WEBFIT-5 — Planejamento do cadastro mínimo
+
+RF-PAT-007 (proposto) -> TA-PAT-008..016 -> [spec/plan/tasks](../../specs/003-webfit-5-cadastro-paciente/spec.md), T001..T015. Branch main, HEAD-base a83998ef33c032ea46e283322bbf7620c0051d49, candidato base 0.1.8. Preparação autorizada; implementação, testes de comportamento, aprovação funcional conjunta e D-PAT-001/002 pendentes. Evidência: [planejamento](../../.harness/evidence/webfit-5/planning.md). Baseline RF-PAT-001/003 e RN-PAT-001/003/005/006 ainda não substituída.
+
 **Status:** baseline do primeiro incremento preenchida; evidência de execução parcial local disponível; aceite integral pendente.
 
 | Requisito | Título | Status | Fonte | Regras | Caso de uso | Testes | Riscos/ADR | Backlog | Evidência |

@@ -7,14 +7,14 @@
 - **Data do checkpoint:** 2026-10-07
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
-- **Estado:** G5 em execução com dados fictícios. O runner confirmou HEAD c4526f5 com .gitattributes presente, mas conservou arquivos antigos CRLF no checkout reutilizado. Correção LIGHT local em .prettierrc.json (endOfLine=auto); format:check passou nos alvos reais do runner e no workspace, mantendo rejeição de estilo inválido. Publicação/ensaio conectado pendentes.
-- **Última etapa concluída:** complemento local da Auditoria RF-AUD-001/T051/T056 parciais, incluindo estados, retry, metadados e foco de teclado. Após liberação de espaço, checks frontend (12 testes), Rust/SQLite (18 testes), formatação, Clippy e build frontend PASS. Evidência .harness/evidence/health-increment/2026-10-07-audit-ui.md. Ensaio visual e revisão independente pendentes; correção anterior de Prettier preservada.
+- **Estado:** G5 em execução com dados fictícios. WEBFIT-5 em Decision Review: plano de cadastro mínimo/migração/backup preparado, sem código alterado. Registro/preparação autorizados; validação funcional conjunta e execução pendentes. Pendências de Auditoria, navegação e publicação/ensaio conectado continuam no histórico abaixo.
+- **Última etapa concluída:** WEBFIT-5 registrado; Specification, pesquisa, Plan, Tasks e Analyze do cadastro mínimo preparados. Verificação documental concluída; nenhuma implementação de produto/migração executada. Aprovação funcional conjunta, D-PAT-001/002 e execução do plano pendentes. Entrega anterior da Auditoria e seus checks/evidências permanecem históricos abaixo.
 - **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o erro 1068 do serviço foi resolvido pela correção para `NT AUTHORITY\NetworkService`; Maycon confirmou `RUNNING` após reiniciar o Windows; nenhum segredo foi versionado no Git
-- **Próxima ação:** revisar e ensaiar Auditoria no Windows com dados fictícios; Maycon integra pelo seu fluxo Git. Acompanhar pipeline/publicação e concluir ensaio de atualização e aceite Windows/WebView pendente. Sem instalador local nesta entrega.
+- **Próxima ação:** revisar WEBFIT-5, validar responsável opcional e sexo legado, confirmar aprovação funcional de Amanda e obter execução do plano. Depois Implement/Converge/checks/review com dados fictícios. Pendências de Auditoria, WEBFIT-4 e updater preservadas.
 - **Branch registrada:** main (observada em 2026-10-07; mudança humana em relação ao checkpoint feature/pbi-001, Git sob controle de Maycon/DEC-054).
-- **Work Item:** `WEBFIT-4` — navegação do Consultório, Review/aceite final pendente; `WEBFIT-3` permanece vínculo legado do spike G4 em Done.
-- **Commit-base / HEAD observado:** 9f5a949aa479061fff7078ba82fc130467f7b2a6.
-- **Sincronização:** main acompanha origin/main na leitura local, sem fetch/pull. Alterações locais da Auditoria/documentação preservadas, sem commit; conferência Git e diff --check concluídas após recuperar executor. Nenhuma operação Git mutável pelo agente ou consulta ao remoto vivo.
+- **Work Item:** `WEBFIT-5` — cadastro mínimo em Decision Review; `WEBFIT-4` segue com aceite final pendente; `WEBFIT-3` é vínculo legado G4 em Done.
+- **Commit-base / HEAD observado:** a83998ef33c032ea46e283322bbf7620c0051d49.
+- **Sincronização:** main acompanha origin/main na leitura local, sem fetch/pull; árvore limpa no início desta demanda, agora somente artefatos/documentação locais WEBFIT-5 sem commit. Nenhuma operação Git mutável pelo agente nem consulta ao remoto vivo. HEAD mais novo que o checkpoint anterior por integração humana; produto não alterado pelo agente.
 
 ## Última decisão aprovada
 
@@ -38,6 +38,12 @@ Também em 2026-09-11, Maycon aprovou DEC-039: Spec Kit tornou-se a fonte operac
 Em 2026-09-21, Maycon aprovou integralmente DEC-042: operação local/offline sem mensalidade, SQLCipher Community, DPAPI, backup portátil, credencial de recuperação offline, NSIS e manutenção manual no escopo vigente. A decisão aceitou o ADR-0001, fechou o G4 e autorizou a preparação do G5, sem autorizar implementação. Na mesma data, aprovou o ADR-0002/DEC-043: merges revisados na `main` publicam o canal piloto; o updater assinado mostra ícone e solicita confirmação; backup, download, validação, instalação e reinício seguem automaticamente após a confirmação; runner Windows próprio e repositório público separado de artefatos; canal estável posterior. A execução externa ainda está pendente.
 
 ## Próxima ação exata
+
+### WEBFIT-5 — Cadastro mínimo, 2026-10-07
+
+Maycon autorizou registrar no Plane e preparar alteração com migração. Planejamento em specs/003-webfit-5-cadastro-paciente/, evidência .harness/evidence/webfit-5/planning.md. Próxima ação vigente: obter aprovação funcional conjunta (Amanda não inferida), validar D-PAT-001 (responsável opcional) e D-PAT-002 (sexo antigo preservado até seleção explícita), e autorizar execução do plano. Depois executar T001..T015 com dados fictícios, mantendo banco/backup e vínculos na migração. Não executar banco ativo de produção, Git mutável ou publicação.
+
+Checklist desta demanda: [x] registro/pesquisa/Specification/Plan/Tasks/Analyze; [x] checks documentais; [ ] validação humana e execução autorizada; [ ] implementação/migração/testes; [ ] Verification/Review e Security/UI; [ ] aceite final. G5 continua em execução, G6/G7 pendentes. Os checkpoints abaixo permanecem histórico de demandas anteriores, não a próxima ação de WEBFIT-5.
 
 ### Retomada do desenvolvimento — Auditoria, 2026-10-07
 

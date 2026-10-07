@@ -69,6 +69,14 @@
 
 ## Pacientes
 
+### RF-PAT-007 — Refinar cadastro mínimo (WEBFIT-5)
+
+- **Descrição:** cadastro e edição exigem somente nome, nascimento e sexo; Feminino/Masculino por seleção, sem digitação. CPF e contato opcionais; CPF informado válido, normalizado e único inclusive entre arquivados.
+- **Critérios:** TA-PAT-008..016 em [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md).
+- **Prioridade:** refinamento solicitado do incremento 1; prioridade neutra no Plane.
+- **Status:** solicitado por Maycon em 2026-10-07; registro/preparação com migração autorizados. Aprovação funcional conjunta e execução do plano pendentes. Não substitui ainda RF-PAT-001/003 ou RN-PAT-001/003/005/006.
+- **Decisões:** D-PAT-001/002 provisórias em [decision-log.md](../project/decision-log.md); [plan.md](../../specs/003-webfit-5-cadastro-paciente/plan.md) cobre migração/backup.
+
 ### RF-PAT-001 — Cadastrar paciente
 
 - **Descrição:** permitir abrir a área de pacientes, acionar **Novo**, preencher os dados em um único formulário e salvar o paciente.

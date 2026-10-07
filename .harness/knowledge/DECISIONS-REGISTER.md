@@ -74,6 +74,8 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 ## Needs-human-decision / abertas
 
+- WEBFIT-5: preparação autorizada por Maycon; aprovação funcional conjunta/execução e D-PAT-001/002 aguardam validação. Fonte canônica: [registro de decisões](../../docs/project/decision-log.md), seção WEBFIT-5; [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md). Nenhuma nova aprovação de Amanda inferida.
+
 
 - Integração de nuvem, retenção clínica, backup externo, documentos e migração.
 - Retenção clínica, backup externo, documentos e migração.
