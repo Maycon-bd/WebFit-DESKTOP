@@ -32,7 +32,7 @@ jobs:
       - name: Prepare compiler environment
         shell: powershell
         run: |
-          & ./scripts/runner-env.ps1 -ToolsRoot (Join-Path $env:RUNNER_TOOL_CACHE 'webfit') -Initialize
+          node scripts/runner-env.mjs --initialize
           $testTemp=Join-Path $env:RUNNER_TEMP 'webfit-tests'
           New-Item -ItemType Directory -Path $testTemp -Force | Out-Null
           'TMP=' + $testTemp | Out-File $env:GITHUB_ENV -Append -Encoding utf8

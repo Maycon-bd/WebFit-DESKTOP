@@ -7,14 +7,14 @@
 - **Data do checkpoint:** 2026-10-07
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
-- **Estado:** G5 em execução com dados fictícios. WEBFIT-4 implementada localmente após aprovação de Maycon; checks e review de código PASS, aceite Windows/WebView pendente. Candidato updater 0.1.8 e pendências integradas preservados. Nenhum instalador novo solicitado ou gerado.
+- **Estado:** G5 em execução com dados fictícios. WEBFIT-4 integrada por Maycon no commit `44c0c495`; checks e review de código PASS, aceite Windows/WebView pendente. Pipeline piloto iniciou no runner e falhou ao executar `runner-env.ps1` por política PowerShell da conta de serviço; correção local migra o bootstrap para Node sem mudar a política. Nenhum build ou release foi produzido.
 - **Última etapa concluída:** WEBFIT-4: Implement/Converge/Verification/Review/Evidence; hambúrguer, Consultório, Configurações e opções pelo nome implementados. Oito Node, 18 Rust/SQLite, build sem bundle e 17 asserções frontend fixture PASS; dois P2 corrigidos. UI/UX integrado parcial. Evidência .harness/evidence/webfit-4/evidence.md.
 - **Última etapa técnica anterior:** repositório `Maycon-bd/webfit-desktop-releases` criado, `WEBFIT_RELEASE_TOKEN` informado como cadastrado, runner Windows `DESKTOP-GEUP094` instalado em `C:\actions-runner` e testado manualmente com `Connected to GitHub`/`Listening for Jobs`; o erro 1068 do serviço foi resolvido pela correção para `NT AUTHORITY\NetworkService`; Maycon confirmou `RUNNING` após reiniciar o Windows; nenhum segredo foi versionado no Git
-- **Próxima ação:** revisão/integração Git pelo usuário; observar pipeline e receber atualização na aplicação, então conferir navegação, teclado/zoom e conceder aceite final WEBFIT-4. Ensaio conectado do updater permanece pendente, sem publicação pelo agente.
+- **Próxima ação:** usuário revisa e integra a correção local do bootstrap no Git; acompanhar nova execução do Actions e corrigir eventual próximo erro. Após publicação bem-sucedida, testar faixa/instalação e concluir o aceite Windows/WebView da WEBFIT-4.
 - **Branch registrada:** `main` (observada em 2026-10-07; controle Git por Maycon, DEC-054)
 - **Work Item:** `WEBFIT-4` — navegação do Consultório, Review/aceite final pendente; `WEBFIT-3` permanece vínculo legado do spike G4 em Done.
-- **Commit-base / HEAD observado:** `adcf693ffbb9f2658390b93c9682c54e67f78a0b`. Mudança humana desde feature/fa70d8f informada antes de editar; nenhuma operação Git mutável pelo agente.
-- **Sincronização:** main/HEAD adcf693, upstream local 0/0 sem fetch; código/documentação WEBFIT-4 não commitados. Nenhuma operação Git mutável ou sincronização remota pelo agente.
+- **Commit-base / HEAD observado:** `44c0c495a3266a1729ea6ed19d55df1671f40fee` (`origin/main`).
+- **Sincronização:** main e origin/main coincidem no HEAD observado, sem fetch/pull nesta sessão. Correção local do bootstrap e documentação estão sem commit; nenhuma operação Git mutável pelo agente.
 
 ## Última decisão aprovada
 
@@ -41,7 +41,7 @@ Em 2026-09-21, Maycon aprovou integralmente DEC-042: operação local/offline se
 
 WEBFIT-4 está em REVIEW: D-NAV-001/002 e execução aprovadas por Maycon em 2026-10-07; código/checks/revisão técnica concluídos. Maycon revisa e integra pelo seu fluxo Git; acompanhar pipeline e atualização na aplicação. Sem gerar instalador local. Após receber a versão, ensaiar hambúrguer/nome/engrenagem, teclado completo e zoom nativo com dados fictícios e registrar aceite final. Evidência e limites em .harness/evidence/webfit-4/{verification,review,evidence}.md. A simulação frontend não certifica distribuição ou aceite integrado. G5 em execução; G6/G7 pendentes.
 
-Pendência operacional anterior preservada: DEC-053, candidato updater 0.1.8, revisão independente e ensaio do pipeline/publicação assinada/latest.json, login/faixa/adiar/confirmar/backup/reinício/persistência. Integração/commit/push/merge são do usuário. T082/T083/T105/T113 integrados pendentes; notebook não bloqueia runner válido da empresa. Nenhuma ativação/publicação remota nesta demanda.
+Pendência operacional: DEC-053, candidato updater 0.1.8, revisão independente e ensaio do pipeline/publicação assinada/latest.json, login/faixa/adiar/confirmar/backup/reinício/persistência. O run #2 falhou no passo de bootstrap; evidência `.harness/evidence/update-pilot/2026-10-07-runner-execution-policy.md`. Integração/commit/push/merge são do usuário. T082/T083/T105/T113 permanecem pendentes; notebook não bloqueia runner válido da empresa. Nenhuma release foi publicada.
 
 ## Gates
 

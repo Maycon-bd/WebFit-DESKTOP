@@ -2,7 +2,7 @@
 
 ## Revisão vigente — 2026-10-07 (DEC-053)
 
-Workflow da raiz habilitado localmente para main conforme DEC-053; usuário escolheu executar Git. Runtime Node/Rust preparado no cache do runner, Perl completo e TMP/TEMP dedicados ao job. Primeira execução no serviço/publicação/ensaio conectado pendentes; não declarar remoto ativo pelo arquivo local. Um runner válido basta; notebook adicional depois. Distribuição manual vigente até validação completa. [Guia de integração](own-runner-setup.md).
+Workflow da raiz habilitado localmente para main conforme DEC-053; usuário escolheu executar Git. O primeiro run remoto (#2, commit 44c0c49) alcançou o runner e falhou no bootstrap porque a política PowerShell da conta do serviço bloqueou `runner-env.ps1`; nenhum build ou release foi produzido. A correção local usa `runner-env.mjs` com Node, sem alterar a política do Windows. Nova execução, publicação e ensaio conectado permanecem pendentes; não declarar remoto ativo até comprovar. Um runner válido basta; notebook adicional depois. Distribuição manual vigente até validação completa. [Guia de integração](own-runner-setup.md) e [evidência do bloqueio](../../.harness/evidence/update-pilot/2026-10-07-runner-execution-policy.md).
 
 **Status:** preparação G5; wiring local preparado, configuração externa e primeira publicação ainda pendentes.
 
