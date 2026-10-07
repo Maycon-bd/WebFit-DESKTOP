@@ -29,6 +29,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.18.0'
+      - name: Test compiler preparation
+        run: node --test scripts/runner-env.test.mjs
       - name: Prepare compiler environment
         run: node scripts/runner-env.mjs --initialize
       - name: Validate release repository

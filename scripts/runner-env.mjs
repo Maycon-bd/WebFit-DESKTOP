@@ -3,6 +3,8 @@ import { access, appendFile, mkdir, writeFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
+import { setTimeout as delay } from 'node:timers/promises';
 
 const toolRoot = process.env.RUNNER_TOOL_CACHE
   ? resolve(process.env.RUNNER_TOOL_CACHE, 'webfit')
@@ -23,37 +25,77 @@ async function exists(path) {
   }
 }
 
-function run(executable, args, env = process.env) {
+export function run(executable, args, env = process.env) {
   return new Promise((resolveRun, reject) => {
-    const child = spawn(executable, args, { env, stdio: 'inherit' });
+    const child = spawn(executable, args, { env, stdio: ['inherit', 'inherit', 'pipe'] });
+    let stderr = '';
+    child.stderr.on('data', (chunk) => {
+      process.stderr.write(chunk);
+      stderr = `${stderr}${chunk}`.slice(-16384);
+    });
     child.once('error', reject);
-    child.once('exit', (code) => {
+    child.once('close', (code) => {
       if (code === 0) resolveRun();
-      else reject(new Error(`${executable} exited with code ${code ?? 'unknown'}.`));
+      else {
+        const error = new Error(`${executable} exited with code ${code ?? 'unknown'}.`);
+        error.stderr = stderr;
+        reject(error);
+      }
     });
   });
 }
 
-async function downloadVerifiedRustup(installer, rustupHome) {
+export function isRetryableDownloadError(error) {
+  const messages = [];
+  let current = error;
+  for (let depth = 0; current && depth < 5; depth += 1, current = current.cause) {
+    messages.push(current.name ?? '', current.message ?? '', current.stderr ?? '', current.code ?? '');
+    if ([408, 429, 500, 502, 503, 504].includes(current.status)) return true;
+  }
+  const detail = messages.join(' ');
+  if (/checksum (?:mismatch|failed)|invalid.*checksum|certificate|permission denied|access is denied|no space left|disk full/i.test(detail)) return false;
+  return /ECONNRESET|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|UND_ERR_(?:SOCKET|CONNECT_TIMEOUT|HEADERS_TIMEOUT|BODY_TIMEOUT)|TimeoutError|timed out|transfer(?:red)? (?:a )?partial file|stream error|request or response body error|connection (?:reset|closed)|unexpected eof|end of response/i.test(detail);
+}
+
+export async function withDownloadRetries(operation, { wait = delay, warn = console.warn } = {}) {
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      return await operation();
+    } catch (error) {
+      if (attempt === 3 || !isRetryableDownloadError(error)) throw error;
+      const pause = attempt * 2000;
+      warn(`Rust download interrupted; retry ${attempt + 1}/3 in ${pause / 1000}s.`);
+      await wait(pause);
+    }
+  }
+}
+
+export async function downloadVerifiedRustup(installer, rustupHome, fetcher = fetch) {
   const url = `https://static.rust-lang.org/rustup/archive/${rustupVersion}/x86_64-pc-windows-msvc/rustup-init.exe`;
-  const [installerResponse, checksumResponse] = await Promise.all([
-    fetch(url),
-    fetch(`${url}.sha256`),
-  ]);
-  if (!installerResponse.ok || !checksumResponse.ok) {
-    fail('Could not download the pinned Rustup installer and checksum.');
-  }
-
-  const installerBytes = Buffer.from(await installerResponse.arrayBuffer());
-  const checksumText = await checksumResponse.text();
-  const expected = checksumText.match(/^([a-f\d]{64})\b/i)?.[1];
-  if (!expected) fail('Invalid Rustup checksum response.');
-
-  const actual = createHash('sha256').update(installerBytes).digest('hex');
-  if (actual.toLowerCase() !== expected.toLowerCase()) {
-    fail('Rustup checksum mismatch.');
-  }
-
+  const installerBytes = await withDownloadRetries(async () => {
+    const controller = new AbortController();
+    const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(120000)]);
+    try {
+      const [installerResponse, checksumResponse] = await Promise.all([
+        fetcher(url, { signal }), fetcher(`${url}.sha256`, { signal }),
+      ]);
+      for (const response of [installerResponse, checksumResponse]) {
+        if (!response.ok) {
+          const error = new Error('Could not download the pinned Rustup installer and checksum.');
+          error.status = response.status;
+          throw error;
+        }
+      }
+      const bytes = Buffer.from(await installerResponse.arrayBuffer());
+      const expected = (await checksumResponse.text()).match(/^([a-f\d]{64})\b/i)?.[1];
+      if (!expected) fail('Invalid Rustup checksum response.');
+      const actual = createHash('sha256').update(bytes).digest('hex');
+      if (actual.toLowerCase() !== expected.toLowerCase()) fail('Rustup checksum mismatch.');
+      return bytes;
+    } finally {
+      controller.abort();
+    }
+  });
   await mkdir(dirname(installer), { recursive: true });
   await writeFile(installer, installerBytes);
   await mkdir(rustupHome, { recursive: true });
@@ -80,7 +122,7 @@ async function main() {
     ...process.env,
     CARGO_HOME: cargoHome,
     RUSTUP_HOME: rustupHome,
-    RUSTUP_USE_CURL: '1',
+    RUSTUP_USE_CURL: '0',
     LC_ALL: 'C',
     LANG: 'C',
     TMP: testTemp,
@@ -97,16 +139,15 @@ async function main() {
     await downloadVerifiedRustup(installer, rustupHome);
     await run(installer, [
       '-y', '--no-modify-path', '--profile', 'minimal',
-      '--default-toolchain', rustVersion,
-      '--component', 'rustfmt', '--component', 'clippy',
+      '--default-toolchain', 'none',
     ], env);
   }
 
   if (process.argv.includes('--initialize')) {
-    await run(rustupExe, [
+    await withDownloadRetries(() => run(rustupExe, [
       'toolchain', 'install', rustVersion, '--profile', 'minimal',
       '--component', 'rustfmt', '--component', 'clippy',
-    ], env);
+    ], env));
   }
   await run(rustupExe, ['run', rustVersion, 'rustc', '--version'], env);
   env.RUSTUP_TOOLCHAIN = rustVersion;
@@ -129,7 +170,7 @@ async function main() {
   for (const [name, value] of Object.entries({
     CARGO_HOME: cargoHome,
     RUSTUP_HOME: rustupHome,
-    RUSTUP_USE_CURL: '1',
+    RUSTUP_USE_CURL: '0',
     RUSTUP_TOOLCHAIN: rustVersion,
     PERL: perlExe,
     LC_ALL: 'C',
@@ -144,7 +185,9 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error(error instanceof Error ? error.message : 'Runner environment preparation failed.');
-  process.exitCode = 1;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  main().catch((error) => {
+    console.error(error instanceof Error ? error.message : 'Runner environment preparation failed.');
+    process.exitCode = 1;
+  });
+}
