@@ -7,9 +7,12 @@ if (!/^\d+\.\d+\.\d+-pilot\.\d+\.\d+$/.test(version)) throw new Error('Expected 
 const folder='src-tauri/target/release/bundle/nsis';
 const names=(await readdir(folder)).filter(name=>name.includes(`_${version}_`) && name.endsWith('.exe'));
 if (names.length!==1) throw new Error('Expected exactly one installer for this version.');
-const name=names[0];
-const bytes=await readFile(`${folder}/${name}`);
-const signature=(await readFile(`${folder}/${name}.sig`,'utf8')).trim();
+const sourceName=names[0];
+// GitHub normalizes whitespace in uploaded names. Stage one stable ASCII name
+// so manifest URLs, signatures and checksum filenames match the public assets.
+const name=`WebFit-Desktop_${version}_x64-setup.exe`;
+const bytes=await readFile(`${folder}/${sourceName}`);
+const signature=(await readFile(`${folder}/${sourceName}.sig`,'utf8')).trim();
 verifySignature(bytes,signature,config.plugins.updater.pubkey);
 const prefix=`https://github.com/Maycon-bd/webfit-desktop-releases/releases/download/pilot-v${version}/`;
 const manifest={version,notes:'Atualização de teste do WebFit Desktop. Inclui as mudanças revisadas desta versão. Somente dados fictícios.',pub_date:new Date().toISOString(),platforms:{'windows-x86_64':{url:prefix+encodeURIComponent(name),signature}}};
