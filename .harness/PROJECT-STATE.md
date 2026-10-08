@@ -11,10 +11,10 @@ G1 foi aprovado em 2026-08-20. G2 e G3 foram aprovados em 2026-09-17. Maycon apr
 - MVP Saúde; Educação está fora do MVP.
 - Amanda aprova domínio/aceite; Maycon é PO e responsável técnico.
 - O harness usa `AUTONOMOUS DECISION WITH HUMAN VALIDATION`: escolhas justificáveis podem avançar como `AGENT-PROVISIONAL`; condições ASK-FIRST permanecem humanas.
-- Spec Kit é a fonte operacional SDD; harness, documentos canônicos, Decisions Register/ADRs e AGENTS.md mantêm responsabilidades distintas conforme DEC-039.
+- DEC-057 substitui cadeia obrigatória por Discovery, Plan, Execução e Code Review; Spec Kit opcional, oficiais e históricos preservados. Fontes/autoridades permanecem.
 - Plane está ACTIVE como camada controlada de gestão do trabalho: MCP ACTIVE, OAuth e leitura/escrita validadas no projeto `WEBFIT`; `WEBFIT-3` concluiu o spike G4 em `Done` e mantém vínculo externo com `PBI-001`.
 - Obsidian está ACTIVE como camada de navegação e conhecimento sobre o Vault na raiz do repositório; `README.md` é o entrypoint humano, `docs/` e `specs/` são navegáveis, e Codex e Obsidian editam os mesmos arquivos locais. Não há cópia documental, MCP, plugin comunitário ou Sync ativado por esta integração.
-- A Constitution 1.0.0 e a skill `$webfit-task` estão prontas; a feature `001-primeiro-incremento-saude` possui Specification, Plan, Tasks e artefatos aprovados no G3.
+- A Constitution 2.0.0 (DEC-057) e a skill `$webfit-task` estão prontas; a feature `001-primeiro-incremento-saude` possui Specification, Plan, Tasks e artefatos aprovados no G3.
 - Primeiro incremento: autenticação, perfil, Saúde, pacientes, prescrição/cardápio, auditoria, backup/restauração mínima e persistência.
 - Requisitos, regras, critérios de aceite e rastreabilidade do primeiro incremento já existem em docs/requirements/.
 - A auditoria tem retenção indeterminada no MVP e falha de auditoria bloqueia operação crítica/autenticação bem-sucedida.
@@ -38,7 +38,7 @@ D-AUTO-001/002 têm confiança ALTA, impacto MÉDIO e reversibilidade MODERADA a
 ## Proposed
 
 - Concluir a custódia portátil e validar os secrets já cadastrados sem expor valores, com autorização específica da execução externa antes de configurar endpoint, workflow ou publicação; ADR-0002 já está aceito. O serviço do runner e a variável foram verificados em 2026-10-06.
-- Usar Plane apenas nos papéis descritos em `.harness/integrations/plane.md`; Obsidian permanece restrito à navegação e conhecimento conforme `.harness/integrations/obsidian.md`; Mantis, Impeccable e loops permanecem nos estados definidos para cada integração.
+- Usar Plane apenas nos papéis descritos em `.harness/integrations/plane.md`; Obsidian permanece restrito à navegação e conhecimento conforme `.harness/integrations/obsidian.md`; Mantis e loops persistentes preparados/inativos; Impeccable disponível/condicional nas sessões que expõem a skill.
 
 Estas são propostas de processo, não decisões do produto.
 
@@ -56,8 +56,8 @@ Estas são propostas de processo, não decisões do produto.
 
 - O G4 foi aprovado e não bloqueia mais o projeto. O piloto está bloqueado somente por pendências de execução do runner/configuração externa e pela validação ponta a ponta. O início da implementação do G5 continua exigindo aprovação específica.
 - ADR-0001 está aceito como direção de fundação, mas não autoriza implementação sem o gate do G5.
-- Não há código executável para Mantis/Impeccable; ambos permanecem PREPARED — NOT ACTIVE.
-- Plane/MCP está configurado e validado em leitura; Mantis, Impeccable e demais integrações externas continuam sem ativação. Obsidian está ACTIVE somente como camada local de navegação e conhecimento.
+- Mantis não integrado; Impeccable disponível é usado condicionalmente para frontend no Code Review. Produto existe; limites visuais e G6/G7 continuam explícitos.
+- Plane/MCP está configurado e validado em leitura; Mantis e demais integrações externas não autorizadas continuam sem ativação; Impeccable é skill condicional, sem serviço externo ativado. Obsidian está ACTIVE somente como camada local de navegação e conhecimento.
 
 ## Next Decisions
 

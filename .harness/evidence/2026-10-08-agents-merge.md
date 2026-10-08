@@ -1,0 +1,10 @@
+# Mesclagem das instruções de agentes — 2026-10-08
+
+- Classificação: LIGHT documental, solicitada explicitamente por Maycon nesta conversa. Sem mudança de produto, arquitetura, dados ou permissões; Specification/Plan/Tasks não são necessários para esta manutenção.
+- Fontes: AGENTS.md vigente; arquivo de referência `C:/Users/Maycon Garcia Silva/Downloads/AGENTS.md`; `.harness/GOVERNANCE.md`, `.harness/AUTONOMY-POLICY.md`, `.harness/HUMAN-INTERACTION-CONTRACT.md` e `.harness/integrations/spec-kit.md`.
+- Resultado: princípios de colaboração, mudanças pequenas, testes de comportamento, diagnóstico e limites de verificação incorporados ao AGENTS.md. Autorizações suficientes são reaproveitadas e ações ALLOW dispensam confirmação por comando, conforme a governança vigente.
+- Preservação: arquitetura offline/Tauri/SQLite/SQLCipher/DPAPI, decisões aprovadas, autoridades de Amanda/Maycon, gates, Spec Kit, controle humano do Git, dados fictícios e proteção de dados clínicos mantidos. Referência a estoque/Postgres de outro projeto, regras mecânicas e aprovação a cada comando não incorporadas.
+- Contexto: branch `main`, HEAD `e07cdc8300de0421dbdc7fd64aafe7d30a191e80`; alterações preexistentes de produto, ícones, requisitos, specs e documentação preservadas. Nenhuma operação Git mutável ou escrita externa executada.
+- Agent Decisions: nenhum novo comportamento de produto ou decisão arquitetural proposto; seleção editorial dentro da mesclagem solicitada pelo humano.
+- Verificação PASS: revisão de consistência com governança/autonomia/contrato de interação; comparação linha a linha com `git show HEAD:AGENTS.md` confirmou preservação de todas as linhas não vazias anteriores; seis referências locais conferidas por `Test-Path`; `git diff --check -- AGENTS.md docs/project/status.md` sem erros. Arquivo de evidência novo conferido quanto a espaços finais e conflitos.
+- Limites: não executados testes/build do produto por ausência de mudança em código/configuração; não revisadas nem verificadas as alterações preexistentes. Revisão documental feita pelo próprio agente, sem alegação de review independente de produto.

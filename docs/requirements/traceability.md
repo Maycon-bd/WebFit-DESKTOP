@@ -1,5 +1,14 @@
 # Matriz de rastreabilidade
 
+## WEBFIT-10 — licenciamento offline
+
+DEC-058 → RF-LIC-001..005 (comportamento aprovado; desenho técnico pendente) → RN-LIC-001..007 → UC-LIC-001..005 → TA-LIC-001..011 (propostos, NOT RUN) → [task.md](../../specs/WEBFIT-10/task.md), T-LIC-001..009/011 → [ADR-0003 proposto](../architecture/adr/ADR-0003-ativacao-offline-e-suporte.md). RF-LIC-006/RN-LIC-008/UC-LIC-006/TA-LIC-012/T-LIC-010 adiados para outra demanda por Maycon, sem item extra. Main, base e07cdc8300de0421dbdc7fd64aafe7d30a191e80; sem versão entregue. Início/documentação apenas; banco/licença/emissor/produto não implementados. D-LIC-001..005 respondidas; protocolo/custódia/recuperação ainda no Plan técnico. Evidência histórica RF-AUT-001/UX-002 preservada.
+
+
+## WEBFIT-8 — identidade visual
+
+RF-UX-004 / DEC-056 → TA-UX-BRAND-001..004 → specs/005-webfit-8-identidade-visual/{spec,plan,tasks}.md (T001..T008) → public/brand/webfit-icon.png, src/App.tsx, src/LoginInfo.tsx, src/style.css, index.html, src-tauri/icons/** e tauri.conf.json → .harness/evidence/webfit-8/{verification,evidence}.md. Versão 0.1.8, base e07cdc8300de0421dbdc7fd64aafe7d30a191e80, main. Checks locais separados de aceite Windows/review independente.
+
 ## WEBFIT-5 — Planejamento do cadastro mínimo
 
 RF-PAT-007 (proposto) -> TA-PAT-008..016 -> [spec/plan/tasks](../../specs/003-webfit-5-cadastro-paciente/spec.md), T001..T015. Branch main, HEAD-base a83998ef33c032ea46e283322bbf7620c0051d49, candidato base 0.1.8. Preparação autorizada; implementação, testes de comportamento, aprovação funcional conjunta e D-PAT-001/002 pendentes. Evidência: [planejamento](../../.harness/evidence/webfit-5/planning.md). Baseline RF-PAT-001/003 e RN-PAT-001/003/005/006 ainda não substituída.
@@ -71,3 +80,11 @@ RF-UPD-001 / DEC-053 / TA-UPD-UI-002 → T112/T113, UpdatePanel.tsx/App.tsx/styl
 ## WEBFIT-4 — Navegação do Consultório
 
 RF-UX-003 / DEC-055 → TA-UX-NAV-001..008 → specs/002-webfit-4-navegacao-consultorio/spec.md, plan.md, tasks.md (T001..T017). Implementação: src/App.tsx, src/style.css, src/onboarding.ts, src/GuidedTour.tsx; regressão tests/unit/onboarding.test.ts. Estado: implementado localmente em 0.1.8; checks e review de código PASS, aceite visual/integrado pendente. HEAD-base adcf693ffbb9f2658390b93c9682c54e67f78a0b, branch observada main sob DEC-054. Evidência de planejamento: .harness/evidence/webfit-4/2026-10-07-planning.md; verificação/review/entrega em .harness/evidence/webfit-4/{verification,review,evidence}.md.
+
+## WEBFIT-9
+
+RF-UPD-001 / aprovação de implementação Maycon 2026-10-08 -> specs/006-webfit-9-faixa-atualizacao/{spec,plan,tasks}.md -> T003..T007 -> src/update-check.ts, UpdatePanel.tsx, App.tsx, style.css -> tests/unit/update-check.test.ts e TA-UPD-UI-003..006 -> .harness/evidence/webfit-9/. Backend backup/assinatura/bloqueios existente intacto. Gate final/ensaio Windows não inferidos.
+
+## WEBFIT-7 — recuperação contextual de rascunhos
+
+RF-DRF-002 / RN-DRF-006..007 / UC-DRF-001 / TA-DRF-005..010 → [Specification](../../specs/007-recuperar-rascunho-contextual/spec.md), Plan e Tasks WEBFIT-7 → alteração localizada de src/App.tsx/DraftRecoveryDialog.tsx/style.css e critérios de aceite → Verification/Review/Evidence em `.harness/evidence/webfit-7/`. Branch main, HEAD-base e07cdc8300de0421dbdc7fd64aafe7d30a191e80. Implementação autorizada por Maycon; aceite funcional final e G5/G6/G7 permanecem separados.

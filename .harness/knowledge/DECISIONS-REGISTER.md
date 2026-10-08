@@ -14,6 +14,12 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 ## Accepted
 
+- [DEC-058](../../docs/project/decision-log.md#dec-058--ativação-offline-e-autorizações-por-instalação): Maycon, 2026-10-08; direção funcional de WEBFIT-10, cinco tipos, entrega inicial, emissor com interface e suporte até 4 h. Desenho técnico/custódia/recuperação pendentes; ADR-0003 proposto, sem implementação ou dados reais.
+
+- [DEC-057](../../docs/project/decision-log.md#dec-057--harness-com-quatro-fases): ACCEPTED por Maycon em 2026-10-08; quatro fases contínuas, Scope Check/autorizações específicas, Spec Kit opcional e registro único proporcional; Git, segurança/domínio e aceite final preservados.
+
+- [DEC-056](../../docs/project/decision-log.md#dec-056--símbolo-do-webfit-no-produto): símbolo sem texto escolhido e aplicação local solicitada por Maycon em 2026-10-08, WEBFIT-8/RF-UX-004. Git/publicação/instalação no host e aceite final separados.
+
 - DEC-001 a DEC-002: novo repositório e pausa do WebFit Web.
 - DEC-003 a DEC-006: autorização histórica do spike; a direção de produção correspondente foi aceita por DEC-042 e ADR-0001.
 - DEC-007 a DEC-010: curadoria documental, requisitos rastreáveis, gates e Git Flow histórico; a exigência de setup por demanda para o agente foi substituída pela DEC-054.
@@ -31,6 +37,14 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 - [DEC-055](../../docs/project/decision-log.md#dec-055--navegação-do-consultório-configurações-e-conta): escopo, plano/execução e D-NAV-001/002 aceitos por Maycon em 2026-10-07. Instalador local dispensado; Git e integração na main pelo usuário, distribuição pelo pipeline/updater. Aceite final e ensaio integrado continuam distintos desta aprovação.
 
 ## Agent-provisional ledger
+
+### D-UPD9-001
+
+- **Status:** AGENT-PROVISIONAL, 2026-10-08.
+- **Demanda:** WEBFIT-9; cooldown de retorno um minuto e adiamento da mesma versão por sessão, permitindo aviso de outra versão/novo login.
+- **Confiança/impacto/risco:** alta/baixo/baixo; reversível, evita rajadas/repetir aviso adiado.
+- **Fonte canônica:** [registro de decisões](../../docs/project/decision-log.md#webfit-9--detecção-durante-uso-e-faixa-compacta-global). Implementação do pedido/proposta autorizada por Maycon; validação da microdecisão/aceite final pendentes.
+- **Spec:** [WEBFIT-9](../../specs/006-webfit-9-faixa-atualizacao/spec.md).
 
 ### D-AUTO-001
 

@@ -1,3 +1,5 @@
 # Interface de trabalho
 
+Marca do sistema: símbolo sem texto em public/brand/webfit-icon.png, RF-UX-004/DEC-056, aplicação local autorizada em 2026-10-08. Acesso, lateral, informações e recursos nativos usam a mesma identidade. Guia: docs/ux/system-branding.md. Logo profissional permanece separado.
+
 Direção técnica dentro da UX aprovada: aplicação de operação, sem telas promocionais. Barra lateral recolhível pelo hambúrguer, com Consultório e Pacientes; nome do usuário abre Acesso e Perfil profissional, engrenagem adjacente abre Configurações com Auditoria e Backup e restauração (RF-UX-003/DEC-055). Recolhida, toda a lateral desaparece e o hambúrguer permanece no conteúdo para reabri-la, preservando tela e campos. Estado transitório, aberto a cada sessão. Conteúdo central com lista pesquisável ou formulário único. Fundo claro quente, texto escuro, verde escuro para ação primária, fonte Segoe UI nativa do Windows. Sem imagens externas ou dependência de rede. Ação principal evidente, erros junto ao formulário, preservação do texto digitado, confirmação de arquivamento/restauração. Não altera campos nem fluxos aprovados.

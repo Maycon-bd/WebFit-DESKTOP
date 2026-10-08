@@ -1,9 +1,9 @@
-# evidence.md
+# Evidence — resumo interno do Code Review
 
-Consolide requisitos, implementação, testes, checks, findings, riscos e itens não verificados. Não inclua secrets ou dados reais.
+Consolidar no registro existente: arquivos alterados, comportamento, requisito/aceite, branch/HEAD/git status, comandos/ambiente/resultados, revisor independente, findings/resolução, riscos, não executados e limites. Sem secrets/dados reais; referenciar logs, sem cópia extensa.
 
-Registre a sincronização operacional do Plane: Work Item (`WEBFIT-X`), estado inicial, estado final e `PASS`, `DEGRADED` ou `NOT APPLICABLE`. Plane é apenas gestão do trabalho; Evidence continua canônica no harness e não deve ser copiada integralmente para o Work Item.
+Plane: ID, estado inicial/final, sync PASS/DEGRADED/N/A. READY TO SHIP mantém Review até aceite final humano; não declarar Done por conclusão técnica.
 
-Inclua `Agent Decisions` com Total, Accepted, Pending Validation e Rejected. Para cada decisão provisória relevante, informe decisão, escolha, impacto, confiança e risco. Nenhuma decisão `AGENT-PROVISIONAL` pode ser ocultada ou descrita como aprovação humana.
+Agent Decisions: aceitas/pendentes/rejeitadas e impacto/confiança/risco das provisórias relevantes; nenhuma AGENT-PROVISIONAL apresentada como humana. Validação em lote sem interrupção extra para escolha não bloqueante.
 
-Use `READY` quando os gates e validações necessários estiverem concluídos; `READY FOR HUMAN DECISION REVIEW` quando a fase técnica estiver completa e restarem apenas decisões provisórias permitidas; `READY WITH WARNINGS` para riscos não impeditivos; ou `NOT READY` para bloqueador real, inclusive `NEEDS-HUMAN-DECISION` material.
+Resultado REVIEW PASSED / REVIEW PASSED WITH WARNINGS / CHANGES REQUIRED. READY TO SHIP somente com critérios técnicos/checks/review independente satisfeitos, sem bloqueadores. Explicitar aprovação final e Git/publicação separados. Relatório separado é opcional; evidências antigas preservadas.

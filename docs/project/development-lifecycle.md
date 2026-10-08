@@ -231,6 +231,8 @@ proposto -> em análise -> validado -> aprovado -> implementado -> verificado
 
 ## Ciclo de desenvolvimento adotado
 
+**Condução por demanda — DEC-057, 2026-10-08:** o harness opera Discovery → Plan → Execução → Code Review. As fases macro e G1–G7 abaixo descrevem o ciclo do produto, não passos repetidos em cada demanda. Pedido explícito autoriza desenvolvimento no escopo após Scope Check, preservando autorização específica de risco, domínio e aceite final. READY TO SHIP não encerra G5/G6/G7 nem autoriza Git/publicação.
+
 O processo será incremental e orientado a riscos. Ele usa as fases clássicas da engenharia de software, mas não funciona como uma cascata rígida: cada incremento percorre análise, projeto, construção, testes e aceite.
 
 ```mermaid

@@ -1,5 +1,19 @@
 # Casos de uso
 
+## Licenciamento offline — WEBFIT-10
+
+DEC-058: intenções/fluxo aprovados por Maycon, não implementados; detalhes de segurança pendentes no registro único.
+
+| ID | Ator / fluxo e resultado | Requisito | Status |
+|---|---|---|---|
+| UC-LIC-001 | visitante instala/gera solicitação/envia; Maycon emite; visitante importa/prepara; administrador de Maycon autentica offline | RF-LIC-001 | fluxo aprovado |
+| UC-LIC-002 | Maycon autoriza destino e usuário restaura backup validado preservando identidade correta | RF-LIC-002 | intenção aprovada; contrato pendente |
+| UC-LIC-003 | Maycon autentica com autorização temporária; sessão encerra em até 4 h ou ao sair/bloquear | RF-LIC-003 | intenção/duração aprovadas; contrato pendente |
+| UC-LIC-004 | Maycon emite recuperação administrativa, aplica e autentica com nova credencial; dados preservados | RF-LIC-004 | intenção aprovada; contrato pendente |
+| UC-LIC-005 | Maycon autoriza; backup validado → confirmação separada → limpar consultório mantendo licença/acessos/consumo; cancelamento/falha preserva dados | RF-LIC-005 | comportamento aprovado; desenho técnico pendente |
+| UC-LIC-006 | cópia protegida para diagnóstico isolado e retorno sem perder trabalho posterior | RF-LIC-006 | adiado por Maycon para outra demanda |
+
+
 **Status:** casos de uso do primeiro incremento aprovados.
 
 | ID | Título | Ator principal | Resultado | Requisitos | Status |
@@ -10,7 +24,7 @@
 | UC-PAT-001 | cadastrar paciente | nutricionista/administrador | paciente ativo criado sem CPF duplicado | RF-PAT-001, RF-PAT-006 | aprovado |
 | UC-PAT-002 | localizar e editar paciente | nutricionista/administrador | paciente localizado e alteração confirmada | RF-PAT-002, RF-PAT-003 | aprovado |
 | UC-PAT-003 | arquivar e restaurar paciente | nutricionista/administrador | estado alterado sem perda de histórico | RF-PAT-004 | aprovado |
-| UC-DRF-001 | recuperar ou descartar rascunho automático | nutricionista/administrador | preenchimento temporário do usuário e espaço é retomado ou eliminado sem afetar registro clínico persistente | RF-DRF-001, RF-PAT-006 | aprovado por Maycon em 2026-09-10 |
+| UC-DRF-001 | recuperar ou descartar rascunho automático | nutricionista/administrador | no mesmo contexto autenticado a pessoa restaura o preenchimento ou descarta somente o autosave, sem afetar o registro persistido nem prescrição clínica | RF-DRF-001, RF-DRF-002, RF-PAT-006 | aprovado por Maycon em 2026-09-10 e refinado em 2026-10-08 — WEBFIT-7 |
 | UC-PRE-001 | montar e finalizar prescrição | nutricionista/administrador | prescrição calculada, versionada e vinculada ao paciente | RF-PRE-001 a RF-PRE-004 | aprovado por Amanda |
 | UC-PRE-002 | calcular e ajustar necessidade energética | nutricionista/administrador | protocolo versionado produz estimativa, metas, alertas e histórico de ajustes | RF-PRE-005 | aprovado por Amanda em 2026-09-10 |
 | UC-AUD-001 | consultar auditoria | usuário autenticado e autorizado | eventos autorizados consultados com filtros, paginação e detalhe sem exposição de conteúdo sensível | RF-AUD-001 | aprovado por Maycon em 2026-09-10 |

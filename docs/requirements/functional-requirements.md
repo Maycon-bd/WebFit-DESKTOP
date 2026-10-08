@@ -1,5 +1,31 @@
 # Requisitos funcionais
 
+## Licenciamento offline — WEBFIT-10
+
+**Fonte/status:** DEC-058, Maycon, 2026-10-08. Fluxo/tipos aprovados no escopo suficientemente definido; nenhum implementado/verificado. Prioridade humana não definida. Plan/arquitetura material pendentes no [registro único](../../specs/WEBFIT-10/task.md); detalhes técnicos não recebem aprovação por inferência.
+
+| ID | Requisito / ator / resultado | Regras | Aceite | Status |
+|---|---|---|---|---|
+| RF-LIC-001 | visitante solicita/importa licença; Maycon emite para aquela instalação, definindo administrador próprio; preparação somente em banco vazio, validada no backend | RN-LIC-001..004 | TA-LIC-001..005/010/011 | fluxo aprovado; protocolo pendente |
+| RF-LIC-002 | Maycon autoriza transferência/recuperação no novo destino, com backup validado antes de recuperar dados | RN-LIC-001/002/005 | TA-LIC-006 | intenção aprovada; identidade/consumo pendentes |
+| RF-LIC-003 | Maycon recebe suporte administrativo temporário por uma sessão de até 4 h, encerrada também ao sair/bloquear; sem acesso permanente | RN-LIC-001/002/006 | TA-LIC-007 | intenção/duração aprovadas; protocolo pendente |
+| RF-LIC-004 | Maycon autoriza recuperação de sua credencial naquela instalação sem apagar dados nem revelar senha anterior | RN-LIC-001/002/004 | TA-LIC-008 | intenção aprovada; procedimento pendente |
+| RF-LIC-005 | Maycon autoriza reinicialização, mantendo licença/acessos e limpando consultório; backup validado e confirmação separados; falha/cancelamento preserva dados | RN-LIC-001/002/007 | TA-LIC-009 | comportamento aprovado; detalhes técnicos pendentes |
+| RF-LIC-006 | cópia protegida para diagnóstico isolado por Maycon e retorno sem perder trabalho posterior | RN-LIC-008/RN-BKP-005..007 | TA-LIC-012 | adiado para outra demanda por Maycon, 2026-10-08 |
+
+Emissor separado com interface, exclusivo de Maycon; sem chave privada/senha compartilhada no instalador clínico. Uso diário offline. Licença inválida/incompatível/destino errado/repetida não causa preparação, limpeza ou falso sucesso; UI preserva estado e permite recuperação. Solicitação sem credencial/CPF/conteúdo clínico. Protocolo, perda/rotação de chaves e consumo em backup/rollback no ADR proposto.
+
+Instalações anteriores eram testes: entrega parte de ativação inicial; importar chave não limpa banco já preparado. Atualizar/reparar mantém dados/licença. RF-AUT-001, RF-UX-002, TA-AUT-001/TA-UX-002 descrevem código anterior até entrega; em nova instalação serão complementados por RF-LIC-001. Acesso total de ambos os papéis ao Saúde permanece.
+
+
+## RF-UX-004 — identidade visual do sistema
+
+- **Status:** aprovado por Maycon, 2026-10-08 neste chat; aplicação local solicitada, aceite final separado.
+- **Prioridade:** pedido atual, sem redefinir prioridade do backlog.
+- **Descrição:** aplicar símbolo sem texto escolhido como marca do WebFit no acesso/lateral/informações/favicon e recursos Windows do aplicativo/atalhos/instalador.
+- **Critérios:** TA-UX-BRAND-001..004; proporção/transparência e identificação acessível, controles/dados e identidade da instalação preservados. Não substituir logo profissional ou ícones de ações.
+- **Rastreabilidade:** WEBFIT-8 / DEC-056 / specs/005-webfit-8-identidade-visual/.
+
 **Status:** baseline aprovada do primeiro incremento; demais itens do MVP Saúde permanecem propostos.
 
 ## Autenticação
@@ -148,6 +174,18 @@
 - **Status:** aprovado por Maycon em 2026-09-10.
 - **Fonte:** DEC-024.
 
+### RF-DRF-002 — Recuperar rascunho no contexto do formulário
+
+- **Descrição:** ao abrir novamente o formulário longo de um preenchimento automaticamente salvo, perguntar se a pessoa deseja restaurar ou descartar o rascunho correspondente. Não apresentar uma lista global de rascunhos na tela de pacientes.
+- **Escopo:** perfil profissional, cadastro e edição de paciente e montagem de prescrição/cardápio, conforme RF-DRF-001; outros formulários somente após serem classificados como longos por requisito aprovado.
+- **Restaurar:** preencher o formulário correspondente com os valores salvos e permitir continuar o trabalho.
+- **Descartar:** remover somente o rascunho correspondente; formulário de criação fica vazio, edição retorna aos dados persistidos (RF-PAT-003) e rascunho clínico persistente de prescrição permanece conforme RN-DRF-005.
+- **Regras:** RN-DRF-001 a RN-DRF-007.
+- **Critérios:** TA-DRF-005 a TA-DRF-010.
+- **Prioridade:** alta — incremento 1.
+- **Status:** aprovado por Maycon em 2026-10-08 para implementação em WEBFIT-7; aceite funcional final separado.
+- **Fonte operacional:** [Specification WEBFIT-7](../../specs/007-recuperar-rascunho-contextual/spec.md).
+
 ## Prescrições e cardápios
 
 ### RF-PRE-001 — Criar prescrição individual
@@ -286,3 +324,7 @@ Refinamento vigente RF-UPD-001 / DEC-053 / TA-UPD-UI-002: faixa superior em luga
 - **Status:** escopo explicitamente aceito por Maycon em 2026-10-07 (DEC-055); execução do plano e D-NAV-001/002 aprovadas por Maycon em 2026-10-07. Nenhuma aprovação clínica ou de Amanda inferida.
 - **Aceite:** TA-UX-NAV-001..008. Preservar rascunhos/erros, sessão/troca obrigatória, auditagem real de acesso, backup/restauração, tours e faixa de atualização. Consultório é grupo visual, Saúde continua espaço aprovado.
 - **Fonte operacional:** [Specification](../../specs/002-webfit-4-navegacao-consultorio/spec.md), [Plan](../../specs/002-webfit-4-navegacao-consultorio/plan.md) e [Tasks](../../specs/002-webfit-4-navegacao-consultorio/tasks.md).
+
+## WEBFIT-9 — complemento aprovado de RF-UPD-001
+
+**Status:** aprovado para implementação por Maycon em 2026-10-08, após proposta nesta conversa. Consulta ao login, a cada 30 minutos e retorno à janela; faixa compacta acima de toda navegação/conteúdo com Atualizar à direita e orientação explícita para salvar antes do reinício. Consulta não interrompe edição/offline; instalação mantém backup/assinatura/autorização/bloqueios. Aceite TA-UPD-UI-003..006; spec em specs/006-webfit-9-faixa-atualizacao/. D-UPD9-001 provisória permitida: cooldown um minuto e adiamento por versão/sessão. Não aprova dados reais/publicação/aceite final.

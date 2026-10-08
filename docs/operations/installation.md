@@ -1,5 +1,14 @@
 # Instalação
 
+## Próximo incremento de ativação — WEBFIT-10 (não disponível no instalador atual)
+
+DEC-058 aprova instalação nova aguardando ativação, geração de solicitação, envio manual a Maycon, emissão de licença vinculada em ferramenta separada com interface e importação/validação antes de preparar acessos. Maycon definiu ativações iniciais porque instalações anteriores eram testes; banco preparado não será limpo pela importação. Atualização/reparo preservam dados/licença. Transferência/recuperação, suporte temporário (uma sessão até 4 h, encerrada ao sair/bloquear), recuperação administrativa e reinicialização têm autorizações distintas; última exige backup e confirmação separados.
+
+Discovery funcional concluída, Plan técnico em elaboração: [WEBFIT-10](../../specs/WEBFIT-10/task.md). Reinicialização manterá licença/acessos/consumo e limpará consultório após backup/confirmação; pacote por cópia adiado para outra demanda. Candidato atual ainda não aceita licença. Preparação administrativa abaixo descreve código existente até nova entrega verificada. Dados reais condicionados ao G7.
+
+Maycon pode guardar credenciais em **nota segura** do Bitwarden; recomenda-se um item **Login por instalação**, com usuário/senha nos campos próprios e ID da licença/instalação nas notas, sem dados clínicos. Custódia é manual, sem integração/compartilhamento automático com o WebFit ou agente. Fonte: [tipos de itens do Bitwarden](https://bitwarden.com/help/managing-items/). Chave privada de emissão precisa de plano próprio de proteção/recuperação, separado das credenciais administrativas e do updater.
+
+
 **Status:** instalador de teste 0.1.4 disponível, com catálogo ampliado; distribuição manual vigente, somente dados fictícios. Ensaio Windows 10/aceite completo pendentes.
 
 ## Procedimento vigente até a atualização automática

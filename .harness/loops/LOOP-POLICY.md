@@ -1,6 +1,6 @@
 # Loop Engineering — política
 
-Loops autônomos estão PREPARED — NOT ACTIVE porque o projeto ainda está em planejamento e não há código para verificar. Quando ativados por decisão própria, devem seguir [AUTONOMY-POLICY.md](../AUTONOMY-POLICY.md).
+Loops persistentes/scheduler estão PREPARED — NOT ACTIVE. Autocorreção interna na Execução/Code Review, dentro do Plan e com limite, não é automação agendada. Se ativados por decisão humana específica, devem seguir [AUTONOMY-POLICY.md](../AUTONOMY-POLICY.md).
 
 ## Papéis
 
@@ -11,7 +11,7 @@ Loops autônomos estão PREPARED — NOT ACTIVE porque o projeto ainda está em 
 
 ## Ciclo
 
-DISCOVER → SPECIFY → PLAN → MAKE → VERIFY → REVIEW → FIX ↺ CONVERGED → EVIDENCE
+DISCOVERY → PLAN → EXECUÇÃO → CODE REVIEW; correções internas retornam à execução/revisão afetadas, sem fase extra.
 
 ## Uso de decisões provisórias
 
@@ -31,4 +31,4 @@ Parar quando critérios de aceite estiverem comprovados, verificações obrigat�
 
 Parar e escalar diante de `NEEDS-HUMAN-DECISION` que bloqueie materialmente o próximo passo, condição ASK-FIRST, limite de tentativas ou conflito com decisão aceita. A mera existência de `AGENT-PROVISIONAL` permitida não é condição de parada.
 
-Limite inicial: no máximo 3 ciclos de correção automática por mudança; depois disso, exigir decisão humana. Não agendar ou ativar loops nesta fase.
+Limite: três ciclos sem convergência por problema; depois registrar tentativas/causa e solicitar decisão necessária. Sem agendamento/loops persistentes.

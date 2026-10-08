@@ -1,17 +1,11 @@
 # Política de segurança do harness
 
-## Princípios
-- Dados de saúde, CPF, credenciais, chaves, documentos clínicos e backups são sensíveis.
-- Usar somente dados fictícios em desenvolvimento e evidências.
-- Não registrar conteúdo clínico ou secrets em logs, prompts, issues ou relatórios.
-- Toda operação de domínio deve ser autorizada no backend quando a aplicação existir.
-- Mantis é gate especializado; não é substituído por revisão superficial.
+Dados de saúde, CPF, credenciais/chaves, documentos e backups são sensíveis. Desenvolvimento/evidências usam somente dados fictícios. Não incluir conteúdo clínico/secrets em logs, prompts, issues ou relatórios. Operações protegidas são autorizadas no backend; ocultar botão não basta.
 
-## Security Review obrigatório
-Acionar o gate para autenticação, autorização, sessão, tokens, permissões, dados sensíveis, multitenancy, upload, arquivos, integrações externas, SQL, pagamentos, dados financeiros, infraestrutura, execução de código, serialização ou criptografia.
+Discovery identifica risco; Plan avalia impacto/autorizações; Execução preserva controles; Code Review incorpora análise de segurança obrigatória quando houver autenticação/autorização/sessão, permissões, entrada não confiável, saúde/dados pessoais, SQL/arquivos/backup, integrações, financeiro, infraestrutura ou criptografia. Sem fase adicional.
 
-## Mantis
-Enquanto não houver código executável, não executar Mantis e não gerar findings fictícios. Quando houver código, executar somente em container/sandbox isolado, sem credenciais de produção, rede interna ou dados sensíveis. Findings gerados por IA precisam de validação humana; reproducer não deve rodar diretamente no host.
+Checks concretos: autorização Tauri, consultas parametrizadas/transações/foreign keys, proteção de secrets/logs, migração transacional numerada, banco vazio/versão anterior, snapshot consistente e integridade de restauração quando aplicáveis. Critério crítico sem evidência permanece bloqueante. Não declarar testes PASS sem execução.
 
-## Strix
-OPTIONAL / FUTURE: considerar apenas para pentest dinâmico de aplicação/API executável em ambiente isolado. Não instalar por redundância nesta fase.
+Mantis é ferramenta condicional futura, não requisito de toda revisão. Sem integração, usar ferramentas disponíveis e declarar limitações. Reprodução somente isolada/especificamente autorizada, nunca host, produção, rede interna ou dados reais. Não gerar vulnerabilidades fictícias. [Contrato](../integrations/mantis.md).
+
+DefectDojo é possibilidade futura de centralização de findings, sem serviço/instalação nesta mudança; Plane permanece backlog. Strix permanece OPTIONAL / FUTURE, sem instalação redundante. Operações extraordinárias obedecem ao Scope Check e ASK-FIRST.

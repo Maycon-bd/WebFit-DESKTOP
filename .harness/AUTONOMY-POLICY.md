@@ -58,25 +58,25 @@ Também usar ASK-FIRST quando alternativas tiverem força semelhante ou faltar i
 
 ## Autonomy budget e validação
 
-Acumular decisões provisórias relacionadas durante a fase em vez de interromper após cada uma. Ao concluir uma fase relevante, apresentar `DECISIONS MADE BY AGENT`, quantidade e, para cada decisão, escolha, alternativas, justificativa, confiança, impacto, risco e status. Solicitar uma única validação: aceitar todas, revisar individualmente ou rejeitar/alterar decisão.
+Acumular decisões provisórias relacionadas durante a fase em vez de interromper após cada uma. No registro da fase, apresentar `DECISIONS MADE BY AGENT`, quantidade e, para cada decisão, escolha, alternativas, justificativa, confiança, impacto, risco e status. Solicitar validação em lote: aceitar todas, revisar individualmente ou rejeitar/alterar decisão. Escolhas não sensíveis, reversíveis e não bloqueantes podem aguardar aceite final; não criar interrupção genérica entre Plan e Execução. ASK-FIRST continua prévio à operação dependente.
 
 Na aprovação, mudar `AGENT-PROVISIONAL` para `ACCEPTED` e registrar `Validated by: Human` e data. Na rejeição, usar `REJECTED` e registrar o motivo quando fornecido. Alterações posteriores criam ou vinculam nova decisão e preservam o histórico; decisões substituídas usam `SUPERSEDED`.
 
 ## Gates
 
-Decisões `AGENT-PROVISIONAL` não bloqueiam automaticamente SPEC, PLAN ou ARCHITECTURE REVIEW quando não são sensíveis, têm confiança suficiente, são reversíveis e não conflitam com decisões aceitas.
+Decisões `AGENT-PROVISIONAL` não bloqueiam automaticamente Discovery, Plan, Execução ou Code Review quando não são sensíveis, têm confiança suficiente, são reversíveis e não conflitam com decisões aceitas.
 
-Use `READY FOR HUMAN DECISION REVIEW` quando a fase técnica estiver completa e restarem decisões provisórias aguardando validação. Após validação, use `READY` ou o estado equivalente do gate. Um `NEEDS-HUMAN-DECISION` bloqueia somente quando sua resolução é materialmente necessária para o próximo passo.
+Registre decisões provisórias aguardando validação sem criar fase/gate adicional. Use `PLAN REQUIRES HUMAN DECISION` quando a resolução for necessária antes da operação; prontidão técnica ao final segue os resultados de Code Review/READY TO SHIP e mantém aceite final separado. Um `NEEDS-HUMAN-DECISION` bloqueia somente quando sua resolução é materialmente necessária para o próximo passo.
 
 ## Integração com Spec Kit
 
-A matriz aplica-se antes de `$speckit-clarify`. Ambiguidade com alternativa claramente superior, confiança suficiente, reversibilidade e ausência de ASK-FIRST deve ser registrada como `AGENT-PROVISIONAL` e pode sustentar Specification e Plan. Clarify ou decisão humana é reservado para informação material ausente, alternativas equilibradas ou tema sensível. A skill `$webfit-task` acumula decisões provisórias e as apresenta em lote no Human Decision Review.
+A matriz aplica-se antes de `$speckit-clarify`. Ambiguidade com alternativa claramente superior, confiança suficiente, reversibilidade e ausência de ASK-FIRST deve ser registrada como `AGENT-PROVISIONAL` e pode sustentar Specification e Plan. Clarify ou decisão humana é reservado para informação material ausente, alternativas equilibradas ou tema sensível. A skill `$webfit-task` acumula decisões provisórias e as apresenta em lote no registro/aceite final quando não bloqueantes; Spec Kit é ferramenta opcional nas quatro fases.
 
 ## Implementação e loops
 
 Durante implementação, decisões pequenas e reversíveis podem seguir autonomamente dentro do plano aprovado. Alterações em requisito, arquitetura, contrato público, banco/schema, segurança, autorização, domínio ou integração retornam à matriz.
 
-O loop pode avançar com `AGENT-PROVISIONAL` não sensível, reversível, suficientemente confiável e sem conflito. Deve parar diante de `NEEDS-HUMAN-DECISION` que bloqueie materialmente o próximo passo e diante das condições ASK-FIRST. Esta política não ativa loops enquanto o projeto estiver em planejamento.
+O loop pode avançar com `AGENT-PROVISIONAL` não sensível, reversível, suficientemente confiável e sem conflito. Deve parar diante de `NEEDS-HUMAN-DECISION` que bloqueie materialmente o próximo passo e diante das condições ASK-FIRST. Esta política não ativa scheduler/loops persistentes. Autocorreção na Execução/Code Review fica limitada a três ciclos sem convergência por problema, antes de registrar causa e solicitar decisão necessária.
 
 ## Transparência e evidência
 

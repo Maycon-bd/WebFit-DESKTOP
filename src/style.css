@@ -113,16 +113,10 @@ a {
   font-size: 13px;
   max-width: 72ch;
 }
-.wordmark {
-  font-size: 32px;
-  font-weight: 750;
-  letter-spacing: -0.04em;
-}
-.wordmark span {
+.system-logo {
   display: block;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 .access-shell {
   display: grid;
@@ -137,8 +131,8 @@ a {
   align-items: flex-start;
   justify-content: center;
 }
-.access-intro .wordmark {
-  margin-bottom: 70px;
+.access-intro .system-logo {
+  margin-bottom: 40px;
 }
 .access-intro h1 {
   font-size: 42px;
@@ -180,8 +174,8 @@ a {
   flex-direction: column;
   border-right: 1px solid var(--line);
 }
-.sidebar .wordmark {
-  padding: 0 14px;
+.sidebar .system-logo {
+  margin-left: 14px;
 }
 .workspace {
   margin: 42px 14px 28px;
@@ -427,20 +421,6 @@ td button {
   color: var(--muted);
   margin-bottom: 14px;
 }
-.draft-panel {
-  background: #e7efdf;
-  padding: 20px 24px;
-  margin-bottom: 28px;
-}
-.draft-panel > div {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 14px;
-}
-.draft-panel span {
-  flex: 1;
-}
 .filter-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -500,7 +480,7 @@ dd {
   .access-intro {
     padding: 28px;
   }
-  .access-intro .wordmark {
+  .access-intro .system-logo {
     margin-bottom: 25px;
   }
   .access-intro h1 {
@@ -687,6 +667,9 @@ input[readonly] {
 .login-info-dialog::backdrop {
   background: rgba(20, 35, 28, 0.35);
 }
+.login-info-dialog .system-logo {
+  margin-bottom: 16px;
+}
 .login-info-dialog hr {
   border: 0;
   border-top: 1px solid var(--line);
@@ -694,6 +677,29 @@ input[readonly] {
 }
 .login-info-dialog h3 {
   font-size: 1rem;
+}
+.draft-recovery-dialog {
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 28px;
+  background: #fffef8;
+  color: #20332b;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.draft-recovery-dialog::backdrop {
+  background: rgba(20, 35, 28, 0.35);
+}
+.draft-recovery-dialog h2 {
+  margin-top: 0;
+}
+.draft-recovery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
 }
 .login-info-actions {
   display: flex;
@@ -703,32 +709,70 @@ input[readonly] {
   margin-top: 24px;
 }
 .update-banner {
+  position: relative;
+  flex: none;
+  padding: 6px 24px;
+  background: #e1eedf;
+  border-bottom: 1px solid #b7cdb8;
+  color: #20332b;
+  font-size: 14px;
+  line-height: 1.5;
+  z-index: 10;
+}
+.update-banner-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 20px 24px;
-  margin-bottom: 24px;
-  background: #e1eedf;
-  border-left: 4px solid var(--green);
-  color: #20332b;
+  gap: 8px 20px;
 }
 .update-banner-copy {
-  flex: 1 1 320px;
+  flex: 1 1 500px;
   min-width: 0;
 }
 .update-banner p {
-  margin: 8px 0 0;
+  margin: 0;
   overflow-wrap: anywhere;
 }
 .update-banner-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+  gap: 8px 12px;
 }
 .update-banner-actions button {
   min-height: 44px;
+  padding: 8px 14px;
+}
+.update-banner .update-banner-status {
+  margin-top: 4px;
+}
+.update-details summary {
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.update-details summary:focus-visible {
+  outline: 3px solid #8fb19e;
+  outline-offset: 2px;
+}
+.update-details-content {
+  position: absolute;
+  top: 100%;
+  right: 16px;
+  width: min(560px, calc(100% - 32px));
+  max-height: min(320px, 50vh);
+  overflow-y: auto;
+  padding: 16px;
+  background: #e1eedf;
+  border: 1px solid #b7cdb8;
+  border-radius: 0 0 6px 6px;
+}
+.update-details-content .update-notes {
+  margin-top: 8px;
 }
 .update-notes {
   white-space: pre-wrap;
@@ -739,6 +783,38 @@ input[readonly] {
   width: 100%;
   margin-top: 12px;
   accent-color: var(--green);
+}
+/* WEBFIT-9: reserve a short global row; scrolling never hides the notice. */
+.application-frame {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+.application-frame > .app-shell {
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
+}
+.application-frame .sidebar {
+  height: 100%;
+}
+.application-frame .workspace-main {
+  overflow-y: auto;
+}
+@media (max-width: 700px) {
+  .update-banner {
+    padding: 6px 12px;
+  }
+  .application-frame > .app-shell {
+    overflow-y: auto;
+  }
+  .application-frame .sidebar {
+    height: auto;
+  }
+  .application-frame .workspace-main {
+    overflow: visible;
+  }
 }
 .remember-login {
   display: flex;

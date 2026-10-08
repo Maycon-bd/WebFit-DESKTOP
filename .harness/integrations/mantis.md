@@ -1,8 +1,7 @@
 # Google Mantis
-Status: PREPARED — NOT ACTIVE.
 
-Mantis não foi detectado/instalado e não foi executado. Não há código executável nem findings legítimos. Não inventar comandos; registrar versão e documentação somente no futuro.
+Status: PREPARED — NOT ACTIVE. Integração futura; não instalado/executado nesta refatoração. Não inventar versão, comandos, disponibilidade ou findings.
 
-Gatilhos: autenticação, autorização, sessão, tokens, permissões, dados sensíveis, multitenancy, upload/arquivos, integrações externas, SQL, pagamentos, dados financeiros, infraestrutura, execução de código, serialização ou criptografia.
+Quando houver integração segura disponível: orientação read-only no Plan e revisão dirigida no Code Review, conforme risco de autenticação/autorização, dados sensíveis, entrada não confiável, arquivos, IPC/SQL, secrets, infraestrutura e criptografia.
 
-Executar futuramente somente em container/sandbox isolado, sem credenciais de produção, rede interna ou dados sensíveis; validar findings de IA; não rodar reproducer no host.
+Reprodução/exploração somente em ambiente isolado e especificamente autorizado, sem credenciais/rede de produção/dados reais. Nunca executar reproducer no host. Findings de IA requerem validação independente e decisão humana para risco material. Sem Mantis, executar checks de segurança possíveis e registrar limitações; não suprimir controle crítico nem criar fase obrigatória.

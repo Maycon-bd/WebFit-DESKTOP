@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { createLoginUpdateCheck } from "./update-check";
+import {
+  createSessionUpdateCheck,
+  startSessionUpdateChecks,
+} from "./update-check";
 
 type Available = { version: string; notes: string };
-const checkForLogin = createLoginUpdateCheck((token: string) =>
+const checkForSession = createSessionUpdateCheck((token: string) =>
   invoke<Available | null>("check_update", { token }),
 );
 
@@ -18,23 +21,36 @@ export function UpdatePanel({
   run: (action: () => Promise<void>) => Promise<unknown>;
 }) {
   const [available, setAvailable] = useState<Available | null>(null);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissedVersion, setDismissedVersion] = useState<string | null>(null);
   const [installing, setInstalling] = useState(false);
   const [message, setMessage] = useState("");
   const [progress, setProgress] = useState<number | null>(null);
+  const installationActive = useRef(false);
 
   useEffect(() => {
-    let active = true;
-    void checkForLogin(token)
-      .then((result) => {
-        if (active) setAvailable(result);
-      })
-      .catch(() => {
-        /* An offline check must not interrupt work. */
-      });
-    return () => {
-      active = false;
-    };
+    return startSessionUpdateChecks({
+      token,
+      check: checkForSession,
+      onResult: setAvailable,
+      isPaused: () => installationActive.current,
+      environment: {
+        every: (callback, interval) => {
+          const timer = window.setInterval(callback, interval);
+          return () => window.clearInterval(timer);
+        },
+        onResume: (callback) => {
+          const resume = () => {
+            if (document.visibilityState === "visible") callback();
+          };
+          window.addEventListener("focus", resume);
+          document.addEventListener("visibilitychange", resume);
+          return () => {
+            window.removeEventListener("focus", resume);
+            document.removeEventListener("visibilitychange", resume);
+          };
+        },
+      },
+    });
   }, [token]);
 
   useEffect(() => {
@@ -67,7 +83,8 @@ export function UpdatePanel({
   }, []);
 
   async function install() {
-    if (!available || blocked || installing) return;
+    if (!available || blocked || installationActive.current) return;
+    installationActive.current = true;
     setInstalling(true);
     setMessage("Preparando backup de segurança…");
     await run(async () => {
@@ -78,57 +95,76 @@ export function UpdatePanel({
           "Não foi possível concluir a atualização. Tente novamente mais tarde. Se o instalador chegou a abrir, confira a versão após reiniciar o WebFit.",
         );
       } finally {
+        installationActive.current = false;
         setInstalling(false);
         setProgress(null);
       }
     });
   }
 
-  if (!available || dismissed) return null;
+  if (!available || available.version === dismissedVersion) return null;
   return (
     <section
       className="update-banner"
       aria-label="Atualização do WebFit"
       aria-live="polite"
     >
-      <div className="update-banner-copy">
-        <strong>
-          Uma atualização do WebFit está disponível: {available.version}
-        </strong>
-        <p>
-          Ao atualizar, o WebFit cria um backup e verifica o pacote. O
-          aplicativo será fechado e reiniciado.
+      <div className="update-banner-row">
+        <p className="update-banner-copy">
+          <strong>Nova atualização disponível.</strong> Salve o que estiver
+          fazendo antes de atualizar. O aplicativo será reiniciado.
         </p>
-        {available.notes && <p className="update-notes">{available.notes}</p>}
-        {blocked && !installing && (
-          <p>Termine a edição e volte à lista de pacientes para atualizar.</p>
-        )}
-        {message && <p role="status">{message}</p>}
-        {installing && (
-          <progress
-            max={100}
-            value={progress ?? undefined}
-            aria-label="Progresso da atualização"
-          />
-        )}
+        <div className="update-banner-actions">
+          <details className="update-details">
+            <summary>Detalhes da atualização</summary>
+            <div className="update-details-content">
+              <p>
+                Versão {available.version}. Ao atualizar, o WebFit cria um
+                backup e verifica o pacote.
+              </p>
+              {available.notes && (
+                <p className="update-notes">{available.notes}</p>
+              )}
+            </div>
+          </details>
+          <button
+            type="button"
+            disabled={installing}
+            onClick={() => setDismissedVersion(available.version)}
+          >
+            Mais tarde
+          </button>
+          <button
+            type="button"
+            className="primary"
+            disabled={blocked || installing}
+            aria-describedby={
+              blocked && !installing ? "update-blocked-reason" : undefined
+            }
+            onClick={() => void install()}
+          >
+            {installing ? "Atualizando…" : "Atualizar"}
+          </button>
+        </div>
       </div>
-      <div className="update-banner-actions">
-        <button
-          type="button"
-          className="primary"
-          disabled={blocked || installing}
-          onClick={() => void install()}
-        >
-          {installing ? "Atualizando…" : "Atualizar agora"}
-        </button>
-        <button
-          type="button"
-          disabled={installing}
-          onClick={() => setDismissed(true)}
-        >
-          Mais tarde
-        </button>
-      </div>
+      {blocked && !installing && (
+        <p id="update-blocked-reason" className="update-banner-status">
+          Conclua e salve a edição ou operação em andamento e volte à lista de
+          pacientes para atualizar.
+        </p>
+      )}
+      {message && (
+        <p className="update-banner-status" role="status">
+          {message}
+        </p>
+      )}
+      {installing && (
+        <progress
+          max={100}
+          value={progress ?? undefined}
+          aria-label="Progresso da atualização"
+        />
+      )}
     </section>
   );
 }

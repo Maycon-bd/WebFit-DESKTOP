@@ -1,5 +1,21 @@
 # Registro de decisões
 
+## DEC-058 — Ativação offline e autorizações por instalação
+
+- **Status:** ACCEPTED para direção funcional/tipos; desenho técnico pendente. **Autoridade/data:** Maycon, 2026-10-08, anotações e respostas nesta conversa. Demanda [WEBFIT-10](../../specs/WEBFIT-10/task.md), STRICT.
+- **Origem:** conta administrativa de Maycon por instalação e controle da preparação; aprovou fluxo/tabela e pediu documentação/início por webfit-task.
+- **Fluxo:** instalar → aguardar ativação → gerar solicitação própria → enviar a Maycon → emitir licença vinculada e definir credenciais administrativas → importar/verificar → preparar acessos. Sem servidor obrigatório. Não promete uso único global, revogação remota ou resistência absoluta a clones offline.
+- **Tipos:** ativação inicial (banco vazio); transferência/recuperação (destino autorizado e backup validado); suporte temporário; recuperação administrativa (trocar credencial sem apagar dados); reinicialização (backup e confirmação separados da importação). Chave inicial não limpa banco preparado. Atualização/reparo preservam dados/licença.
+- **Respostas posteriores:** tudo até aqui era teste; entrega parte de ativações iniciais, sem migração clínica ativa. Emissor local separado **com interface**. Suporte: uma sessão de **até 4 horas**, encerrada ao sair/bloquear. Reinicialização mantém licença/acessos e limpa dados do consultório, após backup/confirmação; consumo preservado. Pacote de suporte por cópia fica **para outra demanda**, sem item extra automático. Não autoriza apagar banco automaticamente ou dados reais antes do G7.
+- **Credenciais:** próprias por instalação; nenhuma senha mestra/chave privada no instalador clínico. Verificador Argon2, assinatura e envelope cifrado serão detalhados no [ADR-0003 proposto](../architecture/adr/ADR-0003-ativacao-offline-e-suporte.md), sem senha recuperável. Bitwarden é custódia manual, sem integração/coleta pelo agente.
+- **Limites:** inicia/documenta a demanda; não aprova detalhes indefinidos de protocolo/schema/dependência, destruição/banco real, política clínica, publicação, Git mutável ou G5/G6/G7. Suporte por cópia adiado; autorização temporária não descriptografa o banco nem aprova sua substituição em uso.
+- **Compatibilidade:** refina RF-AUT-001/RF-UX-002 no próximo incremento. Preparação livre descreve código atual até entrega; contas existentes não são renomeadas por documentação. RN-AUT-002 (acesso total ao Saúde) preservada.
+
+
+## DEC-056 — símbolo do WebFit no produto
+
+**ACCEPTED por Maycon, 2026-10-08 neste chat.** Fonte: pediu “apenas o ícone” e, após receber símbolo, “Coloque em todos os lugares que exige logo do sistema”. Autoriza aplicar localmente símbolo à marca do acesso/lateral/informações/favicon e recursos Windows do aplicativo/atalhos/instalador. RF-UX-004 / WEBFIT-8. Logo profissional, ações, dados, identidade da instalação, spike e trabalho preexistente preservados. Sem Git/publicação/instalação no host ou aceite final/G5/G6/G7. Conversão/tamanhos são detalhes AUTO proporcionais.
+
 ## WEBFIT-5 — Refinamento do cadastro, 2026-10-07
 
 **Maycon solicitou:** somente nome, nascimento e sexo obrigatórios; Feminino/Masculino por seleção. **ACCEPTED apenas para registro/preparação:** respondeu “Sim” à autorização para registrar a demanda no Plane e preparar alteração com migração preservando cadastros. Escopo sensível previsto: CPF opcional mantendo validação/unicidade quando informado. Não há evidência de aprovação de Amanda nem de execução deste plano; não inferir aceite conjunto. RF-PAT-007 permanece proposta até validação aplicável, sem substituir a baseline anterior silenciosamente.
@@ -200,3 +216,22 @@ RF-UX-003/TA-UX-NAV-001..008. Não cria novo espaço Saúde, papéis, módulos f
 ### Aprovação de execução da DEC-055 — 2026-10-07
 
 Maycon respondeu “Aprovado” ao plano WEBFIT-4 e às escolhas D-NAV-001/002. **Implementation Approval concedida; ambas ACCEPTED, Validated by: Human, 2026-10-07.** Implementar e verificar localmente; não gerar instalador ao encerrar. Maycon fará Git/envio à main, e pipeline/updater existentes cuidam da distribuição. Não inferir publicação já realizada nem garantia ponta a ponta do runner. Sem novo backend, schema ou dependência; dados fictícios e aceite final preservados.
+
+## WEBFIT-9 — detecção durante uso e faixa compacta global
+
+**ACCEPTED por Maycon em 2026-10-08 nesta conversa:** após análise da consulta por login e proposta de login/30 minutos/retorno à janela, respondeu “Autorizo a implementação”. Autoriza implementar localmente faixa curta abaixo do título Windows e acima de toda a lateral/conteúdo, Atualizar à direita e aviso para salvar antes de atualizar/reiniciar. Complementa DEC-053/RF-UPD-001; preserva confirmação, backup, assinatura e bloqueio em edição. STANDARD; specs/006-webfit-9-faixa-atualizacao/. Sem Git mutável, publicação, dependências/schema/backend novos ou aceite de Amanda/G6/G7.
+
+D-UPD9-001 — AGENT-PROVISIONAL: limitar retorno a uma tentativa por minuto, adiar por versão nesta sessão, nova versão/login pode avisar. Alta confiança/baixo impacto/risco, reversível; evita rajadas/reabertura do mesmo aviso. Validação no aceite final; autorização de implementação não equivale a validação desta microdecisão.
+
+## DEC-057 — Harness com quatro fases
+
+**ACCEPTED por Maycon em 2026-10-08**, por pedido explícito no texto “Refatoração do Harness WebFit — Workflow de 4 Fases”. Autoriza refatoração documental e de skills agora, sem aprovação intermediária; exclui produto, banco, dependências e Git/publicação.
+
+- Substitui a cadeia operacional obrigatória por Discovery, Plan, Execução e Code Review contínuos. LIGHT/STANDARD/STRICT são profundidades dessas fases.
+- Invocação explícita de webfit-task autoriza desenvolvimento no escopo, sujeito à autoridade competente. Scope Check permite execução aderente sem gate genérico; extraordinário não autorizado, lacuna material e ação sensível exigem decisão específica.
+- Modifica obrigação de SDD completo da DEC-039: Spec Kit disponível/opcional, oficiais preservados. Preferir registro único em specs/WEBFIT-XX/task.md quando necessário; históricos sem conversão/exclusão.
+- Checks, review independente, segurança/UI condicionais e Evidence integram Code Review; convergência interna à Execução. READY TO SHIP é prontidão técnica, sem aceite final, Plane Done, Git ou G5/G6/G7 automático.
+- Mantém DEC-038/autonomia, DEC-054/Git humano, dados fictícios, domínio por Amanda e autorizações específicas de banco, dependências, segurança e publicação. Sem integração nova/serviço/loop persistente. Impeccable condicional, Mantis preparado, Mermaid opcional, DefectDojo futuro.
+- Alinha Constitution 2.0.0 pela mudança incompatível de governança, preservando princípios técnicos. É decisão de processo com origem explícita, sem ADR de produto.
+
+[Evidência/cenários](../../.harness/evidence/2026-10-08-four-phase-workflow.md). Esta decisão não aceita nem executa demandas de produto anteriores.

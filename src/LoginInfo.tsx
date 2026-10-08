@@ -57,6 +57,13 @@ export function LoginInfo({
         className="login-info-dialog"
         aria-labelledby="login-info-title"
       >
+        <img
+          className="system-logo"
+          src="/brand/webfit-icon.png"
+          alt=""
+          width="64"
+          height="64"
+        />
         <h2 id="login-info-title">WebFit Desktop</h2>
         <p>Versão {isTauri() ? (version ?? "Consultando…") : previewVersion}</p>
         <p>Desenvolvido por Eng. Maycon Garcia Silva</p>

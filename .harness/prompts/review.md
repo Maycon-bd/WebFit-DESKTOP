@@ -1,7 +1,9 @@
-# review.md
+# Code Review — referência interna da fase 4
 
-Revise independentemente. Procure bugs, regressões, escopo indevido, inconsistências, segurança, complexidade e decisões ocultas. Classifique findings como CRITICAL, HIGH, MEDIUM ou LOW.
+Faça passagem independente da implementação, inicialmente read-only: revisor humano/agente distinto disponível e autorizado. Autorrevisão não substitui independência; indisponibilidade deve ser explícita e impede REVIEW PASSED/READY TO SHIP.
 
-Confira se cada decisão relevante está `ACCEPTED`, `AGENT-PROVISIONAL`, `NEEDS-HUMAN-DECISION`, `REJECTED` ou `SUPERSEDED`; se confiança, impacto e reversibilidade sustentam a autonomia; e se nenhuma condição ASK-FIRST foi tratada como escolha automática. Não bloqueie por detalhe trivial justificável. Proponha decisão provisória quando houver opção claramente superior e agrupe-a para validação humana ao final.
+Compare diff/arquivos novos e Plan/aceite: bugs, regressões, contratos, integridade, autorização, erros, escopo e complexidade. Confira checks no estado final. Segurança/UI são verificações condicionais internas, não fases. Sem findings cosméticos especulativos: registre evidência, arquivo/trecho, severidade CRITICAL/HIGH/MEDIUM/LOW e impacto; deduplique, separando funcional/visual.
 
-Verificar o [HUMAN INTERACTION CONTRACT](../HUMAN-INTERACTION-CONTRACT.md): decisões humanas receberam contexto e cadeia de origem; labels não ampliaram aprovações; comportamento importante recebeu discovery; a checagem de compreensão precedeu `READY FOR IMPLEMENTATION`. Registrar lacunas materiais como findings nos gates existentes, sem bloquear detalhe técnico permitido. A saída humana deve ajudar a compreender, decidir, acompanhar e validar; manter inventários e logs nos artefatos.
+Corrija finding seguro no Plan sem nova aprovação, repita checks/revisão afetados. Limite de autocorreção conforme [governança](../GOVERNANCE.md). Finding externo ao escopo segue decisão/backlog, sem item Plane extra automático.
+
+Verifique decisões provisórias/ASK-FIRST e compreensão do comportamento no Scope Check. Resultado REVIEW PASSED / REVIEW PASSED WITH WARNINGS / CHANGES REQUIRED. Evidence resume arquivos, comportamento, checks, findings, riscos, decisões e limites. READY TO SHIP só sem bloqueadores e com evidência técnica/review independente; não aprova Done, uso clínico ou publicação.

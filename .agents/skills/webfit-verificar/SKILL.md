@@ -1,6 +1,6 @@
 ---
 name: webfit-verificar
-description: Verificar alterações ou uma entrega do WebFit Desktop com checks proporcionais, rastreabilidade e evidência breve. Use para validar documentação, executar verificações ou preparar Verification; não substitui Analyze do Spec Kit, review independente, aceite humano ou publicação.
+description: Verificar alterações ou uma entrega do WebFit Desktop com checks proporcionais, rastreabilidade e evidência breve. Use para checks internos do Code Review e validação documental; não substitui review independente, aceite humano ou publicação.
 ---
 
 # WebFit Verificar
@@ -18,7 +18,7 @@ Se a entrada for uma entrega específica, confira somente seus owners e dependen
 | Mudança | Verificação aplicável |
 |---|---|
 | Documentação/instruções | fonte/status coerentes, links locais, ausência de placeholders, consistência de nomes e `git diff --check` com paths afetados; valide skills alteradas com validador disponível |
-| Specification/Plan/Tasks | siga [speckit-analyze](../speckit-analyze/SKILL.md) para consistência entre esses artefatos; não duplique seu procedimento |
+| Registro único task.md / artefatos detalhados existentes | verifique consistência entre pedido, requisito/aceite, Plan, execução e evidência; [speckit-analyze](../speckit-analyze/SKILL.md) é opcional quando seus pré-requisitos oficiais existirem ou for solicitado, sem impor arquivos extras |
 | Código de produto/spike | comandos existentes de formatação, lint, TypeScript, testes frontend, Rust, integração SQLite e build Tauri aplicáveis à mudança e à DoD |
 | Banco/backup | migração em banco vazio e versão anterior, integridade, snapshot/restauração e cenários de falha aprovados, somente em ambiente fictício adequado |
 | Workflow/release preparado | coerência estática de gatilho, origem, checks, assinatura e pós-publicação com o contrato aprovado; execução externa exige autorização específica |
@@ -37,4 +37,4 @@ Ao falhar, localize causa e impacto. Reparar somente se a solicitação autoriza
 
 Registre critérios cobertos, comandos/resultados, falhas, não executados e limites na evidência/handoff da demanda. Reutilize o registro existente quando suficiente; nova evidência só quando necessária. Mantenha decisões provisórias identificadas e resultados de Verification distinguíveis do Review.
 
-Use os estados do contrato de evidência: `READY`, `READY WITH WARNINGS`, `READY FOR HUMAN DECISION REVIEW` ou `NOT READY`, com razão concreta e próxima ação. Não crie gates adicionais nem declare aceite humano, publicação, Repair Progress ou prontidão clínica com base em checks locais. Review independente e aprovações permanecem responsabilidades separadas. Confira Git ao concluir.
+Checks integram o Code Review, sem fase/gate adicional. Use PASS/FAIL/NOT RUN/N/A com razão/evidência. Resultado global REVIEW PASSED / REVIEW PASSED WITH WARNINGS / CHANGES REQUIRED; READY TO SHIP exige critérios técnicos e review independente, sem bloqueadores. Não crie gates adicionais nem declare aceite humano, publicação, Repair Progress ou prontidão clínica com base em checks locais. Review independente e aprovações permanecem responsabilidades separadas. Confira Git ao concluir.

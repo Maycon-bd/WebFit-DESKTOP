@@ -18,4 +18,4 @@ Inspecionar somente o necessário, sem atribuir todo o diff à entrega. Alteraç
 
 O agente não cria/troca branches ou worktrees, nem executa fetch/pull, stash/reset/clean, commit/push/merge, PR, tag ou release por iniciativa própria. Uma instrução humana explícita posterior pode autorizar uma operação específica. Git somente leitura continua permitido para contexto/evidência.
 
-Esta política não substitui aprovações de implementação, mudanças sensíveis, aceite final, dependências, publicação ou dados reais. ID Plane e rastreabilidade permanecem; o ID é associado nos artefatos, não imposto ao nome da branch.
+Esta política não substitui autorizações específicas de mudanças sensíveis, aceite final, dependências, publicação ou dados reais; Scope Check permite execução aderente ao pedido sem gate genérico. ID Plane e rastreabilidade permanecem; o ID é associado nos artefatos, não imposto ao nome da branch.

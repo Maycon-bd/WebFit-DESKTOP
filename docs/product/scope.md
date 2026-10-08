@@ -1,5 +1,10 @@
 # Escopo do produto
 
+## Refinamento de instalação — DEC-058 / WEBFIT-10
+
+Maycon aprovou em 2026-10-08 ativação offline por solicitação/licença vinculada, administrador por instalação, emissor separado com interface e tipos inicial, transferência/recuperação, suporte temporário (uma sessão até 4 h), recuperação administrativa e reinicialização. Última limpa consultório mantendo licença/acessos/consumo, com backup e confirmação separados. Discovery funcional concluída, Plan técnico em elaboração; [registro único](../../specs/WEBFIT-10/task.md). Instalações anteriores eram testes: ativações iniciais sem limpeza automática. Sem mensalidade/servidor/planos pagos/sincronização ou dados reais/G7. Pacote de suporte por cópia adiado por Maycon para outra demanda.
+
+
 **Status:** MVP Saúde aprovado no Gate G1 em 2026-08-20.
 
 ## MVP Saúde

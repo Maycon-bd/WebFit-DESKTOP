@@ -1,5 +1,12 @@
 # Fluxos de interação
 
+## Ativação offline — WEBFIT-10 (direção aprovada, ainda não implementada)
+
+Instalação nova → Aguardando ativação → gerar solicitação → envio manual a Maycon → emissão em ferramenta separada com interface → importar licença → validar assinatura/destino/tipo no backend → preparar acessos → login normal ou administrativo. Carregamento/erro/conclusão devem ser reais, acessíveis por teclado e preservar estado; não exibir senha administrativa/segredo de emissão.
+
+Chave inicial em banco preparado → recusar sem limpar. Reimportação consumida → informar já aplicada sem repetir efeitos. Atualização/reparo → preservar licença/dados. Reinicialização → autorização própria → backup validado → confirmação separada → limpar consultório mantendo licença/acessos/consumo; falha/cancelamento preserva estado. Suporte temporário → uma sessão até 4 h → sair/bloquear/limite encerra; contrato técnico pendente. Recuperação/transferência não simulam ativação inicial. Pacote por cópia adiado para outra demanda. [Detalhes e pendências](../../specs/WEBFIT-10/task.md).
+
+
 **Status:** fluxos do primeiro incremento aprovados.
 
 ## Login e espaço
@@ -28,8 +35,15 @@ Pacientes → Novo → preencher formulário → Salvar
 
 - Erro de validação mantém dados e leva ao campo correspondente.
 - CPF inválido ou duplicado impede conclusão.
-- Ao retornar, oferecer continuar ou descartar rascunho autenticado.
+- Ao abrir novamente o mesmo contexto autenticado, se existir autosave correspondente, perguntar em modal se deseja restaurar ou descartar.
+- A tela de pacientes não apresenta uma lista global de rascunhos. Rascunhos sem correspondência com a tela/registro atual não são exibidos.
+- “Restaurar” preenche os campos com os valores do autosave e permite continuar o trabalho.
+- “Descartar” remove somente o autosave correspondente. Cadastro novo permanece vazio; edição volta aos dados persistidos (RF-PAT-003); prescrição clínica salva como rascunho não é removida (RN-DRF-005).
+- Se consulta ou descarte falhar, mostrar erro sem falso sucesso e preservar dados válidos.
+- O modal permite alcançar e entender ambas as escolhas por teclado e tecnologia assistiva; somente uma escolha explícita o fecha e o foco retorna ao formulário.
 - Salvar cria o paciente, remove o rascunho e registra auditoria.
+
+O mesmo padrão de modal contextual vale para Perfil profissional, edição de paciente e montagem de prescrição/cardápio classificados como longos em RF-DRF-001. O salvamento automático, navegação segura e expiração preservam RN-DRF-001..005.
 
 ## Pesquisa e manutenção
 

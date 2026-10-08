@@ -1,7 +1,7 @@
-# plan.md
+# Plan — referência interna da fase 2
 
-Converta uma Spec aprovada — ou tecnicamente completa com decisões provisórias permitidas — em plano rastreável. Liste escopo, não escopo, arquivos, dependências, migrações, riscos, testes, documentação, gates e evidência esperada.
+Transforme Discovery suficiente em abordagem rastreável: escopo, arquivos, mudanças, aceite, testes, riscos, impacto em banco/backup/segurança/integrações e tarefas quando úteis. LIGHT inline; persistente em task.md ou artefatos válidos existentes, sem documentos separados obrigatórios.
 
-Separe decisões `ACCEPTED`, `AGENT-PROVISIONAL` e `NEEDS-HUMAN-DECISION`. O plano pode usar decisões provisórias não sensíveis e reversíveis, mas não deve autorizar ação irreversível ou ASK-FIRST antes da validação. Decisões pequenas surgidas no planejamento devem seguir a matriz, ser registradas proporcionalmente e agrupadas para revisão ao final da fase.
+Faça Plan Scope Check conforme [governança](../GOVERNANCE.md): pedido, aceite, proporcionalidade e autorizações específicas cobrem a proposta? PLAN APPROVED BY SCOPE permite executar no mesmo chat, sem aprovação genérica. PLAN REQUIRES HUMAN DECISION bloqueia somente operação dependente.
 
-Aplicar [HUMAN INTERACTION CONTRACT](../HUMAN-INTERACTION-CONTRACT.md): separar IMPLEMENTATION DETAIL de PRODUCT BEHAVIOR e investigar lacunas relevantes do comportamento antes de consolidar. Para decisão humana, usar DECISION com origem, motivo atual, estado, opções, recomendação, impacto e pergunta específica. Explicar a cadeia requisito/ADR/decisão → dependência; necessidade técnica não autoriza instalação. Recuperar respostas existentes e preservar o protocolo das skills oficiais.
+Hipótese não vira requisito aprovado. Para lacuna material de comportamento, investigar/perguntar; para escolha interna reversível, aplicar [autonomia](../AUTONOMY-POLICY.md). Apresentar origem/opções/impacto conforme [interação](../HUMAN-INTERACTION-CONTRACT.md). Nova dependência/migration/segurança sensível/arquitetura material não coberta exige autorização específica.

@@ -22,10 +22,10 @@ As fontes canônicas continuam em `docs/`, ADRs, Decisions Register, Spec Kit e 
 Toda demanda real STANDARD ou STRICT possui um Work Item Plane. Seu identificador humano, como `WEBFIT-12`, é usado na cadeia:
 
 ```text
-Plane → Spec Kit → artefatos → Evidence (branch atual registrada)
+Plane → registro em specs/ → quatro fases → Evidence no Code Review (branch atual registrada)
 ```
 
-Specification e Evidence devem referenciar o mesmo ID e registrar a branch atual. DEC-054 dispensa ID no nome da branch e nova branch por demanda; Git fica sob controle de Maycon.
+Registro da demanda e evidência referenciam o mesmo ID e branch atual; artefatos Spec Kit válidos são reutilizados. DEC-054 dispensa ID no nome da branch e nova branch por demanda; Git fica sob controle de Maycon.
 
 ## Entrada pelo `$webfit-task`
 
@@ -35,13 +35,13 @@ Para `$webfit-task WEBFIT-12`, o fluxo deve consultar o Plane em modo de leitura
 
 ### Nova demanda
 
-Para `$webfit-task Nova demanda: ...`, a invocação explícita autoriza, sem confirmação adicional por sincronização:
+Para `$webfit-task Quero corrigir ...` ou `$webfit-task Nova demanda: ...`, a invocação explícita autoriza as quatro fases no escopo, sem confirmação adicional por sincronização:
 
 1. intake e classificação LIGHT/STANDARD/STRICT;
-2. para STANDARD ou STRICT, criação de **um único** Work Item no projeto WebFit;
+2. para STANDARD ou STRICT, buscar item correspondente e reutilizar; se inexistente, criar **um único** Work Item WebFit com ID antes dos artefatos formais;
 3. estado inicial apropriado;
 4. associação de módulo somente com evidência suficiente;
-5. atualização do mesmo item nos gates normais.
+5. atualização do mesmo item nas fases/decisões previstas, sem criar estados/gates extras.
 
 Essa autorização não permite excluir, arquivar, alterar outra demanda, modificar arbitrariamente prioridade humana, criar itens extras, criar ciclos, alterar configuração do projeto, estados, módulos, membros ou compromissos.
 
@@ -51,20 +51,20 @@ Demandas LIGHT não exigem Work Item por padrão; se a execução evoluir para c
 
 | Gate/fase | Estado Plane |
 |---|---|
-| Intake / Specify / Plan | `Planning` |
-| `READY FOR HUMAN DECISION REVIEW` | `Decision Review` |
-| `READY FOR IMPLEMENTATION` | `Ready for Implementation` |
-| Implementação aprovada/iniciada | `In Progress` |
-| `READY FOR VERIFICATION` | `Verification` |
-| `READY FOR REVIEW` | `Review` |
+| Discovery / Plan | `Planning` |
+| Plan com decisão humana necessária | `Decision Review` |
+| PLAN APPROVED BY SCOPE, antes do início imediato | `Ready for Implementation` |
+| Execução iniciada dentro do escopo autorizado | `In Progress` |
+| Checks internos do Code Review | `Verification` |
+| Passagem independente do Code Review / READY TO SHIP aguardando aceite | `Review` |
 | Review com CHANGES REQUIRED | `In Progress` ou `Verification`, conforme a correção |
 | `BLOCKED` | `Blocked` |
 | Aprovação humana final concluída | `Done` |
 | Demanda abandonada explicitamente pelo humano | `Cancelled` |
 
-`READY FOR HUMAN APPROVAL` nunca vira `Done` automaticamente. Só a aprovação humana final permite `Done`.
+`READY TO SHIP` nunca vira `Done` automaticamente. Só a aprovação humana final permite `Done`.
 
-Quando o lote de decisões `AGENT-PROVISIONAL` for validado, retornar a `Planning` se a demanda ainda estiver em planejamento; se Plan/Tasks já estiverem concluídos, avançar para `Ready for Implementation`.
+Quando o lote de decisões `AGENT-PROVISIONAL` for validado, retornar a `Planning` se a demanda ainda estiver em planejamento; se Plan completo e Scope Check passar, iniciar Execução sem gate genérico. Decisões não bloqueantes podem aguardar validação em lote no aceite final.
 
 Estado inicial: LIGHT usa `Backlog` ou `Planning` conforme o trabalho já tenha começado; STANDARD/STRICT usa `Planning` ao iniciar análise real.
 
@@ -91,8 +91,8 @@ Links/caminhos dos documentos relevantes, quando existirem.
 
 ## Engineering
 Classification: LIGHT / STANDARD / STRICT
-Spec: caminho quando criado
-Branch: nome quando criada
+Registro: task.md ou artefatos existentes quando persistentes
+Branch: branch atual observada
 ```
 
 Não copiar Specification, Plan, Tasks ou Evidence completos. Atualizações autorizadas ficam limitadas ao Work Item atual: estado, associação de módulo, branch, caminho da Spec, nota curta de bloqueio e nota curta de conclusão/evidence.

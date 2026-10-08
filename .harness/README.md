@@ -1,60 +1,53 @@
 # WebFit Engineering Harness
 
-Este diretório é o harness de engenharia do WebFit Desktop. Organiza contexto, governança, prompts, templates, integrações e evidências sem criar uma segunda fonte de requisitos ou decisões.
+O harness conduz demandas com exatamente quatro fases principais pelo entrypoint $webfit-task:
 
-O modelo decisório está em [AUTONOMY-POLICY.md](AUTONOMY-POLICY.md): escolhas justificáveis podem avançar como `AGENT-PROVISIONAL`, sempre visíveis e sujeitas a validação humana posterior; condições ASK-FIRST continuam exigindo decisão prévia.
+```mermaid
+flowchart TD
+    D[Demanda / Plane] --> A[1. DISCOVERY]
+    A --> B[2. PLAN]
+    B --> C[3. EXECUÇÃO]
+    C --> R[4. CODE REVIEW]
+    R --> S[READY TO SHIP]
+    S --> G[Git / PR / Release — autorização humana específica]
+```
 
-## Interação humana
+READY TO SHIP é resultado técnico, não quinta fase nem autorização para publicar. A invocação explícita autoriza as quatro fases no escopo, sem pedir “Posso implementar?” após Plan aderente. Decisões materiais e operações sensíveis não autorizadas bloqueiam só o trabalho dependente. Aceite final, dados reais e gates de produto permanecem humanos.
 
-O [HUMAN INTERACTION CONTRACT](HUMAN-INTERACTION-CONTRACT.md) rege a comunicação: **Concise does not mean context-free.** DISCOVERY investiga produto em rodadas de 2–4 perguntas relacionadas; DECISION explica origem, opções e impacto antes da pergunta; EXECUTION comunica ação, resultado, evidência e próximo passo de forma breve. DEC-038 e os gates continuam válidos; autonomia técnica não substitui discovery de comportamento de produto. A revisão anterior a `READY FOR IMPLEMENTATION` também verifica se a especificação é compreensível para o humano.
+## Responsabilidades internas
 
-## Estado
+| Fase | Responsabilidades absorvidas | Resultado |
+|---|---|---|
+| Discovery | Intake, Plane, pesquisa, contexto local, Specification e Clarify | DISCOVERY COMPLETE ou bloqueio concreto |
+| Plan | Arquitetura/ADR quando necessário, plano, checklist, tarefas, análise e Scope Check | PLAN APPROVED BY SCOPE ou PLAN REQUIRES HUMAN DECISION |
+| Execução | Implement, convergência interna, testes e correções no escopo | EXECUTION COMPLETE ou BLOCKED |
+| Code Review | Verification, review independente, segurança/UI condicionais e Evidence | REVIEW PASSED / WITH WARNINGS / CHANGES REQUIRED |
 
-PROJECT STAGE: IMPLEMENTING. G5 está em execução autorizada pela DEC-045, com produto em `src/` e `src-tauri/` e somente dados fictícios; G5/G6/G7 ainda não foram concluídos. Consulte [o checkpoint canônico](../docs/project/status.md) para o estado operacional, autorizações e próxima ação. Spec Kit e `$webfit-task` estão integrados. Plane permanece como camada controlada de gestão do trabalho e Obsidian como navegação sobre os mesmos arquivos; a disponibilidade de cada integração é descrita em seu contrato, sem ativação automática por este README.
+Essas responsabilidades e prompts especializados não são etapas obrigatórias separadas. LIGHT/STANDARD/STRICT são profundidades das quatro fases: LIGHT usa Discovery curta/Plan inline, STANDARD contexto/plano suficientes, STRICT reforça riscos, autorização específica e review. Banco/saúde/autenticação continuam STRICT.
 
-## Fluxo oficial
+## Iniciar ou retomar
 
-IDEA / DEMANDA
-↓ INTAKE
-↓ PLANE INTAKE / WORK ITEM, para STANDARD ou STRICT reais
-↓ RESEARCH, quando necessário
-↓ CONTEXTO LOCAL: ID + BRANCH ATUAL + PRESERVAÇÃO (DEC-054)
-↓ $speckit-specify
-↓ $speckit-clarify, quando necessário
-↓ ARCHITECTURE REVIEW / ADR, quando necessário
-↓ $speckit-plan
-↓ $speckit-checklist, quando apropriado
-↓ $speckit-tasks
-↓ $speckit-analyze
-↓ HUMAN GATE
-↓ $speckit-implement
-↓ $speckit-converge
-↓ HARNESS VERIFICATION
-↓ HARNESS REVIEW
-↓ SECURITY GATE, quando aplicável
-↓ UI/UX GATE, quando aplicável
-↓ EVIDENCE
-↓ HUMAN APPROVAL
-↓ COMMIT / PR / RELEASE
+```text
+$webfit-task Quero corrigir [problema].
+$webfit-task WEBFIT-12
+```
 
-Uma alteração documental simples pode ser LIGHT; uma feature comum é STANDARD; arquitetura, autenticação, dados sensíveis, migração, infraestrutura ou segurança são STRICT. Mudança sem UI não requer UI Review, documentação pura não requer Implementation e autenticação requer Security Review.
+Investigar, classificar e conduzir no mesmo chat. STANDARD/STRICT obtêm ID Plane antes dos artefatos formais, buscando item existente para evitar duplicação; LIGHT dispensa Plane. Retomada começa na primeira atividade pendente, com artefatos/aprovações válidos.
 
-## Uso rápido
+Planejamento persistente novo prefere um único specs/WEBFIT-XX/task.md conforme [template](templates/task.md). Não criar árvore de specs no harness, converter nem apagar históricos. Spec Kit permanece ferramenta opcional conforme [contrato](integrations/spec-kit.md), sem cadeia completa obrigatória.
 
-Use `$webfit-task` para uma demanda, `$webfit-checkpoint` para retomar/salvar e `$webfit-verificar` para verificar mudanças. As auxiliares cumprem responsabilidades já existentes e não acrescentam gates. Ver [skills locais](integrations/codex-skill.md).
+## Acompanhamento no chat
 
-Comece pela primeira etapa pendente, conforme o checkpoint, e aplique a [condução proporcional](GOVERNANCE.md#condução-proporcional-e-retomada). O diagrama acima descreve o ciclo completo de uma demanda; ele não manda reiniciar o ciclo a cada conversa. LIGHT documental usa fonte, alteração, revisão e evidência breve. Nas demais demandas, reutilize artefatos válidos e execute as skills da fase atual no mesmo chat. Perguntas e gates condicionais exigem um motivo concreto.
+**Phase Summary — Resumo Executivo por Fase:** ao concluir cada fase STANDARD/STRICT, apresentar resumo verificável imediatamente antes de avançar, com status/ID Plane, conteúdo da fase, riscos/limites e documentação realmente criada/modificada. LIGHT breve pode agrupar alteração/revisão. Bloqueio recebe resumo parcial; trabalho demorado recebe progresso útil.
 
-1. Ler PROJECT-STATE.md, GOVERNANCE.md e os documentos canônicos relacionados.
-2. Classificar a demanda, aplicar a matriz de autonomia e distinguir fato, inferência, `AGENT-PROVISIONAL` e `NEEDS-HUMAN-DECISION`.
-3. Executar toda demanda na branch atual, com Git controlado por Maycon (DEC-054). Preservar alterações preexistentes; nome/base da branch e árvore suja não bloqueiam o fluxo.
-4. Usar `$webfit-task` como entrypoint e as skills oficiais `$speckit-*` para criar ou atualizar os artefatos canônicos da feature.
-5. Obter o gate humano antes de condições ASK-FIRST; decisões provisórias não sensíveis podem sustentar especificação, plano e review.
-6. Executar verificação, review independente e gates condicionais.
-7. Produzir um Evidence Report antes da aprovação final.
+Resumos são informativos, sem fases, gates, arquivos exclusivos ou escritas Plane extras. O avanço no escopo segue automático. Conteúdo e estados PASS/FAIL/WARNING/NOT RUN/NOT APPLICABLE estão no [contrato de interação](HUMAN-INTERACTION-CONTRACT.md#phase-summary--resumo-executivo-por-fase).
 
-Os prompts são instruções reutilizáveis, não agentes autônomos. As integrações descrevem contratos e status; nenhuma integração externa é ativada por este harness.
+## Controles e contexto
 
-Produto, requisitos, regras, UX, arquitetura e ADRs existentes continuam em docs/. A separação completa está em [integrations/spec-kit.md](integrations/spec-kit.md). O `README.md` é o entrypoint humano principal; `docs/` e `specs/` permanecem navegáveis pelo Obsidian. Plane gerencia trabalho; Obsidian navega e organiza conhecimento; MCP integra; Mantis e Impeccable são gates especializados. Não copiar conteúdo de `.harness/` para `docs/` só para torná-lo visível, não instalar plugins comunitários nem ativar Sync automaticamente, e não criar nova estrutura documental sem necessidade. Alterações feitas no Obsidian são alterações reais nos arquivos do repositório e seguem a política normal do Git. Plane não substitui a fonte canônica nem recebe cópias integrais de Specification, Plan, Tasks ou Evidence.
+- [Governança](GOVERNANCE.md): fontes, autoridade, Scope Check, retomada e Git humano.
+- [Autonomia](AUTONOMY-POLICY.md) e [interação](HUMAN-INTERACTION-CONTRACT.md): decisões provisórias visíveis, validação em lote, ASK-FIRST e comunicação.
+- [Segurança](security/POLICY.md): dados fictícios, backend autorizado, secrets protegidos e review.
+- [Integrações](integrations/README.md): Plane gestão, Obsidian conhecimento nos mesmos arquivos, Impeccable condicional, Mantis preparado e DefectDojo futuro. Mermaid é opcional para compreender fluxos/arquitetura, sem instalação/fase.
+- [Skills locais](integrations/codex-skill.md): webfit-task, webfit-checkpoint e webfit-verificar.
 
-O contrato da integração está em [integrations/obsidian.md](integrations/obsidian.md). A configuração local existente em `.obsidian/` é recomendada fora do Git enquanto não houver decisão explícita para compartilhá-la; ela não deve ser removida ou sobrescrita automaticamente.
+PROJECT STAGE: IMPLEMENTING; G5 autorizado pela DEC-045 com dados fictícios; G5/G6/G7 não concluídos. [Checkpoint](../docs/project/status.md) guarda estado/próxima ação. Todas as demandas usam branch atual; Maycon controla Git (DEC-054). Sem scheduler/loop persistente ativo. Fonte desta refatoração: [DEC-057](../docs/project/decision-log.md#dec-057--harness-com-quatro-fases).

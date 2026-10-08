@@ -2,7 +2,7 @@
 
 Status: vigente por solicitação humana de 2026-09-17; comunicação e continuidade refinadas por solicitação de Maycon em 2026-10-07. Escopo: conversas do harness e da skill local `webfit-task`; não altera requisitos, arquitetura, autoridades ou gates do WebFit.
 
-**Concise does not mean context-free.** Status e execução devem ser concisos; decisões precisam de contexto suficiente para a pessoa compreender sua escolha. Nunca reduzir uma decisão humana a uma pergunta sem explicar o necessário. O objetivo da `webfit-task` é chegar a uma especificação que o humano compreenda e considere correta, além de produzir artefatos Spec Kit.
+**Concise does not mean context-free.** Status e execução devem ser concisos; decisões precisam de contexto suficiente para a pessoa compreender sua escolha. Nunca reduzir uma decisão humana a uma pergunta sem explicar o necessário. O objetivo da `webfit-task` é chegar a uma especificação que o humano compreenda e considere correta, com registro proporcional, sem cadeia obrigatória de artefatos Spec Kit.
 
 ## Modos de interação
 
@@ -60,7 +60,7 @@ DEC-038 continua válida: matriz confiança × impacto, AUTO, `AGENT-PROVISIONAL
 
 Autonomia técnica não elimina discovery de produto. Não reabra comportamento já aprovado; se houver mudança ou lacuna relevante, investigue antes de consolidar. Recomendação não equivale a aprovação. Um detalhe com efeito percebido deve ter esse efeito analisado antes de ser tratado como implementação. Não é obrigatório perguntar sobre toda microescolha; é obrigatório compreender o comportamento relevante.
 
-## Qualidade antes de READY FOR IMPLEMENTATION
+## Qualidade no Plan Scope Check
 
 Na revisão de planejamento, verifique com evidências nas conversas e nos artefatos:
 
@@ -70,7 +70,7 @@ Na revisão de planejamento, verifique com evidências nas conversas e nos artef
 - critérios de aceite compreensíveis e verificáveis;
 - ausência de suposições silenciosas sobre produto.
 
-Se houver lacuna material, retorne ao discovery/decisão pertinente antes de declarar `READY FOR IMPLEMENTATION`. Pendências técnicas provisórias permitidas continuam seguindo Human Decision Review. Esta checagem integra os gates existentes: não cria aprovação extra, não equivale a Implementation Approval e não enfraquece Sensitive Change Approval ou Final Approval.
+Se houver lacuna material, retorne ao discovery/decisão pertinente antes de declarar `PLAN APPROVED BY SCOPE`. Pendências técnicas provisórias não bloqueantes podem seguir para validação humana em lote no aceite final. Esta checagem interna não cria aprovação extra; pedido explícito suficiente autoriza execução no escopo. Aprovações específicas para mudanças sensíveis, domínio e aceite final permanecem.
 
 ## Saída para o humano
 
@@ -90,10 +90,49 @@ Exemplo vigente após DEC-054: uma nova demanda de UI compartilha a branch atual
 
 Em trabalho já autorizado, avance até concluir o escopo ou alcançar um bloqueio real; não encerre o turno apenas para pedir a invocação da próxima skill ou anunciar uma transição de fase. Faça perguntas somente sobre lacunas materiais que ainda não tenham resposta. Agrupe decisões relacionadas dentro dos gates existentes, com o escopo de cada autorização claro. Enquanto uma resposta estiver pendente, continue o trabalho independente permitido. Use atualizações breves sobre resultado, incerteza e próximo passo, sem transformar o fluxo interno em uma sequência de aprovações.
 
-Mostre o que ajuda a compreender, decidir, acompanhar e validar: progresso breve, significado da etapa, motivo da necessidade e decisão necessária. Mantenha IDs internos, logs extensos, listas enormes de gates e raciocínio operacional nos artefatos apropriados. Cite um ID/ADR ou detalhe técnico quando ele esclarecer origem, evidência ou ação necessária. Não oculte bloqueadores, limitações ou decisões provisórias relevantes.
+Mostre o que ajuda a compreender, decidir, acompanhar e validar: progresso breve, significado da etapa, motivo da necessidade e decisão necessária. Identifique o ID Plane da demanda nos resumos; mantenha demais IDs internos desnecessários, logs extensos, listas enormes de gates e raciocínio operacional nos artefatos apropriados. Cite um ID/ADR ou detalhe técnico quando ele esclarecer origem, evidência ou ação necessária. Não oculte bloqueadores, limitações ou decisões provisórias relevantes.
+
+## Phase Summary — Resumo Executivo por Fase
+
+Política autorizada por Maycon em 2026-10-08: documentação completa nos arquivos, resumos verificáveis no chat e continuidade automática. É saída das fases existentes, sem quinta fase, arquivo exclusivo de resumo ou Approval Gate adicional.
+
+### Momento e proporcionalidade
+
+STANDARD/STRICT: ao terminar cada fase, publicar seu resumo imediatamente no chat, antes de iniciar a seguinte; não juntar os quatro apenas no final. Preferir 5–10 linhas, título e bullets curtos em português brasileiro. STRICT pode detalhar riscos/controles e decisões sensíveis, sem secrets, dados pessoais ou clínicos.
+
+LIGHT: uma ação breve pode reunir resultados das fases numa mensagem curta de alteração/revisão, sem quatro relatórios extensos. Essa exceção não autoriza silêncio em trabalho demorado ou bloqueio. Retomadas resumem a fase efetivamente trabalhada, sem reconstruir fases válidas só para produzir mensagens.
+
+Bloqueio: emitir resumo parcial com status BLOCKED/decisão necessária, fatos confirmados, pendência e próxima ação, antes de pausar o dependente; não declarar conclusão. Continuar independente autorizado, sem “Posso continuar?” quando já houver autorização. Durante fases demoradas, informar progresso útil sem narrar cada comando ou repetir status vazio.
+
+### Conteúdo dos resumos
+
+| Fase | Cobertura proporcional obrigatória |
+|---|---|
+| Discovery Summary | Status; problema; comportamento atual; resultado esperado; escopo/componentes; risco; dúvidas/limites; documento criado/atualizado ou ausência |
+| Plan Summary | Status; abordagem; arquivos/componentes; mudanças funcionais; impacto em banco/segurança/integrações; testes previstos; riscos/decisões; Plan Scope Check; documento |
+| Execution Summary | Status; implementação efetiva; arquivos criados/modificados; comportamento; testes executados/resultados; pendências do Plan; desvios/limites |
+| Code Review Summary | Status geral; Correctness; testes/build/typecheck/lint; Security/UI aplicáveis; findings identificados/corrigidos/abertos; riscos/limites; resultado final conforme governança |
+
+Usar título com ID Plane quando houver, por exemplo **WEBFIT-12 — PLAN COMPLETE**; sem ID, não inventá-lo. O título comunica progresso, enquanto o resultado de autoridade permanece o Plan Scope Check. Resumos não autorizam escritas extras nem mudança de estado por mensagem; sincronização Plane mantém seu contrato.
+
+### Evidência e estados
+
+- **PASS:** avaliação/check realizado, ou evidência anterior válida explicitamente referenciada, satisfez o critério.
+- **FAIL:** avaliação/check realizado falhou; indicar impacto e próximo passo.
+- **WARNING:** ressalva não impeditiva com risco/limite; não esconder finding bloqueante.
+- **NOT RUN:** aplicável mas não executado/verificado; informar motivo e efeito na prontidão.
+- **NOT APPLICABLE:** fora do escopo, com justificativa; N/A interno deve aparecer com esse significado claro no chat.
+
+Teste planejado não é executado; análise estática não é ensaio visual ou aprovação clínica. Nunca inventar execução, aceite, atualização documental ou prontidão. Resultado final: READY TO SHIP, REVIEW PASSED WITH WARNINGS ou CHANGES REQUIRED conforme governança, incluindo revisão independente e bloqueadores. Security/UI não verificados jamais recebem PASS por inferência.
+
+### Documentação atualizada
+
+Sempre que a fase gravar documentação, incluir bloco curto **Documentação atualizada**: nome/caminho clicável, criado/modificado e uma frase do conteúdo realmente gravado. Muitos arquivos são agrupados por Frontend, Backend, Banco, Testes ou Harness/documentação conforme aplicável; mostrar principais e apontar inventário completo existente. Não despejar caminhos, copiar Specification/Plan ou criar arquivo só para guardar o resumo.
+
+Documentos só consultados/reaproveitados sem edição não são atualizados; quando útil, declarar ausência de criação/modificação naquela fase. Documentação completa continua nas fontes existentes, com profundidade proporcional, sem duplicação no chat/Plane.
 
 ## Integração e manutenção
 
-Aplicar na skill local e nos prompts de intake, planejamento, decisão, execução e review. O Spec Kit permanece a fonte operacional dos artefatos; não modificar suas skills oficiais nem duplicar seus workflows. O agrupamento de perguntas orienta o discovery do harness; ao executar uma skill oficial, respeitar seu protocolo de perguntas e fornecer o contexto humano necessário sem alterar a skill.
+Aplicar na skill local e nos prompts de intake, planejamento, decisão, execução e review. As quatro fases são orquestradas por webfit-task; Spec Kit permanece disponível para artefatos detalhados quando úteis ou solicitado. Não modificar suas skills oficiais nem impor seu workflow completo por rotina. O agrupamento de perguntas orienta o discovery do harness; ao executar uma skill oficial, respeitar seu protocolo de perguntas e fornecer o contexto humano necessário sem alterar a skill.
 
 Fonte: solicitação humana do HUMAN INTERACTION CONTRACT nesta tarefa. Ver [governança](GOVERNANCE.md), [autonomia](AUTONOMY-POLICY.md) e [evidência da atualização](evidence/human-interaction-contract-2026-09-17.md).

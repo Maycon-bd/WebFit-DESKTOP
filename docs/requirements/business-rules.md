@@ -1,5 +1,23 @@
 # Regras de negócio
 
+## Licenciamento offline — WEBFIT-10
+
+DEC-058 aprova fluxo/tipos; incremento ainda não implementado. Não aprova detalhes técnicos/schema por inferência.
+
+| ID | Regra | Status/origem |
+|---|---|---|
+| RN-LIC-001 | somente autorização de Maycon válida para instalação/operação libera seus efeitos; validação backend | direção aprovada; protocolo pendente |
+| RN-LIC-002 | tipos têm efeitos separados; reimportar autorização consumida não repete efeito | tipos aprovados; consumo pendente |
+| RN-LIC-003 | ativação inicial só prepara banco vazio; importar não limpa banco preparado | aprovado DEC-058 |
+| RN-LIC-004 | credencial administrativa por instalação; nenhuma senha mestra/chave privada no instalador; senha não persistida em texto claro | DEC-058/RN-AUT-001; envelope pendente |
+| RN-LIC-005 | transferência/recuperação requer destino autorizado e backup validado; sem promessa de desativação remota da origem offline | intenção aprovada; identidade/consumo pendentes |
+| RN-LIC-006 | suporte: uma sessão de até 4 h, encerrada ao sair/bloquear; sem conta permanente criada por autorização temporária | aprovado por Maycon, 2026-10-08; protocolo pendente |
+| RN-LIC-007 | reinicialização mantém licença/acessos e limpa consultório; autorização própria, backup validado e confirmação separados; falha/cancelamento preserva dados e consumo não é reaberto | aprovado por Maycon; detalhes técnicos pendentes |
+| RN-LIC-008 | cópia de suporte usa snapshot protegido/isolado; retorno não sobrescreve trabalho posterior | adiada para outra demanda por Maycon; RN-BKP-005..007 preservadas |
+
+Atualizar/reparar não redefine contas nem consome nova ativação. Chaves de licença/updater separadas. Solicitação/logs sem senha, verificador, payload secreto ou conteúdo clínico; auditoria com metadados seguros. Controles de segurança derivados precisam de critérios/testes antes da implementação.
+
+
 **Status:** regras do primeiro incremento aprovadas em 2026-08-20.
 
 ## Autenticação
@@ -44,6 +62,8 @@
 | RN-DRF-003 | rascunho pertence ao usuário e espaço, só aparece autenticado e é removido ao concluir ou descartar | aprovado por Maycon em 2026-09-10 |
 | RN-DRF-004 | rascunhos automáticos abandonados são removidos após 30 dias; múltiplos rascunhos usam identificadores próprios | aprovado por Maycon em 2026-09-10 |
 | RN-DRF-005 | rascunho automático de formulário é temporário e não integra o histórico clínico; prescrição explicitamente salva em estado rascunho é persistente, versionável e não expira pela regra de 30 dias | aprovado por Maycon em 2026-09-10 |
+| RN-DRF-006 | rascunho automático de formulário longo só é oferecido ao reabrir o mesmo contexto de formulário para o usuário autenticado; não é apresentado numa lista global fora desse contexto | aprovado por Maycon em 2026-10-08 (WEBFIT-7) |
+| RN-DRF-007 | descartar remove somente o rascunho automático correspondente; formulário novo fica vazio, edição volta aos valores persistidos conforme RF-PAT-003, e prescrição clínica persistente segue RN-DRF-005 | aprovado por Maycon em 2026-10-08 (WEBFIT-7) |
 
 ## Prescrição e cardápio
 

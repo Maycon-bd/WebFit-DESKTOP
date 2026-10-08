@@ -1,6 +1,8 @@
 <!--
 Sync Impact Report
-- Version change: template -> 1.0.0
+- Version change: 1.0.0 -> 2.0.0 (DEC-057, pedido explícito de Maycon, 2026-10-08)
+- Governance: quatro fases; Spec Kit opcional; Scope Check substitui Human Gate genérico
+- Official skills/scripts/templates/workflow preserved; local compact task template added
 - Added principles: I through X (first project Constitution)
 - Added sections: Engineering Constraints; Development Workflow and Quality Gates
 - Removed sections: none
@@ -16,7 +18,7 @@ Sync Impact Report
 Toda mudança não trivial MUST possuir contexto, escopo, requisitos identificados e critérios de aceite suficientes antes da implementação. Nenhum agente pode iniciar implementação de requisito sem ID, status aprovado e rastreabilidade. Descobertas e propostas MUST permanecer explicitamente distintas de requisitos aprovados.
 
 ### II. Evidence Before Completion
-Produção de código, por si só, não caracteriza conclusão. Build, testes, critérios de aceite, Verification independente, Review independente e Evidence Report MUST ser aplicados proporcionalmente ao risco e registrar também limitações, itens não verificados e riscos residuais. Evidência MUST apontar requisito e versão ou commit quando existirem.
+Produção de código, por si só, não caracteriza conclusão. Build, testes, critérios de aceite, verificação objetiva, Review independente e Evidence no Code Review MUST ser aplicados proporcionalmente ao risco e registrar também limitações, itens não verificados e riscos residuais. Evidência MUST apontar requisito e versão ou commit quando existirem.
 
 ### III. Decisions Are Explicit
 Decisões materiais de produto, arquitetura, segurança, dados, integração e processo MUST ser registradas no Decisions Register e, quando arquiteturais, em ADR. Inferências, hipóteses e recomendações MUST NOT ser apresentadas como decisões aceitas. Estados `ACCEPTED`, `AGENT-PROVISIONAL`, `NEEDS-HUMAN-DECISION`, `REJECTED` e `SUPERSEDED` MUST preservar autoridade e histórico.
@@ -46,18 +48,18 @@ A IA MAY pesquisar, recomendar, decidir provisoriamente, planejar, implementar e
 
 - O projeto permanece Windows-first, local e offline no MVP; mudanças nessa direção exigem decisão explícita.
 - Dados de saúde são sensíveis. Proteção local, autorização, auditoria, backup, restauração, retenção e migração MUST ser avaliados quando a mudança tocar dados.
-- A composição Tauri 2, React, TypeScript, Vite, Rust e SQLite está aprovada somente para spike pelo ADR-0001 e MUST NOT ser tratada como arquitetura de produção antes da evidência e aprovação previstas.
+- A direção Tauri 2, React, TypeScript, Vite, Rust e SQLite/SQLCipher/DPAPI foi aceita no ADR-0001/DEC-042; execução G5 autorizada por DEC-045 com dados fictícios. Spike MUST permanecer separado; G5/G6/G7 e dados reais não são aprovados pela refatoração do harness.
 - Dependências novas, schema, migrations, autenticação, integrações externas, infraestrutura, produção e mudanças arquiteturais materiais são condições ASK-FIRST.
 - Valores monetários MUST usar inteiros em centavos; instantes persistidos MUST usar UTC; consultas MUST ser parametrizadas; conexões SQLite MUST habilitar foreign keys; backup de banco ativo MUST usar snapshot consistente e restauração MUST verificar integridade.
 - Código, logs, documentos e evidências MUST NOT conter segredos nem dados clínicos reais.
 
 ## Development Workflow and Quality Gates
 
-- AGENTS.md fornece contexto permanente e regras operacionais; o harness conduz intake, investigação, decisões, gates, Verification, Review e Evidence; o Spec Kit conduz Constitution, Specification, Clarify, Plan, Checklist, Tasks, Analyze, Implement e Converge.
-- O nível LIGHT, STANDARD ou STRICT MUST ser escolhido conforme risco e impacto, sem dispensar a governança. Segurança, autorização, dados clínicos, privacidade, financeiro, schema, migrations, infraestrutura, arquitetura e integrações sensíveis exigem STRICT.
+- AGENTS.md fornece contexto permanente e regras operacionais; harness/webfit-task conduzem exatamente Discovery, Plan, Execução e Code Review. Spec Kit mantém Constitution/ferramentas oficiais opcionais dentro das fases. Requisitos aprovados continuam canônicos; preferir registro persistente único proporcional, com históricos preservados.
+- LIGHT, STANDARD ou STRICT MUST definir profundidade das mesmas quatro fases pelo risco, sem pipelines paralelos ou dispensa de governança. Segurança, autorização, dados clínicos, privacidade, financeiro, schema, migrations, infraestrutura, arquitetura e integrações sensíveis exigem STRICT.
 - Clarify e interrupção humana SHOULD ocorrer somente quando a ausência for material, ASK-FIRST se aplicar, alternativas forem equilibradas ou a decisão for sensível. Alternativas claramente superiores e permitidas por DEC-038 SHOULD seguir como `AGENT-PROVISIONAL` registrado.
-- Antes de implementação, artefatos aplicáveis MUST passar por análise de consistência e pelo Human Gate definido no harness. Após implementação, Converge, Verification, Review, gates condicionais e Evidence MUST ser executados conforme o risco.
-- Security Gate depende de código e risco relevante; UI/UX Gate depende de interface existente; loops dependem de checks objetivos e implementação real. Enquanto essas condições não existirem, permanecem `PREPARED — NOT ACTIVE`.
+- Antes de executar, Plan MUST passar por Scope Check: pedido, aceite, proporcionalidade, consistência e autorizações específicas suficientes. Invocação explícita autoriza desenvolvimento nesse escopo, sem Human Gate genérico. Ação sensível não autorizada/decisão material MUST obter decisão humana antes da operação. Convergência é interna à Execução; checks, Review independente, segurança/UI condicionais e Evidence integram Code Review.
+- Revisão de segurança MUST ocorrer conforme risco; falta de Mantis não elimina checks disponíveis. UI usa Impeccable disponível condicionalmente. READY TO SHIP MUST demonstrar prontidão técnica, sem representar aceite final, Done ou Git/publicação. Loops persistentes/scheduler continuam inativos; autocorreção interna limitada pelo harness.
 - Nenhum fluxo automatizado MAY fazer commit, push, deploy ou release sem aprovação humana explícita.
 
 ## Governance
@@ -68,6 +70,6 @@ Quando houver conflito, aplicar a precedência: (1) decisão humana explicitamen
 
 Alterações nesta Constitution exigem decisão humana explícita, justificativa, análise de impacto e atualização da versão. Agentes MUST NOT alterá-la silenciosamente. Mudança incompatível de princípio ou governança incrementa MAJOR; princípio ou seção normativa nova, ou expansão material compatível, incrementa MINOR; esclarecimento sem mudança semântica incrementa PATCH.
 
-Conformidade constitucional MUST ser revisada durante Specification, Plan, análise pré-implementação, Review e Evidence. Exceções exigem decisão humana registrada; não podem ser criadas por conveniência local.
+Conformidade constitucional MUST ser revisada proporcionalmente nas quatro fases, sem documentos ou etapas independentes obrigatórios. Exceções exigem decisão humana registrada; não podem ser criadas por conveniência local.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-11 | **Last Amended**: 2026-09-11
+**Version**: 2.0.0 | **Ratified**: 2026-09-11 | **Last Amended**: 2026-10-08 (DEC-057)

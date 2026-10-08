@@ -1,5 +1,34 @@
 # Critérios e testes de aceite
 
+## Licenciamento offline — WEBFIT-10
+
+**Status:** cenários propostos derivados de DEC-058; nenhum executado. Fluxo/tipos aprovados, detalhes de segurança sujeitos ao Plan. Não representam aceite humano da entrega ou garantia contra clonagem offline.
+
+| ID | Requisito | Cenário e resultado esperado |
+|---|---|---|
+| TA-LIC-001 | RF-LIC-001 | banco vazio aguarda ativação; Setup direto sem autorização válida negado pelo backend |
+| TA-LIC-002 | RF-LIC-001 | solicitar/emitir/importar prepara usuários; reabrir offline permite login de Maycon com credencial daquela instalação |
+| TA-LIC-003 | RF-LIC-001 | adulteração, versão incompatível ou outro destino rejeitados sem alterar dados/usuários |
+| TA-LIC-004 | RF-LIC-001 | repetição não reaplica efeito; interrupção/falha sem preparação parcial; banco preparado não é apagado nem tem credencial trocada por chave inicial |
+| TA-LIC-005 | RF-LIC-001/004 | instalador sem segredo de emissão/senha mestra; autorização sem senha recuperável; login errado negado; logs sem segredo/verificador/conteúdo clínico |
+| TA-LIC-006 | RF-LIC-002 | destino autorizado recupera backup validado; inválido/cancelado preserva estado; restauração preserva identidade do destino/consumo conforme contrato |
+| TA-LIC-007 | RF-LIC-003 | uma sessão até 4 h; logout/bloqueio/limite encerram; autorização consumida não reabre acesso; relógio controlado e limite offline documentado |
+| TA-LIC-008 | RF-LIC-004 | recuperação específica troca credencial, antiga deixa de autenticar; dados preservados e senha anterior não revelada; outro tipo não faz reset |
+| TA-LIC-009 | RF-LIC-005 | importação não limpa; cancelar/falhar backup preserva; confirmar em fixture limpa consultório, mantém licença/acessos/consumo e tem recuperação exercitada |
+| TA-LIC-010 | RF-LIC-001..005 | atualizar/reparar preserva dados/licença/credenciais; testes existentes não apagados automaticamente; nova instalação segue ativação inicial |
+| TA-LIC-011 | RF-LIC-001 | aguardo/carregamento/erro/sucesso reais; teclado/rótulos/foco e recuperação sem exibir segredos |
+| TA-LIC-012 | RF-LIC-006 | ADIADO para outra demanda: cópia consistente/protegida e retorno sem perder trabalho posterior; fora de WEBFIT-10 |
+
+
+## RF-UX-004 — identidade visual (Maycon, 2026-10-08)
+
+| ID | Critério |
+|---|---|
+| TA-UX-BRAND-001 | PNG sem texto, quadrado/transparente; ICO multirresolução da mesma identidade |
+| TA-UX-BRAND-002 | Executável/janela, atalhos área de trabalho/menu Iniciar e instalador/desinstalador usam símbolo após construção/atualização; cache Windows pode atrasar troca |
+| TA-UX-BRAND-003 | Acesso/lateral/Sobre/favicon usam símbolo com proporção e identificação acessível; lateral recolhida oculta sua marca; imagem não recebe foco |
+| TA-UX-BRAND-004 | Logo profissional, ações, foco/controles, dados, autorização, versão/identificador e spike preservados; checks existentes passam |
+
 ## Refinamento proposto WEBFIT-5
 
 TA-PAT-008..016 / RF-PAT-007: cadastro mínimo, CPF opcional múltiplo, rejeição dos três obrigatórios ausentes, validação dos opcionais informados, sexo por seleção acessível, edição preservando ID, migração/backup anterior e atual, sexo legado e responsável opcional. Cenários em [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md). Preparação autorizada por Maycon em 2026-10-07; aprovação funcional/execução e D-PAT-001/002 pendentes. Nenhum critério executado; não substitui ainda TA-PAT-001..007.
@@ -27,6 +56,12 @@ TA-UX-002 (RF-UX-002, aprovado por Maycon em 2026-10-07): abrir informações po
 | TA-DRF-002 | RF-DRF-001 | navegar por fluxo seguro antes dos 30 segundos e confirmar salvamento; simular falha e verificar aviso sem perda da última versão válida ou falso sucesso | aprovado por Maycon em 2026-09-10 |
 | TA-DRF-003 | RF-DRF-001 | confirmar que senha, login, administração, confirmações e backup não geram rascunhos e que rascunho automático abandonado é removido após 30 dias | aprovado por Maycon em 2026-09-10 |
 | TA-DRF-004 | RF-DRF-001/RF-PRE-004 | abandonar o formulário de prescrição e expirar seu autosave sem remover a prescrição explicitamente salva em estado rascunho nem seu histórico | aprovado por Maycon em 2026-09-10 |
+| TA-DRF-005 | RF-DRF-002 | em cada contexto longo aprovado (perfil, cadastro/edição de paciente e prescrição), salvar um rascunho e sair; somente ao abrir o mesmo contexto autenticado aparece a pergunta, sem faixa/lista global na tela de pacientes ou exposição em outro registro | aprovado por Maycon em 2026-10-08 — WEBFIT-7 |
+| TA-DRF-006 | RF-DRF-002 | escolher “Restaurar” e verificar que os campos do formulário correspondente recebem os valores do rascunho e continuam editáveis | aprovado por Maycon em 2026-10-08 — WEBFIT-7 |
+| TA-DRF-007 | RF-DRF-002/RN-DRF-007 | escolher “Descartar” para cadastro novo; somente o autosave correspondente é removido e os campos ficam vazios para novo registro | aprovado por Maycon em 2026-10-08 — WEBFIT-7 |
+| TA-DRF-008 | RF-DRF-002/RN-DRF-007 | escolher “Descartar” ao editar; somente o autosave correspondente é removido, os dados persistidos são reapresentados e alterações não confirmadas não substituem o registro | aprovado por Maycon em 2026-10-08 — WEBFIT-7 (preserva RF-PAT-003/TA-PAT-004) |
+| TA-DRF-009 | RF-DRF-002/RN-DRF-002 | simular falha ao carregar ou descartar e verificar mensagem de erro, ausência de falso sucesso e preservação da última versão válida e dos dados persistidos | aprovado por Maycon em 2026-10-08 — WEBFIT-7 |
+| TA-DRF-010 | RF-DRF-002 | modal operável por teclado e tecnologia assistiva; nomes “Sim, restaurar”/“Não, descartar”; foco permanece no modal até escolha explícita, Escape/clique externo não descartam e foco retorna ao formulário após a escolha | aprovado por Maycon em 2026-10-08 — WEBFIT-7 |
 | TA-PRE-001 | RF-PRE-001 | criar prescrição para paciente ativo, salvar rascunho e reabrir mantendo vínculo, autor e espaço | aprovado |
 | TA-PRE-002 | RF-PRE-002 | incluir alimento TBCA por medida caseira convertida para gramas; usar TACO somente quando TBCA não possuir o item e mostrar a fonte | aprovado |
 | TA-PRE-003 | RF-PRE-003 | calcular item, refeição e cardápio com valores conhecidos por 100 g e confirmar totais sem arredondamento acumulado | aprovado |
@@ -88,3 +123,14 @@ RF-UX-003: comportamento definido por Maycon em 2026-10-07, execução/validaç�
 | TA-UX-NAV-006 | Salvar rascunho antes de destino; falha mantém dados/página e mostra erro; busy, must_change, logout e backend preservados | FR-006 |
 | TA-UX-NAV-007 | Todos novos controles por teclado/nome acessível/foco/estado; zero controles laterais focáveis quando oculta; zoom 200%, nome longo/janela reduzida | FR-008 |
 | TA-UX-NAV-008 | Tours pacientes/acesso não apontam a controles ocultos/errados, Pular/Ver tutorial funcionam; faixa/consulta por sessão e bloqueios de instalação não reiniciam ao recolher | FR-007 |
+
+## WEBFIT-9 — faixa compacta e consulta durante uso
+
+| ID | Critério de aceite |
+|---|---|
+| TA-UPD-UI-003 | Nova versão publicada após login detectada na próxima consulta de 30 minutos ou retorno permitido; StrictMode/eventos simultâneos não duplicam request; cooldown de retorno um minuto |
+| TA-UPD-UI-004 | Offline não bloqueia trabalho; retry na mesma sessão; cleanup remove timers/listeners e resposta antiga não altera nova sessão; pausa durante instalação |
+| TA-UPD-UI-005 | Faixa global acima de lateral/conteúdo, texto de salvar antes de atualizar/reiniciar, Atualizar à direita, detalhes recolhidos, aproximadamente 48–56px em janela larga, quebra acessível em estreita/zoom 200% |
+| TA-UPD-UI-006 | Campos/foco/página preservados; instalação bloqueada durante edição/operação; adiamento da mesma versão por sessão, nova versão/login pode avisar; backup/assinatura/progresso/erro preservados |
+
+Aprovação de implementação: Maycon em 2026-10-08; D-UPD9-001 provisória, aceite final/Windows integrado pendentes.

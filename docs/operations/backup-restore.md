@@ -1,5 +1,12 @@
 # Backup e restauração
 
+## Licenciamento e suporte — WEBFIT-10 (desenho pendente)
+
+DEC-058 aprova transferência/recuperação com destino autorizado/backup validado; licença inicial não substitui restauração. Identidade/licença/consumo do destino não podem ser sobrescritos indevidamente pelo backup da origem; protocolo/migração pendentes. Reinicialização limpa consultório mantendo licença/acessos/consumo, após backup e confirmação separados; não autoriza apagar banco real.
+
+O código atual cria `.webfit-backup` a partir de snapshot e senha de recuperação; SQLCipher/DPAPI impedem tratar apenas o `.db` como pacote portátil. Credencial administrativa/licença não fornece a chave do banco. RF-LIC-006, cópia protegida para diagnóstico isolado, foi adiado por Maycon para outra demanda; não implementar/enviar dados reais neste escopo. Retorno de banco completo pode eliminar trabalho posterior ao snapshot: regra na demanda futura. [Registro e ADR](../../specs/WEBFIT-10/task.md).
+
+
 **Status:** política do MVP aprovada; implementação e criptografia dependem do spike.
 
 ## Objetivos

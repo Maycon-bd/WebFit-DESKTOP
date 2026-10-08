@@ -25,7 +25,7 @@ Worktree sujo não significa perda nem bloqueio por si só. DEC-054 mantém toda
 
 Recupere **Próxima ação exata**, artefatos da demanda, aprovações e bloqueios concretos. Se checkpoint, ADR e ledger divergirem, consulte a fonte canônica e exponha a diferença; não peça novamente uma aprovação já suficientemente comprovada.
 
-Em consulta, responda com fase, trabalho concluído, bloqueio e próxima ação, sem editar. Em pedido de continuação, siga pela primeira etapa pendente usando [webfit-task](../webfit-task/SKILL.md) quando houver demanda de engenharia. Não refaça Specify/Plan/Tasks válidos e não implemente produto antes da aprovação específica do G5. Questões pendentes bloqueiam somente trabalho dependente.
+Em consulta, responda com fase, trabalho concluído, bloqueio e próxima ação, sem editar. Em pedido de continuação, siga pela primeira etapa pendente usando [webfit-task](../webfit-task/SKILL.md) quando houver demanda de engenharia. Não refaça Discovery/Plan ou artefatos válidos. Retome uma das quatro fases pela atividade pendente, aplicando Scope Check e autorizações específicas existentes; G5 já autorizado por DEC-045 somente no escopo registrado. Pendências de domínio/sensíveis/finais não são aceitas pela retomada. Questões pendentes bloqueiam somente trabalho dependente.
 
 ## Salvar um checkpoint factual
 

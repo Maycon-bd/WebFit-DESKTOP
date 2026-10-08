@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { UpdatePanel } from "./UpdatePanel";
+import { DraftRecoveryDialog } from "./DraftRecoveryDialog";
 import {
   api,
   emptyPatient,
@@ -201,6 +202,8 @@ export default function App() {
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
   const [drafts, setDrafts] = useState<Draft[]>([]);
+  const [pendingDraft, setPendingDraft] = useState<Draft | null>(null);
+  const [checkingDraftContext, setCheckingDraftContext] = useState(false);
   const [patient, setPatient] = useState<Patient | null>(null);
   const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [prescription, setPrescription] = useState<PrescriptionPayload | null>(
@@ -213,6 +216,8 @@ export default function App() {
     payload: Patient | Profile | PrescriptionPayload;
   } | null>(null);
   const draftDirty = useRef(false);
+  const lastDraftContext = useRef<string | null>(null);
+  const resolvedDraftId = useRef<string | null>(null);
   const token = session?.token ?? null;
   const tourScreen: TourId | null =
     page === "patients"
@@ -338,6 +343,69 @@ export default function App() {
       draftRef.current = { id: "profile", kind: "profile", payload: profile };
     else draftRef.current = null;
   }, [patient, prescription, prescriptionId, page, profile, token]);
+  const activeDraftContext =
+    prescription && patient
+      ? `prescription:${prescriptionId ?? `${patient.id}:new`}`
+      : patient
+        ? `patient:${patient.id ?? "new"}`
+        : page === "profile" && token
+          ? "profile"
+          : null;
+  const activeDraftKind =
+    prescription && patient
+      ? "prescription"
+      : patient
+        ? "patient"
+        : page === "profile" && token
+          ? "profile"
+          : null;
+  const activeDraftId =
+    session && activeDraftContext
+      ? `${session.user.id}:${activeDraftContext}`
+      : null;
+  const matchingDraft = drafts.find(
+    (draft) => draft.id === activeDraftId && draft.kind === activeDraftKind,
+  );
+  const visibleDraft =
+    matchingDraft && pendingDraft?.id === matchingDraft.id
+      ? pendingDraft
+      : null;
+  useLayoutEffect(() => {
+    if (activeDraftId !== lastDraftContext.current) {
+      lastDraftContext.current = activeDraftId;
+      resolvedDraftId.current = null;
+      setPendingDraft(null);
+    }
+    if (!activeDraftId || !token) {
+      setPendingDraft(null);
+      setCheckingDraftContext(false);
+      return;
+    }
+    setCheckingDraftContext(true);
+    let current = true;
+    void api<Draft[]>(token, { op: "drafts" })
+      .then((availableDrafts) => {
+        if (!current) return;
+        setDrafts(availableDrafts);
+        const matching = availableDrafts.find(
+          (draft) =>
+            draft.id === activeDraftId && draft.kind === activeDraftKind,
+        );
+        if (matching && resolvedDraftId.current !== matching.id)
+          setPendingDraft(matching);
+        else setPendingDraft(null);
+        setCheckingDraftContext(false);
+      })
+      .catch((error) => {
+        if (current) {
+          setError(`Rascunho não consultado: ${errorMessage(error)}`);
+          setCheckingDraftContext(false);
+        }
+      });
+    return () => {
+      current = false;
+    };
+  }, [activeDraftId, activeDraftKind, token]);
   async function navigate(next: Page) {
     const result = await task(async () => {
       if (draftRef.current && draftDirty.current)
@@ -358,9 +426,6 @@ export default function App() {
       setNavigationFocus((previous) => previous + 1);
     }
   }
-  async function refreshDrafts() {
-    if (token) setDrafts(await api<Draft[]>(token, { op: "drafts" }));
-  }
   async function loggedIn(result: { token: string; user: User }) {
     setPatient(null);
     setPrescription(null);
@@ -373,40 +438,50 @@ export default function App() {
     setPage("patients");
     setDrafts(await api<Draft[]>(result.token, { op: "drafts" }));
   }
-  async function recover(draft: Draft) {
-    if (draftRef.current && draftDirty.current)
-      await api(token, { op: "save_draft", ...draftRef.current });
-    draftDirty.current = false;
-    if (draft.kind === "patient") {
-      setPage("patients");
-      setPatient(draft.payload as Patient);
-    } else if (draft.kind === "profile") {
-      setPage("profile");
-      setProfile(draft.payload as Profile);
-    } else {
-      const payload = draft.payload as PrescriptionPayload;
-      if (!payload.patientId) {
-        setError("Este rascunho não possui paciente associado.");
-        return;
+  async function restoreDraft(draft: Draft) {
+    const restored = await task(async () => {
+      draftDirty.current = false;
+      if (draft.kind === "patient") setPatient(draft.payload as Patient);
+      else if (draft.kind === "profile") setProfile(draft.payload as Profile);
+      else if (draft.kind === "prescription") {
+        const payload = draft.payload as PrescriptionPayload;
+        if (!patient || payload.patientId !== patient.id)
+          throw new Error("O rascunho não corresponde ao formulário aberto.");
+        setPrescription(payload);
+        setPrescriptionId(payload.prescriptionId ?? null);
+      } else {
+        throw new Error("O rascunho não corresponde a este formulário.");
       }
-      const restored = await api<Patient>(token, {
-        op: "patient",
-        id: payload.patientId,
-      });
-      setPatient(restored);
-      setPage("patients");
-      setPrescription(payload);
-      setPrescriptionId(payload.prescriptionId ?? null);
+      return true;
+    });
+    if (restored) {
+      resolvedDraftId.current = draft.id;
+      setPendingDraft(null);
     }
-    setDrafts(drafts.filter((d) => d.id !== draft.id));
+  }
+  async function discardDraft(draft: Draft) {
+    const discarded = await task(async () => {
+      await api(token, { op: "discard_draft", id: draft.id });
+      return true;
+    });
+    if (discarded) {
+      resolvedDraftId.current = draft.id;
+      setDrafts((current) => current.filter((item) => item.id !== draft.id));
+      setPendingDraft(null);
+      draftDirty.current = false;
+    }
   }
   if (!session)
     return (
       <main className="access-shell">
         <section className="access-intro">
-          <div className="wordmark">
-            webfit<span>desktop</span>
-          </div>
+          <img
+            className="system-logo"
+            src="/brand/webfit-icon.png"
+            alt="WebFit Desktop"
+            width="112"
+            height="112"
+          />
           <h1>
             Seu consultório.
             <br />
@@ -505,384 +580,390 @@ export default function App() {
       </main>
     );
   return (
-    <div className={`app-shell${sidebarOpen ? "" : " sidebar-collapsed"}`}>
-      <aside className="sidebar" id="consultorio-sidebar" hidden={!sidebarOpen}>
-        <div className="wordmark">
-          webfit<span>desktop</span>
-        </div>
-        <nav aria-label="Módulos do consultório">
-          <h2 className="workspace">Consultório</h2>
-          <button
-            aria-current={page === "patients" ? "page" : undefined}
-            onClick={() => void navigate("patients")}
-            disabled={busy || session.user.must_change}
-          >
-            Pacientes
-          </button>
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="account-controls">
+    <div className="application-frame">
+      {!session.user.must_change && (
+        <UpdatePanel
+          key={session.token}
+          token={session.token}
+          blocked={
+            busy ||
+            page !== "patients" ||
+            patient !== null ||
+            prescription !== null
+          }
+          run={task}
+        />
+      )}
+      <div className={`app-shell${sidebarOpen ? "" : " sidebar-collapsed"}`}>
+        <aside
+          className="sidebar"
+          id="consultorio-sidebar"
+          hidden={!sidebarOpen}
+        >
+          <img
+            className="system-logo"
+            src="/brand/webfit-icon.png"
+            alt="WebFit Desktop"
+            width="72"
+            height="72"
+          />
+          <nav aria-label="Módulos do consultório">
+            <h2 className="workspace">Consultório</h2>
             <button
-              ref={accountButton}
-              className="account-name"
-              aria-expanded={accountOpen}
-              aria-controls="account-options"
+              aria-current={page === "patients" ? "page" : undefined}
+              onClick={() => void navigate("patients")}
+              disabled={busy || session.user.must_change}
+            >
+              Pacientes
+            </button>
+          </nav>
+          <div className="sidebar-bottom">
+            <div className="account-controls">
+              <button
+                ref={accountButton}
+                className="account-name"
+                aria-expanded={accountOpen}
+                aria-controls="account-options"
+                onKeyDown={(event) => {
+                  if (event.key === "Escape" && accountOpen) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setAccountOpen(false);
+                  }
+                }}
+                onClick={() => setAccountOpen(!accountOpen)}
+                disabled={busy || session.user.must_change}
+              >
+                <strong>{session.user.name}</strong>
+                <small>
+                  {session.user.role === "ADMIN"
+                    ? "Administrador"
+                    : "Nutricionista"}
+                </small>
+              </button>
+              <button
+                className="settings-button"
+                aria-label="Configurações"
+                title="Configurações"
+                aria-current={
+                  ["settings", "audit", "backup"].includes(page)
+                    ? "page"
+                    : undefined
+                }
+                disabled={busy || session.user.must_change}
+                onClick={() => void navigate("settings")}
+              >
+                <NavigationIcon kind="settings" />
+              </button>
+            </div>
+            <div
+              id="account-options"
+              className="account-options"
+              hidden={!accountOpen}
               onKeyDown={(event) => {
-                if (event.key === "Escape" && accountOpen) {
+                if (event.key === "Escape") {
                   event.preventDefault();
                   event.stopPropagation();
                   setAccountOpen(false);
+                  accountButton.current?.focus();
                 }
               }}
-              onClick={() => setAccountOpen(!accountOpen)}
-              disabled={busy || session.user.must_change}
             >
-              <strong>{session.user.name}</strong>
-              <small>
-                {session.user.role === "ADMIN"
-                  ? "Administrador"
-                  : "Nutricionista"}
-              </small>
-            </button>
+              <button
+                disabled={busy || session.user.must_change}
+                aria-current={page === "access" ? "page" : undefined}
+                onClick={() => void navigate("access")}
+              >
+                Acesso
+              </button>
+              <button
+                disabled={busy || session.user.must_change}
+                aria-current={page === "profile" ? "page" : undefined}
+                onClick={() => void navigate("profile")}
+              >
+                Perfil profissional
+              </button>
+            </div>
             <button
-              className="settings-button"
-              aria-label="Configurações"
-              title="Configurações"
-              aria-current={
-                ["settings", "audit", "backup"].includes(page)
-                  ? "page"
-                  : undefined
+              disabled={busy}
+              onClick={() =>
+                void task(async () => {
+                  if (draftRef.current && draftDirty.current)
+                    await api(token, { op: "save_draft", ...draftRef.current });
+                  draftDirty.current = false;
+                  await api(token, { op: "logout" });
+                  setSession(null);
+                  setPatient(null);
+                  setPrescription(null);
+                  setProfile(emptyProfile);
+                  draftRef.current = null;
+                })
               }
-              disabled={busy || session.user.must_change}
-              onClick={() => void navigate("settings")}
+              data-tour="logout"
             >
-              <NavigationIcon kind="settings" />
+              Bloquear e sair
             </button>
           </div>
-          <div
-            id="account-options"
-            className="account-options"
-            hidden={!accountOpen}
-            onKeyDown={(event) => {
-              if (event.key === "Escape") {
-                event.preventDefault();
-                event.stopPropagation();
-                setAccountOpen(false);
-                accountButton.current?.focus();
-              }
+        </aside>
+        <main className="workspace-main" ref={workspace}>
+          <DraftRecoveryDialog
+            open={Boolean(visibleDraft)}
+            formLabel={
+              visibleDraft?.kind === "patient"
+                ? (visibleDraft.payload as Patient).id
+                  ? "edição de paciente"
+                  : "cadastro de paciente"
+                : visibleDraft?.kind === "profile"
+                  ? "perfil profissional"
+                  : visibleDraft
+                    ? "prescrição ou cardápio"
+                    : ""
+            }
+            savedAt={visibleDraft ? dateTime(visibleDraft.at) : ""}
+            savedAtIso={visibleDraft?.at ?? ""}
+            busy={busy}
+            onRestore={() => {
+              if (visibleDraft) void restoreDraft(visibleDraft);
             }}
-          >
+            onDiscard={() => {
+              if (visibleDraft) void discardDraft(visibleDraft);
+            }}
+          />
+          <div className="shell-toolbar">
             <button
-              disabled={busy || session.user.must_change}
-              aria-current={page === "access" ? "page" : undefined}
-              onClick={() => void navigate("access")}
+              className="menu-toggle"
+              type="button"
+              aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
+              title={sidebarOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={sidebarOpen}
+              aria-controls="consultorio-sidebar"
+              data-tour="navigation-toggle"
+              onClick={() => {
+                setAccountOpen(false);
+                setSidebarOpen(!sidebarOpen);
+              }}
             >
-              Acesso
-            </button>
-            <button
-              disabled={busy || session.user.must_change}
-              aria-current={page === "profile" ? "page" : undefined}
-              onClick={() => void navigate("profile")}
-            >
-              Perfil profissional
+              <NavigationIcon kind="menu" />
             </button>
           </div>
-          <button
-            disabled={busy}
-            onClick={() =>
-              void task(async () => {
-                if (draftRef.current && draftDirty.current)
-                  await api(token, { op: "save_draft", ...draftRef.current });
-                draftDirty.current = false;
-                await api(token, { op: "logout" });
+          {!session.user.must_change && tourScreen && (
+            <GuidedTour token={session.token} screen={tourScreen} />
+          )}
+          <div className="test-banner">
+            Ambiente de teste · dados fictícios · instalação local
+          </div>
+          {error && (
+            <div role="alert" className="message error">
+              {error}
+            </div>
+          )}
+          {notice && (
+            <div role="status" className="message success">
+              {notice}
+            </div>
+          )}
+          {busy && (
+            <div role="status" className="working">
+              Concluindo operação…
+            </div>
+          )}
+          {session.user.must_change ? (
+            <AccessPage
+              token={token}
+              user={session.user}
+              task={task}
+              onChanged={() => {
                 setSession(null);
                 setPatient(null);
                 setPrescription(null);
                 setProfile(emptyProfile);
                 draftRef.current = null;
-              })
-            }
-            data-tour="logout"
-          >
-            Bloquear e sair
-          </button>
-        </div>
-      </aside>
-      <main className="workspace-main" ref={workspace}>
-        <div className="shell-toolbar">
-          <button
-            className="menu-toggle"
-            type="button"
-            aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
-            title={sidebarOpen ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={sidebarOpen}
-            aria-controls="consultorio-sidebar"
-            data-tour="navigation-toggle"
-            onClick={() => {
-              setAccountOpen(false);
-              setSidebarOpen(!sidebarOpen);
-            }}
-          >
-            <NavigationIcon kind="menu" />
-          </button>
-        </div>
-        {!session.user.must_change && (
-          <UpdatePanel
-            key={session.token}
-            token={session.token}
-            blocked={
-              busy ||
-              page !== "patients" ||
-              patient !== null ||
-              prescription !== null
-            }
-            run={task}
-          />
-        )}
-
-        {!session.user.must_change && tourScreen && (
-          <GuidedTour token={session.token} screen={tourScreen} />
-        )}
-        <div className="test-banner">
-          Ambiente de teste · dados fictícios · instalação local
-        </div>
-        {error && (
-          <div role="alert" className="message error">
-            {error}
-          </div>
-        )}
-        {notice && (
-          <div role="status" className="message success">
-            {notice}
-          </div>
-        )}
-        {busy && (
-          <div role="status" className="working">
-            Concluindo operação…
-          </div>
-        )}
-        {session.user.must_change ? (
-          <AccessPage
-            token={token}
-            user={session.user}
-            task={task}
-            onChanged={() => {
-              setSession(null);
-              setPatient(null);
-              setPrescription(null);
-              setProfile(emptyProfile);
-              draftRef.current = null;
-            }}
-          />
-        ) : (
-          <>
-            {(page === "audit" || page === "backup") && (
-              <button
-                className="settings-return"
-                disabled={busy}
-                onClick={() => void navigate("settings")}
-              >
-                Voltar às Configurações
-              </button>
-            )}
-            {page === "settings" && (
-              <section aria-label="Configurações">
-                <Heading
-                  title="Configurações"
-                  description="Ferramentas para cuidar dos registros e das cópias do consultório."
-                />
-                <div className="settings-list">
-                  <button
-                    disabled={busy}
-                    onClick={() => void navigate("audit")}
-                  >
-                    <span>
-                      <strong>Auditoria</strong>
-                      <small>
-                        Consultar as ações realizadas no aplicativo.
-                      </small>
-                    </span>
-                    <NavigationIcon kind="chevron" />
-                  </button>
-                  <button
-                    disabled={busy}
-                    onClick={() => void navigate("backup")}
-                  >
-                    <span>
-                      <strong>Backup e restauração</strong>
-                      <small>
-                        Consultar suas cópias, criar um backup ou restaurar os
-                        dados.
-                      </small>
-                    </span>
-                    <NavigationIcon kind="chevron" />
-                  </button>
-                </div>
-              </section>
-            )}
-            {drafts.length > 0 && (
-              <section className="draft-panel">
-                <h2>Preenchimentos recuperáveis</h2>
-                {drafts.map((d) => (
-                  <div key={d.id}>
-                    <span>
-                      {d.kind === "patient"
-                        ? "Cadastro de paciente"
-                        : d.kind === "profile"
-                          ? "Perfil profissional"
-                          : "Prescrição"}{" "}
-                      · {dateTime(d.at)}
-                    </span>
-                    <button onClick={() => void task(() => recover(d))}>
-                      Continuar
+              }}
+            />
+          ) : (
+            <>
+              {(page === "audit" || page === "backup") && (
+                <button
+                  className="settings-return"
+                  disabled={busy}
+                  onClick={() => void navigate("settings")}
+                >
+                  Voltar às Configurações
+                </button>
+              )}
+              {page === "settings" && (
+                <section aria-label="Configurações">
+                  <Heading
+                    title="Configurações"
+                    description="Ferramentas para cuidar dos registros e das cópias do consultório."
+                  />
+                  <div className="settings-list">
+                    <button
+                      disabled={busy}
+                      onClick={() => void navigate("audit")}
+                    >
+                      <span>
+                        <strong>Auditoria</strong>
+                        <small>
+                          Consultar as ações realizadas no aplicativo.
+                        </small>
+                      </span>
+                      <NavigationIcon kind="chevron" />
                     </button>
                     <button
-                      onClick={() =>
-                        void task(async () => {
-                          await api(token, { op: "discard_draft", id: d.id });
-                          await refreshDrafts();
-                        })
-                      }
+                      disabled={busy}
+                      onClick={() => void navigate("backup")}
                     >
-                      Descartar
+                      <span>
+                        <strong>Backup e restauração</strong>
+                        <small>
+                          Consultar suas cópias, criar um backup ou restaurar os
+                          dados.
+                        </small>
+                      </span>
+                      <NavigationIcon kind="chevron" />
                     </button>
                   </div>
+                </section>
+              )}
+              {page === "patients" &&
+                (checkingDraftContext && activeDraftId ? (
+                  <p role="status">Verificando rascunho salvo…</p>
+                ) : prescription && patient ? (
+                  <PrescriptionForm
+                    token={token}
+                    value={prescription}
+                    onChange={(v) => {
+                      setPrescription(v);
+                      draftDirty.current = true;
+                    }}
+                    patient={patient}
+                    busy={busy}
+                    onCancel={() =>
+                      void task(async () => {
+                        if (draftRef.current && draftDirty.current)
+                          await api(token, {
+                            op: "save_draft",
+                            ...draftRef.current,
+                          });
+                        draftDirty.current = false;
+                        setPrescription(null);
+                      })
+                    }
+                    onSave={() =>
+                      task(async () => {
+                        const result = await api<{ id: string }>(token, {
+                          op: "save_prescription",
+                          id: prescriptionId,
+                          patient_id: patient.id,
+                          payload: prescription,
+                        });
+                        setPrescriptionId(result.id);
+                        draftDirty.current = false;
+                        setNotice("Prescrição salva como rascunho.");
+                      })
+                    }
+                  />
+                ) : patient ? (
+                  <PatientForm
+                    patient={patient}
+                    onChange={(v) => {
+                      setPatient(v);
+                      draftDirty.current = true;
+                    }}
+                    token={token}
+                    busy={busy}
+                    task={task}
+                    onClose={() =>
+                      void task(async () => {
+                        if (draftRef.current && draftDirty.current)
+                          await api(token, {
+                            op: "save_draft",
+                            ...draftRef.current,
+                          });
+                        draftDirty.current = false;
+                        setPatient(null);
+                        draftRef.current = null;
+                      })
+                    }
+                    onSaved={(id) => {
+                      draftDirty.current = false;
+                      setPatient({ ...patient, id });
+                      setNotice("Cadastro salvo.");
+                    }}
+                    onPrescription={(p) => {
+                      setPrescription(
+                        p?.payload ?? structuredClone(emptyPrescription),
+                      );
+                      setPrescriptionId(p?.id ?? null);
+                    }}
+                  />
+                ) : (
+                  <PatientsPage
+                    token={token}
+                    task={task}
+                    onNew={() => setPatient(structuredClone(emptyPatient))}
+                    onOpen={(id) =>
+                      void task(async () =>
+                        setPatient(
+                          await api<Patient>(token, { op: "patient", id }),
+                        ),
+                      )
+                    }
+                  />
                 ))}
-              </section>
-            )}
-            {page === "patients" &&
-              (prescription && patient ? (
-                <PrescriptionForm
+              {page === "profile" && checkingDraftContext ? (
+                <p role="status">Verificando rascunho salvo…</p>
+              ) : page === "profile" ? (
+                <ProfileForm
                   token={token}
-                  value={prescription}
+                  value={profile}
                   onChange={(v) => {
-                    setPrescription(v);
+                    setProfile(v);
                     draftDirty.current = true;
                   }}
-                  patient={patient}
-                  busy={busy}
-                  onCancel={() =>
-                    void task(async () => {
-                      if (draftRef.current && draftDirty.current)
-                        await api(token, {
-                          op: "save_draft",
-                          ...draftRef.current,
-                        });
-                      draftDirty.current = false;
-                      setPrescription(null);
-                    })
-                  }
-                  onSave={() =>
-                    task(async () => {
-                      const result = await api<{ id: string }>(token, {
-                        op: "save_prescription",
-                        id: prescriptionId,
-                        patient_id: patient.id,
-                        payload: prescription,
-                      });
-                      setPrescriptionId(result.id);
-                      draftDirty.current = false;
-                      setNotice("Prescrição salva como rascunho.");
-                    })
-                  }
-                />
-              ) : patient ? (
-                <PatientForm
-                  patient={patient}
-                  onChange={(v) => {
-                    setPatient(v);
-                    draftDirty.current = true;
-                  }}
-                  token={token}
                   busy={busy}
                   task={task}
-                  onClose={() =>
-                    void task(async () => {
-                      if (draftRef.current && draftDirty.current)
-                        await api(token, {
-                          op: "save_draft",
-                          ...draftRef.current,
-                        });
-                      draftDirty.current = false;
-                      setPatient(null);
-                      draftRef.current = null;
-                    })
-                  }
-                  onSaved={(id) => {
+                  onSaved={() => {
+                    setNotice("Perfil salvo.");
                     draftDirty.current = false;
-                    setPatient({ ...patient, id });
-                    setNotice("Cadastro salvo.");
-                  }}
-                  onPrescription={(p) => {
-                    setPrescription(
-                      p?.payload ?? structuredClone(emptyPrescription),
-                    );
-                    setPrescriptionId(p?.id ?? null);
+                    draftRef.current = null;
                   }}
                 />
-              ) : (
-                <PatientsPage
+              ) : null}
+              {page === "audit" && <AuditPage token={token} task={task} />}
+              {page === "backup" && (
+                <BackupPage
                   token={token}
                   task={task}
-                  onNew={() => setPatient(structuredClone(emptyPatient))}
-                  onOpen={(id) =>
-                    void task(async () =>
-                      setPatient(
-                        await api<Patient>(token, { op: "patient", id }),
-                      ),
-                    )
-                  }
+                  onRestore={() => {
+                    setSession(null);
+                    setPatient(null);
+                    setPrescription(null);
+                    setProfile(emptyProfile);
+                    setDrafts([]);
+                    draftRef.current = null;
+                  }}
                 />
-              ))}
-            {page === "profile" && (
-              <ProfileForm
-                token={token}
-                value={profile}
-                onChange={(v) => {
-                  setProfile(v);
-                  draftDirty.current = true;
-                }}
-                busy={busy}
-                task={task}
-                onSaved={() => {
-                  setNotice("Perfil salvo.");
-                  draftDirty.current = false;
-                  draftRef.current = null;
-                }}
-              />
-            )}
-            {page === "audit" && <AuditPage token={token} task={task} />}
-            {page === "backup" && (
-              <BackupPage
-                token={token}
-                task={task}
-                onRestore={() => {
-                  setSession(null);
-                  setPatient(null);
-                  setPrescription(null);
-                  setProfile(emptyProfile);
-                  setDrafts([]);
-                  draftRef.current = null;
-                }}
-              />
-            )}
-            {page === "access" && (
-              <AccessPage
-                token={token}
-                user={session.user}
-                task={task}
-                onChanged={() => {
-                  setSession(null);
-                  setPatient(null);
-                  setPrescription(null);
-                  setProfile(emptyProfile);
-                  draftRef.current = null;
-                }}
-              />
-            )}
-          </>
-        )}
-      </main>
+              )}
+              {page === "access" && (
+                <AccessPage
+                  token={token}
+                  user={session.user}
+                  task={task}
+                  onChanged={() => {
+                    setSession(null);
+                    setPatient(null);
+                    setPrescription(null);
+                    setProfile(emptyProfile);
+                    draftRef.current = null;
+                  }}
+                />
+              )}
+            </>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
@@ -1247,7 +1328,7 @@ function PatientForm({
       >
         <button onClick={onClose}>Voltar à lista</button>
       </Heading>
-      <form onSubmit={submit}>
+      <form data-draft-form="" onSubmit={submit}>
         <section className="form-section" data-tour="identity">
           <h2>Identificação e contato</h2>
           <div className="form-grid">
@@ -1600,6 +1681,7 @@ function ProfileForm({
         description="Sua identificação no espaço Saúde."
       />
       <form
+        data-draft-form=""
         onSubmit={(e) => {
           e.preventDefault();
           void task(async () => {
@@ -1686,6 +1768,7 @@ function PrescriptionForm({
         <button onClick={onCancel}>Voltar ao paciente</button>
       </Heading>
       <form
+        data-draft-form=""
         onSubmit={(e) => {
           e.preventDefault();
           onSave();

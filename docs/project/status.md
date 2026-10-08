@@ -4,6 +4,61 @@
 
 ## Onde paramos
 
+### Checkpoint — WEBFIT-10, ativação offline, 2026-10-08
+
+- **Data, branch e commit-base:** 2026-10-08, main, e07cdc8300de0421dbdc7fd64aafe7d30a191e80, observados localmente.
+- **Sincronização:** HEAD/origin/main local 0/0, sem fetch/pull; alterações preexistentes de harness/WEBFIT-6/7/8/9 preservadas. Plane WEBFIT-10 criado uma vez após busca sem correspondente, módulo Fundação, prioridade neutra. Sem Git mutável/publicação.
+- **Última etapa concluída:** início STRICT por webfit-task, Discovery funcional/documentação: DEC-058 registra fluxo/tipos, ativações iniciais, emissor com interface, suporte uma sessão até 4 h, reinicialização mantendo licença/acessos e pacote por cópia adiado para outra demanda. RF-LIC-001..005, RF-LIC-006 adiado, regras/casos/TA e ADR-0003 proposto vinculados ao [registro único](../../specs/WEBFIT-10/task.md). Só documentação; licença/emissor/banco/produto não implementados. Checks: 109 links/5 âncoras/32 IDs/whitespace/diff PASS; review independente e comportamento NOT RUN.
+- **Próxima ação exata:** detalhar Plan técnico de protocolo/custódia/perda/rotação/recuperação/consumo em restauração; avaliar schema/dependências e completar Scope Check. D-LIC-001..005 respondidas, não repetir; Plane retorna a Planning. Sem gate genérico; novas operações sensíveis mantêm decisão específica. Dados reais/G7 não autorizados por relato de começo de uso.
+- **Checklist:** [x] pedido/fluxo/tipos e respostas; [x] Plane/registro/rascunho ADR/rastreabilidade; [ ] Plan técnico/decisões sensíveis; [ ] implementação/testes; [ ] review independente/Windows/aceite final. Checks documentais e estado final Plane registrados em task.md; demais próximas ações preservadas. G5 em execução, G6/G7 não concluídos.
+
+### Manutenção — harness de quatro fases, 2026-10-08
+
+- **Data, branch e commit-base:** 2026-10-08, main, e07cdc8300de0421dbdc7fd64aafe7d30a191e80, observados localmente.
+- **Sincronização:** HEAD/origin/main local 0/0, sem fetch/pull ou consulta ao remoto vivo. Trabalho preexistente de produto/WEBFIT-6/8/9 e manutenção AGENTS preservado; WEBFIT-7/DraftRecoveryDialog surgiram em paralelo na conferência final, sem edição por esta manutenção. Sem Git mutável/publicação.
+- **Última etapa concluída:** refatoração documental autorizada por Maycon (DEC-057): Discovery → Plan → Execução → Code Review, níveis de profundidade, Scope Check/avanço contínuo, Spec Kit opcional e registro único proporcional. Constitution 2.0.0 e contratos alinhados; produto/banco/dependências e oficiais/históricos preservados. Evidência: [workflow de quatro fases](../../.harness/evidence/2026-10-08-four-phase-workflow.md).
+- **Próxima ação exata desta manutenção:** nenhum trabalho documental pendente desta refatoração; Maycon revisa/integra os 35 owners pelo seu fluxo Git e usa webfit-task com quatro fases no próximo uso real. Demais trilhas abaixo mantêm suas próprias próximas ações/aprovações; este processo novo não aceita decisões de produto pendentes.
+- **Checklist:** [x] pedido/escopo e refatoração documental; [x] três skills locais validadas; [x] coerência estática A–H; [x] 124 links/10 âncoras/diff sem erros; [x] revisão independente e correção reavaliada, sem finding novo; [ ] aceite final e integração Git humanos. READY TO SHIP documental com limitações estáticas explícitas; G5 em execução; G6/G7 não concluídos. Sem execução real dos cenários de produto ou publicação.
+
+### Checkpoint — WEBFIT-9, faixa compacta e detecção durante uso, 2026-10-08
+
+- **Data, branch e commit-base:** 2026-10-08, main, e07cdc8300de0421dbdc7fd64aafe7d30a191e80, observados localmente.
+- **Sincronização:** HEAD/origin/main local 0/0 sem fetch/pull. Alterações WEBFIT-6, WEBFIT-8 e manutenção AGENTS preservadas; esta demanda compartilha App/CSS/docs sem substituir branding. Sem Git mutável/publicação.
+- **Última etapa concluída:** implementação autorizada por Maycon após análise; RF-UPD-001/TA-UPD-UI-003..006, specs/006-webfit-9-faixa-atualizacao/. Consulta no login/30min/retorno, faixa global curta com aviso de salvar/reiniciar, detalhes recolhidos, Atualizar à direita e bloqueios existentes. Formatação/lint/TypeScript/build frontend, 18 testes frontend e 18 Rust/SQLite PASS (TEMP de teste no workspace). Review independente corrigiu atraso de timer após foco; revalidação 8/8 PASS. Evidence em .harness/evidence/webfit-9/.
+- **Próxima ação exata:** Maycon revisa/integra pelo seu fluxo Git e ensaia versão Windows distribuída, faixa/edição/adiar/teclado/zoom/scroll e detecção durante sessão. Build Tauri sem bundle PASS (2m40s), sem instalador/publicação. D-UPD9-001 (cooldown/adiamento por versão) aguarda validação no aceite final. Ferramenta de browser não abriu fixture local, sem aprovação visual inferida. WEBFIT-9 encaminhada a Review.
+- **Checklist do Gate:** [x] pedido/proposta e implementação autorizados; [x] Plane/Spec/Plan/Tasks/Analyze; [x] código/checks/Converge/Verification/Review independentes; [x] build Tauri final registrado; [ ] UI Windows/zoom/ensaio de distribuição; [ ] decisão provisória/aceite final. G5 em execução, G6/G7 preservados.
+
+Os checkpoints abaixo mantêm suas próprias próximas ações; esta entrega não aceita nem cancela demandas paralelas.
+
+### Checkpoint — WEBFIT-8, identidade visual, 2026-10-08
+
+- **Data, branch e commit-base:** 2026-10-08, main, e07cdc8300de0421dbdc7fd64aafe7d30a191e80.
+- **Sincronização:** upstream local 0/0 sem fetch/pull; alterações WEBFIT-6 preexistentes e manutenção AGENTS/WEBFIT-9 surgidas durante execução preservadas. Sem Git mutável/publicação/instalação pelo agente.
+- **Última etapa concluída:** símbolo sem texto aplicado por RF-UX-004/DEC-056, Spec/Plan/Tasks/Analyze/Implement/Converge e checks/recursos locais. Fonte em public/brand/webfit-icon.png; interface e recursos Tauri/NSIS usam mesma marca. Evidência: .harness/evidence/webfit-8/evidence.md.
+- **Próxima ação exata da demanda:** Maycon integra/distribui pelo seu fluxo Git, obtém review independente e confere logo na instalação Windows atualizada. Pacote local valida identidade, não representa versão final das demandas paralelas. G5/G6/G7 e próximas ações das demais trilhas preservados.
+- **Checklist do Gate:** [x] escopo/aplicação local solicitados; [x] requisitos/Spec/Plan/Tasks/Analyze; [x] implementação e recursos PE/ICO/build Windows; [x] checks proporcionais/documentação; [ ] review independente; [ ] ensaio visual Windows/aceite final. CUA não abriu prévia; não inferir aceite.
+
+### Manutenção documental — AGENTS.md, 2026-10-08
+
+- **Data, branch e commit-base:** 2026-10-08, `main`, `e07cdc8300de0421dbdc7fd64aafe7d30a191e80`, observados localmente.
+- **Sincronização:** alterações locais preexistentes preservadas; sem fetch/pull, commit/push ou consulta ao remoto vivo nesta manutenção.
+- **Última etapa concluída:** mesclagem LIGHT autorizada por Maycon, incorporando colaboração e qualidade ao AGENTS.md e preservando decisões, autoridades e gates. Evidência: [mesclagem](../../.harness/evidence/2026-10-08-agents-merge.md).
+- **Próxima ação exata desta manutenção:** nenhuma implementação pendente; integração Git sob controle de Maycon. As próximas ações de produto registradas nas respectivas trilhas permanecem vigentes.
+- **Checklist do Gate:** [x] fonte e edição documental; [x] revisão de consistência e checks documentais; G5 em execução, G6/G7 não concluídos. Nenhum gate de produto aprovado por esta manutenção.
+
+### Checkpoint vigente desta sessão — WEBFIT-6, 2026-10-08
+
+Maycon solicitou o ícone (i) do login em todas as telas, no canto inferior direito. STANDARD registrada como WEBFIT-6; Specification/Plan/Tasks/Analyze preparados em specs/004-webfit-6-informacoes-globais/, evidência .harness/evidence/webfit-6/planning.md. Produto ainda não alterado. D-INFO-001 propõe informações e Fechar durante sessão, mantendo Acesso do administrador no login; pergunta apresentada, validação não inferida. Gate da demanda: Human Decision Review e Implementation Approval pendentes. G5 segue em execução por DEC-045; G6/G7 não concluídos.
+
+- **Data:** 2026-10-08.
+- **Branch e commit-base:** main, e07cdc8300de0421dbdc7fd64aafe7d30a191e80, observados por leitura local.
+- **Sincronização:** main/origin/main 0/0, sem fetch/pull; árvore limpa na entrada, agora artefatos locais desta demanda sem commit. Git permanece sob Maycon/DEC-054.
+- **Última etapa concluída:** planejamento/análise e checks documentais; nenhuma implementação.
+- **Próxima ação exata da demanda:** Maycon valida D-INFO-001 e autoriza o plano de WEBFIT-6; depois executar T001..T008, incluindo UI/teclado/zoom/preservação de formulários, checks, Converge, Verification/Review/Evidence e aceite final.
+- **Checklist do Gate:** [x] investigação/Plane/Spec/Plan/Tasks/Analyze; [x] links/formato/diffcheck; [ ] decisão e implementação autorizadas; [ ] implementação e checks; [ ] Review/UI/aceite final.
+
+Os registros abaixo permanecem como contexto das trilhas anteriores. HEAD anterior 23c2823 e pendências de integração são históricos; o HEAD atual posterior não comprova por si só sucesso do pipeline, updater ou aprovação de WEBFIT-5. Nenhuma demanda anterior foi alterada no Plane nesta sessão.
+
 Atualização mais recente: Maycon integrou correções anteriores; HEAD 23c2823. Run #11 construiu/assinou, mas parou no primeiro upload: GitHub retorna URL temporária untagged enquanto draft; validador exigia URL definitiva cedo demais. Correção local aceita URL temporária restrita ao mesmo host/repositório/nome, mantendo checagem de tamanho/estado e verificação pública posterior. 30 testes, sintaxe e diffcheck PASS. Próxima ação exata: Maycon integrar reparo de publication-api.mjs/testes e documentação na main, executar pipeline no novo commit; não rerun #11 antigo. Draft 406286247 preservado, nenhuma nova publicação executada. As referências abaixo à integração pendente das correções anteriores são históricas; esta correção incremental ainda está sem commit.
 
 - **Data do checkpoint:** 2026-10-07
@@ -260,3 +315,13 @@ DEC-053, 2026-10-07: T112 código/checks/pacote concluídos; T113 preparação l
 - Última etapa concluída: conferência LIGHT das três skills próprias do WebFit e dez oficiais do Spec Kit, todas já versionadas em `.agents/skills/`; orientação de uso nas duas máquinas registrada na [integração Codex Skills](../../.harness/integrations/codex-skill.md#uso-nas-duas-máquinas). Nenhuma skill precisou ser copiada ou modificada.
 - Próxima ação desta manutenção: Maycon sincronizar a documentação pelo seu fluxo Git e conferir o catálogo no checkout da outra máquina. A próxima ação de produto permanece revisar WEBFIT-5 e obter as aprovações funcionais e de execução registradas acima.
 - Checklist do Gate: manutenção documental concluída; execução na segunda máquina não verificada. G5 segue em execução, G6/G7 não concluídos; nenhuma aprovação de produto ou publicação alterada.
+
+## Checkpoint complementar — WEBFIT-7, 2026-10-08
+
+- Branch `main`; commit-base/HEAD `e07cdc8300de0421dbdc7fd64aafe7d30a191e80`; comparação local com `origin/main` indica 0/0, sem fetch ou consulta ao remoto vivo.
+- Escopo: rascunho contextual para todos os formulários longos aprovados (perfil, cadastro/edição de paciente e prescrição/cardápio). Maycon aprovou a implementação em 2026-10-08. Specification, Plan, Tasks e Analyze registrados em `specs/007-recuperar-rascunho-contextual/`; requisitos e fluxo atualizados; T001..T012 concluídas. Converge não identificou trabalho de implementação restante.
+- Última etapa concluída: modal contextual com restauração/descarte, consulta atualizada do serviço autenticado ao entrar no contexto, sem faixa global; descarte mantém cadastro novo vazio, dados persistidos da edição e registros clínicos de prescrição. Diálogo nativo acessível com foco restaurado ao formulário. Sem mudança em banco, Rust, autorização, dependências ou arquitetura.
+- Verificação local: lint, TypeScript, build, Prettier, detector Impeccable e `git diff --check` passaram. Build tem aviso de chunk JS 535.96 kB. Testes automatizados, ensaio manual Windows/WebView e Review independente não executados; nenhum dado real usado. Evidência `.harness/evidence/webfit-7/verification.md` e `.harness/evidence/webfit-7/evidence.md` (READY WITH WARNINGS).
+- Sincronização: árvore já continha alterações de WEBFIT-6/8/9, identidade visual, atualização e documentação; preservadas sem atribuí-las a esta feature. Nenhum commit/push/merge/PR/publicação, nem operação Git mutável.
+- Próxima ação exata: ensaiar TA-DRF-005..010 com dados fictícios no aplicativo Windows nos quatro contextos, incluindo descarte, falha e teclado/tecnologia assistiva; depois Review independente e aceite funcional humano.
+- Checklist de Gate: implementação autorizada e concluída; verificação estática concluída; ensaio comportamental, Review, aceite final e gates G5/G6/G7 permanecem pendentes. Não inferir conclusão de gate.
