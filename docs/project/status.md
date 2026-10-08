@@ -2,6 +2,15 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Checkpoint salvo — encerramento desta sessão, 2026-10-08
+
+- **Data/branch/HEAD:** 2026-10-08; `feature/pbi-001-primeiro-incremento-saude`; commit-base observado `3030c596201d9d00dfd1629e90a24f20c85cb628`. Branch diferente da `main` registrada na correção anterior; divergência informada antes desta edição. Nenhuma criação/troca de branch pelo agente.
+- **Sincronização:** upstream `origin/feature/pbi-001-primeiro-incremento-saude`, contagem local ahead/behind 0/0; árvore limpa na entrada. Referências locais conferidas sem fetch/pull ou consulta ao remoto vivo. Ao salvar, somente este checkpoint ficou modificado e sem commit; integração Git permanece com Maycon.
+- **Última etapa técnica concluída:** correção de formatação de license.rs/service.rs incluída no commit atual (`style: format Rust files with cargo fmt to satisfy CI checks`), confirmada por inspeção do commit. `cargo fmt --manifest-path src-tauri/Cargo.toml --check` passou novamente neste HEAD. A pendência de integrar a correção no checkout foi superada; sucesso de um novo Actions não foi consultado nem inferido.
+- **Interface:** V01–V08 implementados conforme registros existentes; revisão independente/ensaio Windows/aceite continuam pendentes. Levantamento seguinte concluído com cobertura visual parcial e cinco candidatos propostos, sem implementação: [relatório](../../.impeccable/critique/2026-10-08T22-48-16Z_src-app-tsx.md). Recorte recomendado N01/N03, preservação das edições e clareza das metas na prescrição; N02 exige conciliação com requisitos clínicos. Acesso clínico no banco legado segue limitado pela ativação, sem autorização para bypass ou limpeza.
+- **Próxima ação exata:** conferir o resultado do Actions que use o commit corrigido `3030c596201d9d00dfd1629e90a24f20c85cb628` ou seu descendente; não repetir o commit anterior à formatação. Depois retomar a escolha do recorte N01/N03 pelo fluxo vigente, investigando N02 e preparando ensaio fictício licenciado conforme WEBFIT-10. Este pedido de salvar não autoriza iniciar essa implementação, mudar licença/banco ou publicar.
+- **Checklist vigente:** [x] correção integrada no commit observado; [x] fmt check local; [x] checkpoint/branch/upstream conferidos; [ ] resultado Actions no commit corrigido; [ ] escolha/execução do próximo recorte; [ ] revisão independente e ensaios Windows/aceite das entregas existentes; [ ] integração humana deste checkpoint. G5 segue em execução, G6/G7 não concluídos; aprovações e próximas ações das demais trilhas abaixo preservadas. Registros anteriores de branch/base e integração pendente são históricos em relação a esta conferência.
+
 ## Correção LIGHT — cargo fmt do Actions, 2026-10-08
 
 - Data/branch/commit-base: 2026-10-08, main, 8cd095fc0a4a917c2039eb84df88138df92218e7; árvore limpa na entrada. Avanço humano desde a base da auditoria reconhecido; demais trilhas preservadas. Sem fetch/pull, commit/push ou publicação pelo agente.
