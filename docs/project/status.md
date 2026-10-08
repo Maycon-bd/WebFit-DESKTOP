@@ -4,6 +4,8 @@
 
 ## Onde paramos
 
+Atualização mais recente: Maycon integrou correções anteriores; HEAD 23c2823. Run #11 construiu/assinou, mas parou no primeiro upload: GitHub retorna URL temporária untagged enquanto draft; validador exigia URL definitiva cedo demais. Correção local aceita URL temporária restrita ao mesmo host/repositório/nome, mantendo checagem de tamanho/estado e verificação pública posterior. 30 testes, sintaxe e diffcheck PASS. Próxima ação exata: Maycon integrar reparo de publication-api.mjs/testes e documentação na main, executar pipeline no novo commit; não rerun #11 antigo. Draft 406286247 preservado, nenhuma nova publicação executada. As referências abaixo à integração pendente das correções anteriores são históricas; esta correção incremental ainda está sem commit.
+
 - **Data do checkpoint:** 2026-10-07
 - **Fase:** G5 em execução — construção do primeiro incremento de Saúde
 - **Gate atual:** G4 aprovado em 2026-09-21; execução G5 autorizada por DEC-045 em 2026-10-06; G5/G6/G7 não concluídos
@@ -13,7 +15,7 @@
 - **Próxima ação:** Maycon revisa/integra correções locais pelo seu fluxo Git; validar uma nova execução no commit corrigido e depois ensaiar duas versões fictícias. Reexecutar o run antigo usa o código antigo. Piloto público atual preservado, sem recuperação ou novo rerun automático. Para o notebook, obter novo token temporário no repositório correto e executar helper privado, depois conferir Listening for Jobs/Idle. WEBFIT-5 permanece aguardando validação responsável opcional/sexo legado, aprovação funcional de Amanda e execução do plano.
 - **Branch registrada:** main (observada em 2026-10-07; mudança humana em relação ao checkpoint feature/pbi-001, Git sob controle de Maycon/DEC-054).
 - **Work Item:** `WEBFIT-5` — cadastro mínimo em Decision Review; `WEBFIT-4` segue com aceite final pendente; `WEBFIT-3` é vínculo legado G4 em Done.
-- **Commit-base / HEAD observado:** 667f1ae5b4e0b36f65be8ecd19118075f0c63f77.
+- **Commit-base / HEAD observado:** 23c2823d855752fb6face2fb76d0a9731084a157.
 - **Sincronização:** main e referência local origin/main com contagem 0/0; árvore limpa no início, agora alterações locais de scripts/workflow/documentação do updater sem commit. WEBFIT-5 já recebido no commit atual; descrição anterior de documentos sem commit era histórica. Nenhum fetch/pull/commit/push no repositório de produto nesta retomada. Exceções externas especificamente autorizadas por Maycon: README no repositório de artefatos e rerun #10 para publicar somente piloto fictício. Rerun acionado uma vez: piloto publicado, verificação pública falhou; correção local pendente de integração humana.
 
 ## Última decisão aprovada

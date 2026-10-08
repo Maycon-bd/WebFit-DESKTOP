@@ -12,6 +12,11 @@ test('upload name or URL normalization stops while release is still a draft', ()
   const name='WebFit-Desktop_0.1.9-pilot.10.2_x64-setup.exe';
   const asset={name,size:15,state:'uploaded',browser_download_url:prefix+name};
   assert.doesNotThrow(()=>validateUploadedAsset(asset,name,15,prefix));
+  const draftBase='https://github.com/Maycon-bd/webfit-desktop-releases/releases/download/untagged-18bebaa46682fde785e2/';
+  assert.doesNotThrow(()=>validateUploadedAsset({...asset,browser_download_url:draftBase+name},name,15,prefix));
+  for (const url of [draftBase+'other.exe',draftBase+name+'?token=fixture',draftBase+name+'/extra',draftBase.replace('Maycon-bd','other-owner')+name,draftBase.replace('github.com','example.com')+name,prefix.replace('pilot.10.2','pilot.10.3')+name]) {
+    assert.throws(()=>validateUploadedAsset({...asset,browser_download_url:url},name,15,prefix),/preserve draft/);
+  }
   for (const altered of [{...asset,name:'WebFit.Desktop.exe'},{...asset,browser_download_url:prefix+'other.exe'},{...asset,size:14},{...asset,state:'starter'}]) assert.throws(()=>validateUploadedAsset(altered,name,15,prefix),/preserve draft/);
   const spaceName=name.replace('WebFit-Desktop','WebFit Desktop');
   assert.throws(()=>validateUploadedAsset({...asset,name:spaceName.replace(' ','.')},spaceName,15,prefix),/mismatch/);

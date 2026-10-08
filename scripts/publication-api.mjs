@@ -30,5 +30,13 @@ export async function preflightPublication(api) {
 }
 
 export function validateUploadedAsset(asset, name, size, prefix) {
-  if (asset.size !== size || asset.state !== 'uploaded' || asset.name !== name || asset.browser_download_url !== prefix + encodeURIComponent(name)) throw new Error('Uploaded asset name, URL, size or state mismatch; preserve draft for inspection.');
+  const filename = encodeURIComponent(name);
+  const downloadBase = 'https://github.com/Maycon-bd/webfit-desktop-releases/releases/download/';
+  const draftPath = typeof asset.browser_download_url === 'string' && asset.browser_download_url.startsWith(downloadBase)
+    ? asset.browser_download_url.slice(downloadBase.length) : '';
+  // GitHub uses an untagged URL until the draft is published. The public
+  // verifier checks the definitive manifest URL after publication.
+  const draftUrlMatches = /^untagged-[a-f0-9]+$/.test(draftPath.split('/')[0]) && draftPath === `${draftPath.split('/')[0]}/${filename}`;
+  const urlMatches = asset.browser_download_url === prefix + filename || draftUrlMatches;
+  if (asset.size !== size || asset.state !== 'uploaded' || asset.name !== name || !urlMatches) throw new Error('Uploaded asset name, URL, size or state mismatch; preserve draft for inspection.');
 }
