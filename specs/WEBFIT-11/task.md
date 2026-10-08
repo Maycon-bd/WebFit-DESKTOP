@@ -42,6 +42,12 @@ Tests PASS: 33/33 Node (suíte completa com WEBFIT_TEST_CARGO_CACHE=1); staging 
 
 WARNING frontend: Vite sinalizou chunk JS de 535,96 kB acima de 500 kB; build passou, fontes de produto não alteradas nesta demanda. Otimização desse bundle fora do escopo dos gargalos Rust.
 
+### Ensaio real autorizado — 2026-10-08
+
+Maycon autorizou explicitamente commit/envio na main e uma publicação piloto para medir o tempo. Entrada limpa em main, HEAD f6a8d7a30b81fcc4514394634685b92984ecfbfd, upstream local alinhado; implementação já integrada pelo usuário. Novo commit documental registra o ensaio e dispara uma publicação pelo push, sem alteração do produto ou versão manual.
+
+Baseline real do cache inicial: [run #15](https://github.com/Maycon-bd/WebFit-DESKTOP/actions/runs/37797076176), success, runner DESKTOP-GEUP094. Job 15:09:43–15:45:30 UTC: 35m47s; Clippy 13m49s, testes Rust/SQLite 3m06s, build assinado 16m44s. Verificações local/pública PASS. Histórico mostra 45m37s incluindo espera; compare duração do job separadamente. Dados consultados na API pública de jobs. Próxima publicação mede cache aquecido; resultado ainda pendente.
+
 Evidence/inventário: scripts/runner-env.mjs/test.mjs, stage-pilot.mjs/test.mjs; docs/operations/own-runner-setup.md, update-pipeline-design.md; este task.md e docs/project/status.md. Entrada limpa e somente esses owners alterados, main/HEAD original mantidos; sem Git mutável, dependências novas ou mudanças no runtime/banco.
 
 D-CI-011 AGENT-PROVISIONAL aplicada e aguardando validação humana no aceite. Resultado: REVIEW PASSED WITH WARNINGS; READY TO SHIP para integração humana, com medição/permissões/NSIS real pendentes explícitos. Aceite final humano pendente; Plane encaminhado a Review, não Done. Próxima ação: Maycon integrar os oito owners pelo fluxo Git e comparar ao menos dois jobs no mesmo runner (primeiro frio, seguinte aquecido); repetir caso mude de máquina. Nenhum tempo prometido. Git/publicação sob controle de Maycon.

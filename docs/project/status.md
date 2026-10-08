@@ -6,6 +6,8 @@
 
 ### Checkpoint — WEBFIT-11, cache de compilação do piloto, 2026-10-08
 
+**Ensaio posterior autorizado:** Maycon pediu explicitamente commit/push na main e publicação para medir. Entrada limpa no HEAD f6a8d7a30b81fcc4514394634685b92984ecfbfd, implementação já integrada. Run #15 passou no runner DESKTOP-GEUP094: job 35m47s (Clippy 13m49s, testes 3m06s, build 16m44s), preenchendo o cache. Novo commit documental/push autorizado dispara ensaio aquecido; comparar duração do job, excluindo fila. Resultado pendente, sem aceite de desempenho inferido; evidência no registro WEBFIT-11. As referências anteriores a NSIS/serviço NOT RUN passam a históricas para esse runner após o sucesso #15.
+
 - **Data, branch e commit-base:** 2026-10-08, main, 7556edeb78378fa08dcf0332df072217a10aa11b, observados localmente; checkpoints anteriores preservados como históricos/trilhas próprias.
 - **Sincronização:** HEAD/origin/main local 0/0, sem fetch/pull; entrada limpa, oito owners desta demanda alterados/criado sem commit. Plane WEBFIT-11 criado uma vez após busca sem correspondente, módulo Fundação, prioridade neutra, encaminhado a Review. Sem Git mutável/publicação/dependências.
 - **Última etapa concluída:** quatro fases STRICT no escopo pedido: cache Cargo persistente fora do checkout e staging usando mesmo target, com fallback local. Checks/assinatura/SQLCipher/perfil release preservados. 33 testes Node incluindo Cargo offline, staging 2/2 final, metadata real externo, Rust fmt e frontend format/lint/typecheck/18 testes/build PASS. Review independente sem bloqueador; REVIEW PASSED WITH WARNINGS, READY TO SHIP para integração humana. Evidência/inventário: [registro único](../../specs/WEBFIT-11/task.md).
