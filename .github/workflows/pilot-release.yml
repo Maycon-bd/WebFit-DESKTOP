@@ -29,6 +29,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.18.0'
+      - name: Test publication preflight
+        run: node --test scripts/publication-api.test.mjs
+      - name: Verify release repository has a target commit
+        env:
+          WEBFIT_RELEASE_TOKEN: ${{ secrets.WEBFIT_RELEASE_TOKEN }}
+        run: node scripts/preflight-pilot.mjs
       - name: Test compiler preparation
         run: node --test scripts/runner-env.test.mjs
       - name: Prepare compiler environment

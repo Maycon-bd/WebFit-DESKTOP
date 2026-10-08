@@ -18,7 +18,7 @@ test('staging verifies signed bytes before producing a complete release and refu
   const signature=sign(null,createHash('blake2b512').update(bytes).digest(),privateKey);
   const comment='timestamp:1';
   const envelope=`comment\n${Buffer.concat([Buffer.from('ED'),id,signature]).toString('base64')}\ntrusted comment: ${comment}\n${sign(null,Buffer.concat([signature,Buffer.from(comment)]),privateKey).toString('base64')}\n`;
-  const name='WebFit_0.1.6-pilot.1.1_x64-setup.exe';
+  const name='WebFit Desktop_0.1.6-pilot.1.1_x64-setup.exe';
   const installer=`${root}/src-tauri/target/release/bundle/nsis/${name}`;
   await writeFile(`${root}/src-tauri/tauri.conf.json`,JSON.stringify({version:'0.1.6-pilot.1.1',plugins:{updater:{pubkey}}}));
   await writeFile(`${root}/docs/operations/mvp-local-test.md`,'Fictitious test guide');
@@ -33,5 +33,14 @@ test('staging verifies signed bytes before producing a complete release and refu
   const manifest=JSON.parse(await readFile(`${root}/.artifacts/pilot/latest.json`,'utf8'));
   assert.equal(manifest.version,'0.1.6-pilot.1.1');
   assert.ok(manifest.platforms['windows-x86_64'].signature);
+  const publishedName='WebFit-Desktop_0.1.6-pilot.1.1_x64-setup.exe';
+  assert.equal(manifest.platforms['windows-x86_64'].url,`https://github.com/Maycon-bd/webfit-desktop-releases/releases/download/pilot-v0.1.6-pilot.1.1/${publishedName}`);
+  assert.deepEqual(await readFile(`${root}/.artifacts/pilot/${publishedName}`),bytes);
+  const stagedNames=await readdir(`${root}/.artifacts/pilot`);
+  assert.ok(stagedNames.includes(`${publishedName}.sig`));
+  assert.equal(stagedNames.some(name=>/\s/.test(name)),false);
+  const sums=await readFile(`${root}/.artifacts/pilot/SHA256SUMS`,'utf8');
+  assert.ok(sums.includes(`  ${publishedName}\n`));
+  assert.equal(sums.includes('WebFit Desktop'),false);
   assert.notEqual(run().status,0);
 });
