@@ -510,8 +510,11 @@ impl Service {
                 let code = Zeroizing::new(code);
                 let path = std::path::Path::new(&path);
                 if path.extension().and_then(|v| v.to_str()) != Some("webfit-license")
-                    || std::fs::metadata(path)?.len() > webfit_license_protocol::MAX_FILE as u64 {
-                    return Err(Error::validation("Selecione uma licença WebFit de até 64 KiB."));
+                    || std::fs::metadata(path)?.len() > webfit_license_protocol::MAX_FILE as u64
+                {
+                    return Err(Error::validation(
+                        "Selecione uma licença WebFit de até 64 KiB.",
+                    ));
                 }
                 self.import_initial_code(&std::fs::read_to_string(path)?, &code)
             }

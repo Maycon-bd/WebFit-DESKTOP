@@ -14,29 +14,60 @@ fn invalid(message: &str) -> Error {
 impl Service {
     pub fn import_initial_code(&mut self, content: &str, code: &str) -> Result<Value> {
         // Verify before any writes; keep the installation's unique DPAPI identity.
-        let mut grant = protocol::verify_initial_code(content.as_bytes(), &self.license_roots, code).map_err(invalid)?;
-        let existing: Option<Option<String>> = self.db.query_row(
-            "SELECT consumed_at FROM license_authorizations WHERE id=?1", [grant.id.to_string()], |r| r.get(0),
-        ).optional()?;
+        let mut grant =
+            protocol::verify_initial_code(content.as_bytes(), &self.license_roots, code)
+                .map_err(invalid)?;
+        let existing: Option<Option<String>> = self
+            .db
+            .query_row(
+                "SELECT consumed_at FROM license_authorizations WHERE id=?1",
+                [grant.id.to_string()],
+                |r| r.get(0),
+            )
+            .optional()?;
         if let Some(consumed) = existing {
             return Ok(json!({"imported":true,"repeated":true,"consumed":consumed.is_some()}));
         }
-        let initialized: bool = self.db.query_row("SELECT EXISTS(SELECT 1 FROM users)", [], |r| r.get(0))?;
+        let initialized: bool =
+            self.db
+                .query_row("SELECT EXISTS(SELECT 1 FROM users)", [], |r| r.get(0))?;
         if initialized || self.licensed()? {
-            return Err(invalid("Ativação inicial exige instalação vazia. Os acessos e dados foram preservados."));
+            return Err(invalid(
+                "Ativação inicial exige instalação vazia. Os acessos e dados foram preservados.",
+            ));
         }
-        let installation: String = self.db.query_row("SELECT installation_id FROM license_state WHERE singleton=1", [], |r| r.get(0))?;
-        let bytes = security::protect(&std::fs::read(self.root.join("license.identity.dpapi"))?, true)?;
+        let installation: String = self.db.query_row(
+            "SELECT installation_id FROM license_state WHERE singleton=1",
+            [],
+            |r| r.get(0),
+        )?;
+        let bytes = security::protect(
+            &std::fs::read(self.root.join("license.identity.dpapi"))?,
+            true,
+        )?;
         let secret = protocol::secret_from_bytes(&bytes).map_err(invalid)?;
         // Only the authenticated INITIAL grant is mapped to a local request, never other kinds.
-        grant.request = protocol::request(Uuid::parse_str(&installation).map_err(|_| Error::internal())?, &secret, Kind::Initial, None, None);
+        grant.request = protocol::request(
+            Uuid::parse_str(&installation).map_err(|_| Error::internal())?,
+            &secret,
+            Kind::Initial,
+            None,
+            None,
+        );
         let request_json = serde_json::to_string(&grant.request)?;
         let clear = zeroize::Zeroizing::new(serde_json::to_vec(&grant)?);
         let protected = security::protect(&clear, false)?;
         let tx = self.db.transaction()?;
         tx.execute("INSERT INTO license_requests(id,kind,request,base_license_id) VALUES(?1,'INITIAL',?2,NULL)", params![grant.request.request_id.to_string(), request_json])?;
         tx.execute("INSERT INTO license_authorizations(id,request_id,kind,payload) VALUES(?1,?2,'INITIAL',?3)", params![grant.id.to_string(),grant.request.request_id.to_string(),protocol::encode(&protected)])?;
-        audit(&tx, None, "LICENSE_INITIAL_CODE_IMPORT", "LICENSE", Some(&grant.id.to_string()), "SUCCESS")?;
+        audit(
+            &tx,
+            None,
+            "LICENSE_INITIAL_CODE_IMPORT",
+            "LICENSE",
+            Some(&grant.id.to_string()),
+            "SUCCESS",
+        )?;
         tx.commit()?;
         Ok(json!({"imported":true,"id":grant.id,"kind":Kind::Initial}))
     }

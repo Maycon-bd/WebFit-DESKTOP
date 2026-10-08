@@ -2,6 +2,14 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Correção LIGHT — cargo fmt do Actions, 2026-10-08
+
+- Data/branch/commit-base: 2026-10-08, main, 8cd095fc0a4a917c2039eb84df88138df92218e7; árvore limpa na entrada. Avanço humano desde a base da auditoria reconhecido; demais trilhas preservadas. Sem fetch/pull, commit/push ou publicação pelo agente.
+- Origem/escopo: Maycon anexou falha do Actions em `cargo fmt --manifest-path src-tauri/Cargo.toml --check`. Falha reproduzida localmente (exit 1), exclusivamente em src-tauri/src/license.rs e src-tauri/src/service.rs. Plan inline LIGHT: aplicar rustfmt e revisar o diff; nenhum comportamento, SQL, schema, dependência ou configuração de CI alterado.
+- Última etapa concluída: formatação aplicada aos dois arquivos; mesmo check passou (exit 0), assim como git diff --check. Autorrevisão do diff confirma somente layout e vírgulas finais de chamadas. Revisão independente não realizada; testes funcionais/build não reexecutados por se tratar de formatação mecânica sem mudança de comportamento. Não comprova sucesso das etapas posteriores do Actions.
+- Próxima ação exata: Maycon integrar/enviar os dois arquivos formatados e este checkpoint pelo seu fluxo Git; executar o Actions no novo commit, pois rerun do commit antigo mantém a falha. Sincronização local HEAD/origin/main conferida sem consultar remoto vivo; aceite e gates das demais demandas mantidos.
+- Checklist: [x] reprodução; [x] formatação; [x] fmt check e diff; [ ] integração Git humana; [ ] Actions no novo commit. G5 em execução, G6/G7 não concluídos. Registro LIGHT local, sem novo Plane/spec.
+
 ## Levantamento agendado — próximo recorte de interface, 2026-10-08
 
 - Data/branch/commit-base: 2026-10-08, main, 680fad5616d54a895dbecc6702595a1b5d232cfd; HEAD/origin/main local 0/0, sem fetch/pull/Git mutável. Implementações V01–V08 e demais alterações locais preservadas; não integradas nesse HEAD.
