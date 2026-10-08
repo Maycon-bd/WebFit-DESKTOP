@@ -2,10 +2,9 @@
 
 ## Ativação offline — WEBFIT-10
 
-DEC-058 aprova direção funcional, sem implementação ainda: administrador de Maycon por instalação, emissão offline controlada, cinco tipos de autorização, emissor separado com interface e suporte temporário até 4 h por sessão. Toda autorização é validada no backend; instalador não recebe senha mestra ou chave privada de emissão. Ambos os papéis continuam com acesso total ao Saúde conforme baseline.
+DEC-058 e ADR-0003 v1 ACCEPTED por Maycon (“Aprovo a implementação”, 2026-10-08). Backend valida Ed25519 estrito com confiança pública fixa no build, payload sealed box por destinatário e verificador Argon2 com limites de recursos. Cofre separado SQLCipher/DPAPI com backup AES-GCM/Argon2; sem chave privada global no produto/frontend. Identidade de instalação DPAPI fora do banco. Consumo e efeitos SQLite são transacionais; restore preserva licença/consumo/credenciais do destino e não reativa autores históricos. Suporte consome no login e usa deadline monotônico de quatro horas; auditoria diferencia ações de suporte. Schema 002 aditivo aprovado, apenas fixtures nesta execução.
 
-[ADR-0003](adr/ADR-0003-ativacao-offline-e-suporte.md) é **proposto**: assinatura de licença separada do updater, credenciais Argon2 específicas, vínculo por instalação e envelope protegido a detalhar. Algoritmo/biblioteca/custódia/rotação/recuperação/consumo em restauração ainda não aprovados. Sem garantia de resgate global ou revogação remota offline; clone/rollback/relógio alterado e controle do Windows são limites do threat model. Licença não descriptografa automaticamente banco/copias nem autoriza diagnóstico de dados reais.
-
+Sem garantia de consumo global/revogação remota offline; clone/rollback integral e controle do Windows são limites do threat model. Licença não desencripta banco recebido nem autoriza diagnóstico de dados reais. Chaves públicas de fixture somente nos testes; configuração de release vazia recusa ativação até provisionamento humano. Evidência de checks e revisão pendente em [WEBFIT-10](../../specs/WEBFIT-10/task.md).
 
 **Status:** baseline aprovada; controles criptográficos dependem do spike.
 

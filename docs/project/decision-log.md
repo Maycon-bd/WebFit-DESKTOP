@@ -2,7 +2,7 @@
 
 ## DEC-058 — Ativação offline e autorizações por instalação
 
-- **Status:** ACCEPTED para direção funcional/tipos; desenho técnico pendente. **Autoridade/data:** Maycon, 2026-10-08, anotações e respostas nesta conversa. Demanda [WEBFIT-10](../../specs/WEBFIT-10/task.md), STRICT.
+- **Status:** ACCEPTED para direção funcional/tipos e ADR-0003 v1, após “Aprovo a implementação” em 2026-10-08. **Autoridade/data:** Maycon, 2026-10-08, anotações e respostas nesta conversa. Demanda [WEBFIT-10](../../specs/WEBFIT-10/task.md), STRICT.
 - **Origem:** conta administrativa de Maycon por instalação e controle da preparação; aprovou fluxo/tabela e pediu documentação/início por webfit-task.
 - **Fluxo:** instalar → aguardar ativação → gerar solicitação própria → enviar a Maycon → emitir licença vinculada e definir credenciais administrativas → importar/verificar → preparar acessos. Sem servidor obrigatório. Não promete uso único global, revogação remota ou resistência absoluta a clones offline.
 - **Tipos:** ativação inicial (banco vazio); transferência/recuperação (destino autorizado e backup validado); suporte temporário; recuperação administrativa (trocar credencial sem apagar dados); reinicialização (backup e confirmação separados da importação). Chave inicial não limpa banco preparado. Atualização/reparo preservam dados/licença.
@@ -10,6 +10,8 @@
 - **Credenciais:** próprias por instalação; nenhuma senha mestra/chave privada no instalador clínico. Verificador Argon2, assinatura e envelope cifrado serão detalhados no [ADR-0003 proposto](../architecture/adr/ADR-0003-ativacao-offline-e-suporte.md), sem senha recuperável. Bitwarden é custódia manual, sem integração/coleta pelo agente.
 - **Limites:** inicia/documenta a demanda; não aprova detalhes indefinidos de protocolo/schema/dependência, destruição/banco real, política clínica, publicação, Git mutável ou G5/G6/G7. Suporte por cópia adiado; autorização temporária não descriptografa o banco nem aprova sua substituição em uso.
 - **Compatibilidade:** refina RF-AUT-001/RF-UX-002 no próximo incremento. Preparação livre descreve código atual até entrega; contas existentes não são renomeadas por documentação. RN-AUT-002 (acesso total ao Saúde) preservada.
+
+**Adoção técnica ACCEPTED:** Maycon respondeu “Aprovo a implementação” após apresentação de D-LIC-006..008. Autoriza ADR-0003 v1, ed25519-dalek 2.2.0/crypto_box 0.9.1, schema 002, emissor separado/cofre recuperável, suporte por senha temporária, preservação de credenciais do destino em restore e legado restrito a backup. P-LIC-001 aceita: manter perfil/rascunho de perfil/auditoria/backups na limpeza. Execução em fixtures, sem dados reais/Git/publicação. Aprovação de implementação não é aceite final.
 
 
 ## DEC-056 — símbolo do WebFit no produto
@@ -235,3 +237,10 @@ D-UPD9-001 — AGENT-PROVISIONAL: limitar retorno a uma tentativa por minuto, ad
 - Alinha Constitution 2.0.0 pela mudança incompatível de governança, preservando princípios técnicos. É decisão de processo com origem explícita, sem ADR de produto.
 
 [Evidência/cenários](../../.harness/evidence/2026-10-08-four-phase-workflow.md). Esta decisão não aceita nem executa demandas de produto anteriores.
+
+## D-DRF-EXIT-001 — Saída neutra da recuperação (WEBFIT-13 / V05)
+
+- Status: ACCEPTED; Validated by: Human (Maycon), 2026-10-08, resposta “Faça isso” à recomendação anotada.
+- Decisão: permitir Voltar preservando rascunho e registro; paciente/perfil para lista, prescrição para paciente; Escape equivale a Voltar, clique externo inerte. Operação em andamento impede saída. Reentrada oferece recuperação; foco no título de destino.
+- Alternativa rejeitada para este escopo: manter exclusivamente Restaurar/Descartar. Justificativa: permitir abandonar o contexto sem aplicar/excluir preenchimento.
+- Escopo autorizado: frontend e refinamento de RF-DRF-002/TA-DRF-010; sem schema, retenção, backend, domínio clínico ou arquitetura nova. Aceite final/Windows separado. [Fonte](../../specs/ui-audit-2026-10-08/V05-saida-recuperacao/spec.md).

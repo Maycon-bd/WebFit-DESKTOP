@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "issuer:dev": "vite --config tools/license-issuer/vite.config.ts",
+    "issuer:build": "tsc --project tools/license-issuer/tsconfig.json --noEmit && vite build --config tools/license-issuer/vite.config.ts",
+    "issuer:tauri": "node scripts/license-issuer.mjs",
     "dev": "vite",
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",

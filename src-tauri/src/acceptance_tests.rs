@@ -13,12 +13,11 @@ mod tests {
         })
     }
     fn session(s: &mut Service) -> String {
+        crate::license::activate_fixture(s, "admin ficticio", "senha ficticia segura");
         call(
             s,
             None,
             Action::Setup {
-                admin_name: "admin ficticio".into(),
-                admin_password: "senha ficticia segura".into(),
                 professional_name: "nutri ficticia".into(),
                 professional_password: "senha ficticia nutri".into(),
                 recovery_password: "recuperacao ficticia segura".into(),

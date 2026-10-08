@@ -6,6 +6,8 @@
   --green: #245840;
   --line: #d7dfd7;
   --muted: #52665a;
+  --control-line: #65796a;
+  --focus: #245840;
 }
 * {
   box-sizing: border-box;
@@ -21,7 +23,7 @@ select {
 }
 button {
   cursor: pointer;
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-line);
   border-radius: 6px;
   padding: 10px 16px;
   background: #fff;
@@ -45,13 +47,13 @@ button:disabled {
 }
 .danger {
   color: #92332c;
-  border-color: #cdaea7;
+  border-color: #a26357;
 }
 input,
 textarea,
 select {
   width: 100%;
-  border: 1px solid #a9b8ac;
+  border: 1px solid var(--control-line);
   border-radius: 5px;
   padding: 11px 12px;
   background: #fff;
@@ -63,8 +65,10 @@ textarea {
 input:focus,
 textarea:focus,
 select:focus,
-button:focus-visible {
-  outline: 3px solid #8fb19e;
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 ::selection {
@@ -108,6 +112,15 @@ a {
 .field > span {
   font-weight: 600;
   font-size: 14px;
+}
+.form-feedback {
+  margin-block: 12px;
+}
+.form-feedback:empty {
+  display: none;
+}
+.form-feedback .message {
+  margin-bottom: 8px;
 }
 .hint {
   font-size: 13px;
@@ -222,17 +235,17 @@ a {
 .test-banner {
   font-size: 12px;
   letter-spacing: 0.02em;
-  padding: 14px 0;
+  padding: 8px 0;
   color: #60705f;
   border-bottom: 1px solid var(--line);
-  margin-bottom: 34px;
+  margin-bottom: 18px;
 }
 .page-heading {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 .page-heading p {
   margin: 10px 0 0;
@@ -756,7 +769,7 @@ input[readonly] {
   text-underline-offset: 3px;
 }
 .update-details summary:focus-visible {
-  outline: 3px solid #8fb19e;
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 .update-details-content {
@@ -841,7 +854,16 @@ input[readonly] {
 .shell-toolbar {
   display: flex;
   align-items: center;
-  min-height: 64px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  min-height: 56px;
+  padding-block: 6px;
+}
+.shell-toolbar .tour-help {
+  margin-bottom: 0;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 .menu-toggle,
 .settings-button {
@@ -971,4 +993,46 @@ input[readonly] {
 }
 .audit-detail dd {
   overflow-wrap: anywhere;
+}
+.issuer-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px;
+}
+.issuer-main section,
+.license-panel {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #a9b8ac;
+}
+.issuer-main label {
+  display: block;
+  margin: 16px 0;
+}
+.issuer-main input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+.issuer-main dd {
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+.issuer-main dt {
+  font-weight: 650;
+}
+.license-id {
+  overflow-wrap: anywhere;
+}
+.license-panel :focus-visible,
+.issuer-main :focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+.license-panel section {
+  margin-top: 24px;
+}
+@media (max-width: 700px) {
+  .issuer-main {
+    padding: 20px;
+  }
 }

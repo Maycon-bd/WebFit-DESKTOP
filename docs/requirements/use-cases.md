@@ -2,15 +2,15 @@
 
 ## Licenciamento offline — WEBFIT-10
 
-DEC-058: intenções/fluxo aprovados por Maycon, não implementados; detalhes de segurança pendentes no registro único.
+DEC-058 / ADR-0003 v1 aprovados por Maycon após “Aprovo a implementação”, 2026-10-08. Implementação local em fixtures; verificação e limites no registro único, aceite final pendente.
 
 | ID | Ator / fluxo e resultado | Requisito | Status |
 |---|---|---|---|
 | UC-LIC-001 | visitante instala/gera solicitação/envia; Maycon emite; visitante importa/prepara; administrador de Maycon autentica offline | RF-LIC-001 | fluxo aprovado |
-| UC-LIC-002 | Maycon autoriza destino e usuário restaura backup validado preservando identidade correta | RF-LIC-002 | intenção aprovada; contrato pendente |
-| UC-LIC-003 | Maycon autentica com autorização temporária; sessão encerra em até 4 h ou ao sair/bloquear | RF-LIC-003 | intenção/duração aprovadas; contrato pendente |
-| UC-LIC-004 | Maycon emite recuperação administrativa, aplica e autentica com nova credencial; dados preservados | RF-LIC-004 | intenção aprovada; contrato pendente |
-| UC-LIC-005 | Maycon autoriza; backup validado → confirmação separada → limpar consultório mantendo licença/acessos/consumo; cancelamento/falha preserva dados | RF-LIC-005 | comportamento aprovado; desenho técnico pendente |
+| UC-LIC-002 | Maycon autoriza destino e usuário restaura backup validado preservando identidade correta | RF-LIC-002 | aprovado para implementação, ADR-0003 v1 |
+| UC-LIC-003 | Maycon autentica com autorização temporária; sessão encerra em até 4 h ou ao sair/bloquear | RF-LIC-003 | aprovado para implementação, ADR-0003 v1 |
+| UC-LIC-004 | Maycon emite recuperação administrativa, aplica e autentica com nova credencial; dados preservados | RF-LIC-004 | aprovado para implementação, ADR-0003 v1 |
+| UC-LIC-005 | Maycon autoriza; backup validado → confirmação separada → limpar consultório mantendo licença/acessos/consumo; cancelamento/falha preserva dados | RF-LIC-005 | aprovado para implementação, ADR-0003 v1 |
 | UC-LIC-006 | cópia protegida para diagnóstico isolado e retorno sem perder trabalho posterior | RF-LIC-006 | adiado por Maycon para outra demanda |
 
 
@@ -24,7 +24,7 @@ DEC-058: intenções/fluxo aprovados por Maycon, não implementados; detalhes de
 | UC-PAT-001 | cadastrar paciente | nutricionista/administrador | paciente ativo criado sem CPF duplicado | RF-PAT-001, RF-PAT-006 | aprovado |
 | UC-PAT-002 | localizar e editar paciente | nutricionista/administrador | paciente localizado e alteração confirmada | RF-PAT-002, RF-PAT-003 | aprovado |
 | UC-PAT-003 | arquivar e restaurar paciente | nutricionista/administrador | estado alterado sem perda de histórico | RF-PAT-004 | aprovado |
-| UC-DRF-001 | recuperar ou descartar rascunho automático | nutricionista/administrador | no mesmo contexto autenticado a pessoa restaura o preenchimento ou descarta somente o autosave, sem afetar o registro persistido nem prescrição clínica | RF-DRF-001, RF-DRF-002, RF-PAT-006 | aprovado por Maycon em 2026-09-10 e refinado em 2026-10-08 — WEBFIT-7 |
+| UC-DRF-001 | recuperar ou descartar rascunho automático | nutricionista/administrador | no mesmo contexto autenticado a pessoa restaura o preenchimento, descarta somente o autosave ou volta sem resolver a recuperação (WEBFIT-13), sem afetar o registro persistido nem prescrição clínica | RF-DRF-001, RF-DRF-002, RF-PAT-006 | aprovado por Maycon em 2026-09-10 e refinado em 2026-10-08 — WEBFIT-7 |
 | UC-PRE-001 | montar e finalizar prescrição | nutricionista/administrador | prescrição calculada, versionada e vinculada ao paciente | RF-PRE-001 a RF-PRE-004 | aprovado por Amanda |
 | UC-PRE-002 | calcular e ajustar necessidade energética | nutricionista/administrador | protocolo versionado produz estimativa, metas, alertas e histórico de ajustes | RF-PRE-005 | aprovado por Amanda em 2026-09-10 |
 | UC-AUD-001 | consultar auditoria | usuário autenticado e autorizado | eventos autorizados consultados com filtros, paginação e detalhe sem exposição de conteúdo sensível | RF-AUD-001 | aprovado por Maycon em 2026-09-10 |

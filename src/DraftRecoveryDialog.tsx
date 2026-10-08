@@ -8,6 +8,8 @@ export function DraftRecoveryDialog({
   busy,
   onRestore,
   onDiscard,
+  onBack,
+  backLabel,
 }: {
   open: boolean;
   formLabel: string;
@@ -16,8 +18,16 @@ export function DraftRecoveryDialog({
   busy: boolean;
   onRestore: () => void;
   onDiscard: () => void;
+  onBack: () => void;
+  backLabel: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const leaving = useRef(false);
+  function back() {
+    if (busy) return;
+    leaving.current = true;
+    onBack();
+  }
 
   useLayoutEffect(() => {
     const element = dialog.current;
@@ -32,18 +42,25 @@ export function DraftRecoveryDialog({
       className="draft-recovery-dialog"
       aria-labelledby="draft-recovery-title"
       aria-describedby="draft-recovery-description"
-      onCancel={(event) => event.preventDefault()}
+      onCancel={(event) => {
+        event.preventDefault();
+        back();
+      }}
       onClose={() => {
         const firstField = document.querySelector<HTMLElement>(
-          "form[data-draft-form] input:not(:disabled), form[data-draft-form] textarea:not(:disabled), form[data-draft-form] button:not(:disabled)",
+          leaving.current
+            ? ".workspace-main h1"
+            : "form[data-draft-form] input:not(:disabled), form[data-draft-form] textarea:not(:disabled), form[data-draft-form] button:not(:disabled)",
         );
+        leaving.current = false;
         firstField?.focus();
       }}
     >
       <h2 id="draft-recovery-title">Rascunho anterior salvo</h2>
       <p id="draft-recovery-description">
         O sistema salvou um rascunho de {formLabel} em{" "}
-        <time dateTime={savedAtIso}>{savedAt}</time>. Deseja restaurá-lo?
+        <time dateTime={savedAtIso}>{savedAt}</time>. Deseja restaurá-lo? Você
+        também pode voltar sem restaurar nem descartar o rascunho.
       </p>
       <div className="draft-recovery-actions">
         <button
@@ -57,6 +74,9 @@ export function DraftRecoveryDialog({
         </button>
         <button type="button" disabled={busy} onClick={onDiscard}>
           Não, descartar
+        </button>
+        <button type="button" disabled={busy} onClick={back}>
+          {backLabel}
         </button>
       </div>
     </dialog>

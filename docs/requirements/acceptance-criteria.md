@@ -1,8 +1,19 @@
 # Critérios e testes de aceite
 
+## Ativação inicial simplificada — D-LIC-009 / RF-LIC-001
+
+Maycon aprovou implementação e reutilização offline entre computadores em 2026-10-08; dados fictícios/aceite final pendente.
+
+| ID | Cenário e resultado esperado |
+|---|---|
+| TA-LIC-013 | emissor gera INITIAL assinada/código sem request; sem senha administrativa/chave de emissão no pacote; código abre somente sua licença |
+| TA-LIC-014 | destino vazio importa licença/código, prepara profissional/backup e autentica administrador definido no emissor; código/root/assinatura/tipo errados não persistem request/grant/usuários |
+| TA-LIC-015 | destino preparado/legado recusa ativação; repetição preserva credenciais/consumo; pacote idêntico ativa outro destino vazio com identidade local distinta (limite aprovado) |
+| TA-LIC-016 | quatro operações posteriores/v1 continuam vinculadas; UI cobre erro/carregamento/sucesso/rótulos; NSIS clínico e emissor separados, sem cofre/segredo de emissão distribuído |
+
 ## Licenciamento offline — WEBFIT-10
 
-**Status:** cenários propostos derivados de DEC-058; nenhum executado. Fluxo/tipos aprovados, detalhes de segurança sujeitos ao Plan. Não representam aceite humano da entrega ou garantia contra clonagem offline.
+**Status:** cenários aprovados para implementação por Maycon, DEC-058 / ADR-0003 v1 (“Aprovo a implementação”, 2026-10-08). Checks locais em fixtures descritos no registro WEBFIT-10; ensaio visual/instalador Windows e review independente pendentes. Não representam aceite humano da entrega ou garantia contra clonagem offline.
 
 | ID | Requisito | Cenário e resultado esperado |
 |---|---|---|
@@ -18,6 +29,8 @@
 | TA-LIC-010 | RF-LIC-001..005 | atualizar/reparar preserva dados/licença/credenciais; testes existentes não apagados automaticamente; nova instalação segue ativação inicial |
 | TA-LIC-011 | RF-LIC-001 | aguardo/carregamento/erro/sucesso reais; teclado/rótulos/foco e recuperação sem exibir segredos |
 | TA-LIC-012 | RF-LIC-006 | ADIADO para outra demanda: cópia consistente/protegida e retorno sem perder trabalho posterior; fora de WEBFIT-10 |
+
+Cobertura técnica aprovada por D-LIC-006..008 (Maycon, “Aprovo a implementação”); resultados reais e limites no registro WEBFIT-10: TA-LIC-003 verifica root de confiança externo à licença, challenge/tipo/request alterados e limites de arquivos/PHC; TA-LIC-004 consumo transacional em concorrência/interrupção; TA-LIC-005 backup protegido do emissor, chave/credencial não exposta, arquivo/senha errados e release sem root de fixture; TA-LIC-006 staging schema 1/2, destino vazio, consumo/credenciais do destino preservados e usuários históricos inativos; TA-LIC-007 senha temporária própria, consumo no login e deadline absoluto de sessão independente de relógio de parede; TA-LIC-009 inventário de dados clínicos sem apagar perfil/auditoria/licença/backup; TA-LIC-010 legado sem licença somente backup conforme regra decidida. Aprovação técnica específica registrada; aceite humano e ensaio visual Windows continuam separados dos checks locais.
 
 
 ## RF-UX-004 — identidade visual (Maycon, 2026-10-08)
@@ -61,7 +74,7 @@ TA-UX-002 (RF-UX-002, aprovado por Maycon em 2026-10-07): abrir informações po
 | TA-DRF-007 | RF-DRF-002/RN-DRF-007 | escolher “Descartar” para cadastro novo; somente o autosave correspondente é removido e os campos ficam vazios para novo registro | aprovado por Maycon em 2026-10-08 — WEBFIT-7 |
 | TA-DRF-008 | RF-DRF-002/RN-DRF-007 | escolher “Descartar” ao editar; somente o autosave correspondente é removido, os dados persistidos são reapresentados e alterações não confirmadas não substituem o registro | aprovado por Maycon em 2026-10-08 — WEBFIT-7 (preserva RF-PAT-003/TA-PAT-004) |
 | TA-DRF-009 | RF-DRF-002/RN-DRF-002 | simular falha ao carregar ou descartar e verificar mensagem de erro, ausência de falso sucesso e preservação da última versão válida e dos dados persistidos | aprovado por Maycon em 2026-10-08 — WEBFIT-7 |
-| TA-DRF-010 | RF-DRF-002 | modal operável por teclado e tecnologia assistiva; nomes “Sim, restaurar”/“Não, descartar”; foco permanece no modal até escolha explícita, Escape/clique externo não descartam e foco retorna ao formulário após a escolha | aprovado por Maycon em 2026-10-08 — WEBFIT-7 |
+| TA-DRF-010 | RF-DRF-002 | modal operável por teclado e tecnologia assistiva; nomes “Sim, restaurar”/“Não, descartar”/“Voltar à lista” ou “Voltar ao paciente”; foco permanece no modal até ação explícita; Escape equivale a Voltar preservando rascunho/registro, clique externo inerte; foco retorna ao formulário após restaurar/descartar e ao título do destino após Voltar; reentrada oferece novamente; operação em andamento bloqueia saída | aprovado por Maycon em 2026-10-08 — WEBFIT-7, refinado em WEBFIT-13 / D-DRF-EXIT-001 |
 | TA-PRE-001 | RF-PRE-001 | criar prescrição para paciente ativo, salvar rascunho e reabrir mantendo vínculo, autor e espaço | aprovado |
 | TA-PRE-002 | RF-PRE-002 | incluir alimento TBCA por medida caseira convertida para gramas; usar TACO somente quando TBCA não possuir o item e mostrar a fonte | aprovado |
 | TA-PRE-003 | RF-PRE-003 | calcular item, refeição e cardápio com valores conhecidos por 100 g e confirmar totais sem arredondamento acumulado | aprovado |

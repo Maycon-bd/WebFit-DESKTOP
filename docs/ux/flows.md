@@ -1,10 +1,10 @@
 # Fluxos de interação
 
-## Ativação offline — WEBFIT-10 (direção aprovada, ainda não implementada)
+## Ativação offline — WEBFIT-10 (implementação local, aceite pendente)
 
 Instalação nova → Aguardando ativação → gerar solicitação → envio manual a Maycon → emissão em ferramenta separada com interface → importar licença → validar assinatura/destino/tipo no backend → preparar acessos → login normal ou administrativo. Carregamento/erro/conclusão devem ser reais, acessíveis por teclado e preservar estado; não exibir senha administrativa/segredo de emissão.
 
-Chave inicial em banco preparado → recusar sem limpar. Reimportação consumida → informar já aplicada sem repetir efeitos. Atualização/reparo → preservar licença/dados. Reinicialização → autorização própria → backup validado → confirmação separada → limpar consultório mantendo licença/acessos/consumo; falha/cancelamento preserva estado. Suporte temporário → uma sessão até 4 h → sair/bloquear/limite encerra; contrato técnico pendente. Recuperação/transferência não simulam ativação inicial. Pacote por cópia adiado para outra demanda. [Detalhes e pendências](../../specs/WEBFIT-10/task.md).
+Chave inicial em banco preparado → recusar sem limpar. Reimportação consumida → informar já aplicada sem repetir efeitos. Atualização/reparo → preservar licença/dados. Reinicialização → autorização própria → backup validado → confirmação separada → limpar consultório mantendo licença/acessos/consumo; falha/cancelamento preserva estado. Suporte temporário → uma sessão até 4 h → sair/bloquear/limite encerra; contrato ADR-0003 v1 aprovado; credencial de suporte distinta, consumo no login. Recuperação/transferência não simulam ativação inicial. Pacote por cópia adiado para outra demanda. [Detalhes e pendências](../../specs/WEBFIT-10/task.md).
 
 
 **Status:** fluxos do primeiro incremento aprovados.
@@ -85,3 +85,11 @@ restaurar → selecionar pacote → validar em área temporária
 ├── inválido → rejeitar e preservar estado
 └── válido → confirmar → preservar estado atual → substituir → verificar
 ```
+
+## Apresentação refinada — auditoria V01–V08, 2026-10-08
+
+Retomada autorizada por Maycon via webfit-task. Contraste funcional, campos com obrigatório/opcional conforme regras vigentes, feedback junto às ações em paciente/perfil, cabeçalho compacto, Voltar à lista com explicação da retenção, traduções de update e orientação neutra de tags implementados localmente. Autosave/validações/fluxos de domínio preservados. V05 saída neutra NÃO implementada: escolha pendente; modal binário RF-DRF-002 permanece. Evidência/limites/aceite no [índice](../../specs/ui-audit-2026-10-08/README.md#execução-sequencial--2026-10-08).
+
+### Recuperação: Voltar sem resolver — WEBFIT-13
+
+Refinamento aprovado por Maycon em 2026-10-08. No modal, Voltar à lista (paciente/perfil) ou Voltar ao paciente (prescrição) preserva rascunho e dados persistidos sem salvamento. Escape realiza a mesma saída; clique externo inerte; durante operação não sai. Foco no título de destino. Ao reabrir o contexto, recuperação é oferecida novamente. Substitui a pendência V05 descrita no registro anterior; Restaurar/Descartar e seus erros permanecem.

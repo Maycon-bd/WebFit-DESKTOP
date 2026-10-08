@@ -9,6 +9,7 @@ use aes_gcm::{
 };
 use base64::{engine::general_purpose::STANDARD, Engine};
 use chrono::Utc;
+use rusqlite::OptionalExtension;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
@@ -124,7 +125,9 @@ impl Service {
             )?;
             let wrapping = security::protect(&decode(&protected)?, true)?;
             let payload = Zeroizing::new(serde_json::to_vec(&Snapshot {
-                schema: 1,
+                schema: self
+                    .db
+                    .pragma_query_value(None, "user_version", |r| r.get(0))?,
                 at: Utc::now().to_rfc3339(),
                 database: encode(&data),
                 key: encode(&self.key),
@@ -174,12 +177,21 @@ impl Service {
                     }
                 }
             }
-            Ok(json!({"path":output.to_string_lossy(),"at":at}))
+            Ok(json!({"path":output.to_string_lossy(),"at":at,"sha256":digest(&package)}))
         })();
         let _ = std::fs::remove_file(&snapshot_path);
         result
     }
     pub fn restore(&mut self, path: &Path, password: &str, user: &User) -> Result<Value> {
+        self.restore_with_transfer(path, password, None, Some(user))
+    }
+    pub fn restore_with_transfer(
+        &mut self,
+        path: &Path,
+        password: &str,
+        transfer: Option<(webfit_license_protocol::Grant, String, String, String)>,
+        user: Option<&User>,
+    ) -> Result<Value> {
         if path.extension().and_then(|s| s.to_str()) != Some("webfit-backup")
             || std::fs::metadata(path)?.len() > 1024 * 1024 * 1024
         {
@@ -207,7 +219,7 @@ impl Service {
                 })?,
         );
         let snapshot: Snapshot = serde_json::from_slice(&plain)?;
-        if snapshot.schema != 1 {
+        if !(1..=2).contains(&snapshot.schema) {
             return Err(Error::validation("Schema de backup incompatível."));
         }
         let data = decode(&snapshot.database)?;
@@ -224,12 +236,13 @@ impl Service {
         std::fs::write(&stage, &data)?;
         let _cleanup = TemporarySnapshot(stage.clone());
         let validation = (|| -> Result<rusqlite::Connection> {
-            let db = database::open(&stage, &key)?;
+            let mut db = database::open(&stage, &key)?;
             database::integrity(&db)?;
             let schema: i64 = db.pragma_query_value(None, "user_version", |r| r.get(0))?;
-            if schema != 1 {
+            if schema != snapshot.schema as i64 {
                 return Err(Error::validation("Backup incompatível."));
             }
+            database::migrate(&mut db)?;
             Ok(db)
         })();
         let restored = match validation {
@@ -239,61 +252,138 @@ impl Service {
                 return Err(error);
             }
         };
-        self.create_backup(None, Some(user))?;
-        // Logical import keeps the installation key/DPAPI profile and atomically rolls back on error.
+        let origin: Option<String> = restored
+            .query_row(
+                "SELECT active_license_id FROM license_state WHERE singleton=1",
+                [],
+                |r| r.get(0),
+            )
+            .optional()?
+            .flatten();
+        let destination: Option<String> = self.db.query_row(
+            "SELECT active_license_id FROM license_state WHERE singleton=1",
+            [],
+            |r| r.get(0),
+        )?;
+        if let Some((grant, _, _, _)) = &transfer {
+            let expected = grant
+                .request
+                .source
+                .as_deref()
+                .ok_or_else(Error::internal)?;
+            if expected != origin.as_deref().unwrap_or("")
+                && expected != digest(&std::fs::read(path)?)
+            {
+                return Err(Error::validation(
+                    "Backup não corresponde à origem autorizada.",
+                ));
+            }
+        } else {
+            if destination.is_none() || destination != origin {
+                return Err(Error::validation(
+                    "Backup de outra instalação exige transferência autorizada.",
+                ));
+            }
+            self.create_backup(None, user)?;
+        }
+        // Explicit columns and an allowlist preserve destination credentials, licensing and consumption.
         let tx = self.db.transaction()?;
-        tx.execute_batch("PRAGMA defer_foreign_keys=ON;")?;
-        // Audit is append-only: restore clinical state, retaining both trails as unique events.
-        tx.execute_batch("DELETE FROM patient_tags; DELETE FROM prescriptions; DELETE FROM drafts; DELETE FROM patients; DELETE FROM tags; UPDATE users SET active=0;")?;
-        for table in [
-            "users",
-            "settings",
-            "patients",
-            "tags",
-            "patient_tags",
-            "prescriptions",
-            "drafts",
-            "audit",
+        tx.execute_batch("PRAGMA defer_foreign_keys=ON; DELETE FROM patient_tags; DELETE FROM prescriptions; DELETE FROM drafts WHERE kind!='profile'; DELETE FROM patients; DELETE FROM tags;")?;
+        if let Some((grant, name, hash, recovery_password)) = &transfer {
+            let credential = grant.credential.as_ref().ok_or_else(Error::internal)?;
+            for (name, role, hash) in [
+                (
+                    credential.login.as_str(),
+                    "ADMIN",
+                    credential.verifier.as_str(),
+                ),
+                (name.trim(), "NUTRITIONIST", hash.as_str()),
+            ] {
+                tx.execute(
+                    "INSERT INTO users(id,name,role,password_hash) VALUES(?1,?2,?3,?4)",
+                    rusqlite::params![Uuid::new_v4().to_string(), name, role, hash],
+                )?;
+            }
+            let salt = Uuid::new_v4().as_bytes().to_vec();
+            let key = security::derive(recovery_password, &salt)?;
+            tx.execute(
+                "INSERT INTO settings(name,value) VALUES('recovery_salt',?1)",
+                [encode(&salt)],
+            )?;
+            tx.execute(
+                "INSERT INTO settings(name,value) VALUES('recovery_wrapped',?1)",
+                [encode(&security::protect(&key, false)?)],
+            )?;
+            tx.execute("UPDATE license_state SET active_license_id=?1,administrator_id=(SELECT id FROM users WHERE active=1 AND role='ADMIN') WHERE singleton=1",[grant.id.to_string()])?;
+            crate::license::consume(&tx, grant)?;
+        }
+        let mut historical = restored.prepare("SELECT id,name,role,profile FROM users")?;
+        let users = historical.query_map([], |r| {
+            Ok((
+                r.get::<_, String>(0)?,
+                r.get::<_, String>(1)?,
+                r.get::<_, String>(2)?,
+                r.get::<_, String>(3)?,
+            ))
+        })?;
+        // Unknown historical authors cannot log in: no valid PHC is imported.
+        for row in users {
+            let (id, name, role, profile) = row?;
+            tx.execute("INSERT OR IGNORE INTO users(id,name,role,password_hash,profile,active) VALUES(?1,?2,?3,'!historical-disabled',?4,0)",rusqlite::params![id,name,role,profile])?;
+        }
+        for (table, columns) in [
+            (
+                "patients",
+                "id,cpf,search,payload,archived,created_at,updated_at",
+            ),
+            ("tags", "id,name,active"),
+            ("patient_tags", "patient_id,tag_id"),
+            (
+                "prescriptions",
+                "id,patient_id,author_id,previous_id,version,status,payload,created_at,updated_at",
+            ),
+            ("drafts", "id,user_id,kind,payload,updated_at"),
+            (
+                "audit",
+                "id,actor_type,user_id,at,workspace,action,entity_type,entity_id,result",
+            ),
         ] {
-            let mut read = restored.prepare(&format!("SELECT * FROM {table}"))?;
+            let mut read = restored.prepare(&format!("SELECT {columns} FROM {table}"))?;
             let cols = read.column_count();
             let mut rows = read.query([])?;
             let placeholders = (1..=cols)
                 .map(|i| format!("?{i}"))
                 .collect::<Vec<_>>()
                 .join(",");
+            let verb = if table == "audit" || table == "drafts" {
+                "INSERT OR IGNORE"
+            } else {
+                "INSERT"
+            };
             while let Some(row) = rows.next()? {
                 let values = (0..cols)
                     .map(|i| row.get::<_, rusqlite::types::Value>(i))
                     .collect::<std::result::Result<Vec<_>, _>>()?;
-                let sql = if table == "users" {
-                    format!("INSERT INTO users VALUES({placeholders}) ON CONFLICT(id) DO UPDATE SET name=excluded.name,role=excluded.role,password_hash=excluded.password_hash,must_change=excluded.must_change,profile=excluded.profile,active=excluded.active")
-                } else if table == "settings" || table == "audit" {
-                    format!("INSERT OR IGNORE INTO {table} VALUES({placeholders})")
-                } else {
-                    format!("INSERT INTO {table} VALUES({placeholders})")
-                };
-                tx.execute(&sql, rusqlite::params_from_iter(values))?;
+                tx.execute(
+                    &format!("{verb} INTO {table}({columns}) VALUES({placeholders})"),
+                    rusqlite::params_from_iter(values),
+                )?;
             }
         }
-        tx.execute("INSERT INTO settings(name,value) VALUES('recovery_salt',?1) ON CONFLICT(name) DO UPDATE SET value=excluded.value",[&envelope.salt])?;
-        let actor_exists: bool = tx.query_row(
-            "SELECT EXISTS(SELECT 1 FROM users WHERE id=?1)",
-            [&user.id],
-            |r| r.get(0),
-        )?;
         audit(
             &tx,
-            if actor_exists { Some(user) } else { None },
+            user,
             "BACKUP_RESTORE",
             "BACKUP",
-            None,
+            transfer
+                .as_ref()
+                .map(|(g, _, _, _)| g.id.to_string())
+                .as_deref(),
             "SUCCESS",
         )?;
         database::integrity(&tx)?;
-        // Credential and clinical state commit together; interrupted restore rolls back both.
-        tx.execute("INSERT INTO settings(name,value) VALUES('recovery_wrapped',?1) ON CONFLICT(name) DO UPDATE SET value=excluded.value",[encode(&security::protect(&wrapping,false)?)])?;
         tx.commit()?;
+        drop(historical);
         drop(restored);
         let _ = std::fs::remove_file(&stage);
         self.lock();

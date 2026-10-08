@@ -9,6 +9,7 @@ Símbolo escolhido: figura humana/folhas em azul-petróleo e verde, sem texto e 
 - Acesso 112×112, lateral 72×72, informações 64×64; marca isolada substitui wordmarks existentes. Nome continua no título e informações.
 - Favicon local; dimensões explícitas/object-fit contain. Alt WebFit Desktop no acesso/lateral e alt vazio no Sobre já identificado por seu título.
 - Janela/executável/atalhos usam bundle.icon; NSIS installerIcon/uninstallerIcon; todos apontam para src-tauri/icons/icon.ico.
+- No Windows, o setup define explicitamente ICON_BIG para a barra de tarefas/Alt+Tab usando o recurso embutido pelo Tauri. O ícone pequeno do título continua definido pelo runtime. Não depende de arquivo externo e não limpa cache nem altera atalhos existentes.
 - Derivados nativos preexistentes regenerados para evitar identidades concorrentes; não habilita plataformas adicionais.
 - Logo/assinatura privada profissional, ícones de ações e spike G4 separados.
 

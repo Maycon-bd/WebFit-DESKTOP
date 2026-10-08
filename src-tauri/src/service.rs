@@ -12,17 +12,57 @@ use uuid::Uuid;
 use zeroize::Zeroizing;
 
 #[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Command {
     pub token: Option<String>,
     pub command: Action,
 }
 #[derive(Deserialize)]
-#[serde(tag = "op", rename_all = "snake_case")]
+#[serde(tag = "op", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
     CalculateEnergy {
         input: crate::energy::EnergyInput,
     },
     Status,
+    LicenseRequest {
+        kind: webfit_license_protocol::Kind,
+        source: Option<String>,
+    },
+    ImportLicense {
+        content: String,
+    },
+    ReadLicenseFile {
+        path: String,
+    },
+    ActivateLicenseCode {
+        path: String,
+        code: String,
+    },
+    SaveLicenseRequest {
+        content: String,
+        path: String,
+    },
+    RecoverAdministrator {
+        id: String,
+        confirmed: bool,
+    },
+    ResetClinic {
+        id: String,
+        confirmed: bool,
+    },
+    SupportLogin {
+        id: String,
+        password: String,
+    },
+    TransferRecovery {
+        id: String,
+        path: String,
+        password: String,
+        professional_name: String,
+        professional_password: String,
+        recovery_password: String,
+        confirmed: bool,
+    },
     RememberedLogin {
         administrator: bool,
     },
@@ -30,8 +70,6 @@ pub enum Action {
         remember: bool,
     },
     Setup {
-        admin_name: String,
-        admin_password: String,
         professional_name: String,
         professional_password: String,
         recovery_password: String,
@@ -154,16 +192,20 @@ pub struct User {
     pub name: String,
     pub role: String,
     pub must_change: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub support_authorization_id: Option<String>,
 }
 struct Session {
     token: String,
     user: User,
     last: Instant,
+    support_deadline: Option<Instant>,
 }
 pub struct Service {
     pub db: Connection,
     pub root: PathBuf,
     pub key: Zeroizing<Vec<u8>>,
+    pub license_roots: Vec<[u8; 32]>,
     session: Option<Session>,
     failed: u32,
     next_login: Option<Instant>,
@@ -198,6 +240,13 @@ pub fn audit(
     id: Option<&str>,
     result: &str,
 ) -> Result<()> {
+    let action = if user.is_some_and(|u| u.support_authorization_id.is_some())
+        && action != "SUPPORT_LOGIN"
+    {
+        format!("SUPPORT_{action}")
+    } else {
+        action.to_owned()
+    };
     tx.execute("INSERT INTO audit(id,actor_type,user_id,at,action,entity_type,entity_id,result) VALUES(?1,?2,?3,?4,?5,?6,?7,?8)",params![Uuid::new_v4().to_string(),if user.is_some(){"USER"}else{"UNAUTHENTICATED"},user.map(|u|u.id.as_str()),Utc::now().to_rfc3339(),action,entity,id,result])?;
     Ok(())
 }
@@ -257,6 +306,68 @@ fn validate_patient(patient: &Value) -> Result<String> {
     Ok(cpf)
 }
 impl Service {
+    #[cfg(test)]
+    pub fn expire_support_fixture(&mut self) {
+        if let Some(session) = &mut self.session {
+            session.support_deadline = Some(Instant::now());
+        }
+    }
+    #[cfg(test)]
+    pub fn support_remaining_fixture(&self) -> Option<Duration> {
+        self.session
+            .as_ref()?
+            .support_deadline
+            .map(|deadline| deadline.saturating_duration_since(Instant::now()))
+    }
+    fn support_login(&mut self, id: &str, password: &str) -> Result<Value> {
+        if self.next_login.is_some_and(|next| next > Instant::now()) {
+            return Err(Error::validation(
+                "Aguarde o intervalo de segurança antes de tentar novamente.",
+            ));
+        }
+        let grant =
+            self.pending_grant(Some(id), webfit_license_protocol::Kind::TemporarySupport)?;
+        let credential = grant.credential.as_ref().ok_or_else(Error::internal)?;
+        if !security::verify_password(password, &credential.verifier) {
+            self.failed = self.failed.saturating_add(1);
+            if self.failed >= 4 {
+                self.next_login = Some(
+                    Instant::now()
+                        + Duration::from_secs(
+                            [30, 60, 300, 900][(self.failed - 4).min(3) as usize],
+                        ),
+                );
+            }
+            let tx = self.db.transaction()?;
+            audit(&tx, None, "SUPPORT_LOGIN", "LICENSE", Some(id), "FAILURE")?;
+            tx.commit()?;
+            return Err(Error::validation(
+                "Credenciais inválidas. Confira o acesso e tente novamente.",
+            ));
+        }
+        let user=self.db.query_row("SELECT id,name,role,must_change FROM users WHERE id=(SELECT administrator_id FROM license_state WHERE singleton=1) AND active=1 AND role='ADMIN'",[],|r|Ok(User{id:r.get(0)?,name:r.get(1)?,role:r.get(2)?,must_change:r.get(3)?,support_authorization_id:Some(id.to_owned())}))?;
+        let tx = self.db.transaction()?;
+        crate::license::consume(&tx, &grant)?;
+        audit(
+            &tx,
+            Some(&user),
+            "SUPPORT_LOGIN",
+            "LICENSE",
+            Some(id),
+            "SUCCESS",
+        )?;
+        tx.commit()?;
+        let token = Uuid::new_v4().to_string();
+        self.session = Some(Session {
+            token: token.clone(),
+            user: user.clone(),
+            last: Instant::now(),
+            support_deadline: Some(Instant::now() + Duration::from_secs(4 * 3600)),
+        });
+        self.failed = 0;
+        self.next_login = None;
+        Ok(json!({"token":token,"user":user,"support":true}))
+    }
     pub fn open(root: PathBuf) -> Result<Self> {
         std::fs::create_dir_all(&root)?;
         let key_path = root.join("installation.key.dpapi");
@@ -274,16 +385,19 @@ impl Service {
         };
         let mut db = database::open(&root.join("health.db"), &key)?;
         database::migrate(&mut db)?;
-        Ok(Self {
+        let mut service = Self {
             db,
             root,
             key,
+            license_roots: crate::license::trust_roots()?,
             session: None,
             failed: 0,
             next_login: None,
             updating: false,
             audit_queries: Default::default(),
-        })
+        };
+        service.initialize_license()?;
+        Ok(service)
     }
     pub fn lock(&mut self) {
         self.session = None;
@@ -299,6 +413,9 @@ impl Service {
             return Err(Error::denied());
         };
         if session.last.elapsed() >= Duration::from_secs(3600)
+            || session
+                .support_deadline
+                .is_some_and(|deadline| Instant::now() >= deadline)
             || token != Some(session.token.as_str())
         {
             self.lock();
@@ -386,12 +503,96 @@ impl Service {
                 ).optional()?;
                 Ok(json!({"name":name}))
             }
-            Status => Ok(
-                json!({"initialized":self.db.query_row("SELECT count(*) FROM users",[],|r|r.get::<_,i64>(0))?>0}),
-            ),
+            Status => self.license_status(),
+            LicenseRequest { kind, source } => self.license_request(kind, source),
+            ImportLicense { content } => self.import_license(&content),
+            ActivateLicenseCode { path, code } => {
+                let code = Zeroizing::new(code);
+                let path = std::path::Path::new(&path);
+                if path.extension().and_then(|v| v.to_str()) != Some("webfit-license")
+                    || std::fs::metadata(path)?.len() > webfit_license_protocol::MAX_FILE as u64 {
+                    return Err(Error::validation("Selecione uma licença WebFit de até 64 KiB."));
+                }
+                self.import_initial_code(&std::fs::read_to_string(path)?, &code)
+            }
+            ReadLicenseFile { path } => {
+                let path = std::path::Path::new(&path);
+                if path.extension().and_then(|v| v.to_str()) != Some("webfit-license")
+                    || std::fs::metadata(path)?.len() > webfit_license_protocol::MAX_FILE as u64
+                {
+                    return Err(Error::validation(
+                        "Selecione uma licença WebFit de até 64 KiB.",
+                    ));
+                }
+                let content = std::fs::read_to_string(path)?;
+                self.import_license(&content)
+            }
+            SaveLicenseRequest { content, path } => {
+                use std::io::Write;
+                let value: webfit_license_protocol::Request =
+                    webfit_license_protocol::parse(content.as_bytes())
+                        .map_err(Error::validation)?;
+                let stored: String = self.db.query_row(
+                    "SELECT request FROM license_requests WHERE id=?1",
+                    [value.request_id.to_string()],
+                    |r| r.get(0),
+                )?;
+                if stored != content
+                    || std::path::Path::new(&path)
+                        .extension()
+                        .and_then(|v| v.to_str())
+                        != Some("webfit-request")
+                {
+                    return Err(Error::validation("Solicitação ou destino inválido."));
+                }
+                let mut file = std::fs::OpenOptions::new()
+                    .write(true)
+                    .create_new(true)
+                    .open(path)?;
+                file.write_all(content.as_bytes())?;
+                file.sync_all()?;
+                Ok(json!({"saved":true}))
+            }
+            RecoverAdministrator { id, confirmed } => self.recover_administrator(&id, confirmed),
+            SupportLogin { id, password } => self.support_login(&id, &password),
+            TransferRecovery {
+                id,
+                path,
+                password,
+                professional_name,
+                professional_password,
+                recovery_password,
+                confirmed,
+            } => {
+                if !confirmed {
+                    return Err(Error::validation("Confirme a recuperação no novo destino."));
+                }
+                let grant =
+                    self.pending_grant(Some(&id), webfit_license_protocol::Kind::TransferRecovery)?;
+                if self
+                    .db
+                    .query_row("SELECT count(*) FROM users", [], |r| r.get::<_, i64>(0))?
+                    != 0
+                {
+                    return Err(Error::denied());
+                }
+                let professional_hash = security::hash_password(&professional_password)?;
+                if recovery_password.chars().count() < 12 || professional_name.trim().is_empty() {
+                    return Err(Error::validation("Informe acesso profissional e senha de recuperação de pelo menos 12 caracteres."));
+                }
+                self.restore_with_transfer(
+                    std::path::Path::new(&path),
+                    &password,
+                    Some((
+                        grant,
+                        professional_name,
+                        professional_hash,
+                        recovery_password,
+                    )),
+                    None,
+                )
+            }
             Setup {
-                admin_name,
-                admin_password,
                 professional_name,
                 professional_password,
                 recovery_password,
@@ -403,6 +604,9 @@ impl Service {
                 {
                     return Err(Error::denied());
                 }
+                let grant = self.pending_grant(None, webfit_license_protocol::Kind::Initial)?;
+                let credential = grant.credential.as_ref().ok_or_else(Error::internal)?;
+                let admin_name = &credential.login;
                 if admin_name.trim().is_empty()
                     || professional_name.trim().is_empty()
                     || admin_name
@@ -418,7 +622,7 @@ impl Service {
                         "Use ao menos 12 caracteres na senha de recuperação do backup.",
                     ));
                 }
-                let admin_hash = security::hash_password(&admin_password)?;
+                let admin_hash = credential.verifier.clone();
                 let professional_hash = security::hash_password(&professional_password)?;
                 let salt = Uuid::new_v4().as_bytes().to_vec();
                 let wrap = security::derive(&recovery_password, &salt)?;
@@ -442,6 +646,8 @@ impl Service {
                     [crate::recovery::encode(&protected_wrap)],
                 )?;
                 audit(&tx, None, "SETUP", "WORKSPACE", None, "SUCCESS")?;
+                crate::license::consume(&tx, &grant)?;
+                tx.execute("UPDATE license_state SET active_license_id=?1,administrator_id=(SELECT id FROM users WHERE role='ADMIN' AND active=1) WHERE singleton=1",[grant.id.to_string()])?;
                 tx.commit()?;
                 Ok(json!({"saved":true}))
             }
@@ -451,7 +657,7 @@ impl Service {
                         "Aguarde o intervalo de segurança antes de tentar novamente.",
                     ));
                 }
-                let row=self.db.query_row("SELECT id,name,role,must_change,password_hash FROM users WHERE name=?1 COLLATE NOCASE AND active=1",[name.trim()],|r|Ok((User{id:r.get(0)?,name:r.get(1)?,role:r.get(2)?,must_change:r.get(3)?},r.get::<_,String>(4)?))).optional()?;
+                let row=self.db.query_row("SELECT id,name,role,must_change,password_hash FROM users WHERE name=?1 COLLATE NOCASE AND active=1",[name.trim()],|r|Ok((User{id:r.get(0)?,name:r.get(1)?,role:r.get(2)?,must_change:r.get(3)?,support_authorization_id:None},r.get::<_,String>(4)?))).optional()?;
                 let valid = row
                     .as_ref()
                     .is_some_and(|(_, hash)| security::verify_password(&password, hash));
@@ -481,6 +687,7 @@ impl Service {
                     token: token.clone(),
                     user: user.clone(),
                     last: Instant::now(),
+                    support_deadline: None,
                 });
                 if !user.must_change {
                     self.daily_backup()?;
@@ -505,7 +712,21 @@ impl Service {
                         return Err(error);
                     }
                 };
+                if !self.licensed()?
+                    && !matches!(
+                        other,
+                        Backup { .. }
+                            | BackupStatus
+                            | Logout
+                            | Touch
+                            | RememberLogin { .. }
+                            | ChangePassword { .. }
+                    )
+                {
+                    return Err(Error::validation("Banco de testes sem licença: somente backup e solicitação estão disponíveis."));
+                }
                 match other {
+                    ResetClinic { id, confirmed } => self.reset_clinic(&id, confirmed, &user),
                     RememberLogin { remember } => {
                         let key = format!("login:remembered:{}", user.role);
                         if remember {
@@ -551,6 +772,7 @@ impl Service {
                                     name: r.get(1)?,
                                     role: r.get(2)?,
                                     must_change: r.get(3)?,
+                                    support_authorization_id: None,
                                 })
                             })?
                             .collect::<std::result::Result<Vec<_>, _>>()?;

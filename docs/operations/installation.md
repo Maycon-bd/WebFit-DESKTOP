@@ -1,13 +1,12 @@
 # Instalação
 
-## Próximo incremento de ativação — WEBFIT-10 (não disponível no instalador atual)
+## Ativação offline — WEBFIT-10 (implementação local, aceite pendente)
 
-DEC-058 aprova instalação nova aguardando ativação, geração de solicitação, envio manual a Maycon, emissão de licença vinculada em ferramenta separada com interface e importação/validação antes de preparar acessos. Maycon definiu ativações iniciais porque instalações anteriores eram testes; banco preparado não será limpo pela importação. Atualização/reparo preservam dados/licença. Transferência/recuperação, suporte temporário (uma sessão até 4 h, encerrada ao sair/bloquear), recuperação administrativa e reinicialização têm autorizações distintas; última exige backup e confirmação separados.
+Instalação vazia aguarda ativação; gerar `.webfit-request`, enviar manualmente a Maycon, emitir `.webfit-license` na ferramenta separada, importar e preparar somente o acesso profissional e senha de backup. O administrador vem da autorização. Protocolo/dependências/schema/efeitos aprovados por Maycon em 2026-10-08 (“Aprovo a implementação”). A configuração pública `src-tauri/license-trust.json` começa vazia e deve receber a pública exportada pelo emissor pelo fluxo build/Git humano **antes do instalador distribuível**. Não colocar cofre/executável/chave privada do emissor no instalador clínico.
 
-Discovery funcional concluída, Plan técnico em elaboração: [WEBFIT-10](../../specs/WEBFIT-10/task.md). Reinicialização manterá licença/acessos/consumo e limpará consultório após backup/confirmação; pacote por cópia adiado para outra demanda. Candidato atual ainda não aceita licença. Preparação administrativa abaixo descreve código existente até nova entrega verificada. Dados reais condicionados ao G7.
+Banco antigo de testes não é apagado por update/importação: seu login permite backup, com clínica bloqueada. Ativação inicial e transferência exigem destino vazio. Suporte usa senha temporária para uma sessão de até quatro horas. Reinicialização requer autorização, administrador, backup e confirmação e preserva licença/acessos/perfil/auditoria/backups. Pacote por cópia RF-LIC-006 adiado. Atualizar/reparar não emite licença nem cadastra ADMIN.
 
-Maycon pode guardar credenciais em **nota segura** do Bitwarden; recomenda-se um item **Login por instalação**, com usuário/senha nos campos próprios e ID da licença/instalação nas notas, sem dados clínicos. Custódia é manual, sem integração/compartilhamento automático com o WebFit ou agente. Fonte: [tipos de itens do Bitwarden](https://bitwarden.com/help/managing-items/). Chave privada de emissão precisa de plano próprio de proteção/recuperação, separado das credenciais administrativas e do updater.
-
+Pode guardar a credencial exclusiva em um item Login ou nota segura do Bitwarden, com UUID da instalação nas notas, sem dados clínicos. Custódia manual, sem integração/envio ao agente. [Procedimento do emissor e recuperação](../../tools/license-issuer/README.md), [verificação e limites](../../specs/WEBFIT-10/task.md). Build não representa aceite funcional ou distribuição; dados reais continuam condicionados ao G7.
 
 **Status:** instalador de teste 0.1.4 disponível, com catálogo ampliado; distribuição manual vigente, somente dados fictícios. Ensaio Windows 10/aceite completo pendentes.
 

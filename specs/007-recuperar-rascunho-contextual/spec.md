@@ -78,7 +78,7 @@ Quando a pessoa não quiser retomar o preenchimento interrompido, poderá descar
 - **SC-002**: Ao escolher “Restaurar”, todos os campos cobertos pelo rascunho apresentam os valores salvos, sem alterar campos não pertencentes a ele.
 - **SC-003**: Ao escolher “Descartar”, o rascunho correspondente deixa de ser recuperável; cadastro novo fica vazio, e edição existente mantém os valores persistidos.
 - **SC-004**: Testes com usuários e espaços distintos confirmam que nenhum rascunho é apresentado a uma sessão diferente da sua proprietária.
-- **SC-005**: Em navegação somente por teclado e tecnologia assistiva, ambas as ações são alcançáveis, nomeadas e operáveis, e a pessoa conclui a recuperação sem o foco escapar do modal.
+- **SC-005**: Em navegação somente por teclado e tecnologia assistiva, as ações de restaurar, descartar e voltar são alcançáveis, nomeadas e operáveis, e a pessoa conclui a recuperação sem o foco escapar do modal.
 
 ## Assumptions
 
@@ -86,3 +86,7 @@ Quando a pessoa não quiser retomar o preenchimento interrompido, poderá descar
 - Uma edição descartada volta ao estado persistido da entidade, seguindo o comportamento aprovado de cancelar alterações não confirmadas; autosave de prescrição não exclui prescrição clínica persistente.
 - A recuperação funciona sem rede, de acordo com a operação local/offline do produto.
 - Só dados fictícios serão usados durante implementação e verificação no G5.
+
+## Refinamento aprovado — WEBFIT-13 / D-DRF-EXIT-001
+
+Maycon aprovou em 2026-10-08 (“Faça isso”) a saída neutra de V05: Voltar sem restaurar/descartar/regravar, paciente e perfil para lista, prescrição para paciente; Escape equivalente, clique externo inerte e foco no título do destino. FR-002/008 ampliados somente por este refinamento; Restaurar/Descartar mantêm comportamento e foco no formulário. Reentrada consulta o mesmo contexto e oferece recuperação novamente. Fonte/evidência: [V05](../ui-audit-2026-10-08/V05-saida-recuperacao/spec.md). Artefatos WEBFIT-7 anteriores preservam o histórico do fluxo binário, não um bloqueio vigente.

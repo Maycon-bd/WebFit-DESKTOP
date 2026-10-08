@@ -14,7 +14,7 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 ## Accepted
 
-- [DEC-058](../../docs/project/decision-log.md#dec-058--ativação-offline-e-autorizações-por-instalação): Maycon, 2026-10-08; direção funcional de WEBFIT-10, cinco tipos, entrega inicial, emissor com interface e suporte até 4 h. Desenho técnico/custódia/recuperação pendentes; ADR-0003 proposto, sem implementação ou dados reais.
+- [DEC-058](../../docs/project/decision-log.md#dec-058--ativação-offline-e-autorizações-por-instalação): Maycon, 2026-10-08; direção funcional de WEBFIT-10, cinco tipos, entrega inicial, emissor com interface e suporte até 4 h. ADR-0003 v1 e D-LIC-006..008 aceitas por “Aprovo a implementação”; dependências/schema/emissor/restore/legado autorizados. Execução fictícia, sem dados reais/Git/publicação.
 
 - [DEC-057](../../docs/project/decision-log.md#dec-057--harness-com-quatro-fases): ACCEPTED por Maycon em 2026-10-08; quatro fases contínuas, Scope Check/autorizações específicas, Spec Kit opcional e registro único proporcional; Git, segurança/domínio e aceite final preservados.
 
@@ -95,3 +95,7 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 - Retenção clínica, backup externo, documentos e migração.
 
 Cada item aberto deve ser avaliado pela matriz antes de interromper o usuário. Permanecerá `NEEDS-HUMAN-DECISION` quando for ASK-FIRST ou quando faltar evidência essencial.
+
+## D-DRF-EXIT-001 — ACCEPTED
+
+Maycon aprovou explicitamente em 2026-10-08 a saída neutra V05/WEBFIT-13, incluindo destinos e Escape; decisão e escopo no [decision-log](../../docs/project/decision-log.md#d-drf-exit-001--saída-neutra-da-recuperação-webfit-13--v05). Validated by: Human. Não é decisão AGENT-PROVISIONAL nem aceite final.

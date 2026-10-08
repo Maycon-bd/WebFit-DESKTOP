@@ -22,6 +22,10 @@ coverage/
 *.sqlite
 *.sqlite3
 *.webfit-backup
+*.webfit-request
+*.webfit-license
+*.webfit-issuer-backup
+*.dpapi
 
 # Ferramentas e sistema operacional
 .idea/
@@ -37,6 +41,7 @@ Thumbs.db
 
 .artifacts/
 src-tauri/gen/
+tools/license-issuer/src-tauri/gen/
 
 # Python reference importer cache
 __pycache__/

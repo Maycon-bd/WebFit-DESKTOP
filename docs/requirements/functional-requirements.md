@@ -1,19 +1,25 @@
 # Requisitos funcionais
 
+### RF-LIC-001 — extensão aprovada D-LIC-009, 2026-10-08
+
+Permitir também ativação inicial offline com licença/código enviados junto do instalador, sem request prévio. Emissor define administrador e gera código aleatório; profissional importa licença, informa código e prepara seu acesso/backup. Backend verifica assinatura/confiança/código/tipo e recusa banco preparado. Credencial administrativa pertence à licença; senha fica com Maycon. Pacote pode ativar outras máquinas, limite explicitamente aceito para testes fictícios. Prioridade obrigatória para candidato de teste; status aprovado para implementação, aceite final pendente. TA-LIC-013..016 / T-LIC-012..015 no registro WEBFIT-10. Demais tipos/v1 preservados.
+
 ## Licenciamento offline — WEBFIT-10
 
-**Fonte/status:** DEC-058, Maycon, 2026-10-08. Fluxo/tipos aprovados no escopo suficientemente definido; nenhum implementado/verificado. Prioridade humana não definida. Plan/arquitetura material pendentes no [registro único](../../specs/WEBFIT-10/task.md); detalhes técnicos não recebem aprovação por inferência.
+**Fonte/status:** DEC-058, Maycon, 2026-10-08. Fluxo/tipos e ADR-0003 v1 aprovados para implementação por Maycon (“Aprovo a implementação”), D-LIC-006..008 ACCEPTED. Execução local em fixtures; aceite final pendente. Prioridade humana não definida. Plan/arquitetura material aceitos no [registro único](../../specs/WEBFIT-10/task.md); detalhes técnicos não recebem aprovação por inferência.
 
 | ID | Requisito / ator / resultado | Regras | Aceite | Status |
 |---|---|---|---|---|
-| RF-LIC-001 | visitante solicita/importa licença; Maycon emite para aquela instalação, definindo administrador próprio; preparação somente em banco vazio, validada no backend | RN-LIC-001..004 | TA-LIC-001..005/010/011 | fluxo aprovado; protocolo pendente |
-| RF-LIC-002 | Maycon autoriza transferência/recuperação no novo destino, com backup validado antes de recuperar dados | RN-LIC-001/002/005 | TA-LIC-006 | intenção aprovada; identidade/consumo pendentes |
-| RF-LIC-003 | Maycon recebe suporte administrativo temporário por uma sessão de até 4 h, encerrada também ao sair/bloquear; sem acesso permanente | RN-LIC-001/002/006 | TA-LIC-007 | intenção/duração aprovadas; protocolo pendente |
-| RF-LIC-004 | Maycon autoriza recuperação de sua credencial naquela instalação sem apagar dados nem revelar senha anterior | RN-LIC-001/002/004 | TA-LIC-008 | intenção aprovada; procedimento pendente |
-| RF-LIC-005 | Maycon autoriza reinicialização, mantendo licença/acessos e limpando consultório; backup validado e confirmação separados; falha/cancelamento preserva dados | RN-LIC-001/002/007 | TA-LIC-009 | comportamento aprovado; detalhes técnicos pendentes |
+| RF-LIC-001 | visitante solicita/importa licença; Maycon emite para aquela instalação, definindo administrador próprio; preparação somente em banco vazio, validada no backend | RN-LIC-001..004 | TA-LIC-001..005/010/011 | aprovado para implementação; aceite final pendente |
+| RF-LIC-002 | Maycon autoriza transferência/recuperação no novo destino, com backup validado antes de recuperar dados | RN-LIC-001/002/005 | TA-LIC-006 | aprovado para implementação; aceite final pendente |
+| RF-LIC-003 | Maycon recebe suporte administrativo temporário por uma sessão de até 4 h, encerrada também ao sair/bloquear; sem acesso permanente | RN-LIC-001/002/006 | TA-LIC-007 | aprovado para implementação; aceite final pendente |
+| RF-LIC-004 | Maycon autoriza recuperação de sua credencial naquela instalação sem apagar dados nem revelar senha anterior | RN-LIC-001/002/004 | TA-LIC-008 | aprovado para implementação; aceite final pendente |
+| RF-LIC-005 | Maycon autoriza reinicialização, mantendo licença/acessos e limpando consultório; backup validado e confirmação separados; falha/cancelamento preserva dados | RN-LIC-001/002/007 | TA-LIC-009 | aprovado para implementação; aceite final pendente |
 | RF-LIC-006 | cópia protegida para diagnóstico isolado por Maycon e retorno sem perder trabalho posterior | RN-LIC-008/RN-BKP-005..007 | TA-LIC-012 | adiado para outra demanda por Maycon, 2026-10-08 |
 
-Emissor separado com interface, exclusivo de Maycon; sem chave privada/senha compartilhada no instalador clínico. Uso diário offline. Licença inválida/incompatível/destino errado/repetida não causa preparação, limpeza ou falso sucesso; UI preserva estado e permite recuperação. Solicitação sem credencial/CPF/conteúdo clínico. Protocolo, perda/rotação de chaves e consumo em backup/rollback no ADR proposto.
+Emissor separado com interface, exclusivo de Maycon; sem chave privada/senha compartilhada no instalador clínico. Uso diário offline. Licença inválida/incompatível/destino errado/repetida não causa preparação, limpeza ou falso sucesso; UI preserva estado e permite recuperação. Solicitação sem credencial/CPF/conteúdo clínico. Protocolo, perda/rotação de chaves e consumo em backup/rollback no ADR aceito.
+
+**Plan técnico 2026-10-08 — ACCEPTED (D-LIC-006..008):** assinatura Ed25519 + payload sealed box para o destino, duas novas crates Rust/migração 002 aditiva, cofre DPAPI/SQLCipher do emissor e backup portátil cifrado. Suporte temporário terá credencial temporária separada, consumida no login e com limite de 4 h desde autenticação; não altera senha permanente. Restore preservará acessos do destino e importará autoria histórica sem reativar login antigo. Banco legado de teste sem licença permitirá somente backup autenticado/solicitação, com clínica bloqueada. Esses efeitos foram aprovados no pacote técnico; detalhes no [ADR-0003](../architecture/adr/ADR-0003-ativacao-offline-e-suporte.md). Perfil profissional preservado na reinicialização é inventário aprovado P-LIC-001; limpeza somente em fixture nesta execução.
 
 Instalações anteriores eram testes: entrega parte de ativação inicial; importar chave não limpa banco já preparado. Atualizar/reparar mantém dados/licença. RF-AUT-001, RF-UX-002, TA-AUT-001/TA-UX-002 descrevem código anterior até entrega; em nova instalação serão complementados por RF-LIC-001. Acesso total de ambos os papéis ao Saúde permanece.
 
@@ -179,6 +185,7 @@ Instalações anteriores eram testes: entrega parte de ativação inicial; impor
 - **Descrição:** ao abrir novamente o formulário longo de um preenchimento automaticamente salvo, perguntar se a pessoa deseja restaurar ou descartar o rascunho correspondente. Não apresentar uma lista global de rascunhos na tela de pacientes.
 - **Escopo:** perfil profissional, cadastro e edição de paciente e montagem de prescrição/cardápio, conforme RF-DRF-001; outros formulários somente após serem classificados como longos por requisito aprovado.
 - **Restaurar:** preencher o formulário correspondente com os valores salvos e permitir continuar o trabalho.
+- **Voltar (WEBFIT-13 / D-DRF-EXIT-001):** sair sem aplicar, excluir ou regravar o rascunho; paciente/perfil retornam à lista de pacientes, prescrição ao cadastro do paciente. Reentrada oferece recuperação novamente. Escape equivale a Voltar; clique externo permanece inerte; durante operação as ações ficam indisponíveis. Foco no título do destino. Refinamento aprovado por Maycon em 2026-10-08 (“Faça isso”), aceite final separado.
 - **Descartar:** remover somente o rascunho correspondente; formulário de criação fica vazio, edição retorna aos dados persistidos (RF-PAT-003) e rascunho clínico persistente de prescrição permanece conforme RN-DRF-005.
 - **Regras:** RN-DRF-001 a RN-DRF-007.
 - **Critérios:** TA-DRF-005 a TA-DRF-010.

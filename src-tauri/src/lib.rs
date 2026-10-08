@@ -1,6 +1,9 @@
 mod acceptance_tests;
+mod branding;
 mod database;
 mod energy;
+mod license;
+mod license_tests;
 mod nutrition;
 mod recovery;
 mod security;
@@ -69,6 +72,9 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
+            if let Some(window) = app.get_webview_window("main") {
+                branding::set_taskbar_icon(window.hwnd()?.0)?;
+            }
             let root = app.path().app_local_data_dir()?;
             let service = service::Service::open(root).map_err(|_| {
                 std::io::Error::other("Não foi possível preparar o armazenamento local.")

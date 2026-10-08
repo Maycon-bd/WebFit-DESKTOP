@@ -16,12 +16,15 @@ mod integration {
         })
     }
     fn setup(service: &mut Service) -> String {
+        crate::license::activate_fixture(
+            service,
+            "Administrador de teste",
+            "senha ficticia segura",
+        );
         call(
             service,
             None,
             Action::Setup {
-                admin_name: "Administrador de teste".into(),
-                admin_password: "senha ficticia segura".into(),
                 professional_name: "Nutricionista de teste".into(),
                 professional_password: "outra senha ficticia".into(),
                 recovery_password: "recuperacao ficticia segura".into(),
@@ -316,17 +319,18 @@ mod integration {
         )
         .is_err());
         assert!(call(&mut target, Some(&target_token), Action::Profile).is_ok());
-        call(
+        // Another licensed lineage needs a transfer grant; a normal restore must reject it.
+        assert!(call(
             &mut target,
             Some(&target_token),
             Action::Restore {
                 path: path.to_string_lossy().into(),
                 password: "recuperacao ficticia segura".into(),
-                confirmed: true,
-            },
+                confirmed: true
+            }
         )
-        .unwrap();
-        assert!(call(&mut target, Some(&target_token), Action::Profile).is_err());
+        .is_err());
+        assert!(call(&mut target, Some(&target_token), Action::Profile).is_ok());
         database::integrity(&target.db).unwrap();
     }
     #[test]
@@ -407,7 +411,7 @@ mod integration {
             .db
             .pragma_query_value(None, "user_version", |row| row.get(0))
             .unwrap();
-        assert_eq!(version, 1);
+        assert_eq!(version, 2);
     }
     #[test]
     fn six_character_access_passwords_work_and_recovery_remains_twelve() {
@@ -418,12 +422,11 @@ mod integration {
         assert!(!security::verify_password("abc124", &hash));
         let temp = tempfile::tempdir().unwrap();
         let mut service = Service::open(temp.path().to_owned()).unwrap();
+        crate::license::activate_fixture(&mut service, "Admin ficticio", six);
         assert!(call(
             &mut service,
             None,
             Action::Setup {
-                admin_name: "Admin ficticio".into(),
-                admin_password: six.into(),
                 professional_name: "Profissional ficticio".into(),
                 professional_password: six.into(),
                 recovery_password: "12345678901".into(),
@@ -434,8 +437,6 @@ mod integration {
             &mut service,
             None,
             Action::Setup {
-                admin_name: "Admin ficticio".into(),
-                admin_password: six.into(),
                 professional_name: "Profissional ficticio".into(),
                 professional_password: six.into(),
                 recovery_password: "123456789012".into(),

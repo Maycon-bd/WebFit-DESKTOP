@@ -15,7 +15,7 @@ pub fn open(path: &Path, key: &[u8]) -> Result<Connection> {
 }
 pub fn migrate(connection: &mut Connection) -> Result<()> {
     let version: i64 = connection.pragma_query_value(None, "user_version", |row| row.get(0))?;
-    if version > 1 {
+    if version > 2 {
         return Err(Error::validation(
             "Banco de uma versão mais nova. Instale a versão compatível antes de continuar.",
         ));
@@ -24,6 +24,12 @@ pub fn migrate(connection: &mut Connection) -> Result<()> {
         let tx = connection.transaction()?;
         tx.execute_batch(include_str!("../migrations/001_initial.sql"))?;
         tx.pragma_update(None, "user_version", 1)?;
+        tx.commit()?;
+    }
+    if version < 2 {
+        let tx = connection.transaction()?;
+        tx.execute_batch(include_str!("../migrations/002_license.sql"))?;
+        tx.pragma_update(None, "user_version", 2)?;
         tx.commit()?;
     }
     Ok(())

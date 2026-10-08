@@ -5,6 +5,8 @@ import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { UpdatePanel } from "./UpdatePanel";
 import { DraftRecoveryDialog } from "./DraftRecoveryDialog";
+import { FormFeedback } from "./FormFeedback";
+import type { FormFeedbackState } from "./FormFeedback";
 import {
   api,
   emptyPatient,
@@ -29,6 +31,8 @@ import { EnergyForm } from "./EnergyForm";
 import { FoodPicker } from "./FoodPicker";
 import { GuidedTour } from "./GuidedTour";
 import { LoginInfo } from "./LoginInfo";
+import { LicensePanel } from "./LicensePanel";
+import type { LicenseStatus } from "./LicensePanel";
 import type { TourId } from "./onboarding";
 import {
   auditQuery,
@@ -102,6 +106,9 @@ const auditActions: Record<string, string> = {
   BACKUP_RESTORE: "Restaurar backup",
   AUDIT_MODULE_OPEN: "Abrir auditoria",
   AUDIT_EVENT_DETAIL_VIEW: "Consultar evento",
+  UPDATE_PREPARE: "Preparar atualização e criar backup",
+  UPDATE_INSTALL_START: "Iniciar instalação da atualização",
+  UPDATE_INSTALL: "Instalar atualização",
 };
 const auditEntities: Record<string, string> = {
   USER: "Usuário",
@@ -184,6 +191,14 @@ function Heading({
 
 export default function App() {
   const [initialized, setInitialized] = useState<boolean | null>(null);
+  const [licenseStatus, setLicenseStatus] = useState<LicenseStatus | null>(
+    null,
+  );
+  async function refreshLicense() {
+    const r = await api<LicenseStatus>(null, { op: "status" });
+    setLicenseStatus(r);
+    setInitialized(r.initialized);
+  }
   const [adminAccess, setAdminAccess] = useState(false);
   const [session, setSession] = useState<{ token: string; user: User } | null>(
     null,
@@ -218,6 +233,7 @@ export default function App() {
   const draftDirty = useRef(false);
   const lastDraftContext = useRef<string | null>(null);
   const resolvedDraftId = useRef<string | null>(null);
+  const recoveryExitFocus = useRef(false);
   const token = session?.token ?? null;
   const tourScreen: TourId | null =
     page === "patients"
@@ -289,13 +305,11 @@ export default function App() {
     }
   }
   useEffect(() => {
-    void api<{ initialized: boolean }>(null, { op: "status" })
-      .then((r) => setInitialized(r.initialized))
-      .catch(() =>
-        setError(
-          "Abra o WebFit pelo aplicativo instalado para acessar o banco local.",
-        ),
-      );
+    void refreshLicense().catch(() =>
+      setError(
+        "Abra o WebFit pelo aplicativo instalado para acessar o banco local.",
+      ),
+    );
   }, []);
   useEffect(() => {
     if (!token) return;
@@ -370,6 +384,25 @@ export default function App() {
     matchingDraft && pendingDraft?.id === matchingDraft.id
       ? pendingDraft
       : null;
+  const contextualFeedback =
+    !session?.user.must_change &&
+    !checkingDraftContext &&
+    !visibleDraft &&
+    (page === "profile" ||
+      (page === "patients" && Boolean(patient) && !prescription));
+  useEffect(() => {
+    if (!recoveryExitFocus.current) return;
+    // The destination may briefly be replaced by its draft-loading state.
+    // Retry after that state changes rather than focusing a removed element.
+    const frame = requestAnimationFrame(() => {
+      const heading = workspace.current?.querySelector("h1");
+      if (heading) {
+        heading.focus();
+        recoveryExitFocus.current = false;
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [navigationFocus, checkingDraftContext]);
   useLayoutEffect(() => {
     if (activeDraftId !== lastDraftContext.current) {
       lastDraftContext.current = activeDraftId;
@@ -435,8 +468,26 @@ export default function App() {
     setSession(result);
     setSidebarOpen(true);
     setAccountOpen(false);
+    const state = await api<LicenseStatus>(null, { op: "status" });
+    setLicenseStatus(state);
+    setPage(state.legacy ? "backup" : "patients");
+    setDrafts(
+      state.legacy ? [] : await api<Draft[]>(result.token, { op: "drafts" }),
+    );
+  }
+  function leaveDraft() {
+    if (busy || !visibleDraft) return;
+    // Leave recovery without resolving it or writing the unopened form.
+    // Context changes reset resolvedDraftId, so reentry asks again.
+    recoveryExitFocus.current = true;
+    draftDirty.current = false;
+    draftRef.current = null;
+    setPendingDraft(null);
+    setPrescription(null);
+    if (visibleDraft.kind !== "prescription") setPatient(null);
     setPage("patients");
-    setDrafts(await api<Draft[]>(result.token, { op: "drafts" }));
+    setAccountOpen(false);
+    setNavigationFocus((previous) => previous + 1);
   }
   async function restoreDraft(draft: Draft) {
     const restored = await task(async () => {
@@ -508,8 +559,8 @@ export default function App() {
           <p>
             {initialized === false
               ? adminAccess
-                ? "Defina as senhas e prepare o acesso da nutricionista."
-                : "Peça ao administrador para preparar os acessos deste computador pela opção de informações no canto inferior direito."
+                ? "Importe a autorização recebida e prepare o acesso da nutricionista."
+                : "Envie a solicitação ao administrador para ativar este computador."
               : "Use o acesso preparado neste computador."}
           </p>
           {error && (
@@ -517,13 +568,26 @@ export default function App() {
               {error}
             </div>
           )}
-          {initialized === false && adminAccess ? (
+          {licenseStatus && (
+            <LicensePanel
+              status={licenseStatus}
+              busy={busy}
+              task={task}
+              onRefresh={refreshLicense}
+              onSession={loggedIn}
+              token={null}
+              onEnded={() => setSession(null)}
+            />
+          )}
+          {initialized === false &&
+          licenseStatus?.pending.some((g) => g.kind === "INITIAL") ? (
             <SetupForm
               busy={busy}
               onSubmit={(data) =>
                 task(async () => {
                   await api(null, { op: "setup", ...data });
                   setInitialized(true);
+                  await refreshLicense();
                   setAdminAccess(false);
                   setNotice("Acessos preparados. Entre com um deles.");
                 })
@@ -577,6 +641,34 @@ export default function App() {
             setNotice("");
           }}
         />
+      </main>
+    );
+  if (licenseStatus?.legacy)
+    return (
+      <main className="issuer-main">
+        <h1>Banco de testes preservado</h1>
+        <p>
+          O uso clínico exige uma instalação vazia licenciada. Exporte o backup
+          antes de preparar o novo destino.
+        </p>
+        {error && <p role="alert">{error}</p>}
+        <BackupPage
+          token={token}
+          task={task}
+          onRestore={() => setSession(null)}
+          backupOnly
+        />
+        <button
+          disabled={busy}
+          onClick={() =>
+            void task(async () => {
+              await api(token, { op: "logout" });
+              setSession(null);
+            })
+          }
+        >
+          Bloquear e sair
+        </button>
       </main>
     );
   return (
@@ -722,6 +814,12 @@ export default function App() {
             savedAt={visibleDraft ? dateTime(visibleDraft.at) : ""}
             savedAtIso={visibleDraft?.at ?? ""}
             busy={busy}
+            onBack={leaveDraft}
+            backLabel={
+              visibleDraft?.kind === "prescription"
+                ? "Voltar ao paciente"
+                : "Voltar à lista"
+            }
             onRestore={() => {
               if (visibleDraft) void restoreDraft(visibleDraft);
             }}
@@ -745,24 +843,24 @@ export default function App() {
             >
               <NavigationIcon kind="menu" />
             </button>
+            {!session.user.must_change && tourScreen && (
+              <GuidedTour token={session.token} screen={tourScreen} />
+            )}
           </div>
-          {!session.user.must_change && tourScreen && (
-            <GuidedTour token={session.token} screen={tourScreen} />
-          )}
           <div className="test-banner">
             Ambiente de teste · dados fictícios · instalação local
           </div>
-          {error && (
+          {error && !contextualFeedback && (
             <div role="alert" className="message error">
               {error}
             </div>
           )}
-          {notice && (
+          {notice && !contextualFeedback && (
             <div role="status" className="message success">
               {notice}
             </div>
           )}
-          {busy && (
+          {busy && !contextualFeedback && (
             <div role="status" className="working">
               Concluindo operação…
             </div>
@@ -824,6 +922,17 @@ export default function App() {
                       <NavigationIcon kind="chevron" />
                     </button>
                   </div>
+                  {licenseStatus && (
+                    <LicensePanel
+                      status={licenseStatus}
+                      busy={busy}
+                      task={task}
+                      onRefresh={refreshLicense}
+                      onSession={loggedIn}
+                      token={token}
+                      onEnded={() => setSession(null)}
+                    />
+                  )}
                 </section>
               )}
               {page === "patients" &&
@@ -866,6 +975,11 @@ export default function App() {
                   />
                 ) : patient ? (
                   <PatientForm
+                    feedback={
+                      contextualFeedback
+                        ? { busy, error, notice }
+                        : { busy: false, error: "", notice: "" }
+                    }
                     patient={patient}
                     onChange={(v) => {
                       setPatient(v);
@@ -916,6 +1030,11 @@ export default function App() {
                 <p role="status">Verificando rascunho salvo…</p>
               ) : page === "profile" ? (
                 <ProfileForm
+                  feedback={
+                    contextualFeedback
+                      ? { busy, error, notice }
+                      : { busy: false, error: "", notice: "" }
+                  }
                   token={token}
                   value={profile}
                   onChange={(v) => {
@@ -1088,19 +1207,7 @@ function SetupForm({
         );
       }}
     >
-      <input name="admin_name" type="hidden" value="admin" />
-      <p>
-        Nome de acesso do administrador: <strong>admin</strong>
-      </p>
-      <Field label="Senha do administrador (mínimo 6 caracteres)">
-        <input
-          name="admin_password"
-          type="password"
-          minLength={6}
-          required
-          autoComplete="new-password"
-        />
-      </Field>
+      <p>O acesso administrativo foi definido pelo emissor da licença.</p>
       <Field label="Nome de acesso da nutricionista">
         <input name="professional_name" required autoComplete="off" />
       </Field>
@@ -1252,6 +1359,7 @@ function PatientsPage({
   );
 }
 function PatientForm({
+  feedback,
   patient,
   onChange,
   token,
@@ -1261,6 +1369,7 @@ function PatientForm({
   onSaved,
   onPrescription,
 }: {
+  feedback: FormFeedbackState;
   patient: Patient;
   onChange: (p: Patient) => void;
   token: string | null;
@@ -1275,6 +1384,7 @@ function PatientForm({
   const [tagName, setTagName] = useState("");
   const [preview, setPreview] = useState<Prescription | null>(null);
   const [guardian, setGuardian] = useState(Boolean(patient.guardian));
+  const submitting = useRef(false);
   async function refresh() {
     setTags(await api<Tag[]>(token, { op: "tags" }));
     if (patient.id)
@@ -1295,7 +1405,9 @@ function PatientForm({
     required = false,
   ) {
     return (
-      <Field label={label}>
+      <Field
+        label={`${label.replace(/ \(opcional\)$/, "")} (${required ? "obrigatório" : "opcional"})`}
+      >
         <input
           type={type}
           value={String(patient[key] ?? "")}
@@ -1307,14 +1419,20 @@ function PatientForm({
   }
   async function submit(e: FormEvent) {
     e.preventDefault();
-    await task(async () => {
-      const result = await api<{ id: string }>(token, {
-        op: "save_patient",
-        id: patient.id ?? null,
-        patient,
+    if (busy || submitting.current) return;
+    submitting.current = true;
+    try {
+      await task(async () => {
+        const result = await api<{ id: string }>(token, {
+          op: "save_patient",
+          id: patient.id ?? null,
+          patient,
+        });
+        onSaved(result.id);
       });
-      onSaved(result.id);
-    });
+    } finally {
+      submitting.current = false;
+    }
   }
   return (
     <>
@@ -1326,11 +1444,21 @@ function PatientForm({
             : "Dados do paciente e acompanhamento."
         }
       >
-        <button onClick={onClose}>Voltar à lista</button>
+        <button
+          disabled={busy}
+          aria-describedby="patient-exit-help"
+          onClick={onClose}
+        >
+          Voltar à lista
+        </button>
       </Heading>
       <form data-draft-form="" onSubmit={submit}>
         <section className="form-section" data-tour="identity">
           <h2>Identificação e contato</h2>
+          <p className="hint">
+            Os rótulos indicam quais campos são obrigatórios e quais são
+            opcionais.
+          </p>
           <div className="form-grid">
             {field("name", "Nome completo", "text", true)}
             {field("socialName", "Nome social (opcional)")}
@@ -1375,7 +1503,7 @@ function PatientForm({
                 phone: "Telefone do responsável",
                 email: "E-mail do responsável",
               }).map(([key, label]) => (
-                <Field label={label} key={key}>
+                <Field label={`${label} (obrigatório)`} key={key}>
                   <input
                     required
                     type={key === "email" ? "email" : "text"}
@@ -1397,7 +1525,17 @@ function PatientForm({
         </section>
         <section className="form-section" data-tour="tags">
           <h2>Organização do acompanhamento</h2>
-          <div className="tag-options">
+          <p id="patient-tags-help" className="hint">
+            Tags são etiquetas opcionais para organizar e localizar pacientes.
+            Selecione as existentes ou crie uma etiqueta com um nome que faça
+            sentido para seu consultório.
+          </p>
+          <div
+            className="tag-options"
+            role="group"
+            aria-label="Tags do paciente"
+            aria-describedby="patient-tags-help"
+          >
             {tags
               .filter((t) => t.active || patient.tags.includes(t.id))
               .map((t) => (
@@ -1457,6 +1595,7 @@ function PatientForm({
           <div className="inline">
             <input
               aria-label="Nome da nova tag"
+              aria-describedby="patient-tags-help"
               value={tagName}
               onChange={(e) => setTagName(e.target.value)}
               placeholder="Nova tag"
@@ -1487,12 +1626,18 @@ function PatientForm({
             />
           </Field>
         </section>
+        <FormFeedback {...feedback} />
         <div className="form-actions">
           <button className="primary" disabled={busy}>
             Salvar cadastro
           </button>
-          <button type="button" onClick={onClose}>
-            Cancelar edição
+          <button
+            type="button"
+            disabled={busy}
+            aria-describedby="patient-exit-help"
+            onClick={onClose}
+          >
+            Voltar à lista
           </button>
           {patient.id && (
             <button
@@ -1521,6 +1666,11 @@ function PatientForm({
           )}
         </div>
       </form>
+      <p id="patient-exit-help" className="hint">
+        Voltar não salva alterações no cadastro. Antes de sair, o preenchimento
+        alterado é guardado como rascunho para recuperar depois; se isso falhar,
+        o formulário permanece aberto.
+      </p>
       {patient.id && (
         <section className="form-section" data-tour="history">
           <div className="section-heading">
@@ -1643,6 +1793,7 @@ function PatientForm({
   );
 }
 function ProfileForm({
+  feedback,
   token,
   value,
   onChange,
@@ -1650,6 +1801,7 @@ function ProfileForm({
   task,
   onSaved,
 }: {
+  feedback: FormFeedbackState;
   token: string | null;
   value: Profile;
   onChange: (v: Profile) => void;
@@ -1657,6 +1809,7 @@ function ProfileForm({
   task: Task;
   onSaved: () => void;
 }) {
+  const submitting = useRef(false);
   const fields: Record<string, string> = {
     fullName: "Nome completo",
     professionalName: "Nome profissional",
@@ -1684,9 +1837,13 @@ function ProfileForm({
         data-draft-form=""
         onSubmit={(e) => {
           e.preventDefault();
+          if (busy || submitting.current) return;
+          submitting.current = true;
           void task(async () => {
             await api(token, { op: "save_profile", profile: value });
             onSaved();
+          }).finally(() => {
+            submitting.current = false;
           });
         }}
       >
@@ -1694,7 +1851,10 @@ function ProfileForm({
           <h2>Dados profissionais</h2>
           <div className="form-grid">
             {Object.entries(fields).map(([key, label]) => (
-              <Field key={key} label={label}>
+              <Field
+                key={key}
+                label={key === "address" ? label : `${label} (obrigatório)`}
+              >
                 <input
                   value={String(value[key as keyof Profile] ?? "")}
                   type={key === "email" ? "email" : "text"}
@@ -1721,6 +1881,7 @@ function ProfileForm({
             </Field>
           </div>
         </section>
+        <FormFeedback {...feedback} />
         <button className="primary" disabled={busy}>
           Salvar perfil
         </button>
@@ -2330,10 +2491,12 @@ function BackupPage({
   token,
   task,
   onRestore,
+  backupOnly = false,
 }: {
   token: string | null;
   task: Task;
   onRestore: () => void;
+  backupOnly?: boolean;
 }) {
   const [status, setStatus] = useState<BackupStatus | null>(null);
   const [password, setPassword] = useState("");
@@ -2376,11 +2539,16 @@ function BackupPage({
                 ],
               });
               if (destination) {
-                const result = await api<{ path: string }>(token, {
-                  op: "backup",
-                  path: destination,
-                });
-                setResult(`Backup criado: ${result.path}`);
+                const result = await api<{ path: string; sha256: string }>(
+                  token,
+                  {
+                    op: "backup",
+                    path: destination,
+                  },
+                );
+                setResult(
+                  `Backup criado: ${result.path}. SHA-256 para transferência: ${result.sha256}`,
+                );
                 await refresh();
               }
             })
@@ -2390,62 +2558,64 @@ function BackupPage({
         </button>
         {result && <p role="status">{result}</p>}
       </section>
-      <section className="form-section" data-tour="restore">
-        <h2>Restaurar uma cópia</h2>
-        <p>
-          A cópia será validada antes de substituir os cadastros. O estado atual
-          será preservado em um backup de segurança.
-        </p>
-        <button
-          onClick={() =>
-            void task(async () => {
-              const file = await open({
-                multiple: false,
-                filters: [
-                  { name: "Backup WebFit", extensions: ["webfit-backup"] },
-                ],
-              });
-              if (typeof file === "string") setPath(file);
-            })
-          }
-        >
-          Selecionar backup
-        </button>
-        {path && <p>{path}</p>}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (
-              window.confirm(
-                "Restaurar este backup? Cadastros atuais serão substituídos após validação e cópia de segurança.",
-              )
-            )
+      {!backupOnly && (
+        <section className="form-section" data-tour="restore">
+          <h2>Restaurar uma cópia</h2>
+          <p>
+            A cópia será validada antes de substituir os cadastros. O estado
+            atual será preservado em um backup de segurança.
+          </p>
+          <button
+            onClick={() =>
               void task(async () => {
-                await api(token, {
-                  op: "restore",
-                  path,
-                  password,
-                  confirmed: true,
+                const file = await open({
+                  multiple: false,
+                  filters: [
+                    { name: "Backup WebFit", extensions: ["webfit-backup"] },
+                  ],
                 });
-                setPassword("");
-                onRestore();
-              });
-          }}
-        >
-          <Field label="Senha de recuperação do backup">
-            <input
-              type="password"
-              autoComplete="off"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </Field>
-          <button className="danger" disabled={!path}>
-            Validar e restaurar
+                if (typeof file === "string") setPath(file);
+              })
+            }
+          >
+            Selecionar backup
           </button>
-        </form>
-      </section>
+          {path && <p>{path}</p>}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (
+                window.confirm(
+                  "Restaurar este backup? Cadastros atuais serão substituídos após validação e cópia de segurança.",
+                )
+              )
+                void task(async () => {
+                  await api(token, {
+                    op: "restore",
+                    path,
+                    password,
+                    confirmed: true,
+                  });
+                  setPassword("");
+                  onRestore();
+                });
+            }}
+          >
+            <Field label="Senha de recuperação do backup">
+              <input
+                type="password"
+                autoComplete="off"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Field>
+            <button className="danger" disabled={!path}>
+              Validar e restaurar
+            </button>
+          </form>
+        </section>
+      )}
     </>
   );
 }

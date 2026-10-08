@@ -13,6 +13,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "=2.7.1", features = [] }
 
 [dependencies]
+webfit-license-protocol = { path = "../crates/license-protocol" }
 tauri = { version = "=2.12.1", features = [] }
 tauri-plugin-dialog = "=2.8.1"
 tauri-plugin-updater = "=2.12.0"
@@ -27,7 +28,7 @@ base64 = "0.22.1"
 sha2 = "0.10.9"
 unicode-normalization = "0.1.25"
 zeroize = { version = "1.8.2", features = ["derive"] }
-windows-sys = { version = "0.61.2", features = ["Win32_Security_Cryptography", "Win32_Foundation", "Win32_System_Memory", "Win32_System_RemoteDesktop"] }
+windows-sys = { version = "0.61.2", features = ["Win32_Security_Cryptography", "Win32_Foundation", "Win32_System_Memory", "Win32_System_RemoteDesktop", "Win32_System_LibraryLoader", "Win32_UI_WindowsAndMessaging"] }
 
 [dev-dependencies]
 tempfile = "3.27"

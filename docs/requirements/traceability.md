@@ -2,7 +2,9 @@
 
 ## WEBFIT-10 — licenciamento offline
 
-DEC-058 → RF-LIC-001..005 (comportamento aprovado; desenho técnico pendente) → RN-LIC-001..007 → UC-LIC-001..005 → TA-LIC-001..011 (propostos, NOT RUN) → [task.md](../../specs/WEBFIT-10/task.md), T-LIC-001..009/011 → [ADR-0003 proposto](../architecture/adr/ADR-0003-ativacao-offline-e-suporte.md). RF-LIC-006/RN-LIC-008/UC-LIC-006/TA-LIC-012/T-LIC-010 adiados para outra demanda por Maycon, sem item extra. Main, base e07cdc8300de0421dbdc7fd64aafe7d30a191e80; sem versão entregue. Início/documentação apenas; banco/licença/emissor/produto não implementados. D-LIC-001..005 respondidas; protocolo/custódia/recuperação ainda no Plan técnico. Evidência histórica RF-AUT-001/UX-002 preservada.
+DEC-058 / ADR-0003 v1 ACCEPTED → RF-LIC-001..005 → RN-LIC-001..007 → UC-LIC-001..005 → TA-LIC-001..011 → T-LIC-001..009/011 no [registro único](../../specs/WEBFIT-10/task.md). RF-LIC-006/RN-LIC-008/UC-LIC-006/TA-LIC-012/T-LIC-010 adiados por Maycon, sem item extra. Aprovação específica: “Aprovo a implementação”, D-LIC-006..008 e P-LIC-001; main/680fad5616d54a895dbecc6702595a1b5d232cfd, candidato local 0.1.8, sem distribuição.
+
+Implementação: `crates/license-protocol/` (TA-LIC-003/005), `src-tauri/src/license.rs`, `service.rs`, `license_tests.rs` e `migrations/002_license.sql` (TA-LIC-001..004/007..010), `recovery.rs` (TA-LIC-006/009/010), `src/LicensePanel.tsx`/`App.tsx` (TA-LIC-011), `tools/license-issuer/` (TA-LIC-005). Testes Rust/SQLite fictícios distinguem consumo, destino, restauro, acesso antigo, reinício/limite e falha de backup. Checks/comandos finais, ensaio Windows e review independente devem ser lidos no registro, sem inferir aceite por esta matriz.
 
 
 ## WEBFIT-8 — identidade visual
@@ -88,3 +90,9 @@ RF-UPD-001 / aprovação de implementação Maycon 2026-10-08 -> specs/006-webfi
 ## WEBFIT-7 — recuperação contextual de rascunhos
 
 RF-DRF-002 / RN-DRF-006..007 / UC-DRF-001 / TA-DRF-005..010 → [Specification](../../specs/007-recuperar-rascunho-contextual/spec.md), Plan e Tasks WEBFIT-7 → alteração localizada de src/App.tsx/DraftRecoveryDialog.tsx/style.css e critérios de aceite → Verification/Review/Evidence em `.harness/evidence/webfit-7/`. Branch main, HEAD-base e07cdc8300de0421dbdc7fd64aafe7d30a191e80. Implementação autorizada por Maycon; aceite funcional final e G5/G6/G7 permanecem separados.
+
+## Refinamentos de apresentação V01–V08 — 2026-10-08
+
+RF-UX-003/004 → V01-AC01..03 e V04-AC01..03; RF-PAT-001/003 + RF-CLI-001 → V02-AC01..03 e V03-AC01..03 (WEBFIT-12, FormFeedback + 3 regressões); RF-PAT-003/DRF-001/002 → V06-AC01..03; RF-AUD-001/UPD-001 → V07-AC01..03; RF-PAT-005 → V08-AC01..03. Implementação local main/680fad5, fonte 0.1.8; evidência parcial estática/SSR/checks e ensaios pendentes por item no [índice](../../specs/ui-audit-2026-10-08/README.md#execução-sequencial--2026-10-08). RF-DRF-002 → V05 / WEBFIT-13 BLOCKED, decisão prévia antes de alterar TA-DRF-010; critérios continuam propostos. Sem aprovação/implementação de RF-PAT-007, aceite funcional ou Gate final inferido.
+
+Refinamento posterior RF-DRF-002/TA-DRF-010 → V05-AC01..03 / WEBFIT-13 / D-DRF-EXIT-001 ACCEPTED (Maycon, 2026-10-08) → src/App.tsx, src/DraftRecoveryDialog.tsx e tests/unit/draft-recovery.test.ts (3 testes de callbacks/destinos/preservação). Bloqueio anterior resolvido; checks e limites no [V05](../../specs/ui-audit-2026-10-08/V05-saida-recuperacao/spec.md). Ensaios WebView/teclado/reentrada/reinício e revisão independente pendentes.

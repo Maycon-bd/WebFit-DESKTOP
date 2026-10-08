@@ -32,4 +32,6 @@ Teste independente: build e inspeção visual.
 
 ## Dependencies / parallel opportunities / strategy
 
+- [x] T009 [US1] Corrigir ICON_BIG na inicialização Windows e executar teste nativo isolado, checks/build; atualizar evidência e checkpoint (RF-UX-004/TA-UX-BRAND-002, feedback 2026-10-08). Review independente/aceite visual do piloto atualizado pendentes.
+
 T001 → T002 → T003/T004 → T005/T006 → T007 → T008. T006 independente de T005. Execução sequencial suficiente, sem agentes extras. MVP Windows primeiro, depois interface. Aceite Windows/review independente separados de checks.
