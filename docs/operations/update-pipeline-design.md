@@ -55,6 +55,12 @@ Execução manual é limitada à main, publicações são serializadas e a vers�
 - o pipeline falha se testes, assinatura, manifesto ou publicação pós-verificação falharem;
 - a publicação do piloto não instala nada na máquina da nutricionista.
 
+## Reutilização de compilação no piloto — WEBFIT-11
+
+A preparação exporta `CARGO_TARGET_DIR` em cache persistente externo ao checkout, compartilhado pelas etapas Cargo/Tauri desse runner. Não desativa `actions/checkout` clean, Clippy, testes Rust/SQLite, build release, assinatura ou verificações locais/públicas. O staging usa esse mesmo target, filtra a versão piloto corrente e valida sua assinatura antes de gerar os assets. Sem variável, o caminho local anterior permanece.
+
+Baseline da imagem fornecida em 2026-10-08: 32m21s total; Clippy 10m36s, testes 2m53s e build 16m54s. Esses três somam 30m23s. O cache reduz recompilação de dependências em execuções aquecidas; primeiro uso, troca de runner/toolchain e invalidação Cargo podem continuar demorados. Compare próximos jobs no mesmo runner; nenhum ganho numérico foi medido ou garantido localmente. Detalhes de permissões/manutenção em [own-runner-setup.md](own-runner-setup.md) e evidência em [WEBFIT-11](../../specs/WEBFIT-11/task.md).
+
 ## Promoção estável
 
 O canal estável exige versão/tag aprovada, validação do candidato, decisão de promoção após G7 e atualização do manifesto estável. A promoção não ocorre automaticamente a cada merge na main.

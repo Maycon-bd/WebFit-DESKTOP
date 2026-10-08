@@ -1,10 +1,64 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { mkdtemp, readFile, rm, access } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, access, mkdir, writeFile, stat } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { isRetryableDownloadError, withDownloadRetries, downloadVerifiedRustup, run } from './runner-env.mjs';
+import { join, resolve } from 'node:path';
+import { isRetryableDownloadError, withDownloadRetries, downloadVerifiedRustup, run, prepareBuildCache } from './runner-env.mjs';
+
+test('cache rejects checkout paths and preserves artifacts across preparation', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'webfit-cache-policy-'));
+  try {
+    const workspace = join(root, 'checkout');
+    await assert.rejects(prepareBuildCache(workspace, workspace), /outside the checkout/);
+    const target = await prepareBuildCache(join(root, 'tools'), workspace);
+    await writeFile(join(target, 'artifact'), 'preserved');
+    assert.equal(await prepareBuildCache(join(root, 'tools'), workspace), target);
+    assert.equal(await readFile(join(target, 'artifact'), 'utf8'), 'preserved');
+    assert.notEqual(await prepareBuildCache(join(root, 'tools'), workspace, 'next'), target);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test('Cargo reuses external artifacts after checkout cleanup and invalidates changed source', { skip: !process.env.WEBFIT_TEST_CARGO_CACHE }, async () => {
+  await mkdir('.artifacts/release-tests', { recursive: true });
+  const root = await mkdtemp(resolve('.artifacts/release-tests/cargo-cache-'));
+  try {
+    const workspace = join(root, 'checkout');
+    const target = await prepareBuildCache(join(root, 'tools with spaces'), workspace);
+    const source = join(workspace, 'src', 'lib.rs');
+    const createCheckout = async () => {
+      await mkdir(join(workspace, 'src'), { recursive: true });
+      await writeFile(join(workspace, 'Cargo.toml'), '[package]\nname="webfit_cache_fixture"\nversion="0.1.0"\nedition="2021"\n');
+      await writeFile(source, 'pub fn value() -> u32 { 1 }\n');
+    };
+    const cargo = (args) => {
+      const result = spawnSync('cargo', args, { cwd: workspace, env: { ...process.env, CARGO_TARGET_DIR: target }, encoding: 'utf8' });
+      assert.equal(result.status, 0, result.error?.message || result.stderr);
+      return result.stderr;
+    };
+    await createCheckout();
+    cargo(['generate-lockfile', '--offline']);
+    assert.match(cargo(['build', '--offline', '--locked']), /Compiling webfit_cache_fixture/);
+    const artifact = join(target, 'debug', 'libwebfit_cache_fixture.rlib');
+    const first = (await stat(artifact)).mtimeMs;
+    await rm(workspace, { recursive: true, force: true });
+    await createCheckout();
+    cargo(['generate-lockfile', '--offline']);
+    // Recreated sources can trigger a rebuild; the following unchanged run must be fresh.
+    cargo(['build', '--offline', '--locked']);
+    const warm = (await stat(artifact)).mtimeMs;
+    assert.doesNotMatch(cargo(['build', '--offline', '--locked']), /Compiling webfit_cache_fixture/);
+    assert.equal((await stat(artifact)).mtimeMs, warm);
+    assert.ok(warm >= first);
+    await writeFile(source, 'pub fn value() -> u32 { 22 }\n');
+    assert.match(cargo(['build', '--offline', '--locked']), /Compiling webfit_cache_fixture/);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
 
 
 for (const detail of ['Transferred a partial file (end of response with bytes missing)', 'stream error received: unspecific protocol error detected', 'request or response body error']) {

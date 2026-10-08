@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { access, appendFile, mkdir, writeFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join, resolve, relative, isAbsolute } from 'node:path';
 import { spawn } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -106,8 +106,21 @@ async function appendGitHubFile(file, value) {
   await appendFile(file, `${value}\n`, 'utf8');
 }
 
+export async function prepareBuildCache(root, workspace, version = rustVersion, arch = process.arch) {
+  const target = resolve(root, 'build-cache', 'webfit-desktop', `rust-${version}-${arch}`, 'target');
+  const fromWorkspace = relative(resolve(workspace), target);
+  if (!fromWorkspace || (!isAbsolute(fromWorkspace) && fromWorkspace !== '..' && !fromWorkspace.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`))) {
+    fail('Rust build cache must be outside the checkout.');
+  }
+  await mkdir(target, { recursive: true });
+  return target;
+}
+
 async function main() {
   if (!toolRoot) fail('RUNNER_TOOL_CACHE is unavailable.');
+
+  const cargoTarget = await prepareBuildCache(toolRoot, process.env.GITHUB_WORKSPACE || process.cwd());
+  console.log(`Persistent Rust build cache: ${cargoTarget}`);
 
   const cargoHome = join(toolRoot, 'cargo');
   const rustupHome = join(toolRoot, 'rustup');
@@ -121,6 +134,7 @@ async function main() {
   const env = {
     ...process.env,
     CARGO_HOME: cargoHome,
+    CARGO_TARGET_DIR: cargoTarget,
     RUSTUP_HOME: rustupHome,
     RUSTUP_USE_CURL: '0',
     LC_ALL: 'C',
@@ -169,6 +183,7 @@ async function main() {
 
   for (const [name, value] of Object.entries({
     CARGO_HOME: cargoHome,
+    CARGO_TARGET_DIR: cargoTarget,
     RUSTUP_HOME: rustupHome,
     RUSTUP_USE_CURL: '0',
     RUSTUP_TOOLCHAIN: rustVersion,

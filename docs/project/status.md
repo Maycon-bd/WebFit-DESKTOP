@@ -4,6 +4,14 @@
 
 ## Onde paramos
 
+### Checkpoint — WEBFIT-11, cache de compilação do piloto, 2026-10-08
+
+- **Data, branch e commit-base:** 2026-10-08, main, 7556edeb78378fa08dcf0332df072217a10aa11b, observados localmente; checkpoints anteriores preservados como históricos/trilhas próprias.
+- **Sincronização:** HEAD/origin/main local 0/0, sem fetch/pull; entrada limpa, oito owners desta demanda alterados/criado sem commit. Plane WEBFIT-11 criado uma vez após busca sem correspondente, módulo Fundação, prioridade neutra, encaminhado a Review. Sem Git mutável/publicação/dependências.
+- **Última etapa concluída:** quatro fases STRICT no escopo pedido: cache Cargo persistente fora do checkout e staging usando mesmo target, com fallback local. Checks/assinatura/SQLCipher/perfil release preservados. 33 testes Node incluindo Cargo offline, staging 2/2 final, metadata real externo, Rust fmt e frontend format/lint/typecheck/18 testes/build PASS. Review independente sem bloqueador; REVIEW PASSED WITH WARNINGS, READY TO SHIP para integração humana. Evidência/inventário: [registro único](../../specs/WEBFIT-11/task.md).
+- **Próxima ação exata:** Maycon revisar/integrar a alteração pelo fluxo Git e medir pelo menos dois jobs no mesmo runner; primeiro cache frio, seguinte aquecido. Confirmar permissão da conta do serviço e build NSIS assinado. Ganho em minutos/SQLCipher real NOT RUN, sem promessa de duração. D-CI-011 aguarda validação no aceite final.
+- **Checklist:** [x] pedido/Plane/Discovery/Plan; [x] implementação/testes/documentação; [x] review independente; [ ] aceite humano; [ ] integração/publicação e medição cold/warm pelo usuário. G5 segue em execução; G6/G7 e demais trilhas preservados.
+
 ### Checkpoint — WEBFIT-10, ativação offline, 2026-10-08
 
 - **Data, branch e commit-base:** 2026-10-08, main, e07cdc8300de0421dbdc7fd64aafe7d30a191e80, observados localmente.
