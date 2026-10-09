@@ -45,6 +45,7 @@ import { EnergyForm } from "./EnergyForm";
 import { FoodPicker } from "./FoodPicker";
 import { GuidedTour } from "./GuidedTour";
 import { LoginInfo } from "./LoginInfo";
+import { ReleaseNotes } from "./ReleaseNotes";
 import { AdminPanel } from "./AdminPanel";
 import { LicensePanel } from "./LicensePanel";
 import type { LicenseStatus } from "./LicensePanel";
@@ -270,6 +271,8 @@ export default function App() {
   const resolvedDraftId = useRef<string | null>(null);
   const recoveryExitFocus = useRef(false);
   const token = session?.token ?? null;
+  const [notesRequest, setNotesRequest] = useState(0);
+  const [notesPending, setNotesPending] = useState(true);
   const endDashboardSession = useCallback(() => {
     setError("Sua sessão terminou. Entre novamente para continuar.");
     setNotice("");
@@ -503,6 +506,7 @@ export default function App() {
     }
   }
   async function loggedIn(result: { token: string; user: User }) {
+    setNotesPending(true);
     setPatient(null);
     setPrescription(null);
     setProfile(emptyProfile);
@@ -772,6 +776,14 @@ export default function App() {
         />
       )}
       <div className="application-frame">
+        {!session.user.must_change && !licenseStatus?.legacy && (
+          <ReleaseNotes
+            key={session.token}
+            token={session.token}
+            manualRequest={notesRequest}
+            onPendingChange={setNotesPending}
+          />
+        )}
         {!session.user.must_change && (
           <UpdatePanel
             key={session.token}
@@ -918,6 +930,13 @@ export default function App() {
                     >
                       Perfil profissional
                     </button>
+                    <button
+                      type="button"
+                      disabled={busy || session.user.must_change}
+                      onClick={() => setNotesRequest((value) => value + 1)}
+                    >
+                      Ver novidades
+                    </button>
                   </div>
                 </div>
               </aside>
@@ -968,7 +987,7 @@ export default function App() {
                 if (visibleDraft) void discardDraft(visibleDraft);
               }}
             />
-            {!session.user.must_change && tourScreen && (
+            {!session.user.must_change && !notesPending && tourScreen && (
               <GuidedTour token={session.token} screen={tourScreen} />
             )}
             <div className="test-banner">

@@ -2,6 +2,16 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Checkpoint — WEBFIT-21, novidades após login, 2026-10-09
+
+- **Escopo/autorização:** Maycon pediu resumo sem dados técnicos e escolheu uma vez por usuário/atualização, com consulta posterior. RF-UPD-002 / TA-UPD-NEWS-001..008; [registro único](../../specs/WEBFIT-21/task.md). Plane WEBFIT-21 em Review, sem Done/publicação.
+- **Branch/commit-base/HEAD/sincronização:** `main` / `064af8f8a7898687a879a5662d56124b30c57e23`; refs locais ahead 1, sem fetch ou Git mutável. Mudança humana de branch informada; alterações concorrentes de Dashboard preservadas.
+- **Última etapa concluída:** implementação do diálogo offline, consulta Ver novidades no menu da conta, leitura autorizada por usuário/versão em settings existente, recuperação de falhas e resumo editorial compartilhado com staging. Review independente identificou divergência de campos extras no JSON; validator e regressão corrigidos, recheck registrado na tarefa. Sem schema/migração/dependência nova.
+- **Checks:** frontend67/lint/TypeScript/Vite, Rust63/SQLite/SQLCipher/backup/restauração, staging2, UI Chrome mock5, format/fmt/diff/Clippy e Tauri debug offline/locked sem bundle PASS. Logs/capturas ignorados em `.artifacts/visual-test/WEBFIT-21/`. Avisos ambientais de cache/linker e tamanho do chunk TBCA não bloqueantes.
+- **Documentação:** task, guia release-notes, requisitos/aceite/rastreabilidade, update-pipeline-design, DESIGN e AGENTS. Notas devem ser mantidas em cada entrega de produto; build confere formato/conteúdo, não frescor editorial.
+- **Limites/próxima ação exata:** ensaiar no candidato Windows/WebView2 com dados fictícios e obter aceite humano: primeiro login abre resumo, Entendi fecha, novo login da mesma versão não abre, menu reabre e nova versão abre novamente. Mock não comprova atualização/instalação real ou leitor de tela; logout durante consulta pendente tem guardas revisadas, mas corrida não ensaiada diretamente. Conteúdo apenas da versão atual, também mostrado em instalação nova; leitura pode reaparecer após restauração de backup anterior. Publicação e integração Git controladas por Maycon; G5/G6/G7 não concluídos.
+- **Checklist:** [x] Discovery/Plan/Execução; [x] critérios e documentação; [x] checks e build; [x] review independente/correção; [ ] ensaio nativo e aceite humano; [ ] distribuição humana. Demais trilhas mantêm seus registros abaixo.
+
 ## Checkpoint — WEBFIT-19, catálogo TBCA completo e fallback TACO, 2026-10-09
 
 - **Escopo/autorização:** Maycon autorizou o agente a obter fontes, integrar composição, preservar proveniência/ausências e verificar comparação TACO, busca, medidas, cálculo, reimportação e salvar/reabrir. RF-PRE-002 / RN-PRE-001..007 / T038; [registro único P02 e evidência](../../specs/checkpoint-pendencias-2026-10-09/P02-catalogo-tbca-taco.md). Reuso dos artefatos históricos do incremento; Plane WEBFIT-19 em Review.

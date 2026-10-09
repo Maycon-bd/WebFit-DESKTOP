@@ -177,6 +177,25 @@ try {
         .getByRole("heading", { name: "Seu consultório começa aqui" })
         .waitFor();
     if (scenario === "ready") {
+      const dashboardCallsBeforeReentry = await page.evaluate(
+        () =>
+          window.webfitMock.calls.filter((call) => call === "dashboard").length,
+      );
+      await page
+        .getByRole("navigation", { name: "Módulos do consultório" })
+        .getByRole("button", { name: "Pacientes", exact: true })
+        .click();
+      await page
+        .getByRole("navigation", { name: "Módulos do consultório" })
+        .getByRole("button", { name: "Dashboard", exact: true })
+        .click();
+      await page.waitForFunction(
+        (previousCalls) =>
+          window.webfitMock.calls.filter((call) => call === "dashboard")
+            .length > previousCalls,
+        dashboardCallsBeforeReentry,
+      );
+      await page.getByRole("definition").first().waitFor();
       await page
         .getByRole("button", { name: "Novo paciente", exact: true })
         .click();

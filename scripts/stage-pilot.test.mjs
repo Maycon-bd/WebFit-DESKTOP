@@ -9,10 +9,11 @@ for (const externalCache of [false, true]) {
 test(`staging verifies signed bytes and refuses stale output (external cache: ${externalCache})`, async () => {
   await mkdir('.artifacts/release-tests',{recursive:true});
   const root=await mkdtemp(resolve('.artifacts/release-tests/stage-'));
-  for (const folder of ['scripts','src-tauri/target/release/bundle/nsis','docs/operations']) await mkdir(`${root}/${folder}`,{recursive:true});
+  for (const folder of ['scripts','src/data','src-tauri/target/release/bundle/nsis','docs/operations']) await mkdir(`${root}/${folder}`,{recursive:true});
   const target=externalCache ? `${root}/persistent cache/target` : `${root}/src-tauri/target`;
   await mkdir(`${target}/release/bundle/nsis`,{recursive:true});
-  for (const file of ['stage-pilot.mjs','pilot-release.mjs']) await copyFile(`scripts/${file}`,`${root}/scripts/${file}`);
+  for (const file of ['stage-pilot.mjs','pilot-release.mjs','check-release-notes.mjs']) await copyFile(`scripts/${file}`,`${root}/scripts/${file}`);
+  await writeFile(`${root}/src/data/release-notes.json`, JSON.stringify({title:'Novidades do WebFit',highlights:['Uma melhoria fictícia para o consultório.']}));
   const {publicKey,privateKey}=generateKeyPairSync('ed25519');
   const id=Buffer.from('0102030405060708','hex');
   const key=Buffer.concat([Buffer.from('Ed'),id,publicKey.export({format:'der',type:'spki'}).subarray(-32)]);
@@ -39,6 +40,7 @@ test(`staging verifies signed bytes and refuses stale output (external cache: ${
   assert.equal((await readdir(`${root}/.artifacts/pilot`)).length,5);
   const manifest=JSON.parse(await readFile(`${root}/.artifacts/pilot/latest.json`,'utf8'));
   assert.equal(manifest.version,'0.1.6-pilot.1.1');
+  assert.equal(manifest.notes,'Novidades do WebFit\n\n• Uma melhoria fictícia para o consultório.');
   assert.ok(manifest.platforms['windows-x86_64'].signature);
   const publishedName='WebFit-Desktop_0.1.6-pilot.1.1_x64-setup.exe';
   assert.equal(manifest.platforms['windows-x86_64'].url,`https://github.com/Maycon-bd/webfit-desktop-releases/releases/download/pilot-v0.1.6-pilot.1.1/${publishedName}`);

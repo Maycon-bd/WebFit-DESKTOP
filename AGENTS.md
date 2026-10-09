@@ -151,3 +151,7 @@ Antes de concluir uma entrega, execute os comandos disponíveis para formataçã
 - Não faça commit, push ou deploy automaticamente.
 - Não faça criação/troca de branch, worktree, fetch/pull, stash/reset/clean, commit/push/merge, PR, tag ou release por iniciativa própria. Maycon controla Git; uma instrução explícita posterior pode autorizar uma operação específica. Trabalhar na branch atual não substitui nenhum gate de produto.
 - Preserve o trabalho preexistente e confira git status antes e depois.
+
+## Notas de cada atualização — WEBFIT-21
+
+Antes de concluir mudanças visíveis ao usuário ou preparar uma entrega, atualize `src/data/release-notes.json` com título curto e até seis tópicos em português, descrevendo o benefício para o consultório. Inclua somente novidades efetivamente presentes no código da entrega; não use IDs, hashes, bibliotecas, termos de infraestrutura, detalhes clínicos, credenciais ou promessas de aceite não realizado. O build valida conteúdo não vazio; essa validação não substitui a revisão editorial. A versão é derivada do aplicativo instalado, inclusive piloto; não duplique a versão no JSON. Guia: `docs/operations/release-notes.md`.

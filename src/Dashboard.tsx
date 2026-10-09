@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api, errorMessage } from "./api";
 import { monthLabel, registrationScale } from "./dashboard-data";
 import type { DashboardSummary } from "./dashboard-data";
@@ -61,38 +61,45 @@ export function Dashboard({
   onUnauthorized: () => void;
 }) {
   const [months, setMonths] = useState<6 | 12>(6);
-  const [revision, setRevision] = useState(0);
   const [data, setData] = useState<DashboardSummary | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    let current = true;
+  const requestSequence = useRef(0);
+
+  const refreshDashboard = useCallback(async () => {
+    const requestId = ++requestSequence.current;
     setLoading(true);
     setData(null);
     setError("");
-    void api<DashboardSummary>(token, { op: "dashboard", months })
-      .then((summary) => {
-        if (current) {
-          setData(summary);
-          setLoading(false);
-        }
-      })
-      .catch((failure: unknown) => {
-        if (!current) return;
-        setError(errorMessage(failure));
-        setLoading(false);
-        if (
-          typeof failure === "object" &&
-          failure !== null &&
-          "code" in failure &&
-          failure.code === "UNAUTHORIZED"
-        )
-          onUnauthorized();
+    try {
+      const summary = await api<DashboardSummary>(token, {
+        op: "dashboard",
+        months,
       });
+      if (requestId === requestSequence.current) {
+        setData(summary);
+        setLoading(false);
+      }
+    } catch (failure: unknown) {
+      if (requestId !== requestSequence.current) return;
+      setError(errorMessage(failure));
+      setLoading(false);
+      if (
+        typeof failure === "object" &&
+        failure !== null &&
+        "code" in failure &&
+        failure.code === "UNAUTHORIZED"
+      )
+        onUnauthorized();
+    }
+  }, [months, onUnauthorized, token]);
+
+  useEffect(() => {
+    void refreshDashboard();
     return () => {
-      current = false;
+      requestSequence.current += 1;
     };
-  }, [token, months, revision, onUnauthorized]);
+  }, [refreshDashboard]);
   const scale = data ? registrationScale(data.registrations) : 1;
   const states = data
     ? [
@@ -137,7 +144,7 @@ export function Dashboard({
           aria-label="Atualizar indicadores"
           title="Atualizar indicadores"
           disabled={busy || loading}
-          onClick={() => setRevision((value) => value + 1)}
+          onClick={() => void refreshDashboard()}
         >
           <svg
             aria-hidden="true"
@@ -161,10 +168,7 @@ export function Dashboard({
       {error && (
         <div className="dashboard-message">
           <p role="alert">Não foi possível carregar a dashboard. {error}</p>
-          <button
-            disabled={busy}
-            onClick={() => setRevision((value) => value + 1)}
-          >
+          <button disabled={busy} onClick={() => void refreshDashboard()}>
             Tentar novamente
           </button>
         </div>

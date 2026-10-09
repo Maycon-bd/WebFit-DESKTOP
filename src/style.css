@@ -1074,7 +1074,7 @@ input[readonly] {
   border-color: transparent;
   color: var(--muted);
 }
-:is(.login-info-dialog, .draft-recovery-dialog) {
+:is(.login-info-dialog, .draft-recovery-dialog, .release-notes-dialog) {
   max-height: calc(100dvh - 32px);
   overflow: auto;
   padding: 24px;
@@ -1085,7 +1085,11 @@ input[readonly] {
   box-shadow: var(--dialog-shadow);
   overflow-wrap: anywhere;
 }
-:is(.login-info-dialog, .draft-recovery-dialog)::backdrop {
+:is(
+  .login-info-dialog,
+  .draft-recovery-dialog,
+  .release-notes-dialog
+)::backdrop {
   background: var(--dialog-backdrop);
 }
 .login-info-dialog {
@@ -2174,4 +2178,34 @@ dialog[open] {
   .consultation-empty-plot {
     min-height: 180px;
   }
+}
+
+/* Short editorial release summary, shared native dialog behavior. */
+.release-notes-dialog {
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+.release-notes-dialog h2 {
+  margin-top: 0;
+}
+.release-notes-list {
+  padding-left: 24px;
+  line-height: 1.6;
+}
+.release-notes-list li + li {
+  margin-top: 12px;
+}
+.release-notes-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.release-notes-notice {
+  margin: 0;
+  padding: 8px 24px;
 }

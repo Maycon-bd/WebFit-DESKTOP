@@ -41,6 +41,114 @@ mod tests {
         serde_json::from_value(json!({"protocol":"HB1984","sex":"F","age":30,"weight":60,"height":160,"activity":0,"factor":1.2,"carbsPercent":45,"proteinPercent":25,"fatPercent":30,"diabetes":false,"specialCondition":false,"confirmedBelowBmr":false})).unwrap()
     }
     #[test]
+    fn release_notes_are_authorized_per_user_and_version_and_survive_restart_and_backup() {
+        let tmp = tempfile::tempdir().unwrap();
+        let mut s = Service::open(tmp.path().to_owned()).unwrap();
+        session(&mut s);
+        assert!(call(&mut s, None, Action::ReleaseNotes {}).is_err());
+        assert!(call(&mut s, None, Action::MarkReleaseNotesSeen {}).is_err());
+        // Unauthorized attempts revoke the active session by existing policy.
+        let admin = call(
+            &mut s,
+            None,
+            Action::Login {
+                name: "admin ficticio".into(),
+                password: "senha ficticia segura".into(),
+            },
+        )
+        .unwrap()["token"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        let first = call(&mut s, Some(&admin), Action::ReleaseNotes {}).unwrap();
+        assert_eq!(first["version"], env!("CARGO_PKG_VERSION"));
+        assert_eq!(first["seen"], false);
+        assert!(!first["notes"]["highlights"].as_array().unwrap().is_empty());
+        call(&mut s, Some(&admin), Action::MarkReleaseNotesSeen {}).unwrap();
+        call(&mut s, Some(&admin), Action::MarkReleaseNotesSeen {}).unwrap();
+        assert_eq!(
+            call(&mut s, Some(&admin), Action::ReleaseNotes {}).unwrap()["seen"],
+            true
+        );
+        let user = first["version"].as_str().unwrap();
+        assert!(serde_json::from_value::<Action>(
+            json!({"op":"mark_release_notes_seen","version":"forged","user":"other"})
+        )
+        .is_err());
+        let admin_id = s.session.as_ref().unwrap().user.id.clone();
+        assert!(!crate::release_notes::is_seen(&s.db, &admin_id, "0.1.13-pilot.99.1").unwrap());
+        assert!(crate::release_notes::is_seen(&s.db, &admin_id, user).unwrap());
+        let backup = tmp.path().join("notes-fixture.webfit-backup");
+        call(
+            &mut s,
+            Some(&admin),
+            Action::Backup {
+                path: Some(backup.to_string_lossy().into()),
+            },
+        )
+        .unwrap();
+        call(&mut s, Some(&admin), Action::Logout).unwrap();
+        let nutri = call(
+            &mut s,
+            None,
+            Action::Login {
+                name: "nutri ficticia".into(),
+                password: "senha ficticia nutri".into(),
+            },
+        )
+        .unwrap()["token"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        assert_eq!(
+            call(&mut s, Some(&nutri), Action::ReleaseNotes {}).unwrap()["seen"],
+            false
+        );
+        call(&mut s, Some(&nutri), Action::MarkReleaseNotesSeen {}).unwrap();
+        call(&mut s, Some(&nutri), Action::Logout).unwrap();
+        let admin = call(
+            &mut s,
+            None,
+            Action::Login {
+                name: "admin ficticio".into(),
+                password: "senha ficticia segura".into(),
+            },
+        )
+        .unwrap()["token"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        call(
+            &mut s,
+            Some(&admin),
+            Action::Restore {
+                path: backup.to_string_lossy().into(),
+                password: "recuperacao ficticia segura".into(),
+                confirmed: true,
+            },
+        )
+        .unwrap();
+        drop(s);
+        let mut s = Service::open(tmp.path().to_owned()).unwrap();
+        let admin = call(
+            &mut s,
+            None,
+            Action::Login {
+                name: "admin ficticio".into(),
+                password: "senha ficticia segura".into(),
+            },
+        )
+        .unwrap()["token"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        assert_eq!(
+            call(&mut s, Some(&admin), Action::ReleaseNotes {}).unwrap()["seen"],
+            true
+        );
+        crate::database::integrity(&s.db).unwrap();
+    }
+    #[test]
     fn energy_projection_manual_macro_priority_and_invalid_inputs() {
         let base = calculate(input()).unwrap();
         assert!((base.basal.unwrap() - 1368.193).abs() < 1e-9);

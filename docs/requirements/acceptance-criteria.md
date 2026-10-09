@@ -204,3 +204,18 @@ Status: aprovado para preparação visual por Maycon em 2026-10-09; módulo RF-A
 - **TA-DASH-006:** Dashboard mostra Histórico de consultas, identificação Consultas realizadas e seletor de ano, inicialmente ano corrente; Jan–Dez no eixo horizontal com identidade WebFit. Trocar ano atualiza o período identificado; não fabrica consultas/contagens/barras.
 - **TA-DASH-007:** enquanto não existe módulo de consultas, explicar que o histórico estará disponível quando consultas puderem ser registradas. Ausência de funcionalidade não equivale a zero atendimentos nem falha no carregamento dos indicadores existentes.
 - **TA-DASH-008:** preservar gráfico de cadastros, prescrições, métricas e atalhos; seletor com rótulo acessível, foco e suporte a teclado, painel responsivo/zoom sem cortar conteúdo. Sem schema, API nova, dados reais ou dependência nova.
+
+## Novidades da versão instalada — RF-UPD-002 / WEBFIT-21
+
+Status: aprovado para implementação por Maycon em 2026-10-09, pedido e confirmação nesta conversa; aceite funcional humano pendente.
+
+| ID | Critério |
+| --- | --- |
+| TA-UPD-NEWS-001 | Após login, exibir resumo curto em português e linguagem da nutricionista quando a versão instalada ainda não foi lida por esse usuário; funciona offline, sem termos internos/dados clínicos. |
+| TA-UPD-NEWS-002 | Confirmar/fechar/Escape registra leitura por usuário e versão no backend; novo login/reabertura da mesma versão não repete. Versão nova volta a aparecer; outro usuário tem leitura independente. |
+| TA-UPD-NEWS-003 | Ver novidades no menu da conta reabre o resumo mesmo já lido, sem alterar cadastros/rascunhos. |
+| TA-UPD-NEWS-004 | Troca obrigatória de senha precede o aviso; sessão encerrada não recebe resposta tardia nem leitura de outro usuário. |
+| TA-UPD-NEWS-005 | Erro de consulta/gravação apresenta recuperação compreensível; não bloqueia trabalho, não marca leitura fictícia e permite fechar temporariamente/retry. |
+| TA-UPD-NEWS-006 | Diálogo nomeado, teclado/foco/Escape, retorno do foco e viewport/zoom preservam conteúdo/ações; tours não disputam abertura automática. |
+| TA-UPD-NEWS-007 | Cada entrega mantém resumo editorial local; build/staging recusam notas ausentes/vazias; publicação usa o mesmo texto. Versão piloto gerada automaticamente não depende de versão duplicada nas notas. |
+| TA-UPD-NEWS-008 | Comandos exigem sessão/permissões existentes e derivam usuário/versão no backend; leitura persiste em SQLite sem schema novo, incluindo reabertura/restauração de backup. |

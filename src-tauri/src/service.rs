@@ -88,6 +88,8 @@ pub enum Action {
     Logout,
     Touch,
     TourState,
+    ReleaseNotes {},
+    MarkReleaseNotesSeen {},
     ResetTours,
     CompleteTour {
         id: TourId,
@@ -804,6 +806,22 @@ impl Service {
                             )?
                             .collect::<std::result::Result<Vec<_>, _>>()?;
                         Ok(json!(seen))
+                    }
+                    ReleaseNotes {} => {
+                        let version = env!("CARGO_PKG_VERSION");
+                        Ok(
+                            json!({"version":version,"notes":crate::release_notes::current()?,
+                                  "seen":crate::release_notes::is_seen(&self.db, &user.id, version)?}),
+                        )
+                    }
+                    MarkReleaseNotesSeen {} => {
+                        crate::release_notes::current()?;
+                        crate::release_notes::mark_seen(
+                            &self.db,
+                            &user.id,
+                            env!("CARGO_PKG_VERSION"),
+                        )?;
+                        Ok(json!({"saved":true}))
                     }
                     ResetTours => {
                         let prefix = format!("tour:v1:{}:", user.id);

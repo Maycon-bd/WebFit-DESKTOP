@@ -1,5 +1,6 @@
 import { emptyPatient, emptyProfile } from "../../src/api";
 import type { Patient, Prescription, PrescriptionPayload } from "../../src/api";
+import releaseNotes from "../../src/data/release-notes.json";
 
 // Public fictional credentials; accepted only by this in-memory test service.
 export const mockCredentials = { name: "visual", password: "mock-webfit" };
@@ -32,6 +33,10 @@ export function createMockService(scenario = "ready") {
           },
         ];
   let loggedIn = false;
+  let notesVersion = "0.1.12";
+  const seenNotes = new Set<string>(
+    scenario.startsWith("news-") ? [] : [notesVersion],
+  );
   let prescriptions: (Prescription & { patientId: string })[] = [];
   let failure: string | null = scenario === "error" ? "patients" : null;
   const calls: string[] = [];
@@ -45,6 +50,9 @@ export function createMockService(scenario = "ready") {
   return {
     calls,
     unsupported,
+    setNotesVersion(version: string) {
+      notesVersion = version;
+    },
     expireSession() {
       loggedIn = false;
     },
@@ -191,6 +199,17 @@ export function createMockService(scenario = "ready") {
             "backup",
             "access",
           ];
+        case "release_notes":
+          if (scenario === "news-slow")
+            await new Promise((resolve) => setTimeout(resolve, 900));
+          return {
+            version: notesVersion,
+            seen: seenNotes.has(notesVersion),
+            notes: structuredClone(releaseNotes),
+          };
+        case "mark_release_notes_seen":
+          seenNotes.add(notesVersion);
+          return { saved: true };
         case "backup_status":
           return {
             lastBackup: "2026-10-09T12:00:00Z",

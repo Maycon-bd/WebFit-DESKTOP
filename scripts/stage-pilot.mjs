@@ -1,6 +1,7 @@
 import { readFile, readdir, mkdir, writeFile, copyFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { verifySignature, validateManifest, checksums } from './pilot-release.mjs';
+import { readReleaseNotes, releaseNotesText } from './check-release-notes.mjs';
 
 const config=JSON.parse(await readFile('src-tauri/tauri.conf.json','utf8'));
 const version=config.version;
@@ -16,7 +17,7 @@ const bytes=await readFile(`${folder}/${sourceName}`);
 const signature=(await readFile(`${folder}/${sourceName}.sig`,'utf8')).trim();
 verifySignature(bytes,signature,config.plugins.updater.pubkey);
 const prefix=`https://github.com/Maycon-bd/webfit-desktop-releases/releases/download/pilot-v${version}/`;
-const manifest={version,notes:'Atualização de teste do WebFit Desktop. Inclui as mudanças revisadas desta versão. Somente dados fictícios.',pub_date:new Date().toISOString(),platforms:{'windows-x86_64':{url:prefix+encodeURIComponent(name),signature}}};
+const manifest={version,notes:releaseNotesText(await readReleaseNotes()),pub_date:new Date().toISOString(),platforms:{'windows-x86_64':{url:prefix+encodeURIComponent(name),signature}}};
 validateManifest(manifest,version,[{name,browser_download_url:manifest.platforms['windows-x86_64'].url}],prefix);
 const files=new Map([[name,bytes],[`${name}.sig`,Buffer.from(signature+'\n')],['latest.json',Buffer.from(JSON.stringify(manifest,null,2)+'\n')]]);
 const out='.artifacts/pilot';await mkdir(out,{recursive:true});

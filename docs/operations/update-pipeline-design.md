@@ -95,3 +95,7 @@ Custódia no Bitwarden confirmada por Maycon em 2026-10-06: chave e senha salvas
 ### Formatação no checkout Windows reutilizado
 
 .gitattributes define LF para fontes. Em runner próprio, arquivos inalterados podem continuar CRLF após integrar a regra; .prettierrc.json usa endOfLine=auto para evitar falso erro de final de linha. A etapa format:check permanece ativa e rejeita formatação inválida. Não apagar/recriar o checkout ou desativar validações para contornar esse caso. Evidência: .harness/evidence/update-pilot/2026-10-07-checkout-line-endings.md.
+
+## Resumo das novidades — RF-UPD-002
+
+Antes de cada entrega, atualizar `src/data/release-notes.json` com novidades efetivamente implementadas, em linguagem da nutricionista, conforme [guia](release-notes.md). Build e staging validam o resumo; staging utiliza o mesmo conteúdo no manifesto. Após instalação/login, o aplicativo lê o conteúdo embarcado offline e guarda confirmação por usuário/versão. Essa manutenção editorial não altera as autorizações de integração/publicação existentes.

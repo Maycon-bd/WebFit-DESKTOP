@@ -17,6 +17,7 @@ mod nutrition;
 #[cfg(test)]
 mod patient_tests;
 mod recovery;
+mod release_notes;
 mod security;
 mod service;
 mod tests;

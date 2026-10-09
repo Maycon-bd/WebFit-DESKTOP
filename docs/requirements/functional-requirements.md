@@ -383,3 +383,11 @@ Esses itens não podem ser implementados até receberem detalhamento, critérios
 ### RF-UX-008 — complemento: histórico anual de consultas
 
 Aprovado para preparação visual por Maycon em 2026-10-09 após escolha explícita: histórico de consultas realizadas por ano, com estado vazio até existir o módulo de consultas. TA-DASH-006..008; [registro único](../../specs/WEBFIT-17/task.md). O recurso não consulta pacientes/prescrições como se fossem atendimentos e não cria RF-AGE-001, schema, regras clínicas ou valores demonstrativos. Prioridade do backlog preservada; aceite funcional pendente.
+
+## RF-UPD-002 — Novidades da versão instalada após login
+
+- **Status:** aprovado para implementação por Maycon em 2026-10-09: pedido de notas resumidas sem dados técnicos e confirmação de uma vez por atualização, com consulta posterior.
+- **Descrição:** após autenticação, nutricionista e administrador veem um resumo curto das novidades da versão instalada, uma vez por usuário/versão. Podem consultar novamente em Ver novidades, no menu da conta. Funciona offline; não mostra IDs internos, hashes, bibliotecas, logs ou dados clínicos.
+- **Comportamento:** troca obrigatória de senha precede o aviso; Fechar/Entendi/Escape confirmam leitura no backend para o próprio usuário/versão instalada. Falha de consulta/gravação não bloqueia trabalho e não simula confirmação; retry e fechamento temporário preservam pendência. Não alterar instalação/backup/assinatura do updater.
+- **Prioridade:** incremento atual, sem prioridade Plane inventada.
+- **Aceite:** TA-UPD-NEWS-001..008. [Plan/registro](../../specs/WEBFIT-21/task.md).
