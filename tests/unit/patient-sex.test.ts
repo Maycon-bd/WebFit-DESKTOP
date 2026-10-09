@@ -73,6 +73,8 @@ const { PatientForm } = await import(
   import { PatientSexField, canonicalPatientSex } from ${JSON.stringify(sexUrl)};
   import { FormFeedback } from ${JSON.stringify(feedbackUrl)};
   import { displayName } from ${JSON.stringify(nutritionUrl)};
+  import { FormField as Field } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/FormField.tsx", import.meta.url), "utf8")))};
+  import { DateInput } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/DateInput.tsx", import.meta.url), "utf8")))};
   ${declarations}
   export { PatientForm };
 `)
@@ -115,7 +117,11 @@ test("WEBFIT-5: actual patient form requires only name, birth and sex, including
     required.filter((input) => input.includes('type="date"')).length,
     1,
   );
-  assert.match(html, /Nome completo \(obrigatório\)/);
+  assert.match(html, /Nome completo \*/);
+  assert.doesNotMatch(
+    html,
+    /\(obrigatório\)|aria-invalid="true"|validation-attempted/,
+  );
   assert.match(html, /CPF \(opcional\)/);
   assert.match(html, /CPF do responsável \(opcional\)/);
   assert.match(html, /Número do paciente: 245/);
@@ -126,7 +132,10 @@ test("WEBFIT-5: sex offers exactly two required named radios with no assumed sel
     createElement(PatientSexField, { value: "", onChange() {} }),
   );
   assert.match(html, /<fieldset/);
-  assert.match(html, /<legend>Sexo \(obrigatório\)<\/legend>/);
+  assert.match(
+    html,
+    /<legend>Sexo <span aria-hidden="true">\*<\/span><\/legend>/,
+  );
   assert.equal((html.match(/type="radio"/g) ?? []).length, 2);
   assert.equal((html.match(/name="patient-sex"/g) ?? []).length, 2);
   assert.equal((html.match(/required=""/g) ?? []).length, 2);
@@ -173,4 +182,86 @@ test("WEBFIT-5: absent legacy sex renders safely and requires an explicit choice
     assert.equal((html.match(/type="radio"/g) ?? []).length, 2);
     assert.doesNotMatch(html, /checked=""/);
   }
+});
+
+test("WEBFIT-5: invalid save marks missing fields, then clears each corrected field", async () => {
+  // Retain hook state between renders while exercising the actual form event handler.
+  const { renderFixture } = await import(
+    moduleUrl(`
+    import { PatientSexField, canonicalPatientSex } from ${JSON.stringify(sexUrl)};
+    import { FormFeedback } from ${JSON.stringify(feedbackUrl)};
+    import { displayName } from ${JSON.stringify(nutritionUrl)};
+    import { FormField as Field } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/FormField.tsx", import.meta.url), "utf8")))};
+    import { DateInput } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/DateInput.tsx", import.meta.url), "utf8")))};
+    const states = [];
+    let cursor = 0;
+    function useState(initial) {
+      const index = cursor++;
+      if (!(index in states)) states[index] = initial;
+      return [states[index], value => { states[index] = value; }];
+    }
+    function useEffect() {}
+    function useRef(current) { return { current }; }
+    ${declarations}
+    export function renderFixture(props) { cursor = 0; return PatientForm(props); }
+  `)
+  );
+  const props = {
+    patient: { name: "", birth: "", sex: "", tags: [] },
+    feedback: { busy: false, error: "", notice: "" },
+    busy: false,
+    token: null,
+    task() {
+      throw new Error("Invalid attempt must not call backend");
+    },
+    onChange() {},
+    onClose() {},
+    onSaved() {},
+    onPrescription() {},
+  };
+  let tree = renderFixture(props);
+  assert.doesNotMatch(renderToStaticMarkup(tree), /aria-invalid="true"/);
+  const form = tree.props.children.find(
+    (child: { type?: string }) => child.type === "form",
+  );
+  assert.equal(form.props.noValidate, undefined);
+  form.props.onInvalidCapture();
+  tree = renderFixture(props);
+  const invalid = renderToStaticMarkup(tree);
+  assert.match(invalid, /validation-attempted/);
+  assert.match(invalid, /id="patient-name-error"/);
+  assert.match(invalid, /id="patient-birth-error"/);
+  assert.match(invalid, /id="patient-sex-error"/);
+  assert.match(invalid, /aria-invalid="true"/);
+  props.patient = { name: "   ", birth: "2000-01-01", sex: "F", tags: [] };
+  let validityMessage = "";
+  let focused = false;
+  await renderFixture(props)
+    .props.children.find((child: { type?: string }) => child.type === "form")
+    .props.onSubmit({
+      preventDefault() {},
+      currentTarget: {
+        elements: {
+          namedItem: () => ({
+            setCustomValidity(message: string) {
+              validityMessage = message;
+            },
+            reportValidity() {
+              focused = true;
+            },
+          }),
+        },
+      },
+    });
+  assert.equal(validityMessage, "Preencha este campo.");
+  assert.equal(focused, true);
+  const whitespace = renderToStaticMarkup(renderFixture(props));
+  assert.match(whitespace, /id="patient-name-error"/);
+  assert.doesNotMatch(whitespace, /id="patient-(birth|sex)-error"/);
+  props.patient = { name: "Fixture", birth: "2000-01-01", sex: "F", tags: [] };
+  const corrected = renderToStaticMarkup(renderFixture(props));
+  assert.doesNotMatch(
+    corrected,
+    /aria-invalid="true"|id="patient-(name|birth|sex)-error"/,
+  );
 });

@@ -193,6 +193,8 @@ As caixas de implementação acima significam código construído, sem represent
 
 ## Refinamento RF-UX-001 — DEC-046, 2026-10-06
 
+- [x] T114 RF-UX-001/TA-UX-TUT-001, pedido de Maycon em 2026-10-09: remover Ver tutorial fixo e reiniciar marcações do usuário autenticado pelas Configurações, mantendo ensino automático/Pular/Concluir; testes e evidência em plan.md.
+
 - [x] T084 Implementar tours contextualizados, Pular/Concluir/Voltar/Próximo, repetição e posicionamento em src/GuidedTour.tsx e src/onboarding.ts; ligar os controles reais em src/App.tsx e src/EnergyForm.tsx.
 - [x] T085 Persistir somente a preferência por usuário/tela na tabela settings existente, com autorização e catálogo fechado no backend src-tauri/src/service.rs; testar reabertura, isolamento e acesso negado em src-tauri/src/tests.rs.
 - [x] T086 Verificar lint/TypeScript/build, formatação, testes Node/Rust e clippy; documentar a entrega em .harness/evidence/health-increment/2026-10-06-onboarding.md.

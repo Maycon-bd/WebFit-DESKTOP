@@ -38,6 +38,10 @@ Prioridade: refinamento solicitado do incremento 1, sem repriorização remota. 
 
 ## Compatibilidade e limites
 
+### Refinamento visual aprovado — 2026-10-09
+
+Pedido explícito de Maycon com captura do cadastro. RF-PAT-007 / FR-001: substituir “(obrigatório)” por `*` nos rótulos de nome, nascimento e sexo. **TA-PAT-018:** formulário inicial sem erro; tentar salvar incompleto impede envio e marca em vermelho os campos inválidos, inclusive contorno do grupo de sexo. Mensagens próximas aos obrigatórios ausentes e associadas aos controles; corrigir o campo remove sua indicação. Nome só com espaços também é vazio. Validação/foco nativos e dados digitados preservados. Prioridade: ajuste solicitado; aprovado para implementação, aceite Windows pendente. Sem novo obrigatório, banco ou regra clínica.
+
 Legado recebe numeração por criação, UUID como desempate. CPF ausente é SQL NULL e aparece como “Não informado” na lista. Banco com schema futuro é recusado. Backup 3 conserva números; backup 1/2 não possuía número: UUID conhecido mantém número do destino; desconhecido recebe próximo número local. Números não são uma identidade global entre instalações; o UUID é preservado.
 
 Somente fixtures. Checks SQL Node/SSR não substituem SQLCipher/DPAPI/WebView/aceite. [Plano e evidência](plan.md), [tarefas](tasks.md), [modelo](data-model.md), [contrato](contracts/patient.md), [roteiro](quickstart.md). Histórico de preparação em [.harness/evidence/webfit-5/planning.md](../../.harness/evidence/webfit-5/planning.md); bloqueios antigos superados pelas respostas acima.

@@ -81,6 +81,7 @@ pub enum Action {
     Logout,
     Touch,
     TourState,
+    ResetTours,
     CompleteTour {
         id: TourId,
     },
@@ -781,6 +782,14 @@ impl Service {
                             )?
                             .collect::<std::result::Result<Vec<_>, _>>()?;
                         Ok(json!(seen))
+                    }
+                    ResetTours => {
+                        let prefix = format!("tour:v1:{}:", user.id);
+                        self.db.execute(
+                            "DELETE FROM settings WHERE substr(name,1,?1)=?2",
+                            params![prefix.len() as i64, prefix],
+                        )?;
+                        Ok(json!({"reset":true}))
                     }
                     CompleteTour { id } => {
                         let id = serde_json::to_value(id)?;

@@ -12,6 +12,10 @@
 
 ## User Scenarios & Testing
 
+### Refinamento de movimento — 2026-10-09
+
+Pedido explícito de Maycon com captura, usando Impeccable; aprovado para implementação no escopo RF-UX-003, sem mudar destinos ou domínio. **TA-NAV-009:** hambúrguer no cabeçalho da lateral quando aberta; ao fechar, botão para reabrir no conteúdo. Abertura/fechamento graduais sem remontar tela/perder formulário; foco passa ao botão disponível e lateral recolhida fica fora de interação/leitor de tela. Cliques repetidos revertem a transição sem espera. Movimento reduzido elimina deslocamento/zoom mantendo feedback de estado. Feedback breve de cores nos botões, abertura do disclosure de conta e diálogos existentes; sem animação contínua, dependência ou atraso nas ações. Prioridade: refinamento solicitado; aceite Windows pendente.
+
 ### User Story 1 - Controlar a lateral e localizar o Consultório (Priority: P1)
 
 Como usuário autenticado, quero liberar espaço de trabalho fechando a lateral e recuperar o menu quando necessário. O menu organiza as telas sob Consultório, com Pacientes como entrada disponível neste incremento.
@@ -98,3 +102,8 @@ Rastreabilidade canônica: RF-UX-003, TA-UX-NAV-001..008. Regressões: RF-DRF-00
 - D-NAV-002, ACCEPTED por Maycon em 2026-10-07: nome abre uma lista simples de opções; Configurações é um índice com duas entradas e as ferramentas preservam suas telas com retorno ao índice.
 - Identidade visual existente é preservada. Nenhuma tela futura, dependência, migração, integração externa ou mudança de autenticação entra no escopo.
 - Verificação inclui regressões relevantes e inspeção visual no Windows; não se declara resultado de implementação durante planejamento.
+
+
+## Complemento autorizado — conta e fechamento, 2026-10-09
+
+Pedido explícito de Maycon nesta conversa aprova RF-UX-003/TA-UX-NAV-010 (painel compacto/ícone de logout com mesma ação) e RF-UX-006/TA-UX-WINDOW-003 (X com confirmação e opt-out persistido). Preferência somente visual, sem sessão/dados de domínio; salvar rascunho continua obrigatório mesmo com opt-out. Operação pendente adia fechamento; falha preserva janela e oferece recuperação. Sem schema/backend/dependência nova. Plane sync degraded; reutilizada WEBFIT-4. Aceite funcional/Windows não inferido.

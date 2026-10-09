@@ -1,5 +1,19 @@
 # Implementation Plan: Primeiro incremento de Saúde
 
+## Reinício de tutoriais — 2026-10-09
+
+Pedido explícito de Maycon com captura: remover Ver tutorial fixo e permitir reset para ensinar novamente ao entrar nas telas. RF-UX-001/DEC-046/TA-UX-TUT-001/T114; reuso deste incremento, sem item/spec concorrente. PLAN APPROVED BY SCOPE para Configurações → Reiniciar tutoriais do usuário conectado; frontend e settings existentes, sem migration/schema/dependência/regra clínica. Registro de replay fixo supersedido no decision-log; ensino automático/Pular/Concluir preservados.
+
+Implementado: Action ResetTours passa pela autorização/licença/troca de senha existentes, exclui somente prefixo tour:v1:user.id derivado no backend com SQL parametrizado; idempotente. App fornece ação/descrição em Configurações com feedback de operação existente, sem duplicar avisos; GuidedTour remove replay fixo e conserva restauração do foco anterior. Toolbar vazia escondida quando lateral aberta, tour montado fora dela. Configurações não tem tour: ao sair, GuidedTour remonta e consulta as preferências reiniciadas. Cada tela volta a ensinar uma vez após reset, não em loop depois de concluir/pular.
+
+Entrada: feature/pbi-001-primeiro-incremento-saude/818d097edcf473061fb634eb473f7c64a1f56af0, referência local upstream alinhada, sem fetch. Alterações preexistentes de menu/cadastro/componentes/FoodPicker/harness preservadas. Somente fixtures, fonte 0.1.10, nenhuma distribuição/Git mutável/instalação clínica aberta. Plane indisponível, sincronização degradada; reuso da rastreabilidade vigente.
+
+Checks finais: npm run check PASS (lint/TypeScript/43 Node/build Vite), npm run format:check PASS. Cargo fmt check, cargo test --locked --offline (46/46) e Clippy all-targets -D warnings PASS em Rust1.98.1/cache isolado/TEMP fictício da sessão. Teste tours_require_authorization_and_persist_per_user_without_migration cobre acesso negado, repetição, reinício/reabertura e preservação de outro usuário/preferência alheia; guided-tour.test.ts SSR comprova ausência de replay e manutenção de Pular/Próximo/diálogo/erro. Detector Impeccable [] e diff PASS. Build Tauri `--debug --no-bundle -- --locked --offline` PASS, executável em .tools/patient-native-target/debug/webfit-desktop.exe; sem instalador/publicação. Bundle551,53 kB WARNING; warnings ambientais de cache/PDB OpenSSL/colisão bin-lib/STATIC_VCRUNTIME registrados, sem falha de compilação. Logs ignorados .tools/tutorial-native-test.log, tutorial-clippy.log e tutorial-build.log. Sem alteração de dependências.
+
+Review independente review_patient sem finding concreto: backend autorizado/isolado, consulta nova após sair de Configurações, Pular/Concluir/foco e tour fora da toolbar ocultável. Revisão estática/SSR não prova foco/posicionamento/interação reais na WebView. Ensaio Windows/zoom/leitor de tela NOT RUN; nenhum aceite humano ou gate inferido. REVIEW PASSED WITH WARNINGS, sem READY TO SHIP enquanto ensaio integrado pendente. Arquivos: App/GuidedTour/style, service/tests.rs, guided-tour.test.ts, fontes requisito/aceite/rastreabilidade/DEC-046/tasks/status e este plano.
+
+Próxima ação: ensaiar reinício em Configurações e entrada nas oito telas com fixtures, Pular/Concluir e outro usuário preservado, após integração pelo humano; sem commit/push/publicação automática.
+
 **Branch**: `feature/pbi-001-primeiro-incremento-saude` | **Date**: 2026-09-21 | **Spec**: [spec.md](spec.md)
 
 **Input**: Feature specification from `/specs/001-primeiro-incremento-saude/spec.md`

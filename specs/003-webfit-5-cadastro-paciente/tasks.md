@@ -20,3 +20,6 @@ Atualizadas em 2026-10-08; main/3558eddd84211e504ba0457388b1bedc30c9697d. [Plano
 - [x] T016 Número sequencial visível sem zeros, UUID preservado, busca e retorno imediato ao salvar; testes/contrato TA-PAT-017.
 
 Somente dados fictícios; preparação do toolchain autorizada e cache local reutilizado. Sem banco real, commit/push ou publicação. Checks nativos concluídos em 2026-10-09; ensaio Windows/aceite permanecem pendentes e não constituem nova aprovação funcional.
+
+- [x] T017 RF-PAT-007 / TA-PAT-018 — substituir obrigatório por asterisco e destacar campos inválidos após tentativa de salvar, com mensagens associadas e correção por campo. Pedido de Maycon em 2026-10-09; evidência do recorte em plan.md.
+- [x] T018 RF-PAT-007 / TA-PAT-019 — retorno somente no cabeçalho do cadastro, orientação associada no topo; preservação do fluxo de rascunho. Pedido de Maycon, 2026-10-09, ajuste LIGHT.

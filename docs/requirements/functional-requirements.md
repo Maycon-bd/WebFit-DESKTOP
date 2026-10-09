@@ -1,5 +1,9 @@
 # Requisitos funcionais
 
+**RF-UX-005 — barra clara aprovada por Maycon, 2026-10-09:** barra de título própria com fundo claro da paleta WebFit, independente da cor de destaque do Windows, fixa fora da rolagem; arrastar e minimizar/maximizar-restaurar/solicitar fechamento. Fechamento preserva confirmação/rascunhos vigentes. Prioridade: ajuste solicitado; TA-UX-WINDOW-002/T-UX-WINDOW-002 no registro WEBFIT-10, aceite integrado pendente.
+
+**RF-UX-001 — refinamento aprovado por Maycon, 2026-10-09:** remover Ver tutorial fixo das telas. Em Configurações, Reiniciar tutoriais apaga somente as marcações do usuário conectado e reativa as orientações automaticamente na próxima entrada de cada tela; Pular/Concluir e persistência por tela mantidos. Prioridade: ajuste solicitado do incremento, aceite Windows pendente. TA-UX-TUT-001, DEC-046/T114; sem migration ou nova dependência.
+
 ## Refinamento de acesso — WEBFIT-10, 2026-10-08
 
 Pedido explícito de Maycon neste chat; aprovado para implementação, aceite Windows pendente. RF-UX-002/RF-LIC-001: em instalação preparada, Licença e suporte fica dentro das informações do ícone (i), sem ocupar o formulário de login. Ativação inicial continua na entrada do destino vazio; autorizações/backend preservados. Critério TA-UX-LOGIN-003.
@@ -342,3 +346,8 @@ Refinamento vigente RF-UPD-001 / DEC-053 / TA-UPD-UI-002: faixa superior em luga
 ## WEBFIT-9 — complemento aprovado de RF-UPD-001
 
 **Status:** aprovado para implementação por Maycon em 2026-10-08, após proposta nesta conversa. Consulta ao login, a cada 30 minutos e retorno à janela; faixa compacta acima de toda navegação/conteúdo com Atualizar à direita e orientação explícita para salvar antes do reinício. Consulta não interrompe edição/offline; instalação mantém backup/assinatura/autorização/bloqueios. Aceite TA-UPD-UI-003..006; spec em specs/006-webfit-9-faixa-atualizacao/. D-UPD9-001 provisória permitida: cooldown um minuto e adiamento por versão/sessão. Não aprova dados reais/publicação/aceite final.
+
+## WEBFIT-4 — conta compacta e confirmação de fechamento (2026-10-09)
+
+- **RF-UX-003, complemento:** substituir o botão textual da lateral por ícone de logout junto à conta/configurações, com nome acessível Sair da conta e a mesma sequência de salvar rascunho/encerrar sessão. Status: aprovado para implementação pelo pedido explícito de Maycon nesta conversa; prioridade: incremento atual; aceite TA-UX-NAV-010.
+- **RF-UX-006 — confirmação do fechamento:** ao clicar no X, perguntar se deseja fechar, com Cancelar/Fechar e checkbox Não perguntar novamente. Persistir somente booleano de preferência visual neste perfil Windows ao confirmar; cancelamento não altera preferência. Com opt-out, fechar sem pergunta após operação pendente e gravação do rascunho. Falha mantém janela e permite repetir; nenhuma preferência autoriza perder rascunho. Status: aprovado para implementação por Maycon em 2026-10-09; prioridade: incremento atual; aceite TA-UX-WINDOW-003. Não representa aceite funcional/uso clínico. Sem schema/dependência nova.

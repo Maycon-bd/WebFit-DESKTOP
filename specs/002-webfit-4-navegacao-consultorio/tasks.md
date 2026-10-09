@@ -59,4 +59,12 @@ Primeiro incremento técnico US1; entrega solicitada exige as três jornadas, n�
 
 ## Execution notes
 
+- [x] T018 RF-UX-003/TA-NAV-009: hambúrguer no menu aberto, abertura/fechamento graduais, foco/interação ocultos, feedback de ações e reduced-motion. Pedido de Maycon, 2026-10-09; checks/review e limites em plan.md.
+
 T007/T010/T014 executados em frontend compilado com IPC ficticio: 17 assertions PASS; limites e ensaio Windows/teclado nativo pendentes em verification.md. T016 checks PASS (8 Node, 18 Rust/SQLite, build Tauri sem bundle). T017 Converge e review de codigo executados; UI/UX gate integrado PARTIAL, aceite humano pendente. Checks marcados indicam execucao e registro, nao aprovacao humana nem certificacao integral de SC-003/004. Nenhum instalador ou Git mutavel.
+
+
+## Complemento — conta e fechamento, 2026-10-09
+
+- [x] T019 RF-UX-003/TA-UX-NAV-010: compactar painel e substituir botão textual por ícone acessível Sair da conta, preservando handler/rascunho/busy e alvos do tutorial.
+- [x] T020 RF-UX-006/TA-UX-WINDOW-003: guarda de fechamento nativo, diálogo/checkbox visual persistido, confirmação/cancelamento, falha/repetição/operação pendente; testes automatizados e documentação. Ensaio real Windows e revisão independente pendentes, não incluídos como PASS.

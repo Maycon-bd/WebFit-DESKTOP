@@ -1,5 +1,18 @@
 # WEBFIT-10 — Ativação offline e autorizações por instalação
 
+## Barra clara da janela — 2026-10-09
+
+Pedido explícito de Maycon após escolher fundo claro do sistema para barra própria: RF-UX-005/TA-UX-WINDOW-002/T-UX-WINDOW-002, aprovado para implementação. Reuso deste registro de experiência da janela, Plane sync degraded. PLAN APPROVED BY SCOPE: substituir decoração nativa pela barra React clara, fixa fora da rolagem, ícones escuros, arraste e minimizar/maximizar-restaurar/fechar. Sem schema/dependência/regra clínica. Permissões estritamente necessárias na janela main, compatíveis com [guia oficial Tauri](https://tauri.app/learn/window-customization/).
+
+Implementado WindowTitleBar/main/style, decorations:false e permissões allow-close/minimize/toggle-maximize/start-dragging. Barra44px com região de arraste separada dos controles, children sem interceptação de ponteiro, truncamento de título, nomes/foco acessíveis e erros seguros. Consulta estado maximizado/resize com cleanup. Área App/login usa altura restante; título/controle não rolam. Fechar usa window.close(), não destroy(): preserva listener/confirmador/rascunho existentes. WindowCloseGuard/window-close e seus testes são alterações concorrentes preexistentes, lidas/preservadas, não atribuídas a esta entrega.
+
+Checks: npm run check PASS (lint/TS/50 testes existentes/build), rodada final npm test 51/51 PASS incluindo novo teste de callbacks/drag/nomes; format/diff e Impeccable detector [] PASS. Build Tauri debug sem bundle --locked --offline PASS no toolchain1.98.1/cache isolado autorizado, sem instalador/publicação. Testes Rust46 anteriores continuam evidência do código nativo inalterado, não reexecutados para esta barra; build valida configuração/capabilities novas. Warnings bundle556,47 kB, PDB OpenSSL/colisão bin-lib/STATIC_VCRUNTIME/cache. Review independente review_patient sem finding concreto.
+
+Limites: teste mock de callbacks comprova solicitação close, não fechamento/arraste/foco/resize nativos. Windows10/WebView, zoom, Alt+F4, arraste/doubleclick/maximizar/resize e modais/rascunhos NOT RUN. Barra personalizada não comprova equivalência de todos os affordances da decoração nativa (incluindo snap menu Windows11). REVIEW PASSED WITH WARNINGS, sem READY TO SHIP enquanto ensaio integrado estiver pendente. Fonte0.1.10, branch feature/pbi-001-primeiro-incremento-saude/base818d097, trabalho local anterior preservado, sem Git mutável/dados reais/distribuição/G5/G6/G7.
+
+- [x] T-UX-WINDOW-002 Implementar barra clara/controles/arraste/layout e validar callbacks/configuração/build; pedido de Maycon.
+- [ ] Ensaiar TA-UX-WINDOW-002 em candidato fictício Windows antes de aceite/distribuição. Integração/Git pelo humano.
+
 ## Refinamento LIGHT — largura do modal, 2026-10-08
 
 Maycon mostrou o modal estreito no piloto 0.1.11-pilot.21.1 e pediu alargar/persistir preferência por reduzir scroll. Base main/3558eddd84211e504ba0457388b1bedc30c9697d, entrada limpa; integração humana do ajuste anterior observada. T-LIC-016/TA-UX-LOGIN-003 reutilizados; sem nova demanda/Plane. Plan inline: LoginInfo agrupado em duas colunas, modal até 960px limitado ao viewport, coluna única até 760px, espaçamentos ajustados e scroll acessível preservado. Sem mudanças de fluxo/backend/dependências.

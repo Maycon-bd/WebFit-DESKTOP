@@ -1,5 +1,17 @@
 # Critérios e testes de aceite
 
+**TA-UX-WINDOW-002 / RF-UX-005 — aprovado para implementação, Maycon, 2026-10-09:** barra com fundo claro WebFit e controles escuros, fora da rolagem em acesso e telas autenticadas; arraste em região dedicada, controles acessíveis de minimizar/maximizar-restaurar/fechar. Fechar e Alt+F4 passam pelo fluxo existente de confirmação/rascunhos, sem bypass. Conteúdo/ações alcançáveis em zoom/resize, título longo truncado. Configuração/capabilities/build e callbacks com fixture; ensaio Windows10/WebView pendente.
+
+**TA-UX-TUT-001 / RF-UX-001 — aprovado para implementação, Maycon, 2026-10-09:** nenhum Ver tutorial fixo em telas. Reiniciar tutoriais acessível em Configurações, com andamento/sucesso/erro; reset autorizado apenas para usuário conectado, idempotente, sem afetar outro usuário ou preferências/dados. Após reset/reabrir, tours voltam automaticamente na entrada das telas e podem ser pulados/concluídos; não repetem indefinidamente após nova conclusão. Foco anterior preservado ao fechar. Testes Rust de autorização/isolamento/reabertura e SSR de controles; ensaio integrado Windows pendente.
+
+**TA-PAT-019 / RF-PAT-007 — aprovado para implementação, Maycon, 2026-10-09:** no cadastro de pacientes, Voltar à lista fica somente no cabeçalho, sem cópia junto ao Salvar. Orientação de saída/rascunho junto ao cabeçalho e associada ao botão; retorno/bloqueio durante operação e preservação de rascunho mantidos. Ajuste LIGHT em PatientForm, evidência WEBFIT-5/plan.md; aceite Windows pendente.
+
+**TA-NAV-009 / RF-UX-003 — aprovado para implementação, Maycon, 2026-10-09:** hambúrguer dentro do menu aberto, botão no conteúdo quando recolhido, transição gradual sem remontar formulário e mantendo foco no controle disponível; lateral fechada inerte e não apresentada ao leitor de tela. Alternância rápida reversível, movimento reduzido sem deslocamento/zoom. Feedback breve nos botões/disclosure de conta/diálogos sem atrasar ação. WEBFIT-4/T018; aceite visual/teclado Windows pendente.
+
+## Cadastro de pacientes — refinamento visual, 2026-10-09
+
+**TA-PAT-018 / RF-PAT-007:** aprovado para implementação pelo pedido explícito de Maycon. Nome, nascimento e sexo usam `*` no rótulo; legenda explica obrigatoriedade. Antes de tentar salvar, sem erro vermelho. Tentativa com obrigatórios ausentes, inclusive nome apenas com espaços, impede envio, destaca bordas/grupo de sexo em vermelho e mostra mensagem associada ao controle. Correção remove indicação daquele campo; foco nativo e conteúdo preservados. Não cria novos obrigatórios. T017 e regressão em patient-sex.test.ts; aceite Windows pendente.
+
 ## Acesso sem obstrução — WEBFIT-10, 2026-10-08
 
 Refinamento visual de TA-UX-LOGIN-003 solicitado por Maycon: modal (i) mais largo, aproveitando espaço horizontal para reduzir scroll vertical. Conferir informações e suporte em duas colunas quando houver largura, reflow para uma coluna em viewport estreito/zoom e ações/conteúdo sempre alcançáveis. Não cortar conteúdo para impedir rolagem.
@@ -142,7 +154,7 @@ RF-UX-003: comportamento definido por Maycon em 2026-10-07, execução/validaç�
 | TA-UX-NAV-005 | Nome abre Acesso/Perfil sem navegar; seleção usa navegação segura; Escape fecha opções | FR-005 |
 | TA-UX-NAV-006 | Salvar rascunho antes de destino; falha mantém dados/página e mostra erro; busy, must_change, logout e backend preservados | FR-006 |
 | TA-UX-NAV-007 | Todos novos controles por teclado/nome acessível/foco/estado; zero controles laterais focáveis quando oculta; zoom 200%, nome longo/janela reduzida | FR-008 |
-| TA-UX-NAV-008 | Tours pacientes/acesso não apontam a controles ocultos/errados, Pular/Ver tutorial funcionam; faixa/consulta por sessão e bloqueios de instalação não reiniciam ao recolher | FR-007 |
+| TA-UX-NAV-008 | Tours pacientes/acesso não apontam a controles ocultos/errados, Pular/Concluir e reinício pelas Configurações funcionam (TA-UX-TUT-001); faixa/consulta por sessão e bloqueios de instalação não reiniciam ao recolher | FR-007 |
 
 ## WEBFIT-9 — faixa compacta e consulta durante uso
 
@@ -154,3 +166,10 @@ RF-UX-003: comportamento definido por Maycon em 2026-10-07, execução/validaç�
 | TA-UPD-UI-006 | Campos/foco/página preservados; instalação bloqueada durante edição/operação; adiamento da mesma versão por sessão, nova versão/login pode avisar; backup/assinatura/progresso/erro preservados |
 
 Aprovação de implementação: Maycon em 2026-10-08; D-UPD9-001 provisória, aceite final/Windows integrado pendentes.
+
+## WEBFIT-4 — conta e fechamento, 2026-10-09
+
+| ID | Critério aprovado para implementação |
+|---|---|
+| TA-UX-NAV-010 | Painel compacto exibe nome/papel, configurações e somente ícone Sair da conta no lugar do botão textual; tooltip/nome acessível, foco/teclado e alvo 44px; logout conserva gravação do rascunho, erro, busy e encerramento da sessão. |
+| TA-UX-WINDOW-003 | X mostra diálogo modal com Cancelar inicialmente focado, Fechar e Não perguntar novamente. Escape/Cancelar não fecham nem persistem checkbox. Fechar salva rascunho antes de destruir janela; checked persiste opt-out para próximas aberturas neste perfil Windows. Opt-out fecha sem pergunta, aguarda operação atual e ainda salva rascunho. Cliques repetidos não duplicam gravação; falha de salvamento/persistência mantém janela e permite nova tentativa. Preferência inacessível/desconhecida mantém confirmação. |

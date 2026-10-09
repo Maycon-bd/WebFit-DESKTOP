@@ -70,7 +70,6 @@ function Tour({
   const [position, setPosition] = useState({ left: 16, top: 16 });
   const card = useRef<HTMLElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
-  const replay = useRef<HTMLButtonElement>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
   const steps = tours[screen];
   const current = steps[step];
@@ -135,14 +134,13 @@ function Tour({
   async function dismiss() {
     if (saving) return;
     setActive(false);
-    replay.current?.focus({ preventScroll: true });
     setSaving(true);
     try {
       await finish();
       setFailure("");
     } catch {
       setFailure(
-        "O tutorial foi fechado, mas não foi possível lembrar isso ao reabrir o aplicativo. Você pode continuar trabalhando ou abrir Ver tutorial para tentar novamente.",
+        "O tutorial foi fechado, mas não foi possível lembrar isso. Você pode continuar trabalhando; ele poderá aparecer novamente ao entrar nesta tela.",
       );
     } finally {
       setSaving(false);
@@ -161,20 +159,7 @@ function Tour({
   });
   return (
     <>
-      <div className="tour-help">
-        <button
-          ref={replay}
-          type="button"
-          disabled={saving}
-          onClick={() => {
-            setStep(0);
-            setActive(true);
-          }}
-        >
-          Ver tutorial
-        </button>
-        {failure && !active && <p role="status">{failure}</p>}
-      </div>
+      {failure && !active && <p role="status">{failure}</p>}
       {active && (
         <>
           <div className="tour-shade" aria-hidden="true" />

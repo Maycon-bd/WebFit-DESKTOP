@@ -144,7 +144,7 @@ const tourCatalog = {
       target: '[data-tour="logout"]',
       fallbackTarget: '[data-tour="navigation-toggle"]',
       title: "Bloqueie ao sair",
-      text: "Abra o menu, se estiver recolhido, e use Bloquear e sair quando terminar o trabalho ou deixar o computador.",
+      text: "Abra o menu, se estiver recolhido, e use o ícone Sair da conta quando terminar o trabalho ou deixar o computador.",
     },
   ],
 } satisfies Record<string, TourStep[]>;

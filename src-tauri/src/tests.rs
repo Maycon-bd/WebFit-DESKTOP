@@ -339,6 +339,7 @@ mod integration {
         let temp = tempfile::tempdir().unwrap();
         let mut service = Service::open(temp.path().to_owned()).unwrap();
         assert!(call(&mut service, None, Action::TourState).is_err());
+        assert!(call(&mut service, None, Action::ResetTours).is_err());
         assert!(call(
             &mut service,
             None,
@@ -412,6 +413,60 @@ mod integration {
             .pragma_query_value(None, "user_version", |row| row.get(0))
             .unwrap();
         assert_eq!(version, 3);
+        service
+            .db
+            .execute(
+                "INSERT INTO settings(name,value) VALUES('fixture:unrelated','keep')",
+                [],
+            )
+            .unwrap();
+        for _ in 0..2 {
+            call(&mut service, Some(token), Action::ResetTours).unwrap();
+        }
+        assert_eq!(
+            call(&mut service, Some(token), Action::TourState).unwrap(),
+            json!([])
+        );
+        assert_eq!(
+            service
+                .db
+                .query_row(
+                    "SELECT value FROM settings WHERE name='fixture:unrelated'",
+                    [],
+                    |row| row.get::<_, String>(0)
+                )
+                .unwrap(),
+            "keep"
+        );
+        drop(service);
+        let mut service = Service::open(temp.path().to_owned()).unwrap();
+        let login = call(
+            &mut service,
+            None,
+            Action::Login {
+                name: "Administrador de teste".into(),
+                password: "senha ficticia segura".into(),
+            },
+        )
+        .unwrap();
+        assert_eq!(
+            call(&mut service, login["token"].as_str(), Action::TourState).unwrap(),
+            json!([])
+        );
+        call(&mut service, login["token"].as_str(), Action::Logout).unwrap();
+        let login = call(
+            &mut service,
+            None,
+            Action::Login {
+                name: "Nutricionista de teste".into(),
+                password: "outra senha ficticia".into(),
+            },
+        )
+        .unwrap();
+        assert_eq!(
+            call(&mut service, login["token"].as_str(), Action::TourState).unwrap(),
+            json!(["backup"])
+        );
     }
     #[test]
     fn six_character_access_passwords_work_and_recovery_remains_twelve() {

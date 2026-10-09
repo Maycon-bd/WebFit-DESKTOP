@@ -1,6 +1,10 @@
 # Impeccable
 
-Status: AVAILABLE — CONDITIONAL. Skill disponível no catálogo desta sessão; disponibilidade em outra máquina deve ser conferida. Nenhuma instalação/configuração nova nesta refatoração.
+Status: INSTALLED — PROJECT LOCAL, 2026-10-09. Instalação solicitada explicitamente por Maycon, sem nova confirmação. Skill oficial 4.5.1 em `.agents/skills/impeccable/`, instalada pelo helper `skill-installer` usando o pacote `.agents/skills/impeccable` de [pbakaus/impeccable](https://github.com/pbakaus/impeccable), licença Apache-2.0 preservada na pasta. Descoberta automática no catálogo ocorre no próximo turno; nesta sessão SKILL.md e referências audit/extract/polish foram lidas e usadas diretamente.
+
+Launcher Windows: `.agents/skills/impeccable/scripts/impeccable.cmd`. Engine 0.1.12 baixado pelo launcher com verificação SHA-256, em `.tools/impeccable/bin/0.1.12/`, cache ignorado pelo Git. Executar com `IMPECCABLE_HOME` apontando para `.tools/impeccable`; não instalar pacote npm no runtime do produto. SHA-256 do SKILL.md instalado: `3147b3cbd19f0549f9b21646d183509d86e863839a0b87ab71872dd4dbb050fd`; engine: `33ab0dd342ec9f6891103d45c9ce357b3260c9cd494a14c33a528b07c7ee9ac8`.
+
+Uso comprovado: `context --target src/App.tsx` e `detect --json src`. Detector retornou um warning no estado anterior e `[]` após a adaptação. Auditoria técnica/extract e limites em [padrões de componentes](../../docs/ux/component-patterns.md#continuação--impeccable-audit-e-extract-2026-10-09). Hooks automáticos não foram instalados/ativados; a auditoria usa detector manual, sem loops persistentes. A skill versionada acompanha o projeto; cache binário não acompanha clone/pull e o launcher pode precisar baixá-lo na outra máquina.
 
 Verificação de UI/UX interna ao Code Review quando houver frontend/experiência visual. Primeira análise read-only; avaliar acessibilidade, teclado/foco, responsividade, consistência, componentes, fluxos, loading/erro/vazio e overflow. Preservar design system/padrões existentes em docs/ux/ e DESIGN.md; não inventar aprovação de design.
 

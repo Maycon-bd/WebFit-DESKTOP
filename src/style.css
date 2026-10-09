@@ -28,6 +28,81 @@
 body {
   margin: 0;
 }
+.window-shell {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: 44px minmax(0, 1fr);
+}
+.window-titlebar {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  background: var(--surface-subtle);
+  border-bottom: 1px solid var(--line);
+  user-select: none;
+}
+.window-drag-region {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 14px;
+}
+.window-drag-region > * {
+  pointer-events: none;
+}
+.window-drag-region span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.window-controls {
+  display: flex;
+  height: 100%;
+}
+.window-titlebar .window-controls button {
+  width: 48px;
+  height: 44px;
+  padding: 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--green);
+}
+.window-titlebar .window-controls button:hover {
+  background: var(--surface-hover);
+}
+.window-titlebar .window-controls .window-close:hover {
+  background: var(--error-text);
+  color: white;
+}
+.window-controls svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+}
+.window-control-error {
+  color: var(--error-text);
+  font-size: 12px;
+  max-width: 40%;
+  overflow: auto;
+}
+.window-content {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+.window-content .application-frame {
+  height: 100%;
+}
+.window-content .access-shell {
+  min-height: 100%;
+}
 button,
 input,
 textarea,
@@ -84,6 +159,21 @@ a:focus-visible,
 summary:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
+}
+.table-wrap:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 ::selection {
   background: #d4e8cc;
@@ -186,8 +276,9 @@ a {
   width: 100%;
 }
 .app-shell {
+  --sidebar-width: 235px;
   display: grid;
-  grid-template-columns: 235px minmax(0, 1fr);
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
   min-height: 100vh;
 }
 .sidebar {
@@ -235,7 +326,8 @@ a {
 }
 .sidebar-bottom {
   margin-top: auto;
-  padding: 20px 10px 0;
+  padding: 16px 10px 0;
+  border-top: 1px solid var(--line);
 }
 .sidebar-bottom button {
   margin-top: 20px;
@@ -278,6 +370,23 @@ a {
   margin: 0 0 18px;
   padding: 0;
   border: 0;
+}
+.patient-form.validation-attempted input:invalid {
+  border-color: var(--error-text);
+}
+.patient-form input[aria-invalid="true"] {
+  border-color: var(--error-text);
+}
+.patient-sex[aria-invalid="true"] .patient-sex-options {
+  border: 1px solid var(--error-text);
+  border-radius: var(--radius-control);
+  padding: 8px;
+}
+.patient-field-error {
+  display: block;
+  color: var(--error-text);
+  font-size: 13px;
+  font-weight: 400;
 }
 .patient-sex legend {
   font-size: 14px;
@@ -472,7 +581,7 @@ td button {
   margin: 18px 0;
   line-height: 1.5;
   border-radius: var(--radius-control);
-  border-inline-start: 4px solid currentColor;
+  border: 1px solid currentColor;
   overflow-wrap: anywhere;
 }
 .error {
@@ -531,7 +640,8 @@ dd {
 }
 @media (max-width: 1000px) {
   .app-shell {
-    grid-template-columns: 190px 1fr;
+    --sidebar-width: 190px;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
   }
   .workspace-main {
     padding-right: 24px;
@@ -929,8 +1039,44 @@ input[readonly] {
 }
 
 /* RF-UX-003: navigation state does not remount the workspace. */
+.app-shell {
+  transition: grid-template-columns 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
 .app-shell.sidebar-collapsed {
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: 0px minmax(0, 1fr);
+  transition-duration: 220ms;
+}
+.sidebar-slot,
+.sidebar-clip {
+  min-width: 0;
+  min-height: 0;
+}
+.sidebar-clip {
+  height: 100%;
+  overflow: hidden;
+}
+.sidebar-slot .sidebar {
+  width: var(--sidebar-width);
+  transition:
+    transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 180ms ease-out;
+}
+.sidebar-collapsed .sidebar {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition-duration: 220ms, 120ms;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.menu-toggle[hidden] {
+  display: none;
+}
+.shell-toolbar[hidden] {
+  display: none;
 }
 .sidebar[hidden],
 .account-options[hidden] {
@@ -945,13 +1091,17 @@ input[readonly] {
   min-height: 56px;
   padding-block: 6px;
 }
+.shell-toolbar > .tour-help {
+  margin-left: auto;
+}
 .shell-toolbar .tour-help {
   margin-bottom: 0;
   flex-wrap: wrap;
   min-width: 0;
 }
 .menu-toggle,
-.settings-button {
+.settings-button,
+.logout-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -959,6 +1109,45 @@ input[readonly] {
   height: 44px;
   padding: 10px;
   flex-shrink: 0;
+}
+/* Short action feedback; state changes never wait for animation completion. */
+button {
+  transition:
+    background-color 140ms ease-out,
+    border-color 140ms ease-out,
+    color 140ms ease-out;
+}
+button:active:not(:disabled) {
+  background-color: var(--surface-hover);
+}
+button.primary:active:not(:disabled) {
+  background-color: #173e2c;
+}
+.account-options:not([hidden]) {
+  animation: disclosure-reveal 160ms ease-out;
+}
+dialog[open] {
+  animation: dialog-reveal 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes disclosure-reveal {
+  from {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0.6;
+  }
+  to {
+    clip-path: inset(0);
+    opacity: 1;
+  }
+}
+@keyframes dialog-reveal {
+  from {
+    opacity: 0.5;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .sidebar .workspace {
   margin: 42px 14px 12px;
@@ -968,6 +1157,58 @@ input[readonly] {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.sidebar-bottom .logout-button {
+  flex-shrink: 0;
+  margin: 0;
+  width: 44px;
+  padding: 0;
+  background: transparent;
+  border-color: transparent;
+}
+.sidebar-bottom .logout-button:hover {
+  color: var(--error-text);
+  background: var(--error-surface);
+}
+.account-controls > .settings-button {
+  flex-shrink: 0;
+}
+.close-confirmation-dialog {
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 24px;
+  color: #20332b;
+  background: var(--dialog-surface);
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--dialog-shadow);
+}
+.close-confirmation-dialog::backdrop {
+  background: var(--dialog-backdrop);
+}
+.close-confirmation-dialog h2 {
+  margin-top: 0;
+}
+.close-preference {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+}
+.close-preference input {
+  width: 20px;
+  min-height: 20px;
+  height: 20px;
+  margin: 0;
+}
+.close-confirmation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
 }
 .sidebar-bottom .account-name {
   flex: 1;
@@ -1057,6 +1298,24 @@ input[readonly] {
   line-height: 1.5;
 }
 @media (max-width: 700px) {
+  .app-shell.sidebar-collapsed {
+    grid-template-columns: none;
+  }
+  .sidebar-slot {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sidebar-collapsed .sidebar-slot {
+    grid-template-rows: 0fr;
+    transition-duration: 220ms;
+  }
+  .sidebar-slot .sidebar {
+    width: 100%;
+  }
+  .sidebar-collapsed .sidebar {
+    transform: translateY(-16px);
+  }
   .sidebar nav {
     flex-direction: column;
   }
@@ -1068,6 +1327,24 @@ input[readonly] {
   }
   .shell-toolbar {
     min-height: 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell,
+  .sidebar-slot,
+  .sidebar-slot .sidebar {
+    transition: none;
+  }
+  .sidebar-collapsed .sidebar {
+    transform: none;
+  }
+  dialog[open],
+  .account-options:not([hidden]) {
+    animation: none;
+  }
+  button {
+    transition-duration: 80ms;
   }
 }
 .audit-filter-fields {

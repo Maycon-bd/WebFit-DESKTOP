@@ -93,3 +93,8 @@ Retomada autorizada por Maycon via webfit-task. Contraste funcional, campos com 
 ### Recuperação: Voltar sem resolver — WEBFIT-13
 
 Refinamento aprovado por Maycon em 2026-10-08. No modal, Voltar à lista (paciente/perfil) ou Voltar ao paciente (prescrição) preserva rascunho e dados persistidos sem salvamento. Escape realiza a mesma saída; clique externo inerte; durante operação não sai. Foco no título de destino. Ao reabrir o contexto, recuperação é oferecida novamente. Substitui a pendência V05 descrita no registro anterior; Restaurar/Descartar e seus erros permanecem.
+
+
+## Conta e fechamento da janela — complemento WEBFIT-4, 2026-10-09
+
+O rodapé da lateral reúne nome/papel, Configurações e ícone Sair da conta. Nome mantém Acesso/Perfil profissional; logout mantém salvamento de rascunho e encerramento da sessão. O X solicita confirmação com Cancelar/Fechar e Não perguntar novamente. A opção só é registrada ao confirmar e vale nas próximas aberturas neste perfil Windows. Com opt-out, fechamento dispensa pergunta, aguarda a operação atual e salva rascunho; progresso bloqueia edição até finalizar. Falha mantém a janela e permite tentar novamente. Escape cancela sem persistir a opção. RF-UX-003/006, TA-UX-NAV-010/TA-UX-WINDOW-003; ensaio Windows e aceite pendentes.

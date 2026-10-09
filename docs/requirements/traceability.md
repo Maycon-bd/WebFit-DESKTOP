@@ -1,5 +1,13 @@
 # Matriz de rastreabilidade
 
+RF-UX-005 → TA-UX-WINDOW-002/T-UX-WINDOW-002 → WEBFIT-10 → WindowTitleBar/main/style, tauri.conf/capabilities e window-titlebar.test.ts. Maycon aprovou fundo claro, 2026-10-09; [evidência](../../specs/WEBFIT-10/task.md#barra-clara-da-janela--2026-10-09), fonte0.1.10, sem distribuição. Fechamento protegido preexistente preservado.
+
+RF-UX-001 → TA-UX-TUT-001 → DEC-046/T114 → App/GuidedTour, service ResetTours, tests.rs e guided-tour.test.ts. Pedido explícito de Maycon, 2026-10-09; aprovado para implementação, aceite integrado pendente. Reuso do incremento1, [evidência](../../specs/001-primeiro-incremento-saude/plan.md#reinício-de-tutoriais--2026-10-09); branch ativa feature/pbi-001-primeiro-incremento-saude/818d097, fonte 0.1.10, sem distribuição.
+
+RF-UX-003 → TA-NAV-009 → WEBFIT-4/T018 → App sidebar/foco, style.css transições/feedback/reduced-motion. Pedido explícito de Maycon em 2026-10-09, aprovado para implementação; branch ativa feature/pbi-001-primeiro-incremento-saude/818d097, fonte 0.1.10, sem distribuição. [Evidência](../../specs/002-webfit-4-navegacao-consultorio/plan.md#refinamento-de-movimento--2026-10-09).
+
+RF-PAT-007 → TA-PAT-018 → WEBFIT-5/T017 → PatientForm, PatientSexField, style.css e regressão patient-sex.test.ts. Pedido explícito de Maycon em 2026-10-09: asterisco nos obrigatórios e vermelho após tentativa inválida; aprovado para implementação. Recorte frontend, branch ativa feature/pbi-001-primeiro-incremento-saude/818d097, fonte 0.1.10, sem nova distribuição. [Evidência do refinamento](../../specs/003-webfit-5-cadastro-paciente/plan.md#refinamento-visual--2026-10-09).
+
 Refinamento WEBFIT-10 de 2026-10-08: RF-UX-002/RF-LIC-001 → T-LIC-016 → TA-UX-LOGIN-003 → App.tsx/LoginInfo.tsx/style.css; RF-UX-005 → T-LIC-017 → TA-UX-WINDOW-001 → src-tauri/tauri.conf.json. Evidência/checks/versão e limites no registro specs/WEBFIT-10/task.md. Aceite Windows separado da implementação.
 
 D-LIC-009 ACCEPTED → RF-LIC-001/RN-LIC-001 → TA-LIC-013..016 → T-LIC-012..015 ([registro](../../specs/WEBFIT-10/task.md)). Protocolo `issue_initial_code`/`verify_initial_code` e teste; emissor `IssueInitialCode` e teste; backend `ActivateLicenseCode`/`import_initial_code` e integração SQLite de atomicidade/identidade/contas/repetição/dois destinos; UI `LicensePanel.tsx`/emissor. Candidato clínico 0.1.10 e emissor 0.1.1; artefatos/checks não comprovam aceite. Operação: [manual do emissor](../../tools/license-issuer/README.md).
@@ -102,3 +110,6 @@ RF-DRF-002 / RN-DRF-006..007 / UC-DRF-001 / TA-DRF-005..010 → [Specification](
 RF-UX-003/004 → V01-AC01..03 e V04-AC01..03; RF-PAT-001/003 + RF-CLI-001 → V02-AC01..03 e V03-AC01..03 (WEBFIT-12, FormFeedback + 3 regressões); RF-PAT-003/DRF-001/002 → V06-AC01..03; RF-AUD-001/UPD-001 → V07-AC01..03; RF-PAT-005 → V08-AC01..03. Implementação local main/680fad5, fonte 0.1.8; evidência parcial estática/SSR/checks e ensaios pendentes por item no [índice](../../specs/ui-audit-2026-10-08/README.md#execução-sequencial--2026-10-08). RF-DRF-002 → V05 / WEBFIT-13 BLOCKED, decisão prévia antes de alterar TA-DRF-010; critérios continuam propostos. Sem aprovação/implementação de RF-PAT-007, aceite funcional ou Gate final inferido.
 
 Refinamento posterior RF-DRF-002/TA-DRF-010 → V05-AC01..03 / WEBFIT-13 / D-DRF-EXIT-001 ACCEPTED (Maycon, 2026-10-08) → src/App.tsx, src/DraftRecoveryDialog.tsx e tests/unit/draft-recovery.test.ts (3 testes de callbacks/destinos/preservação). Bloqueio anterior resolvido; checks e limites no [V05](../../specs/ui-audit-2026-10-08/V05-saida-recuperacao/spec.md). Ensaios WebView/teclado/reentrada/reinício e revisão independente pendentes.
+
+
+WEBFIT-4, 2026-10-09: RF-UX-003/TA-UX-NAV-010 → T019 → src/App.tsx, src/style.css, src/onboarding.ts (painel/logout). RF-UX-006/TA-UX-WINDOW-003 → T020 → src/WindowCloseGuard.tsx, src/window-close.ts, integração App e tests/unit/window-close.test.ts. Evidência no complemento de plan.md; nenhuma migration/versionamento de distribuição. Pedido explícito de Maycon aprova implementação, aceite humano/ensaio Windows pendentes.

@@ -2,6 +2,8 @@ import { useState } from "react";
 import foods from "./data/tbca.json";
 import type { Food } from "./api";
 import { searchFoods } from "./food-search";
+import { FormField } from "./FormField";
+import { SearchInput } from "./SearchInput";
 export function FoodPicker({ onAdd }: { onAdd: (food: Food) => void }) {
   const [query, setQuery] = useState("");
   const [limit, setLimit] = useState(24);
@@ -9,10 +11,8 @@ export function FoodPicker({ onAdd }: { onAdd: (food: Food) => void }) {
   return (
     <details className="food-picker">
       <summary>Buscar alimento na TBCA 7.3</summary>
-      <label className="field">
-        <span>Pesquisar alimento, preparação ou código</span>
-        <input
-          type="search"
+      <FormField label="Pesquisar alimento, preparação ou código">
+        <SearchInput
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -20,7 +20,7 @@ export function FoodPicker({ onAdd }: { onAdd: (food: Food) => void }) {
           }}
           placeholder="Ex.: arroz cozido ou BRC0208A"
         />
-      </label>
+      </FormField>
       <p className="hint">
         {foods.length} alimentos disponíveis offline. Confira a preparação antes
         de incluir. O catálogo está em ampliação; para um alimento ausente,

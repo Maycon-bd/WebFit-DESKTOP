@@ -156,6 +156,7 @@ Novas decisões devem usar os estados `ACCEPTED`, `AGENT-PROVISIONAL`, `NEEDS-HU
 
 - **Status:** ACCEPTED para o escopo solicitado por Maycon em 2026-10-06: indicativos no primeiro acesso às telas e botão Pular, para aprender enquanto usa.
 - **Rastreabilidade:** RF-UX-001, refinamento do incremento Saúde em execução, sem nova arquitetura ou integração externa.
+- **Refinamento ACCEPTED, Maycon, 2026-10-09:** remover o botão fixo Ver tutorial e oferecer Reiniciar tutoriais em Configurações. Reset somente do usuário conectado; oito telas voltam ao ensino automático ao entrar, conservando Pular/Concluir e marcação por tela. Supersede a proposta de replay fixo abaixo. Sem schema/dependência/regra clínica ou autorização de Git/publicação; aceite integrado pendente.
 - **Detalhamento AGENT-PROVISIONAL:** preferência por usuário/tela, replay em Ver tutorial e oito tours curtos nas telas autenticadas. Reversível, na tabela settings existente; sem migração, dados clínicos ou dependências adicionais.
 - **Limites:** DEC-044/045 preservadas; nenhum gate clínico, publicação ou aceite final inferido desta solicitação.
 

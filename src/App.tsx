@@ -2,11 +2,15 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { listen } from "@tauri-apps/api/event";
-import { getCurrentWindow } from "@tauri-apps/api/window";
+import { WindowCloseGuard } from "./WindowCloseGuard";
 import { UpdatePanel } from "./UpdatePanel";
 import { BackupNotice } from "./BackupNotice";
 import { DraftRecoveryDialog } from "./DraftRecoveryDialog";
 import { FormFeedback } from "./FormFeedback";
+import { FormField as Field } from "./FormField";
+import { DateInput } from "./DateInput";
+import { SearchInput } from "./SearchInput";
+import { DataTable } from "./DataTable";
 import { PatientSexField, canonicalPatientSex } from "./PatientSexField";
 import type { FormFeedbackState } from "./FormFeedback";
 import {
@@ -45,7 +49,11 @@ import {
 import type { AuditFilters } from "./audit-view";
 
 type Page = "patients" | "profile" | "audit" | "backup" | "access" | "settings";
-function NavigationIcon({ kind }: { kind: "menu" | "settings" | "chevron" }) {
+function NavigationIcon({
+  kind,
+}: {
+  kind: "menu" | "settings" | "chevron" | "logout";
+}) {
   return (
     <svg
       width="20"
@@ -61,6 +69,8 @@ function NavigationIcon({ kind }: { kind: "menu" | "settings" | "chevron" }) {
     >
       {kind === "menu" ? (
         <path d="M4 6h16M4 12h16M4 18h16" />
+      ) : kind === "logout" ? (
+        <path d="M10 4H4v16h6M10 12h10m-4-4 4 4-4 4" />
       ) : kind === "chevron" ? (
         <path d="m9 5 7 7-7 7" />
       ) : (
@@ -70,14 +80,6 @@ function NavigationIcon({ kind }: { kind: "menu" | "settings" | "chevron" }) {
         </>
       )}
     </svg>
-  );
-}
-function Field({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <label className="field">
-      <span>{label}</span>
-      {children}
-    </label>
   );
 }
 function dateTime(value: string) {
@@ -207,6 +209,22 @@ export default function App() {
   );
   const [page, setPage] = useState<Page>("patients");
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const closeMenuButton = useRef<HTMLButtonElement>(null);
+  const openMenuButton = useRef<HTMLButtonElement>(null);
+  const menuFocusPending = useRef(false);
+  function toggleSidebar() {
+    setAccountOpen(false);
+    menuFocusPending.current = true;
+    setSidebarOpen((open) => !open);
+  }
+  useLayoutEffect(() => {
+    if (menuFocusPending.current) {
+      (sidebarOpen ? closeMenuButton : openMenuButton).current?.focus({
+        preventScroll: true,
+      });
+      menuFocusPending.current = false;
+    }
+  }, [sidebarOpen]);
   const [accountOpen, setAccountOpen] = useState(false);
   const accountButton = useRef<HTMLButtonElement>(null);
   const workspace = useRef<HTMLElement>(null);
@@ -250,25 +268,22 @@ export default function App() {
       : page === "settings"
         ? null
         : page;
-  useEffect(() => {
-    const window = getCurrentWindow();
-    const handler = window.onCloseRequested(async (event) => {
-      if (!token || !draftRef.current || !draftDirty.current) return;
-      event.preventDefault();
-      try {
-        await api(token, { op: "save_draft", ...draftRef.current });
-        draftDirty.current = false;
-        await window.destroy();
-      } catch (e) {
-        setError(
-          `Não foi possível salvar antes de fechar: ${errorMessage(e)} Use Bloquear e sair para tentar novamente.`,
-        );
-      }
-    });
-    return () => {
-      void handler.then((unlisten) => unlisten());
-    };
-  }, [token]);
+  const closeGuard = (
+    <WindowCloseGuard
+      busy={busy}
+      beforeClose={async () => {
+        setBusy(true);
+        try {
+          if (token && draftRef.current && draftDirty.current) {
+            await api(token, { op: "save_draft", ...draftRef.current });
+            draftDirty.current = false;
+          }
+        } finally {
+          setBusy(false);
+        }
+      }}
+    />
+  );
   useEffect(() => {
     const listener = listen("session-locked", () => {
       setSession(null);
@@ -534,594 +549,656 @@ export default function App() {
   }
   if (!session)
     return (
-      <main className="access-shell">
-        <section className="access-intro">
-          <img
-            className="system-logo"
-            src="/brand/webfit-icon.png"
-            alt="WebFit Desktop"
-            width="112"
-            height="112"
-          />
-          <h1>
-            Seu consultório.
-            <br />
-            Seu espaço de trabalho.
-          </h1>
-          <p>
-            Pacientes e planos alimentares em um aplicativo local, para
-            trabalhar sem depender da internet.
-          </p>
-          <p className="test-warning">
-            Versão de teste · use somente dados fictícios.
-          </p>
-        </section>
-        <section className="access-form">
-          <h2>
-            {adminAccess
-              ? initialized === false
-                ? "Prepare este computador"
-                : "Acesso do administrador"
-              : initialized === false
-                ? "Bem-vinda ao WebFit Desktop"
-                : "Entre no Saúde"}
-          </h2>
-          <p>
-            {initialized === false
-              ? adminAccess
-                ? "Importe a autorização recebida e prepare o acesso da nutricionista."
-                : "Envie a solicitação ao administrador para ativar este computador."
-              : "Use o acesso preparado neste computador."}
-          </p>
-          {error && (
-            <div role="alert" className="message error">
-              {error}
-            </div>
-          )}
-          {initialized === false && licenseStatus && (
-            <LicensePanel
-              status={licenseStatus}
-              busy={busy}
-              task={task}
-              onRefresh={refreshLicense}
-              onSession={loggedIn}
-              token={null}
-              onEnded={() => setSession(null)}
+      <>
+        {closeGuard}
+        <main className="access-shell">
+          <section className="access-intro">
+            <img
+              className="system-logo"
+              src="/brand/webfit-icon.png"
+              alt="WebFit Desktop"
+              width="112"
+              height="112"
             />
-          )}
-          {initialized === false &&
-          licenseStatus?.pending.some((g) => g.kind === "INITIAL") ? (
-            <SetupForm
-              busy={busy}
-              onSubmit={(data) =>
-                task(async () => {
-                  await api(null, { op: "setup", ...data });
-                  setInitialized(true);
-                  await refreshLicense();
-                  setAdminAccess(false);
-                  setNotice("Acessos preparados. Entre com um deles.");
-                })
-              }
-            />
-          ) : initialized !== false ? (
-            <LoginForm
-              key={adminAccess ? "admin" : "professional"}
-              adminAccess={adminAccess}
-              busy={busy || initialized === null}
-              onSubmit={(name, password, remember) =>
-                task(async () => {
-                  const result = await api<{ token: string; user: User }>(
-                    null,
-                    { op: "login", name, password },
-                  );
-                  let preferenceFailed = false;
-                  try {
-                    await api(result.token, { op: "remember_login", remember });
-                  } catch {
-                    preferenceFailed = true;
-                  }
-                  await loggedIn(result);
-                  if (preferenceFailed)
-                    setNotice(
-                      "Você entrou, mas não foi possível atualizar o nome lembrado. Tente novamente no próximo acesso.",
+            <h1>
+              Seu consultório.
+              <br />
+              Seu espaço de trabalho.
+            </h1>
+            <p>
+              Pacientes e planos alimentares em um aplicativo local, para
+              trabalhar sem depender da internet.
+            </p>
+            <p className="test-warning">
+              Versão de teste · use somente dados fictícios.
+            </p>
+          </section>
+          <section className="access-form">
+            <h2>
+              {adminAccess
+                ? initialized === false
+                  ? "Prepare este computador"
+                  : "Acesso do administrador"
+                : initialized === false
+                  ? "Bem-vinda ao WebFit Desktop"
+                  : "Entre no Saúde"}
+            </h2>
+            <p>
+              {initialized === false
+                ? adminAccess
+                  ? "Importe a autorização recebida e prepare o acesso da nutricionista."
+                  : "Envie a solicitação ao administrador para ativar este computador."
+                : "Use o acesso preparado neste computador."}
+            </p>
+            {error && (
+              <div role="alert" className="message error">
+                {error}
+              </div>
+            )}
+            {initialized === false && licenseStatus && (
+              <LicensePanel
+                status={licenseStatus}
+                busy={busy}
+                task={task}
+                onRefresh={refreshLicense}
+                onSession={loggedIn}
+                token={null}
+                onEnded={() => setSession(null)}
+              />
+            )}
+            {initialized === false &&
+            licenseStatus?.pending.some((g) => g.kind === "INITIAL") ? (
+              <SetupForm
+                busy={busy}
+                onSubmit={(data) =>
+                  task(async () => {
+                    await api(null, { op: "setup", ...data });
+                    setInitialized(true);
+                    await refreshLicense();
+                    setAdminAccess(false);
+                    setNotice("Acessos preparados. Entre com um deles.");
+                  })
+                }
+              />
+            ) : initialized !== false ? (
+              <LoginForm
+                key={adminAccess ? "admin" : "professional"}
+                adminAccess={adminAccess}
+                busy={busy || initialized === null}
+                onSubmit={(name, password, remember) =>
+                  task(async () => {
+                    const result = await api<{ token: string; user: User }>(
+                      null,
+                      { op: "login", name, password },
                     );
-                })
-              }
-            />
-          ) : null}
-          {adminAccess && (
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => {
-                setAdminAccess(false);
-                setError("");
-              }}
-            >
-              Voltar ao acesso da nutricionista
-            </button>
-          )}
-          {notice && <p role="status">{notice}</p>}
-        </section>
-        <LoginInfo
-          busy={busy}
-          adminUnavailable={initialized === null}
-          error={error}
-          onAdmin={() => {
-            setAdminAccess(true);
-            setError("");
-            setNotice("");
-          }}
-        >
-          {initialized === true && licenseStatus && (
-            <LicensePanel
-              status={licenseStatus}
-              busy={busy}
-              task={task}
-              onRefresh={refreshLicense}
-              onSession={loggedIn}
-              token={null}
-              onEnded={() => setSession(null)}
-            />
-          )}
-        </LoginInfo>
-      </main>
+                    let preferenceFailed = false;
+                    try {
+                      await api(result.token, {
+                        op: "remember_login",
+                        remember,
+                      });
+                    } catch {
+                      preferenceFailed = true;
+                    }
+                    await loggedIn(result);
+                    if (preferenceFailed)
+                      setNotice(
+                        "Você entrou, mas não foi possível atualizar o nome lembrado. Tente novamente no próximo acesso.",
+                      );
+                  })
+                }
+              />
+            ) : null}
+            {adminAccess && (
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => {
+                  setAdminAccess(false);
+                  setError("");
+                }}
+              >
+                Voltar ao acesso da nutricionista
+              </button>
+            )}
+            {notice && <p role="status">{notice}</p>}
+          </section>
+          <LoginInfo
+            busy={busy}
+            adminUnavailable={initialized === null}
+            error={error}
+            onAdmin={() => {
+              setAdminAccess(true);
+              setError("");
+              setNotice("");
+            }}
+          >
+            {initialized === true && licenseStatus && (
+              <LicensePanel
+                status={licenseStatus}
+                busy={busy}
+                task={task}
+                onRefresh={refreshLicense}
+                onSession={loggedIn}
+                token={null}
+                onEnded={() => setSession(null)}
+              />
+            )}
+          </LoginInfo>
+        </main>
+      </>
     );
   if (licenseStatus?.legacy)
     return (
-      <main className="issuer-main">
-        <h1>Banco de testes preservado</h1>
-        <p>
-          O uso clínico exige uma instalação vazia licenciada. Exporte o backup
-          antes de preparar o novo destino.
-        </p>
-        {error && <p role="alert">{error}</p>}
-        <BackupPage
-          token={token}
-          task={task}
-          onRestore={() => setSession(null)}
-          backupOnly
-        />
-        <button
-          disabled={busy}
-          onClick={() =>
-            void task(async () => {
-              await api(token, { op: "logout" });
-              setSession(null);
-            })
-          }
-        >
-          Bloquear e sair
-        </button>
-      </main>
+      <>
+        {closeGuard}
+        <main className="issuer-main">
+          <h1>Banco de testes preservado</h1>
+          <p>
+            O uso clínico exige uma instalação vazia licenciada. Exporte o
+            backup antes de preparar o novo destino.
+          </p>
+          {error && <p role="alert">{error}</p>}
+          <BackupPage
+            token={token}
+            task={task}
+            onRestore={() => setSession(null)}
+            backupOnly
+          />
+          <button
+            disabled={busy}
+            onClick={() =>
+              void task(async () => {
+                await api(token, { op: "logout" });
+                setSession(null);
+              })
+            }
+          >
+            Bloquear e sair
+          </button>
+        </main>
+      </>
     );
   return (
-    <div className="application-frame">
-      {!session.user.must_change && (
-        <UpdatePanel
-          key={session.token}
-          token={session.token}
-          blocked={
-            busy ||
-            page !== "patients" ||
-            patient !== null ||
-            prescription !== null
-          }
-          run={task}
-        />
-      )}
-      <div className={`app-shell${sidebarOpen ? "" : " sidebar-collapsed"}`}>
-        <aside
-          className="sidebar"
-          id="consultorio-sidebar"
-          hidden={!sidebarOpen}
-        >
-          <img
-            className="system-logo"
-            src="/brand/webfit-icon.png"
-            alt="WebFit Desktop"
-            width="72"
-            height="72"
+    <>
+      {closeGuard}
+      <div className="application-frame">
+        {!session.user.must_change && (
+          <UpdatePanel
+            key={session.token}
+            token={session.token}
+            blocked={
+              busy ||
+              page !== "patients" ||
+              patient !== null ||
+              prescription !== null
+            }
+            run={task}
           />
-          <nav aria-label="Módulos do consultório">
-            <h2 className="workspace">Consultório</h2>
-            <button
-              aria-current={page === "patients" ? "page" : undefined}
-              onClick={() => void navigate("patients")}
-              disabled={busy || session.user.must_change}
-            >
-              Pacientes
-            </button>
-          </nav>
-          <div className="sidebar-bottom">
-            <div className="account-controls">
-              <button
-                ref={accountButton}
-                className="account-name"
-                aria-expanded={accountOpen}
-                aria-controls="account-options"
-                onKeyDown={(event) => {
-                  if (event.key === "Escape" && accountOpen) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    setAccountOpen(false);
-                  }
-                }}
-                onClick={() => setAccountOpen(!accountOpen)}
-                disabled={busy || session.user.must_change}
+        )}
+        <div className={`app-shell${sidebarOpen ? "" : " sidebar-collapsed"}`}>
+          <div className="sidebar-slot">
+            <div className="sidebar-clip">
+              <aside
+                className="sidebar"
+                id="consultorio-sidebar"
+                inert={!sidebarOpen}
+                aria-hidden={!sidebarOpen}
               >
-                <strong>{session.user.name}</strong>
-                <small>
-                  {session.user.role === "ADMIN"
-                    ? "Administrador"
-                    : "Nutricionista"}
-                </small>
-              </button>
-              <button
-                className="settings-button"
-                aria-label="Configurações"
-                title="Configurações"
-                aria-current={
-                  ["settings", "audit", "backup"].includes(page)
-                    ? "page"
-                    : undefined
-                }
-                disabled={busy || session.user.must_change}
-                onClick={() => void navigate("settings")}
-              >
-                <NavigationIcon kind="settings" />
-              </button>
+                <div className="sidebar-header">
+                  <img
+                    className="system-logo"
+                    src="/brand/webfit-icon.png"
+                    alt="WebFit Desktop"
+                    width="72"
+                    height="72"
+                  />
+                  <button
+                    ref={closeMenuButton}
+                    className="menu-toggle"
+                    type="button"
+                    aria-label="Fechar menu"
+                    title="Fechar menu"
+                    aria-expanded={sidebarOpen}
+                    aria-controls="consultorio-sidebar"
+                    data-tour={sidebarOpen ? "navigation-toggle" : undefined}
+                    onClick={toggleSidebar}
+                  >
+                    <NavigationIcon kind="menu" />
+                  </button>
+                </div>
+                <nav aria-label="Módulos do consultório">
+                  <h2 className="workspace">Consultório</h2>
+                  <button
+                    aria-current={page === "patients" ? "page" : undefined}
+                    onClick={() => void navigate("patients")}
+                    disabled={busy || session.user.must_change}
+                  >
+                    Pacientes
+                  </button>
+                </nav>
+                <div className="sidebar-bottom">
+                  <div className="account-controls">
+                    <button
+                      ref={accountButton}
+                      className="account-name"
+                      aria-expanded={accountOpen}
+                      aria-controls="account-options"
+                      onKeyDown={(event) => {
+                        if (event.key === "Escape" && accountOpen) {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          setAccountOpen(false);
+                        }
+                      }}
+                      onClick={() => setAccountOpen(!accountOpen)}
+                      disabled={busy || session.user.must_change}
+                    >
+                      <strong>{session.user.name}</strong>
+                      <small>
+                        {session.user.role === "ADMIN"
+                          ? "Administrador"
+                          : "Nutricionista"}
+                      </small>
+                    </button>
+                    <button
+                      className="settings-button"
+                      aria-label="Configurações"
+                      title="Configurações"
+                      aria-current={
+                        ["settings", "audit", "backup"].includes(page)
+                          ? "page"
+                          : undefined
+                      }
+                      disabled={busy || session.user.must_change}
+                      onClick={() => void navigate("settings")}
+                    >
+                      <NavigationIcon kind="settings" />
+                    </button>
+                    <button
+                      className="logout-button"
+                      aria-label="Sair da conta"
+                      title="Sair da conta"
+                      disabled={busy}
+                      onClick={() =>
+                        void task(async () => {
+                          if (draftRef.current && draftDirty.current)
+                            await api(token, {
+                              op: "save_draft",
+                              ...draftRef.current,
+                            });
+                          draftDirty.current = false;
+                          await api(token, { op: "logout" });
+                          setSession(null);
+                          setPatient(null);
+                          setPrescription(null);
+                          setProfile(emptyProfile);
+                          draftRef.current = null;
+                        })
+                      }
+                      data-tour="logout"
+                    >
+                      <NavigationIcon kind="logout" />
+                    </button>
+                  </div>
+                  <div
+                    id="account-options"
+                    className="account-options"
+                    hidden={!accountOpen}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        setAccountOpen(false);
+                        accountButton.current?.focus();
+                      }
+                    }}
+                  >
+                    <button
+                      disabled={busy || session.user.must_change}
+                      aria-current={page === "access" ? "page" : undefined}
+                      onClick={() => void navigate("access")}
+                    >
+                      Acesso
+                    </button>
+                    <button
+                      disabled={busy || session.user.must_change}
+                      aria-current={page === "profile" ? "page" : undefined}
+                      onClick={() => void navigate("profile")}
+                    >
+                      Perfil profissional
+                    </button>
+                  </div>
+                </div>
+              </aside>
             </div>
-            <div
-              id="account-options"
-              className="account-options"
-              hidden={!accountOpen}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  setAccountOpen(false);
-                  accountButton.current?.focus();
-                }
+          </div>
+          <main className="workspace-main" ref={workspace}>
+            <DraftRecoveryDialog
+              open={Boolean(visibleDraft)}
+              formLabel={
+                visibleDraft?.kind === "patient"
+                  ? (visibleDraft.payload as Patient).id
+                    ? "edição de paciente"
+                    : "cadastro de paciente"
+                  : visibleDraft?.kind === "profile"
+                    ? "perfil profissional"
+                    : visibleDraft
+                      ? "prescrição ou cardápio"
+                      : ""
+              }
+              savedAt={visibleDraft ? dateTime(visibleDraft.at) : ""}
+              savedAtIso={visibleDraft?.at ?? ""}
+              busy={busy}
+              onBack={leaveDraft}
+              backLabel={
+                visibleDraft?.kind === "prescription"
+                  ? "Voltar ao paciente"
+                  : "Voltar à lista"
+              }
+              onRestore={() => {
+                if (visibleDraft) void restoreDraft(visibleDraft);
               }}
-            >
+              onDiscard={() => {
+                if (visibleDraft) void discardDraft(visibleDraft);
+              }}
+            />
+            <div className="shell-toolbar" hidden={sidebarOpen}>
               <button
-                disabled={busy || session.user.must_change}
-                aria-current={page === "access" ? "page" : undefined}
-                onClick={() => void navigate("access")}
+                ref={openMenuButton}
+                className="menu-toggle"
+                type="button"
+                hidden={sidebarOpen}
+                aria-label="Abrir menu"
+                title="Abrir menu"
+                aria-expanded={sidebarOpen}
+                aria-controls="consultorio-sidebar"
+                data-tour={!sidebarOpen ? "navigation-toggle" : undefined}
+                onClick={toggleSidebar}
               >
-                Acesso
-              </button>
-              <button
-                disabled={busy || session.user.must_change}
-                aria-current={page === "profile" ? "page" : undefined}
-                onClick={() => void navigate("profile")}
-              >
-                Perfil profissional
+                <NavigationIcon kind="menu" />
               </button>
             </div>
-            <button
-              disabled={busy}
-              onClick={() =>
-                void task(async () => {
-                  if (draftRef.current && draftDirty.current)
-                    await api(token, { op: "save_draft", ...draftRef.current });
-                  draftDirty.current = false;
-                  await api(token, { op: "logout" });
+            {!session.user.must_change && tourScreen && (
+              <GuidedTour token={session.token} screen={tourScreen} />
+            )}
+            <div className="test-banner">
+              Ambiente de teste · dados fictícios · instalação local
+            </div>
+            {!session.user.must_change && (
+              <BackupNotice
+                token={session.token}
+                revision={backupRevision}
+                busy={busy}
+                onManage={() => void navigate("backup")}
+              />
+            )}
+            {error && !contextualFeedback && (
+              <div role="alert" className="message error">
+                {error}
+              </div>
+            )}
+            {notice && !contextualFeedback && (
+              <div role="status" className="message success">
+                {notice}
+              </div>
+            )}
+            {busy && !contextualFeedback && (
+              <div role="status" className="working">
+                Concluindo operação…
+              </div>
+            )}
+            {session.user.must_change ? (
+              <AccessPage
+                token={token}
+                user={session.user}
+                task={task}
+                onChanged={() => {
                   setSession(null);
                   setPatient(null);
                   setPrescription(null);
                   setProfile(emptyProfile);
                   draftRef.current = null;
-                })
-              }
-              data-tour="logout"
-            >
-              Bloquear e sair
-            </button>
-          </div>
-        </aside>
-        <main className="workspace-main" ref={workspace}>
-          <DraftRecoveryDialog
-            open={Boolean(visibleDraft)}
-            formLabel={
-              visibleDraft?.kind === "patient"
-                ? (visibleDraft.payload as Patient).id
-                  ? "edição de paciente"
-                  : "cadastro de paciente"
-                : visibleDraft?.kind === "profile"
-                  ? "perfil profissional"
-                  : visibleDraft
-                    ? "prescrição ou cardápio"
-                    : ""
-            }
-            savedAt={visibleDraft ? dateTime(visibleDraft.at) : ""}
-            savedAtIso={visibleDraft?.at ?? ""}
-            busy={busy}
-            onBack={leaveDraft}
-            backLabel={
-              visibleDraft?.kind === "prescription"
-                ? "Voltar ao paciente"
-                : "Voltar à lista"
-            }
-            onRestore={() => {
-              if (visibleDraft) void restoreDraft(visibleDraft);
-            }}
-            onDiscard={() => {
-              if (visibleDraft) void discardDraft(visibleDraft);
-            }}
-          />
-          <div className="shell-toolbar">
-            <button
-              className="menu-toggle"
-              type="button"
-              aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
-              title={sidebarOpen ? "Fechar menu" : "Abrir menu"}
-              aria-expanded={sidebarOpen}
-              aria-controls="consultorio-sidebar"
-              data-tour="navigation-toggle"
-              onClick={() => {
-                setAccountOpen(false);
-                setSidebarOpen(!sidebarOpen);
-              }}
-            >
-              <NavigationIcon kind="menu" />
-            </button>
-            {!session.user.must_change && tourScreen && (
-              <GuidedTour token={session.token} screen={tourScreen} />
-            )}
-          </div>
-          <div className="test-banner">
-            Ambiente de teste · dados fictícios · instalação local
-          </div>
-          {!session.user.must_change && (
-            <BackupNotice
-              token={session.token}
-              revision={backupRevision}
-              busy={busy}
-              onManage={() => void navigate("backup")}
-            />
-          )}
-          {error && !contextualFeedback && (
-            <div role="alert" className="message error">
-              {error}
-            </div>
-          )}
-          {notice && !contextualFeedback && (
-            <div role="status" className="message success">
-              {notice}
-            </div>
-          )}
-          {busy && !contextualFeedback && (
-            <div role="status" className="working">
-              Concluindo operação…
-            </div>
-          )}
-          {session.user.must_change ? (
-            <AccessPage
-              token={token}
-              user={session.user}
-              task={task}
-              onChanged={() => {
-                setSession(null);
-                setPatient(null);
-                setPrescription(null);
-                setProfile(emptyProfile);
-                draftRef.current = null;
-              }}
-            />
-          ) : (
-            <>
-              {(page === "audit" || page === "backup") && (
-                <button
-                  className="settings-return"
-                  disabled={busy}
-                  onClick={() => void navigate("settings")}
-                >
-                  Voltar às Configurações
-                </button>
-              )}
-              {page === "settings" && (
-                <section aria-label="Configurações">
-                  <Heading
-                    title="Configurações"
-                    description="Ferramentas para cuidar dos registros e das cópias do consultório."
-                  />
-                  <div className="settings-list">
-                    <button
-                      disabled={busy}
-                      onClick={() => void navigate("audit")}
+                }}
+              />
+            ) : (
+              <>
+                {(page === "audit" || page === "backup") && (
+                  <button
+                    className="settings-return"
+                    disabled={busy}
+                    onClick={() => void navigate("settings")}
+                  >
+                    Voltar às Configurações
+                  </button>
+                )}
+                {page === "settings" && (
+                  <section aria-label="Configurações">
+                    <Heading
+                      title="Configurações"
+                      description="Ferramentas para cuidar dos registros e das cópias do consultório."
+                    />
+                    <div className="settings-list">
+                      <button
+                        disabled={busy}
+                        onClick={() => void navigate("audit")}
+                      >
+                        <span>
+                          <strong>Auditoria</strong>
+                          <small>
+                            Consultar as ações realizadas no aplicativo.
+                          </small>
+                        </span>
+                        <NavigationIcon kind="chevron" />
+                      </button>
+                      <button
+                        disabled={busy}
+                        onClick={() => void navigate("backup")}
+                      >
+                        <span>
+                          <strong>Backup e restauração</strong>
+                          <small>
+                            Consultar suas cópias, criar um backup ou restaurar
+                            os dados.
+                          </small>
+                        </span>
+                        <NavigationIcon kind="chevron" />
+                      </button>
+                    </div>
+                    <section
+                      className="form-section"
+                      aria-labelledby="tutorial-settings-title"
                     >
-                      <span>
-                        <strong>Auditoria</strong>
-                        <small>
-                          Consultar as ações realizadas no aplicativo.
-                        </small>
-                      </span>
-                      <NavigationIcon kind="chevron" />
-                    </button>
-                    <button
-                      disabled={busy}
-                      onClick={() => void navigate("backup")}
-                    >
-                      <span>
-                        <strong>Backup e restauração</strong>
-                        <small>
-                          Consultar suas cópias, criar um backup ou restaurar os
-                          dados.
-                        </small>
-                      </span>
-                      <NavigationIcon kind="chevron" />
-                    </button>
-                  </div>
-                  {licenseStatus && (
-                    <LicensePanel
-                      status={licenseStatus}
+                      <h2 id="tutorial-settings-title">Tutoriais</h2>
+                      <p className="hint">
+                        Reinicie as orientações do seu usuário para vê-las
+                        novamente ao entrar em cada tela.
+                      </p>
+                      <button
+                        disabled={busy}
+                        onClick={() =>
+                          void task(async () => {
+                            await api(token, { op: "reset_tours" });
+                            setNotice(
+                              "Tutoriais reiniciados. As orientações aparecerão ao entrar novamente em cada tela.",
+                            );
+                          })
+                        }
+                      >
+                        Reiniciar tutoriais
+                      </button>
+                    </section>
+                    {licenseStatus && (
+                      <LicensePanel
+                        status={licenseStatus}
+                        busy={busy}
+                        task={task}
+                        onRefresh={refreshLicense}
+                        onSession={loggedIn}
+                        token={token}
+                        onEnded={() => setSession(null)}
+                      />
+                    )}
+                  </section>
+                )}
+                {page === "patients" &&
+                  (checkingDraftContext && activeDraftId ? (
+                    <p role="status">Verificando rascunho salvo…</p>
+                  ) : prescription && patient ? (
+                    <PrescriptionForm
+                      token={token}
+                      value={prescription}
+                      onChange={(v) => {
+                        setPrescription(v);
+                        draftDirty.current = true;
+                      }}
+                      patient={patient}
+                      busy={busy}
+                      onCancel={() =>
+                        void task(async () => {
+                          if (draftRef.current && draftDirty.current)
+                            await api(token, {
+                              op: "save_draft",
+                              ...draftRef.current,
+                            });
+                          draftDirty.current = false;
+                          setPrescription(null);
+                        })
+                      }
+                      onSave={() =>
+                        task(async () => {
+                          const result = await api<{ id: string }>(token, {
+                            op: "save_prescription",
+                            id: prescriptionId,
+                            patient_id: patient.id,
+                            payload: prescription,
+                          });
+                          setPrescriptionId(result.id);
+                          draftDirty.current = false;
+                          setNotice("Prescrição salva como rascunho.");
+                        })
+                      }
+                    />
+                  ) : patient ? (
+                    <PatientForm
+                      feedback={
+                        contextualFeedback
+                          ? { busy, error, notice }
+                          : { busy: false, error: "", notice: "" }
+                      }
+                      patient={{
+                        ...emptyPatient,
+                        ...patient,
+                        sex: patient.sex ?? "",
+                        tags: patient.tags ?? [],
+                      }}
+                      onChange={(v) => {
+                        setPatient(v);
+                        draftDirty.current = true;
+                      }}
+                      token={token}
                       busy={busy}
                       task={task}
-                      onRefresh={refreshLicense}
-                      onSession={loggedIn}
-                      token={token}
-                      onEnded={() => setSession(null)}
+                      onClose={() =>
+                        void task(async () => {
+                          if (draftRef.current && draftDirty.current)
+                            await api(token, {
+                              op: "save_draft",
+                              ...draftRef.current,
+                            });
+                          draftDirty.current = false;
+                          setPatient(null);
+                          draftRef.current = null;
+                        })
+                      }
+                      onSaved={(id, internalNumber) => {
+                        draftDirty.current = false;
+                        setPatient({ ...patient, id, internalNumber });
+                        setNotice("Cadastro salvo.");
+                      }}
+                      onPrescription={(p) => {
+                        setPrescription(
+                          p?.payload ?? structuredClone(emptyPrescription),
+                        );
+                        setPrescriptionId(p?.id ?? null);
+                      }}
                     />
-                  )}
-                </section>
-              )}
-              {page === "patients" &&
-                (checkingDraftContext && activeDraftId ? (
+                  ) : (
+                    <PatientsPage
+                      token={token}
+                      task={task}
+                      onNew={() => setPatient(structuredClone(emptyPatient))}
+                      onOpen={(id) =>
+                        void task(async () =>
+                          setPatient(
+                            await api<Patient>(token, { op: "patient", id }),
+                          ),
+                        )
+                      }
+                    />
+                  ))}
+                {page === "profile" && checkingDraftContext ? (
                   <p role="status">Verificando rascunho salvo…</p>
-                ) : prescription && patient ? (
-                  <PrescriptionForm
-                    token={token}
-                    value={prescription}
-                    onChange={(v) => {
-                      setPrescription(v);
-                      draftDirty.current = true;
-                    }}
-                    patient={patient}
-                    busy={busy}
-                    onCancel={() =>
-                      void task(async () => {
-                        if (draftRef.current && draftDirty.current)
-                          await api(token, {
-                            op: "save_draft",
-                            ...draftRef.current,
-                          });
-                        draftDirty.current = false;
-                        setPrescription(null);
-                      })
-                    }
-                    onSave={() =>
-                      task(async () => {
-                        const result = await api<{ id: string }>(token, {
-                          op: "save_prescription",
-                          id: prescriptionId,
-                          patient_id: patient.id,
-                          payload: prescription,
-                        });
-                        setPrescriptionId(result.id);
-                        draftDirty.current = false;
-                        setNotice("Prescrição salva como rascunho.");
-                      })
-                    }
-                  />
-                ) : patient ? (
-                  <PatientForm
+                ) : page === "profile" ? (
+                  <ProfileForm
                     feedback={
                       contextualFeedback
                         ? { busy, error, notice }
                         : { busy: false, error: "", notice: "" }
                     }
-                    patient={{
-                      ...emptyPatient,
-                      ...patient,
-                      sex: patient.sex ?? "",
-                      tags: patient.tags ?? [],
-                    }}
+                    token={token}
+                    value={profile}
                     onChange={(v) => {
-                      setPatient(v);
+                      setProfile(v);
                       draftDirty.current = true;
                     }}
-                    token={token}
                     busy={busy}
                     task={task}
-                    onClose={() =>
-                      void task(async () => {
-                        if (draftRef.current && draftDirty.current)
-                          await api(token, {
-                            op: "save_draft",
-                            ...draftRef.current,
-                          });
-                        draftDirty.current = false;
-                        setPatient(null);
-                        draftRef.current = null;
-                      })
-                    }
-                    onSaved={(id, internalNumber) => {
+                    onSaved={() => {
+                      setNotice("Perfil salvo.");
                       draftDirty.current = false;
-                      setPatient({ ...patient, id, internalNumber });
-                      setNotice("Cadastro salvo.");
-                    }}
-                    onPrescription={(p) => {
-                      setPrescription(
-                        p?.payload ?? structuredClone(emptyPrescription),
-                      );
-                      setPrescriptionId(p?.id ?? null);
+                      draftRef.current = null;
                     }}
                   />
-                ) : (
-                  <PatientsPage
+                ) : null}
+                {page === "audit" && <AuditPage token={token} task={task} />}
+                {page === "backup" && (
+                  <BackupPage
                     token={token}
                     task={task}
-                    onNew={() => setPatient(structuredClone(emptyPatient))}
-                    onOpen={(id) =>
-                      void task(async () =>
-                        setPatient(
-                          await api<Patient>(token, { op: "patient", id }),
-                        ),
-                      )
+                    onStatusChange={() =>
+                      setBackupRevision((value) => value + 1)
                     }
+                    onRestore={() => {
+                      setSession(null);
+                      setPatient(null);
+                      setPrescription(null);
+                      setProfile(emptyProfile);
+                      setDrafts([]);
+                      draftRef.current = null;
+                    }}
                   />
-                ))}
-              {page === "profile" && checkingDraftContext ? (
-                <p role="status">Verificando rascunho salvo…</p>
-              ) : page === "profile" ? (
-                <ProfileForm
-                  feedback={
-                    contextualFeedback
-                      ? { busy, error, notice }
-                      : { busy: false, error: "", notice: "" }
-                  }
-                  token={token}
-                  value={profile}
-                  onChange={(v) => {
-                    setProfile(v);
-                    draftDirty.current = true;
-                  }}
-                  busy={busy}
-                  task={task}
-                  onSaved={() => {
-                    setNotice("Perfil salvo.");
-                    draftDirty.current = false;
-                    draftRef.current = null;
-                  }}
-                />
-              ) : null}
-              {page === "audit" && <AuditPage token={token} task={task} />}
-              {page === "backup" && (
-                <BackupPage
-                  token={token}
-                  task={task}
-                  onStatusChange={() => setBackupRevision((value) => value + 1)}
-                  onRestore={() => {
-                    setSession(null);
-                    setPatient(null);
-                    setPrescription(null);
-                    setProfile(emptyProfile);
-                    setDrafts([]);
-                    draftRef.current = null;
-                  }}
-                />
-              )}
-              {page === "access" && (
-                <AccessPage
-                  token={token}
-                  user={session.user}
-                  task={task}
-                  onChanged={() => {
-                    setSession(null);
-                    setPatient(null);
-                    setPrescription(null);
-                    setProfile(emptyProfile);
-                    draftRef.current = null;
-                  }}
-                />
-              )}
-            </>
-          )}
-        </main>
+                )}
+                {page === "access" && (
+                  <AccessPage
+                    token={token}
+                    user={session.user}
+                    task={task}
+                    onChanged={() => {
+                      setSession(null);
+                      setPatient(null);
+                      setPrescription(null);
+                      setProfile(emptyProfile);
+                      draftRef.current = null;
+                    }}
+                  />
+                )}
+              </>
+            )}
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 type Task = <T>(run: () => Promise<T>) => Promise<T | undefined>;
@@ -1324,8 +1401,7 @@ function PatientsPage({
       </Heading>
       <div className="list-tools">
         <Field label="Pesquisar pacientes">
-          <input
-            type="search"
+          <SearchInput
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Número, nome, CPF ou telefone"
@@ -1355,45 +1431,56 @@ function PatientsPage({
           )}
         </section>
       ) : (
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Número</th>
-                <th>Paciente</th>
-                <th>CPF</th>
-                <th>Nascimento</th>
-                <th>Telefone</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.internalNumber}</td>
-                  <td>
-                    <strong>{displayName(p)}</strong>
-                    {p.socialName && <small>{p.name}</small>}
-                  </td>
-                  <td>{p.cpf || "Não informado"}</td>
-                  <td>{p.birth.split("-").reverse().join("/")}</td>
-                  <td>{p.phone || "Não informado"}</td>
-                  <td>
-                    <button
-                      onClick={() => onOpen(p.id!)}
-                      aria-label={`Abrir ${displayName(p)}`}
-                    >
-                      Abrir cadastro
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {items.length === 200 && (
-            <p>Mostrando até 200 resultados. Refine a pesquisa.</p>
-          )}
-        </div>
+        <DataTable
+          label="Pacientes encontrados"
+          rows={items}
+          rowKey={(p) => p.id!}
+          columns={[
+            { key: "number", label: "Número", render: (p) => p.internalNumber },
+            {
+              key: "name",
+              label: "Paciente",
+              render: (p) => (
+                <>
+                  <strong>{displayName(p)}</strong>
+                  {p.socialName && <small>{p.name}</small>}
+                </>
+              ),
+            },
+            {
+              key: "cpf",
+              label: "CPF",
+              render: (p) => p.cpf || "Não informado",
+            },
+            {
+              key: "birth",
+              label: "Nascimento",
+              render: (p) => p.birth.split("-").reverse().join("/"),
+            },
+            {
+              key: "phone",
+              label: "Telefone",
+              render: (p) => p.phone || "Não informado",
+            },
+            {
+              key: "actions",
+              label: "Ações",
+              render: (p) => (
+                <button
+                  onClick={() => onOpen(p.id!)}
+                  aria-label={`Abrir ${displayName(p)}`}
+                >
+                  Abrir cadastro
+                </button>
+              ),
+            },
+          ]}
+          footer={
+            items.length === 200 && (
+              <p>Mostrando até 200 resultados. Refine a pesquisa.</p>
+            )
+          }
+        />
       )}
     </>
   );
@@ -1424,6 +1511,7 @@ function PatientForm({
   const [tagName, setTagName] = useState("");
   const [preview, setPreview] = useState<Prescription | null>(null);
   const [guardian, setGuardian] = useState(Boolean(patient.guardian));
+  const [validationAttempted, setValidationAttempted] = useState(false);
   const submitting = useRef(false);
   async function refresh() {
     setTags(await api<Tag[]>(token, { op: "tags" }));
@@ -1444,22 +1532,56 @@ function PatientForm({
     type = "text",
     required = false,
   ) {
+    const missing =
+      validationAttempted && required && !String(patient[key] ?? "").trim();
+    const errorId = `patient-${key}-error`;
     return (
       <Field
-        label={`${label.replace(/ \(opcional\)$/, "")} (${required ? "obrigatório" : "opcional"})`}
+        label={`${label.replace(/ \(opcional\)$/, "")}${required ? " *" : " (opcional)"}`}
       >
-        <input
-          type={type}
-          value={String(patient[key] ?? "")}
-          required={required}
-          onChange={(e) => onChange({ ...patient, [key]: e.target.value })}
-        />
+        {type === "date" ? (
+          <DateInput
+            name={key}
+            value={String(patient[key] ?? "")}
+            required={required}
+            aria-invalid={missing || undefined}
+            aria-describedby={missing ? errorId : undefined}
+            onChange={(e) => onChange({ ...patient, [key]: e.target.value })}
+          />
+        ) : (
+          <input
+            type={type}
+            name={key}
+            value={String(patient[key] ?? "")}
+            required={required}
+            aria-invalid={missing || undefined}
+            aria-describedby={missing ? errorId : undefined}
+            onChange={(e) => {
+              e.currentTarget.setCustomValidity("");
+              onChange({ ...patient, [key]: e.target.value });
+            }}
+          />
+        )}
+        {missing && (
+          <small className="patient-field-error" id={errorId}>
+            Preencha este campo.
+          </small>
+        )}
       </Field>
     );
   }
-  async function submit(e: FormEvent) {
+  async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (busy || submitting.current) return;
+    setValidationAttempted(true);
+    if (!patient.name.trim()) {
+      const nameInput = e.currentTarget.elements.namedItem(
+        "name",
+      ) as HTMLInputElement | null;
+      nameInput?.setCustomValidity("Preencha este campo.");
+      nameInput?.reportValidity();
+      return;
+    }
     submitting.current = true;
     try {
       await task(async () => {
@@ -1495,7 +1617,17 @@ function PatientForm({
           Voltar à lista
         </button>
       </Heading>
-      <form data-draft-form="" onSubmit={submit}>
+      <p id="patient-exit-help" className="hint">
+        Voltar não salva alterações no cadastro. Antes de sair, o preenchimento
+        alterado é guardado como rascunho para recuperar depois; se isso falhar,
+        o formulário permanece aberto.
+      </p>
+      <form
+        data-draft-form=""
+        className={`patient-form${validationAttempted ? " validation-attempted" : ""}`}
+        onInvalidCapture={() => setValidationAttempted(true)}
+        onSubmit={submit}
+      >
         <section className="form-section" data-tour="identity">
           <h2>Identificação e contato</h2>
           {patient.internalNumber != null && (
@@ -1504,8 +1636,7 @@ function PatientForm({
             </p>
           )}
           <p className="hint">
-            Apenas nome, data de nascimento e sexo são obrigatórios. Os demais
-            campos são opcionais.
+            * Campo obrigatório. Os demais campos são opcionais.
           </p>
           <div className="form-grid">
             {field("name", "Nome completo", "text", true)}
@@ -1516,6 +1647,7 @@ function PatientForm({
             {field("email", "E-mail", "email")}
             <PatientSexField
               value={patient.sex}
+              invalid={validationAttempted && !canonicalPatientSex(patient.sex)}
               onChange={(sex) => onChange({ ...patient, sex })}
             />
             {field("gender", "Gênero (opcional)")}
@@ -1679,14 +1811,6 @@ function PatientForm({
           <button className="primary" disabled={busy}>
             Salvar cadastro
           </button>
-          <button
-            type="button"
-            disabled={busy}
-            aria-describedby="patient-exit-help"
-            onClick={onClose}
-          >
-            Voltar à lista
-          </button>
           {patient.id && (
             <button
               type="button"
@@ -1714,11 +1838,6 @@ function PatientForm({
           )}
         </div>
       </form>
-      <p id="patient-exit-help" className="hint">
-        Voltar não salva alterações no cadastro. Antes de sair, o preenchimento
-        alterado é guardado como rascunho para recuperar depois; se isso falhar,
-        o formulário permanece aberto.
-      </p>
       {patient.id && (
         <section className="form-section" data-tour="history">
           <div className="section-heading">
@@ -2354,10 +2473,8 @@ function AuditPage({ token, task }: { token: string | null; task: Task }) {
           }).map(([key, label]) => (
             <Field key={key} label={label}>
               {["from", "to"].includes(key) ? (
-                <input
-                  type={
-                    ["from", "to"].includes(key) ? "datetime-local" : "text"
-                  }
+                <DateInput
+                  type="datetime-local"
                   value={filter[key as keyof typeof filter]}
                   onChange={(e) =>
                     setFilter({ ...filter, [key]: e.target.value })
@@ -2421,43 +2538,50 @@ function AuditPage({ token, task }: { token: string | null; task: Task }) {
           </p>
         </div>
       ) : (
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Quando</th>
-                <th>Ator</th>
-                <th>Ação</th>
-                <th>Entidade</th>
-                <th>Resultado</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((e) => (
-                <tr key={e.id}>
-                  <td>{dateTime(e.at)}</td>
-                  <td>{auditActor(e.actor, e.user)}</td>
-                  <td>{auditActions[e.action] ?? e.action}</td>
-                  <td>{auditEntities[e.entity] ?? e.entity}</td>
-                  <td>{auditResults[e.result] ?? e.result}</td>
-                  <td>
-                    <button
-                      disabled={detailLoading}
-                      aria-label={`Ver detalhes: ${auditActions[e.action] ?? e.action}, ${dateTime(e.at)}`}
-                      onClick={(event) => {
-                        detailTrigger.current = event.currentTarget;
-                        void task(() => showDetail(e.id));
-                      }}
-                    >
-                      Detalhes
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          label="Eventos de auditoria"
+          rows={items}
+          rowKey={(e) => e.id}
+          columns={[
+            { key: "when", label: "Quando", render: (e) => dateTime(e.at) },
+            {
+              key: "actor",
+              label: "Ator",
+              render: (e) => auditActor(e.actor, e.user),
+            },
+            {
+              key: "action",
+              label: "Ação",
+              render: (e) => auditActions[e.action] ?? e.action,
+            },
+            {
+              key: "entity",
+              label: "Entidade",
+              render: (e) => auditEntities[e.entity] ?? e.entity,
+            },
+            {
+              key: "result",
+              label: "Resultado",
+              render: (e) => auditResults[e.result] ?? e.result,
+            },
+            {
+              key: "actions",
+              label: "Ações",
+              render: (e) => (
+                <button
+                  disabled={detailLoading}
+                  aria-label={`Ver detalhes: ${auditActions[e.action] ?? e.action}, ${dateTime(e.at)}`}
+                  onClick={(event) => {
+                    detailTrigger.current = event.currentTarget;
+                    void task(() => showDetail(e.id));
+                  }}
+                >
+                  Detalhes
+                </button>
+              ),
+            },
+          ]}
+        />
       )}
       {!loading && !queryError && cursor && (
         <button

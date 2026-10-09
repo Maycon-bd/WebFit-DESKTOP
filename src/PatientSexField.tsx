@@ -16,18 +16,27 @@ export function canonicalPatientSex(
 export function PatientSexField({
   value,
   onChange,
+  invalid = false,
 }: {
   value: string | null | undefined;
   onChange: (value: "F" | "M") => void;
+  invalid?: boolean;
 }) {
   const selected = canonicalPatientSex(value);
   const legacy = Boolean(value?.trim()) && !selected;
   return (
     <fieldset
       className="patient-sex"
-      aria-describedby={legacy ? "patient-sex-help" : undefined}
+      aria-invalid={invalid || undefined}
+      aria-describedby={
+        [legacy && "patient-sex-help", invalid && "patient-sex-error"]
+          .filter(Boolean)
+          .join(" ") || undefined
+      }
     >
-      <legend>Sexo (obrigatório)</legend>
+      <legend>
+        Sexo <span aria-hidden="true">*</span>
+      </legend>
       <div className="patient-sex-options">
         {(
           [
@@ -41,6 +50,8 @@ export function PatientSexField({
               name="patient-sex"
               value={code}
               required
+              aria-invalid={invalid || undefined}
+              aria-describedby={invalid ? "patient-sex-error" : undefined}
               checked={selected === code}
               onChange={() => onChange(code)}
             />
@@ -48,6 +59,11 @@ export function PatientSexField({
           </label>
         ))}
       </div>
+      {invalid && (
+        <small className="patient-field-error" id="patient-sex-error">
+          Selecione Feminino ou Masculino.
+        </small>
+      )}
       {legacy && (
         <p className="hint" id="patient-sex-help">
           Valor anterior: {value}. Selecione uma opção para salvar; o cadastro
