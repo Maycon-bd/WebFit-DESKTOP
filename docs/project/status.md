@@ -9,7 +9,8 @@
 - Plano LIGHT: registrar o ensaio neste checkpoint e usar o versionamento existente do pipeline. Base 0.1.10 gera 0.1.11-pilot.<run>.<attempt>, superior ao candidato manual 0.1.10; nenhuma alteração funcional adicional necessária. O envio inclui a entrega de licença/código já integrada à branch.
 - Verificação local: 14 testes de preparação de versão, manifesto, assinatura, API de publicação e staging PASS. Revisão documental local; checks completos/build assinado pertencem ao Actions disparado pelo envio. Publicação e detecção no aplicativo ainda não comprovadas neste registro.
 - Próxima ação: concluir commit/envio autorizado e acompanhar Actions; após publicação válida, Maycon conferir detecção no aplicativo, confirmar atualização e verificar reinício/acesso/dados fictícios preservados. Não reinstalar manualmente para comprovar detecção automática.
-- Checklist: [x] acesso relatado; [x] autorização Git/publicação piloto; [x] verificação de ancestralidade e testes de release; [ ] commit/envio; [ ] Actions/publicação; [ ] detecção/atualização no Windows. G5 em execução; G6/G7 pendentes.
+- Resultado Git: commit 3dc1bd6d35490067b951fb197f68c0a497d8aafa enviado com sucesso por HEAD:main, sem force; branch local preservada. origin/main aponta para esse commit; branch local está um commit à frente de seu próprio upstream feature. Run #19 (37866070566), acionado por push nesse SHA, confirmado in_progress pela API GitHub; versão esperada 0.1.11-pilot.19.1. Este resultado pós-envio fica registrado localmente sem novo commit/push para evitar outro piloto apenas pelo registro.
+- Checklist: [x] acesso relatado; [x] autorização Git/publicação piloto; [x] verificação de ancestralidade e testes de release; [x] commit/envio; [x] Actions iniciado; [ ] publicação concluída; [ ] detecção/atualização no Windows. G5 em execução; G6/G7 pendentes.
 
 ## Checkpoint vigente — WEBFIT-10, ativação por licença e código, 2026-10-08
 
