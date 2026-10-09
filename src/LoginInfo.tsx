@@ -87,8 +87,8 @@ export function LoginInfo({
             <hr />
             <h3>Acesso do administrador</h3>
             <p>
-              Entre com o nome de acesso e a senha definidos pelo administrador
-              na emissão da licença deste computador.
+              Abra o painel com a senha mestra para administrar licenças, o
+              emissor e a manutenção deste computador.
             </p>
             <p className="hint">
               Se este computador ainda não foi preparado, o administrador deve

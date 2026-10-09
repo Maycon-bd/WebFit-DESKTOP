@@ -7,6 +7,7 @@ No missing/trace nutrient is silently converted to zero.
 import hashlib
 import html
 import json
+import math
 from pathlib import Path
 import re
 import time
@@ -61,32 +62,56 @@ def fetch(url, data=None):
     return raw.decode("utf-8"), hashlib.sha256(raw).hexdigest()
 
 
-def parse_food(code, url, page):
+def parse_food(code, url, page, require_quantitative=True):
     if not re.search(r'name="cod_produto"[^>]*value="' + re.escape(code) + r'"', page):
         raise ValueError("Official code mismatch: " + code)
-    name = plain(re.search(r"<strong>Descrição:</strong>(.*?)<br>", page, re.S)[1])
+    description = re.search(r"<strong>Descrição:</strong>(.*?)(?:<br\s*/?>|</h5>)", page, re.S)
+    if not description:
+        raise ValueError("Official description missing: " + code)
+    name = plain(description[1])
     table = re.search(r"<table id='tabela1'.*?</table>", page, re.S)[0]
     nutrients = {}
+    issues = []
     for row in re.findall(r"<tr>.*?</tr>", table, re.S):
         cells = [plain(c) for c in re.findall(r"<td>(.*?)</td>", row, re.S)]
-        if len(cells) < 3:
+        if len(cells) < 3 or not cells[0]:
             continue
         try:
             amount = float(cells[2].replace(",", "."))
         except ValueError:
             amount = None
-        nutrients[cells[0] + ":" + cells[1]] = {"value": amount, "unit": cells[1], "original": cells[2]}
+        if amount is not None and (not math.isfinite(amount) or amount < 0):
+            raise ValueError("Invalid nutrient value: " + code + " " + cells[0])
+        key = cells[0] + ":" + cells[1]
+        datum = {"value": amount, "unit": cells[1], "original": cells[2]}
+        if key in nutrients:
+            previous = nutrients[key]
+            variants = previous.setdefault("variants", [
+                {"value": previous["value"], "original": previous["original"]}])
+            variants.append({"value": amount, "original": cells[2]})
+            if any(v != variants[0] for v in variants[1:]):
+                previous["value"] = None
+                if key not in issues:
+                    issues.append(key)
+        else:
+            nutrients[key] = datum
     measures = []
     for cell in re.findall(r"<th>(.*?)</th>", table, re.S):
         label = plain(cell)
         match = re.search(r"\(([0-9,]+)\s*g\)", label)
         if match:
-            measures.append({"name": label, "grams": float(match[1].replace(",", "."))})
+            measure = {"name": label, "grams": float(match[1].replace(",", "."))}
+            if measure not in measures:
+                measures.append(measure)
     food = {"code": code, "name": name, "source": "TBCA 7.3", "url": url,
             "grams": 100, "measures": measures, "nutrients": nutrients}
+    if issues:
+        if require_quantitative:
+            raise ValueError("Conflicting official composition: " + code)
+        food["compositionIssues"] = issues
     for field, key in MACROS.items():
         amount = nutrients.get(key, {}).get("value")
-        if amount is None or amount < 0:
+        if require_quantitative and amount is None:
             raise ValueError("Quantitative macronutrient unavailable: " + code + " " + field)
         food[field] = amount
     return food

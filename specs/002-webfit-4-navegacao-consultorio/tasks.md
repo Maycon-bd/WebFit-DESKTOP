@@ -68,3 +68,6 @@ T007/T010/T014 executados em frontend compilado com IPC ficticio: 17 assertions 
 
 - [x] T019 RF-UX-003/TA-UX-NAV-010: compactar painel e substituir botão textual por ícone acessível Sair da conta, preservando handler/rascunho/busy e alvos do tutorial.
 - [x] T020 RF-UX-006/TA-UX-WINDOW-003: guarda de fechamento nativo, diálogo/checkbox visual persistido, confirmação/cancelamento, falha/repetição/operação pendente; testes automatizados e documentação. Ensaio real Windows e revisão independente pendentes, não incluídos como PASS.
+- [x] T021 RF-UX-003/TA-NAV-009: manter o mesmo hambúrguer, altura e tamanho nos estados aberto/recolhido; posição horizontal refinada por T023 conforme pedido posterior.
+- [x] T022 RF-UX-003/TA-UX-NAV-010: alinhar nome/função da conta aos ícones na linha inferior compacta sem recortar o nome; preservar alvos de 44 px e verificar alinhamento visual.
+- [x] T023 RF-UX-003/TA-NAV-009: com a lateral aberta, posicionar o hambúrguer à direita, no topo da lateral; recolhida, devolver ao canto superior esquerdo; manter altura/tamanho e verificar visualmente os dois estados.

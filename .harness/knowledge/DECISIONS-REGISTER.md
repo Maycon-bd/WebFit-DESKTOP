@@ -14,6 +14,8 @@ Não representar `AGENT-PROVISIONAL` como aprovação humana. Aplicar `.harness/
 
 ## Accepted
 
+- [DEC-059](../../docs/project/decision-log.md#dec-059--painel-administrativo-pessoal-integrado): Maycon, 2026-10-09; WEBFIT-16/ADR-0004, painel/emissor mestra integrados, chave SQLCipher hex existente e importação do cofre atual. Execução autorizada com fixtures, sem secrets reais/Git/publicação; aceite pendente.
+
 - [DEC-058](../../docs/project/decision-log.md#dec-058--ativação-offline-e-autorizações-por-instalação): Maycon, 2026-10-08; direção funcional de WEBFIT-10, cinco tipos, entrega inicial, emissor com interface e suporte até 4 h. ADR-0003 v1 e D-LIC-006..008 aceitas por “Aprovo a implementação”; dependências/schema/emissor/restore/legado autorizados. Execução fictícia, sem dados reais/Git/publicação.
 
 - [DEC-057](../../docs/project/decision-log.md#dec-057--harness-com-quatro-fases): ACCEPTED por Maycon em 2026-10-08; quatro fases contínuas, Scope Check/autorizações específicas, Spec Kit opcional e registro único proporcional; Git, segurança/domínio e aceite final preservados.

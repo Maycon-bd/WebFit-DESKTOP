@@ -28,6 +28,7 @@ export function PatientSexField({
     <fieldset
       className="patient-sex"
       aria-invalid={invalid || undefined}
+      onInvalidCapture={(event) => event.preventDefault()}
       aria-describedby={
         [legacy && "patient-sex-help", invalid && "patient-sex-error"]
           .filter(Boolean)
@@ -36,6 +37,11 @@ export function PatientSexField({
     >
       <legend>
         Sexo <span aria-hidden="true">*</span>
+        {invalid && (
+          <small className="field-validation-error" id="patient-sex-error">
+            — Selecione Feminino ou Masculino.
+          </small>
+        )}
       </legend>
       <div className="patient-sex-options">
         {(
@@ -59,11 +65,6 @@ export function PatientSexField({
           </label>
         ))}
       </div>
-      {invalid && (
-        <small className="patient-field-error" id="patient-sex-error">
-          Selecione Feminino ou Masculino.
-        </small>
-      )}
       {legacy && (
         <p className="hint" id="patient-sex-help">
           Valor anterior: {value}. Selecione uma opção para salvar; o cadastro

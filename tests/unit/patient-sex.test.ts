@@ -74,7 +74,7 @@ const { PatientForm } = await import(
   import { FormFeedback } from ${JSON.stringify(feedbackUrl)};
   import { displayName } from ${JSON.stringify(nutritionUrl)};
   import { FormField as Field } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/FormField.tsx", import.meta.url), "utf8")))};
-  import { DateInput } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/DateInput.tsx", import.meta.url), "utf8")))};
+  import { DateField } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/DateField.tsx", import.meta.url), "utf8")))};
   ${declarations}
   export { PatientForm };
 `)
@@ -114,16 +114,18 @@ test("WEBFIT-5: actual patient form requires only name, birth and sex, including
     2,
   );
   assert.equal(
-    required.filter((input) => input.includes('type="date"')).length,
+    required.filter(
+      (input) =>
+        input.includes('type="text"') && input.includes('inputMode="numeric"'),
+    ).length,
     1,
   );
-  assert.match(html, /Nome completo \*/);
+  assert.match(html, /Nome completo<span aria-hidden="true"> \*<\/span>/);
   assert.doesNotMatch(
     html,
     /\(obrigatório\)|aria-invalid="true"|validation-attempted/,
   );
-  assert.match(html, /CPF \(opcional\)/);
-  assert.match(html, /CPF do responsável \(opcional\)/);
+  assert.doesNotMatch(html, /\(opcional\)/);
   assert.match(html, /Número do paciente: 245/);
   assert.doesNotMatch(html, /000245/);
 });
@@ -191,8 +193,8 @@ test("WEBFIT-5: invalid save marks missing fields, then clears each corrected fi
     import { PatientSexField, canonicalPatientSex } from ${JSON.stringify(sexUrl)};
     import { FormFeedback } from ${JSON.stringify(feedbackUrl)};
     import { displayName } from ${JSON.stringify(nutritionUrl)};
-    import { FormField as Field } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/FormField.tsx", import.meta.url), "utf8")))};
-    import { DateInput } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/DateInput.tsx", import.meta.url), "utf8")))};
+    import { createElement } from "react";
+    import { DateField } from ${JSON.stringify(moduleUrl(readFileSync(new URL("../../src/DateField.tsx", import.meta.url), "utf8")))};
     const states = [];
     let cursor = 0;
     function useState(initial) {
@@ -202,6 +204,9 @@ test("WEBFIT-5: invalid save marks missing fields, then clears each corrected fi
     }
     function useEffect() {}
     function useRef(current) { return { current }; }
+    function Field({ label, children }) {
+      return createElement("label", { className: "field" }, createElement("span", null, label), children);
+    }
     ${declarations}
     export function renderFixture(props) { cursor = 0; return PatientForm(props); }
   `)
@@ -229,8 +234,6 @@ test("WEBFIT-5: invalid save marks missing fields, then clears each corrected fi
   tree = renderFixture(props);
   const invalid = renderToStaticMarkup(tree);
   assert.match(invalid, /validation-attempted/);
-  assert.match(invalid, /id="patient-name-error"/);
-  assert.match(invalid, /id="patient-birth-error"/);
   assert.match(invalid, /id="patient-sex-error"/);
   assert.match(invalid, /aria-invalid="true"/);
   props.patient = { name: "   ", birth: "2000-01-01", sex: "F", tags: [] };
@@ -256,8 +259,7 @@ test("WEBFIT-5: invalid save marks missing fields, then clears each corrected fi
   assert.equal(validityMessage, "Preencha este campo.");
   assert.equal(focused, true);
   const whitespace = renderToStaticMarkup(renderFixture(props));
-  assert.match(whitespace, /id="patient-name-error"/);
-  assert.doesNotMatch(whitespace, /id="patient-(birth|sex)-error"/);
+  assert.doesNotMatch(whitespace, /id="patient-sex-error"/);
   props.patient = { name: "Fixture", birth: "2000-01-01", sex: "F", tags: [] };
   const corrected = renderToStaticMarkup(renderFixture(props));
   assert.doesNotMatch(

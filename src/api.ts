@@ -50,14 +50,15 @@ export interface Food {
   name: string;
   source: string;
   grams: number;
-  kcal: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  fiber: number;
+  kcal: number | null;
+  protein: number | null;
+  carbs: number | null;
+  fat: number | null;
+  fiber: number | null;
   code?: string;
   url?: string;
   measures?: { name: string; grams: number }[];
+  compositionIssues?: string[];
   nutrients?: Record<
     string,
     { value: number | null; unit: string; original: string }

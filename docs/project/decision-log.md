@@ -1,5 +1,9 @@
 # Registro de decisões
 
+## DEC-059 — Painel administrativo pessoal integrado
+
+**ACCEPTED para implementação por Maycon, 2026-10-09**, [WEBFIT-16](../../specs/WEBFIT-16/task.md). Senha mestra única para painel/emissor/manutenção, emisão/aplicação dos cinco tipos e acesso total no Desktop pessoal. Escolhas específicas: chave SQLCipher existente em hexadecimal, sem rekey; importar uma vez backup do cofre do emissor atual, conservando assinatura/trust roots. [ADR-0004](../architecture/adr/ADR-0004-painel-administrativo-integrado.md) evolui a separação do emissor da DEC-058/ADR-0003; não apaga histórico nem muda contratos de reset/restauração. Senha mestra via verificador de build; nenhum segredo claro versionado. Sem criação de root local, importação WebDiet, dados reais pelo agente, instalação/publicação/Git ou conclusão G5/G6/G7. Relato humano de instalação/atualizações não é aceite desta mudança. Testes/review/aceite pendentes.
+
 ## DEC-058 — Ativação offline e autorizações por instalação
 
 - **Status:** ACCEPTED para direção funcional/tipos e ADR-0003 v1, após “Aprovo a implementação” em 2026-10-08. **Autoridade/data:** Maycon, 2026-10-08, anotações e respostas nesta conversa. Demanda [WEBFIT-10](../../specs/WEBFIT-10/task.md), STRICT.

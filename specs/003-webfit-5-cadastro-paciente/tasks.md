@@ -23,3 +23,4 @@ Somente dados fictícios; preparação do toolchain autorizada e cache local reu
 
 - [x] T017 RF-PAT-007 / TA-PAT-018 — substituir obrigatório por asterisco e destacar campos inválidos após tentativa de salvar, com mensagens associadas e correção por campo. Pedido de Maycon em 2026-10-09; evidência do recorte em plan.md.
 - [x] T018 RF-PAT-007 / TA-PAT-019 — retorno somente no cabeçalho do cadastro, orientação associada no topo; preservação do fluxo de rascunho. Pedido de Maycon, 2026-10-09, ajuste LIGHT.
+- [x] T019 RF-PAT-002 / TA-PAT-020 — substituir os botões segmentados por seletor Ativos/Arquivados com Ativos como padrão, mantendo busca/consulta; acrescentar fixture arquivada e validar interação/teclado.

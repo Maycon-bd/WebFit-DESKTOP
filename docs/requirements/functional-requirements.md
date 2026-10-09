@@ -1,5 +1,11 @@
 # Requisitos funcionais
 
+## Administração integrada — WEBFIT-16
+
+RF-ADM-007 / TA-ADM-022..025 **aprovado para implementação por Maycon em 2026-10-09**: incluir pacote completo DB Browser 3.13.1 win64, fornecido por ZIP, no instalador/update em `GerenciadorBanco/` ao lado do WebFit. Preparação reproduzível por versão/hash oficial, licenças/subpastas preservadas, sem copiar banco/chaves/acessos da máquina de build. [Plan/aceite](../../specs/WEBFIT-16/task.md).
+
+RF-ADM-001..006 / TA-ADM-001..021 **aprovados para implementação por Maycon em 2026-10-09**: painel pelo ícone de informações, senha mestra única para todas as funções/emissor, cinco tipos de licença e manutenção completa. Chave SQLCipher fixa hexadecimal existente e importação única do backup do emissor atual foram escolhas específicas. Verificador de build/backend; nenhum segredo claro no instalador/repo. [Registro/aceite](../../specs/WEBFIT-16/task.md), [ADR-0004](../architecture/adr/ADR-0004-painel-administrativo-integrado.md). Implementação/checks locais concluídos, revisão independente com warnings; provisionamento e aceite Windows pendentes. Sem reset de fábrica, importação WebDiet, banco real pelo agente ou publicação. Baseline WEBFIT-10 histórica abaixo preservada.
+
 **RF-UX-005 — barra clara aprovada por Maycon, 2026-10-09:** barra de título própria com fundo claro da paleta WebFit, independente da cor de destaque do Windows, fixa fora da rolagem; arrastar e minimizar/maximizar-restaurar/solicitar fechamento. Fechamento preserva confirmação/rascunhos vigentes. Prioridade: ajuste solicitado; TA-UX-WINDOW-002/T-UX-WINDOW-002 no registro WEBFIT-10, aceite integrado pendente.
 
 **RF-UX-001 — refinamento aprovado por Maycon, 2026-10-09:** remover Ver tutorial fixo das telas. Em Configurações, Reiniciar tutoriais apaga somente as marcações do usuário conectado e reativa as orientações automaticamente na próxima entrada de cada tela; Pular/Concluir e persistência por tela mantidos. Prioridade: ajuste solicitado do incremento, aceite Windows pendente. TA-UX-TUT-001, DEC-046/T114; sem migration ou nova dependência.
@@ -18,21 +24,20 @@ Permitir também ativação inicial offline com licença/código enviados junto 
 
 **Fonte/status:** DEC-058, Maycon, 2026-10-08. Fluxo/tipos e ADR-0003 v1 aprovados para implementação por Maycon (“Aprovo a implementação”), D-LIC-006..008 ACCEPTED. Execução local em fixtures; aceite final pendente. Prioridade humana não definida. Plan/arquitetura material aceitos no [registro único](../../specs/WEBFIT-10/task.md); detalhes técnicos não recebem aprovação por inferência.
 
-| ID | Requisito / ator / resultado | Regras | Aceite | Status |
-|---|---|---|---|---|
-| RF-LIC-001 | visitante solicita/importa licença; Maycon emite para aquela instalação, definindo administrador próprio; preparação somente em banco vazio, validada no backend | RN-LIC-001..004 | TA-LIC-001..005/010/011 | aprovado para implementação; aceite final pendente |
-| RF-LIC-002 | Maycon autoriza transferência/recuperação no novo destino, com backup validado antes de recuperar dados | RN-LIC-001/002/005 | TA-LIC-006 | aprovado para implementação; aceite final pendente |
-| RF-LIC-003 | Maycon recebe suporte administrativo temporário por uma sessão de até 4 h, encerrada também ao sair/bloquear; sem acesso permanente | RN-LIC-001/002/006 | TA-LIC-007 | aprovado para implementação; aceite final pendente |
-| RF-LIC-004 | Maycon autoriza recuperação de sua credencial naquela instalação sem apagar dados nem revelar senha anterior | RN-LIC-001/002/004 | TA-LIC-008 | aprovado para implementação; aceite final pendente |
-| RF-LIC-005 | Maycon autoriza reinicialização, mantendo licença/acessos e limpando consultório; backup validado e confirmação separados; falha/cancelamento preserva dados | RN-LIC-001/002/007 | TA-LIC-009 | aprovado para implementação; aceite final pendente |
-| RF-LIC-006 | cópia protegida para diagnóstico isolado por Maycon e retorno sem perder trabalho posterior | RN-LIC-008/RN-BKP-005..007 | TA-LIC-012 | adiado para outra demanda por Maycon, 2026-10-08 |
+| ID         | Requisito / ator / resultado                                                                                                                                     | Regras                     | Aceite                  | Status                                             |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ----------------------- | -------------------------------------------------- |
+| RF-LIC-001 | visitante solicita/importa licença; Maycon emite para aquela instalação, definindo administrador próprio; preparação somente em banco vazio, validada no backend | RN-LIC-001..004            | TA-LIC-001..005/010/011 | aprovado para implementação; aceite final pendente |
+| RF-LIC-002 | Maycon autoriza transferência/recuperação no novo destino, com backup validado antes de recuperar dados                                                          | RN-LIC-001/002/005         | TA-LIC-006              | aprovado para implementação; aceite final pendente |
+| RF-LIC-003 | Maycon recebe suporte administrativo temporário por uma sessão de até 4 h, encerrada também ao sair/bloquear; sem acesso permanente                              | RN-LIC-001/002/006         | TA-LIC-007              | aprovado para implementação; aceite final pendente |
+| RF-LIC-004 | Maycon autoriza recuperação de sua credencial naquela instalação sem apagar dados nem revelar senha anterior                                                     | RN-LIC-001/002/004         | TA-LIC-008              | aprovado para implementação; aceite final pendente |
+| RF-LIC-005 | Maycon autoriza reinicialização, mantendo licença/acessos e limpando consultório; backup validado e confirmação separados; falha/cancelamento preserva dados     | RN-LIC-001/002/007         | TA-LIC-009              | aprovado para implementação; aceite final pendente |
+| RF-LIC-006 | cópia protegida para diagnóstico isolado por Maycon e retorno sem perder trabalho posterior                                                                      | RN-LIC-008/RN-BKP-005..007 | TA-LIC-012              | adiado para outra demanda por Maycon, 2026-10-08   |
 
 Emissor separado com interface, exclusivo de Maycon; sem chave privada/senha compartilhada no instalador clínico. Uso diário offline. Licença inválida/incompatível/destino errado/repetida não causa preparação, limpeza ou falso sucesso; UI preserva estado e permite recuperação. Solicitação sem credencial/CPF/conteúdo clínico. Protocolo, perda/rotação de chaves e consumo em backup/rollback no ADR aceito.
 
 **Plan técnico 2026-10-08 — ACCEPTED (D-LIC-006..008):** assinatura Ed25519 + payload sealed box para o destino, duas novas crates Rust/migração 002 aditiva, cofre DPAPI/SQLCipher do emissor e backup portátil cifrado. Suporte temporário terá credencial temporária separada, consumida no login e com limite de 4 h desde autenticação; não altera senha permanente. Restore preservará acessos do destino e importará autoria histórica sem reativar login antigo. Banco legado de teste sem licença permitirá somente backup autenticado/solicitação, com clínica bloqueada. Esses efeitos foram aprovados no pacote técnico; detalhes no [ADR-0003](../architecture/adr/ADR-0003-ativacao-offline-e-suporte.md). Perfil profissional preservado na reinicialização é inventário aprovado P-LIC-001; limpeza somente em fixture nesta execução.
 
 Instalações anteriores eram testes: entrega parte de ativação inicial; importar chave não limpa banco já preparado. Atualizar/reparar mantém dados/licença. RF-AUT-001, RF-UX-002, TA-AUT-001/TA-UX-002 descrevem código anterior até entrega; em nova instalação serão complementados por RF-LIC-001. Acesso total de ambos os papéis ao Saúde permanece.
-
 
 ## RF-UX-004 — identidade visual do sistema
 
@@ -136,7 +141,7 @@ Instalações anteriores eram testes: entrega parte de ativação inicial; impor
 - **Descrição:** listar e localizar por número do paciente, nome, nome social, CPF ou telefone e abrir o cadastro.
 - **Listagem:** número sem zeros à esquerda, nome, nome social, CPF mascarado quando informado, nascimento, idade, sexo, telefone e situação; CPF/telefone vazios indicados como não informados.
 - **Regras:** RN-PAT-007.
-- **Critérios:** TA-PAT-003.
+- **Critérios:** TA-PAT-003 e TA-PAT-020.
 - **Prioridade:** obrigatória — incremento 1.
 - **Status:** aprovado.
 - **Fonte:** entrevista 01.
@@ -258,6 +263,7 @@ Instalações anteriores eram testes: entrega parte de ativação inicial; impor
 - **Fonte:** respostas clínicas de Amanda, DEC-023 e protocolo registrado em `energy-planning-decisions-2026-08-21.md`.
 
 PDF, impressão e exportação não pertencem ao incremento 1.
+
 ## Auditoria
 
 ### RF-AUD-001 — Registrar e consultar auditoria
@@ -274,6 +280,7 @@ PDF, impressão e exportação não pertencem ao incremento 1.
 - **Prioridade:** obrigatória — incremento 1.
 - **Status:** baseline aprovada por Maycon em 2026-09-10; refinamentos D-AUTO-001 e D-AUTO-002 `ACCEPTED` por Amanda e Maycon em 2026-09-17, conforme decision-log.md.
 - **Fonte:** entrevista 01, DEC-016, DEC-025, DEC-026, DEC-028 a DEC-038, D-AUTO-001 e D-AUTO-002.
+
 ## Backup e restauração
 
 ### RF-BKP-001 — Criar backup
@@ -304,17 +311,17 @@ PDF, impressão e exportação não pertencem ao incremento 1.
 
 ## Backlog do restante do MVP Saúde
 
-| ID | Requisito resumido | Dependência | Status |
-|---|---|---|---|
-| RF-AGE-001 | criar, reagendar, cancelar e concluir atendimento vinculado a paciente | estados e conflitos | proposto |
-| RF-ANA-001 | registrar anamnese e histórico clínico | campos e política de correção | proposto |
-| RF-ANT-001 | registrar antropometria e apresentar evolução | protocolos e fórmulas | proposto |
-| RF-ARQ-001 | importar, pesquisar, visualizar, exportar, arquivar e restaurar arquivo clínico vinculado a paciente | tipos, limites, integridade e retenção | proposto — incremento 4A |
-| RF-ARQ-002 | manter biblioteca profissional de documentos e imagens sem vínculo obrigatório com paciente | acesso, categorias, limites e retenção | proposto — evolução posterior |
-| RF-ARQ-003 | pesquisar arquivos clínicos e profissionais por nome, vínculo, categoria, tags, tipo e data | RF-ARQ-001/002 e índice de metadados | proposto |
-| RF-REL-001 | gerar documentos A4 e exportações PDF, XLSX e CSV | modelos e campos obrigatórios | proposto |
-| RF-FIN-001 | registrar recebimentos e estados financeiros em centavos | regras de cobrança e relatórios | proposto |
-| RF-PLN-001 | criar, concluir e reabrir tarefas administrativas | prioridade e recorrência | proposto |
+| ID         | Requisito resumido                                                                                   | Dependência                            | Status                        |
+| ---------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------------------------- |
+| RF-AGE-001 | criar, reagendar, cancelar e concluir atendimento vinculado a paciente                               | estados e conflitos                    | proposto                      |
+| RF-ANA-001 | registrar anamnese e histórico clínico                                                               | campos e política de correção          | proposto                      |
+| RF-ANT-001 | registrar antropometria e apresentar evolução                                                        | protocolos e fórmulas                  | proposto                      |
+| RF-ARQ-001 | importar, pesquisar, visualizar, exportar, arquivar e restaurar arquivo clínico vinculado a paciente | tipos, limites, integridade e retenção | proposto — incremento 4A      |
+| RF-ARQ-002 | manter biblioteca profissional de documentos e imagens sem vínculo obrigatório com paciente          | acesso, categorias, limites e retenção | proposto — evolução posterior |
+| RF-ARQ-003 | pesquisar arquivos clínicos e profissionais por nome, vínculo, categoria, tags, tipo e data          | RF-ARQ-001/002 e índice de metadados   | proposto                      |
+| RF-REL-001 | gerar documentos A4 e exportações PDF, XLSX e CSV                                                    | modelos e campos obrigatórios          | proposto                      |
+| RF-FIN-001 | registrar recebimentos e estados financeiros em centavos                                             | regras de cobrança e relatórios        | proposto                      |
+| RF-PLN-001 | criar, concluir e reabrir tarefas administrativas                                                    | prioridade e recorrência               | proposto                      |
 
 Esses itens não podem ser implementados até receberem detalhamento, critérios de aceite e status aprovado.
 
@@ -329,14 +336,13 @@ Esses itens não podem ser implementados até receberem detalhamento, critérios
 - **Critérios:** TA-AUT-005; marcado persiste após reiniciar; desmarcado remove preferência após login; falha de login não salva nome; preferências separadas entre acesso normal e administrativo; nenhum token/senha persistido por essa função; sessão/bloqueio permanecem obrigatórios.
 - **Status:** aprovado por Maycon em 2026-10-07 nesta conversa, escolhendo explicitamente preencher somente nome e continuar pedindo senha.
 - **Prioridade:** alta — refinamento do incremento 1. Regras RN-AUT-001..005 preservadas; DEC-052.
-Refinamento vigente RF-UPD-001 / DEC-053 / TA-UPD-UI-002: faixa superior em lugar de ícone/modal, consulta em cada login, adiar/confirmar pelo aviso; offline/sem versão não mostram aviso e não bloqueiam trabalho. Substitui apresentação e frequência anteriores, mantendo proteção/backup/assinatura. Ativação preparada localmente; Git e integração pelo usuário.
-
+  Refinamento vigente RF-UPD-001 / DEC-053 / TA-UPD-UI-002: faixa superior em lugar de ícone/modal, consulta em cada login, adiar/confirmar pelo aviso; offline/sem versão não mostram aviso e não bloqueiam trabalho. Substitui apresentação e frequência anteriores, mantendo proteção/backup/assinatura. Ativação preparada localmente; Git e integração pelo usuário.
 
 ## Navegação do Consultório — WEBFIT-4
 
 ### RF-UX-003 — Menu recolhível, Configurações e conta do usuário
 
-- **Descrição:** hambúrguer oculta toda a lateral e deixa somente seu botão para reabrir; menu principal contém apenas Consultório/Pacientes. Engrenagem ao lado do usuário abre tela Configurações com Auditoria e Backup e restauração. Nome clicável abre Acesso e Perfil profissional.
+- **Descrição:** hambúrguer oculta toda a lateral e deixa somente seu botão para reabrir; menu principal contém Consultório com Dashboard e Pacientes (extensão RF-UX-008/WEBFIT-17 em 2026-10-09). Engrenagem ao lado do usuário abre tela Configurações com Auditoria e Backup e restauração. Nome clicável abre Acesso e Perfil profissional.
 - **Atores:** nutricionista e administrador autenticados, com permissões existentes.
 - **Prioridade:** incremento atual; ordem técnica das jornadas P1 em spec.md, sem atribuir prioridade humana alta/urgente no Plane.
 - **Status:** escopo explicitamente aceito por Maycon em 2026-10-07 (DEC-055); execução do plano e D-NAV-001/002 aprovadas por Maycon em 2026-10-07. Nenhuma aprovação clínica ou de Amanda inferida.
@@ -351,3 +357,29 @@ Refinamento vigente RF-UPD-001 / DEC-053 / TA-UPD-UI-002: faixa superior em luga
 
 - **RF-UX-003, complemento:** substituir o botão textual da lateral por ícone de logout junto à conta/configurações, com nome acessível Sair da conta e a mesma sequência de salvar rascunho/encerrar sessão. Status: aprovado para implementação pelo pedido explícito de Maycon nesta conversa; prioridade: incremento atual; aceite TA-UX-NAV-010.
 - **RF-UX-006 — confirmação do fechamento:** ao clicar no X, perguntar se deseja fechar, com Cancelar/Fechar e checkbox Não perguntar novamente. Persistir somente booleano de preferência visual neste perfil Windows ao confirmar; cancelamento não altera preferência. Com opt-out, fechar sem pergunta após operação pendente e gravação do rascunho. Falha mantém janela e permite repetir; nenhuma preferência autoriza perder rascunho. Status: aprovado para implementação por Maycon em 2026-10-09; prioridade: incremento atual; aceite TA-UX-WINDOW-003. Não representa aceite funcional/uso clínico. Sem schema/dependência nova.
+
+## WEBFIT-15 — feedback visual de validação em formulários (2026-10-09)
+
+### RF-UX-007 — Indicar campos inválidos após envio
+
+- **Descrição:** em formulários de envio, quando restrições já existentes impedirem o envio, destacar inline os controles inválidos e explicar o problema junto ao rótulo. Esse é o padrão sistêmico para formulários atuais e futuros; novos formulários devem reutilizar o componente compartilhado e seus testes, sem redefinir obrigatoriedade por conveniência visual.
+- **Abrangência:** cadastro/edição de pacientes, perfil, prescrição/cardápio, acesso, segurança, licenciamento e recuperação.
+- **Invariantes:** não cria nem remove campo obrigatório, regra clínica, de domínio ou de autenticação; não substitui validação do backend; não revela valores digitados; permite corrigir campos individualmente sem perder o restante do formulário.
+- **Campos de data:** todos usam `DateField`; datas simples têm edição `DD/MM/AAAA`, seletor de calendário e valores civis ISO, enquanto data e hora usam o modo nativo `datetime-local` do componente.
+- **Critérios:** TA-UX-FORM-001 em `docs/requirements/acceptance-criteria.md`.
+- **Prioridade:** refinamento solicitado por Maycon em 2026-10-09, sem alterar prioridade do backlog.
+- **Status:** aprovado por Maycon para implementação e adoção como padrão de formulários futuros em 2026-10-09; aceite final/Windows pendentes.
+- **Rastreabilidade:** WEBFIT-15 / `specs/WEBFIT-15/task.md`.
+
+## WEBFIT-17 — Dashboard geral (2026-10-09)
+
+### RF-UX-008 — Dashboard como home do Consultório
+
+- **Status:** aprovado para implementação pelo pedido explícito de Maycon em 2026-10-09; seleção dos indicadores D-DASH-001/002 provisória, validável no aceite. Sem regra clínica nova/aceite de Amanda presumido.
+- **Prioridade:** incremento atual, sem prioridade humana inventada.
+- **Descrição:** Dashboard acima de Pacientes, inicial após autenticação e destino do ícone WebFit. Indicadores agregados dos módulos existentes e gráficos úteis, ampliados por requisitos próprios conforme novas funcionalidades.
+- **Aceite:** TA-DASH-001..005; fonte e decisões em [registro único](../../specs/WEBFIT-17/task.md). Preservar senha obrigatória, licença/legado, rascunhos, atualização, acessibilidade e dados locais. Não exibir agenda/financeiro inexistentes ou indicadores demonstrativos em produto.
+
+### RF-UX-008 — complemento: histórico anual de consultas
+
+Aprovado para preparação visual por Maycon em 2026-10-09 após escolha explícita: histórico de consultas realizadas por ano, com estado vazio até existir o módulo de consultas. TA-DASH-006..008; [registro único](../../specs/WEBFIT-17/task.md). O recurso não consulta pacientes/prescrições como se fossem atendimentos e não cria RF-AGE-001, schema, regras clínicas ou valores demonstrativos. Prioridade do backlog preservada; aceite funcional pendente.

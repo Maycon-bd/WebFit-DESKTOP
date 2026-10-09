@@ -1,5 +1,7 @@
 # Emissor local de licenças — WEBFIT-10
 
+Terminologia vigente (Maycon, 2026-10-09): **Emissor de licenças**, **Dados do emissor** e **Backup do emissor de licenças** substituem “cofre”/“backup do cofre” na interface. `.webfit-issuer-backup` guarda os dados necessários para continuar emitindo licenças. A integração pessoal WEBFIT-16 está no [manual do painel](../../docs/operations/admin-panel.md); a ferramenta histórica abaixo permite exportar o backup inicial. Formatos/proteção existentes preservados.
+
 Aplicativo exclusivo de Maycon, separado do instalador clínico. Não colocar executável, banco ou chave privada do emissor no pacote da nutricionista. Mesmas versões de React/Tauri do produto, sem novas dependências npm. Identificador `br.com.webfit.licenseissuer`; cofre SQLCipher/DPAPI CurrentUser no armazenamento local próprio do aplicativo. Assinatura de licenças independente do updater.
 
 ## Compilar e preparar

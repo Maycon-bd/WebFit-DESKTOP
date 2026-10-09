@@ -1,5 +1,15 @@
 # Matriz de rastreabilidade
 
+## WEBFIT-16 — painel administrativo integrado
+
+RF-ADM-007 → TA-ADM-022..025 → `tools/db-browser/bundle.json`, `scripts/prepare-db-browser.ps1`, `src-tauri/tauri.conf.json`, `package.json`, `scripts/build-installer.ps1`, workflow `pilot-release.yml` e manual/notices. Versão e SHA256 oficial fixados; pacote completo em `GerenciadorBanco/`. Evidência de build/hierarquia no registro único; update nativo/aceite humano separados.
+
+DEC-059 / ADR-0004 → RF-ADM-001..006 → TA-ADM-001..021 → [task.md](../../specs/WEBFIT-16/task.md). Aprovação funcional específica de Maycon em 2026-10-09; fonte 0.1.10, sem publicação/aceite inferido.
+
+RF-ADM-001/005 → `src-tauri/src/admin.rs`, `service.rs`, `admin-access.json`, `src-tauri/src/bin/admin-verifier.rs`, `scripts/configure-admin-access.ps1`, `admin_tests.rs`; RF-ADM-002/003 → cofre compartilhado `tools/license-issuer/src-tauri/src/vault.rs`, protocolo atual e testes de emissão/transferência; RF-ADM-004/006 → `admin.rs`, `recovery.rs` existente, testes SQLCipher real/backup/restore. UI → `AdminPanel.tsx`, `admin-session.ts`, `App.tsx`, `LoginInfo.tsx`, `LicensePanel.tsx`, `style.css`, teste de revogação e `scripts/admin-visual-smoke.mjs` / `tests/visual/admin.*`. [Manual/glossário](../operations/admin-panel.md). Evidência/checks/revisão no registro único; dados reais/G7 permanecem fora.
+
+RF-UX-007 → TA-UX-FORM-001 / TA-UX-DATE-001 → WEBFIT-15 → `src/FormField.tsx`, `src/DateField.tsx`, `src/PatientSexField.tsx`, `src/LicensePanel.tsx`, `src/App.tsx`, `src/style.css`; regressões unitárias e visuais. Padrão sistêmico aplicável também a formulários futuros, confirmado por Maycon em 2026-10-09; campos/regras existentes preservados. Revisão independente da extensão DateField concluída; aceite global/Windows da WEBFIT-15 pendentes. Plano/evidência: [task.md](../../specs/WEBFIT-15/task.md).
+
 RF-UX-005 → TA-UX-WINDOW-002/T-UX-WINDOW-002 → WEBFIT-10 → WindowTitleBar/main/style, tauri.conf/capabilities e window-titlebar.test.ts. Maycon aprovou fundo claro, 2026-10-09; [evidência](../../specs/WEBFIT-10/task.md#barra-clara-da-janela--2026-10-09), fonte0.1.10, sem distribuição. Fechamento protegido preexistente preservado.
 
 RF-UX-001 → TA-UX-TUT-001 → DEC-046/T114 → App/GuidedTour, service ResetTours, tests.rs e guided-tour.test.ts. Pedido explícito de Maycon, 2026-10-09; aprovado para implementação, aceite integrado pendente. Reuso do incremento1, [evidência](../../specs/001-primeiro-incremento-saude/plan.md#reinício-de-tutoriais--2026-10-09); branch ativa feature/pbi-001-primeiro-incremento-saude/818d097, fonte 0.1.10, sem distribuição.
@@ -18,43 +28,41 @@ DEC-058 / ADR-0003 v1 ACCEPTED → RF-LIC-001..005 → RN-LIC-001..007 → UC-LI
 
 Implementação: `crates/license-protocol/` (TA-LIC-003/005), `src-tauri/src/license.rs`, `service.rs`, `license_tests.rs` e `migrations/002_license.sql` (TA-LIC-001..004/007..010), `recovery.rs` (TA-LIC-006/009/010), `src/LicensePanel.tsx`/`App.tsx` (TA-LIC-011), `tools/license-issuer/` (TA-LIC-005). Testes Rust/SQLite fictícios distinguem consumo, destino, restauro, acesso antigo, reinício/limite e falha de backup. Checks/comandos finais, ensaio Windows e review independente devem ser lidos no registro, sem inferir aceite por esta matriz.
 
-
 ## WEBFIT-8 — identidade visual
 
-RF-UX-004 / DEC-056 → TA-UX-BRAND-001..004 → specs/005-webfit-8-identidade-visual/{spec,plan,tasks}.md (T001..T008) → public/brand/webfit-icon.png, src/App.tsx, src/LoginInfo.tsx, src/style.css, index.html, src-tauri/icons/** e tauri.conf.json → .harness/evidence/webfit-8/{verification,evidence}.md. Versão 0.1.8, base e07cdc8300de0421dbdc7fd64aafe7d30a191e80, main. Checks locais separados de aceite Windows/review independente.
+RF-UX-004 / DEC-056 → TA-UX-BRAND-001..004 → specs/005-webfit-8-identidade-visual/{spec,plan,tasks}.md (T001..T008) → public/brand/webfit-icon.png, src/App.tsx, src/LoginInfo.tsx, src/style.css, index.html, src-tauri/icons/\*\* e tauri.conf.json → .harness/evidence/webfit-8/{verification,evidence}.md. Versão 0.1.8, base e07cdc8300de0421dbdc7fd64aafe7d30a191e80, main. Checks locais separados de aceite Windows/review independente.
 
 ## WEBFIT-5 — Cadastro mínimo e número interno
 
-RF-PAT-007 aprovado -> TA-PAT-008..017 -> [spec/plan/tasks](../../specs/003-webfit-5-cadastro-paciente/spec.md), T001..T016 -> App/PatientSexField/API; service/database/recovery/migration003; patient_tests.rs, patient-migration.test.ts e patient-sex.test.ts. Refina RF-PAT-001/002/003 e RN-PAT-001/003/005/006/007. Branch main, HEAD-base 3558eddd84211e504ba0457388b1bedc30c9697d, fonte 0.1.10 sem nova distribuição. Solicitação de Amanda relatada por Maycon, número sem zeros aprovado e execução autorizada em 2026-10-08. D-PAT-001/003 aceitas; D-PAT-002 provisória não bloqueante. Implementação local, verificação parcial; Rust/SQLCipher/build Tauri/ensaio Windows e aceite final pendentes. Evidência atual em [plan.md](../../specs/003-webfit-5-cadastro-paciente/plan.md); [planejamento histórico](../../.harness/evidence/webfit-5/planning.md) preservado.
+RF-PAT-007 aprovado -> TA-PAT-008..017 -> [spec/plan/tasks](../../specs/003-webfit-5-cadastro-paciente/spec.md), T001..T016 -> App/PatientSexField/API; service/database/recovery/migration003; patient_tests.rs, patient-migration.test.ts e patient-sex.test.ts. RF-PAT-002 / TA-PAT-003/020 cobre busca/lista e seletor Ativos/Arquivados; refinamento visual em T019 da mesma spec. Refina RF-PAT-001/002/003 e RN-PAT-001/003/005/006/007. Branch main, HEAD-base 3558eddd84211e504ba0457388b1bedc30c9697d, fonte 0.1.10 sem nova distribuição. Solicitação de Amanda relatada por Maycon, número sem zeros aprovado e execução autorizada em 2026-10-08. D-PAT-001/003 aceitas; D-PAT-002 provisória não bloqueante. Implementação local, verificação parcial; Rust/SQLCipher/build Tauri/ensaio Windows e aceite final pendentes. Evidência atual em [plan.md](../../specs/003-webfit-5-cadastro-paciente/plan.md); [planejamento histórico](../../.harness/evidence/webfit-5/planning.md) preservado.
 
 **Status:** baseline do primeiro incremento preenchida; evidência de execução parcial local disponível; aceite integral pendente.
 
-| Requisito | Título | Status | Fonte | Regras | Caso de uso | Testes | Riscos/ADR | Backlog | Evidência |
-|---|---|---|---|---|---|---|---|---|---|
-| RF-AUT-001 | primeiro acesso e usuários | aprovado | entrevista 01 | RN-AUT-001/002 | UC-AUT-001 | TA-AUT-001 | RSK-003/008, ADR-0001 | PBI-002 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-AUT-002 | autenticar, sair e bloquear | aprovado | entrevista 01 | RN-AUT-001..004 | UC-AUT-001 | TA-AUT-002/003 | RSK-003/008, ADR-0001 | PBI-002 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-AUT-003 | reset administrativo | aprovado | entrevista 01 | RN-AUT-005 | UC-AUT-002 | TA-AUT-004 | RSK-008/009 | PBI-002 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-CLI-001 | perfil profissional | aprovado | entrevista 01 | RN-CLI-001/003 | UC-CLI-001 | TA-CLI-001 | RSK-003/008 | PBI-003 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-CLI-002 | espaço Saúde | aprovado | DEC-014/015 | RN-CLI-001/002 | UC-AUT-001 | TA-CLI-002 | RSK-010 | PBI-003 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PAT-001 | cadastrar paciente | aprovado | entrevista 01 | RN-PAT-001..006 | UC-PAT-001 | TA-PAT-001/002 | RSK-003/005/008 | PBI-004 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PAT-002 | pesquisar e abrir | aprovado | entrevista 01 | RN-PAT-007 | UC-PAT-002 | TA-PAT-003 | RSK-003/008 | PBI-004 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PAT-003 | editar paciente | aprovado | entrevista 01 | RN-PAT-001..006, RN-AUD-001 | UC-PAT-002 | TA-PAT-004 | RSK-003/008 | PBI-004 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PAT-004 | arquivar/restaurar | aprovado | entrevista 01 | RN-PAT-008/009 | UC-PAT-003 | TA-PAT-005 | RSK-005 | PBI-004 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PAT-005 | tags | aprovado | entrevista 01 | RN-PAT-010 | UC-PAT-001 | TA-PAT-006 | RSK-005 | PBI-004 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PAT-006 | rascunho de paciente | aprovado | entrevista 01/DEC-024 | RN-DRF-001..005 | UC-DRF-001 | TA-PAT-007/TA-DRF-001..004 | RSK-003 | PBI-004 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-DRF-001 | proteger formulários longos | aprovado | Maycon/DEC-024 | RN-DRF-001..005 | UC-DRF-001 | TA-DRF-001..004/TA-PAT-007 | RSK-003 | PBI-003/004/010 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PRE-001 | criar prescrição | aprovado | Amanda/DEC-022 | RN-PRE-001/008..010 | UC-PRE-001 | TA-PRE-001/006 | RSK-013 | PBI-010 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PRE-002 | refeições, alimentos e porções | aprovado | Amanda/DEC-022 | RN-PRE-001..005 | UC-PRE-001 | TA-PRE-002/004 | RSK-013 | PBI-010 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PRE-003 | composição nutricional | aprovado | Amanda/DEC-022 | RN-PRE-006/007 | UC-PRE-001 | TA-PRE-003/005 | RSK-013 | PBI-010 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PRE-004 | versões e histórico | aprovado | Amanda/DEC-022 | RN-PRE-008..010 | UC-PRE-001 | TA-PRE-006/007 | RSK-013 | PBI-010 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-PRE-005 | necessidade energética e metas | aprovado | Amanda/DEC-023 | RN-PRE-011..024 | UC-PRE-002 | TA-PRE-008..016 | RSK-013 | PBI-010 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-AUD-001 | auditoria | baseline e refinamentos aprovados | DEC-016/025/026/028..038, D-AUTO-001/002 | RN-AUD-001..017 | UC-AUD-001 | TA-AUD-001..015 | RSK-003/008/012 | PBI-005 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-BKP-001 | criar backup | aprovado | entrevista 01 | RN-BKP-001..005 | UC-BKP-001 | TA-BKP-001/002 | RSK-004/011, ADR-0001 | PBI-006 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-BKP-002 | restaurar backup | aprovado | entrevista 01 | RN-BKP-005..007 | UC-BKP-002 | TA-BKP-003/004 | RSK-004, ADR-0001 | PBI-006 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
-| RF-BKP-003 | estado do backup | aprovado | entrevista 01 | RN-BKP-001..004 | UC-BKP-001 | TA-BKP-005 | RSK-004/011 | PBI-006 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| Requisito  | Título                         | Status                            | Fonte                                    | Regras                      | Caso de uso | Testes                     | Riscos/ADR            | Backlog         | Evidência                                                                                     |
+| ---------- | ------------------------------ | --------------------------------- | ---------------------------------------- | --------------------------- | ----------- | -------------------------- | --------------------- | --------------- | --------------------------------------------------------------------------------------------- |
+| RF-AUT-001 | primeiro acesso e usuários     | aprovado                          | entrevista 01                            | RN-AUT-001/002              | UC-AUT-001  | TA-AUT-001                 | RSK-003/008, ADR-0001 | PBI-002         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-AUT-002 | autenticar, sair e bloquear    | aprovado                          | entrevista 01                            | RN-AUT-001..004             | UC-AUT-001  | TA-AUT-002/003             | RSK-003/008, ADR-0001 | PBI-002         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-AUT-003 | reset administrativo           | aprovado                          | entrevista 01                            | RN-AUT-005                  | UC-AUT-002  | TA-AUT-004                 | RSK-008/009           | PBI-002         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-CLI-001 | perfil profissional            | aprovado                          | entrevista 01                            | RN-CLI-001/003              | UC-CLI-001  | TA-CLI-001                 | RSK-003/008           | PBI-003         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-CLI-002 | espaço Saúde                   | aprovado                          | DEC-014/015                              | RN-CLI-001/002              | UC-AUT-001  | TA-CLI-002                 | RSK-010               | PBI-003         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PAT-001 | cadastrar paciente             | aprovado                          | entrevista 01                            | RN-PAT-001..006             | UC-PAT-001  | TA-PAT-001/002             | RSK-003/005/008       | PBI-004         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PAT-002 | pesquisar e abrir              | aprovado                          | entrevista 01                            | RN-PAT-007                  | UC-PAT-002  | TA-PAT-003                 | RSK-003/008           | PBI-004         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PAT-003 | editar paciente                | aprovado                          | entrevista 01                            | RN-PAT-001..006, RN-AUD-001 | UC-PAT-002  | TA-PAT-004                 | RSK-003/008           | PBI-004         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PAT-004 | arquivar/restaurar             | aprovado                          | entrevista 01                            | RN-PAT-008/009              | UC-PAT-003  | TA-PAT-005                 | RSK-005               | PBI-004         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PAT-005 | tags                           | aprovado                          | entrevista 01                            | RN-PAT-010                  | UC-PAT-001  | TA-PAT-006                 | RSK-005               | PBI-004         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PAT-006 | rascunho de paciente           | aprovado                          | entrevista 01/DEC-024                    | RN-DRF-001..005             | UC-DRF-001  | TA-PAT-007/TA-DRF-001..004 | RSK-003               | PBI-004         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-DRF-001 | proteger formulários longos    | aprovado                          | Maycon/DEC-024                           | RN-DRF-001..005             | UC-DRF-001  | TA-DRF-001..004/TA-PAT-007 | RSK-003               | PBI-003/004/010 | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PRE-001 | criar prescrição               | aprovado                          | Amanda/DEC-022                           | RN-PRE-001/008..010         | UC-PRE-001  | TA-PRE-001/006             | RSK-013               | PBI-010         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PRE-002 | refeições, alimentos e porções | aprovado                          | Amanda/DEC-022                           | RN-PRE-001..005             | UC-PRE-001  | TA-PRE-002/004             | RSK-013               | PBI-010         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PRE-003 | composição nutricional         | aprovado                          | Amanda/DEC-022                           | RN-PRE-006/007              | UC-PRE-001  | TA-PRE-003/005             | RSK-013               | PBI-010         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PRE-004 | versões e histórico            | aprovado                          | Amanda/DEC-022                           | RN-PRE-008..010             | UC-PRE-001  | TA-PRE-006/007             | RSK-013               | PBI-010         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-PRE-005 | necessidade energética e metas | aprovado                          | Amanda/DEC-023                           | RN-PRE-011..024             | UC-PRE-002  | TA-PRE-008..016            | RSK-013               | PBI-010         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-AUD-001 | auditoria                      | baseline e refinamentos aprovados | DEC-016/025/026/028..038, D-AUTO-001/002 | RN-AUD-001..017             | UC-AUD-001  | TA-AUD-001..015            | RSK-003/008/012       | PBI-005         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-BKP-001 | criar backup                   | aprovado                          | entrevista 01                            | RN-BKP-001..005             | UC-BKP-001  | TA-BKP-001/002             | RSK-004/011, ADR-0001 | PBI-006         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-BKP-002 | restaurar backup               | aprovado                          | entrevista 01                            | RN-BKP-005..007             | UC-BKP-002  | TA-BKP-003/004             | RSK-004, ADR-0001     | PBI-006         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
+| RF-BKP-003 | estado do backup               | aprovado                          | entrevista 01                            | RN-BKP-001..004             | UC-BKP-001  | TA-BKP-005                 | RSK-004/011           | PBI-006         | [Parcial — candidato 0.1.0](../../.harness/evidence/health-increment/2026-10-06-candidate.md) |
 
 Itens propostos do restante do MVP aparecem no [catálogo funcional](functional-requirements.md#backlog-do-restante-do-mvp-saúde) e só entram nesta matriz quando tiverem baseline suficiente.
-
 
 ## Trilha operacional do updater piloto
 
@@ -66,23 +74,21 @@ RF-UPD-001 / DEC-050 → T101–T105 → src-tauri/src/update.rs, service.rs, sr
 
 A atualização frequente é uma decisão operacional e arquitetural, não um requisito clínico novo do primeiro incremento.
 
-| Decisão/tarefa | Artefato | Testes/evidência | Gate |
-|---|---|---|---|
-| DEC-043 / ADR-0002 | docs/architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md | T075–T080; .harness/evidence/update-pilot/ | aprovação sensível e G5 |
-| Canal piloto e estável | docs/operations/update-release-strategy.md; docs/operations/update-manifest-contract.md | UPD-001, UPD-013, UPD-014 | G5/G7 |
-| Assinatura e custódia | docs/security/update-signing.md | UPD-002, UPD-015 | aprovação sensível |
-| Pipeline e runner | docs/operations/update-pipeline-design.md; docs/architecture/update-component-inventory.md | UPD-003, UPD-004, UPD-010, UPD-011 | aprovação sensível e G5 |
-| Backup/migração/retorno | docs/quality/update-spike-test-plan.md | UPD-007, UPD-008, UPD-009, UPD-012 | G5/G6 |
+| Decisão/tarefa          | Artefato                                                                                   | Testes/evidência                           | Gate                    |
+| ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------ | ----------------------- |
+| DEC-043 / ADR-0002      | docs/architecture/adr/ADR-0002-atualizacoes-e-distribuicao.md                              | T075–T080; .harness/evidence/update-pilot/ | aprovação sensível e G5 |
+| Canal piloto e estável  | docs/operations/update-release-strategy.md; docs/operations/update-manifest-contract.md    | UPD-001, UPD-013, UPD-014                  | G5/G7                   |
+| Assinatura e custódia   | docs/security/update-signing.md                                                            | UPD-002, UPD-015                           | aprovação sensível      |
+| Pipeline e runner       | docs/operations/update-pipeline-design.md; docs/architecture/update-component-inventory.md | UPD-003, UPD-004, UPD-010, UPD-011         | aprovação sensível e G5 |
+| Backup/migração/retorno | docs/quality/update-spike-test-plan.md                                                     | UPD-007, UPD-008, UPD-009, UPD-012         | G5/G6                   |
 
 ## Refinamento de uso do MVP — 2026-10-06
 
-| Requisito | Aprovação | Implementação | Tarefas/testes | Estado |
-|---|---|---|---|---|
+| Requisito                                                | Aprovação                                                                 | Implementação                                                                                    | Tarefas/testes                                                                                                                   | Estado                                                                                 |
+| -------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | RF-UX-001 — tour no primeiro acesso, indicativos e Pular | Maycon, DEC-046; critérios em specs/001-primeiro-incremento-saude/spec.md | src/GuidedTour.tsx, src/onboarding.ts, src/App.tsx, src/EnergyForm.tsx, src-tauri/src/service.rs | T084–T087; tests/unit/onboarding.test.ts; tests::integration::tours_require_authorization_and_persist_per_user_without_migration | código e testes automatizados verificados; inspeção visual/aceite Windows 10 pendentes |
 
-
 RN-AUT-001 revisada por Maycon na DEC-047 (2026-10-07): mínimo de seis caracteres nas senhas de acesso. T088–T090; src-tauri/src/security.rs, src/App.tsx, src/onboarding.ts; teste de integração six_character_access_passwords_work_and_recovery_remains_twelve. Recuperação permanece doze, sem alteração de schema/criptografia.
-
 
 RF-DIS-001 aprovado por Maycon, DEC-048 (2026-10-07): detectar instalação e oferecer atualização manual clara. T091–T093; src-tauri/installer/PortugueseBR.nsh, src-tauri/tauri.conf.json e template NSIS gerado oficial. Checks/template/build em .harness/evidence/health-increment/2026-10-07-installer-update.md; preservação de dados após atualização e fluxo gráfico no alvo pendentes.
 
@@ -91,7 +97,6 @@ RF-UPD-001 / DEC-051 / TA-UPD-UI-001 → T106/T107, UpdatePanel.tsx e style.css;
 
 RF-AUT-004 / DEC-052 -> TA-AUT-005 -> T108–T110 -> src/App.tsx, src/style.css, src-tauri/src/service.rs e src-tauri/src/tests.rs (remembered_login_is_opt_in_authorized_and_scoped_without_credentials) -> .harness/evidence/health-increment/2026-10-07-remember-login.md. Candidato local 0.1.7; aceite Windows pendente.
 RF-UPD-001 / DEC-053 / TA-UPD-UI-002 → T112/T113, UpdatePanel.tsx/App.tsx/style.css, update-check.ts e tests/unit/update-check.test.ts; workflow habilitado localmente, runner-env.ps1 prepara ferramentas por conta. Evidência .harness/evidence/update-pilot/2026-10-07-banner-activation.md. Substitui apresentação em modal, sem invalidar histórico de builds.
-
 
 ## WEBFIT-4 — Navegação do Consultório
 
@@ -111,5 +116,10 @@ RF-UX-003/004 → V01-AC01..03 e V04-AC01..03; RF-PAT-001/003 + RF-CLI-001 → V
 
 Refinamento posterior RF-DRF-002/TA-DRF-010 → V05-AC01..03 / WEBFIT-13 / D-DRF-EXIT-001 ACCEPTED (Maycon, 2026-10-08) → src/App.tsx, src/DraftRecoveryDialog.tsx e tests/unit/draft-recovery.test.ts (3 testes de callbacks/destinos/preservação). Bloqueio anterior resolvido; checks e limites no [V05](../../specs/ui-audit-2026-10-08/V05-saida-recuperacao/spec.md). Ensaios WebView/teclado/reentrada/reinício e revisão independente pendentes.
 
-
 WEBFIT-4, 2026-10-09: RF-UX-003/TA-UX-NAV-010 → T019 → src/App.tsx, src/style.css, src/onboarding.ts (painel/logout). RF-UX-006/TA-UX-WINDOW-003 → T020 → src/WindowCloseGuard.tsx, src/window-close.ts, integração App e tests/unit/window-close.test.ts. Evidência no complemento de plan.md; nenhuma migration/versionamento de distribuição. Pedido explícito de Maycon aprova implementação, aceite humano/ensaio Windows pendentes.
+
+WEBFIT-17: RF-UX-008 → TA-DASH-001..005 → specs/WEBFIT-17/task.md → src/Dashboard.tsx, src/App.tsx, src-tauri/src/dashboard.rs e service.rs → testes Rust dashboard, smoke visual dashboard e regressão pacientes. Seleção de indicadores AGENT-PROVISIONAL; execução/aceite conforme registro.
+
+WEBFIT-17 extensão: RF-UX-008 → TA-DASH-006..008 → ConsultationHistory.tsx / Dashboard.tsx / style.css → scripts/dashboard-visual-smoke.mjs (ano/12 meses/aviso/reflow); nenhum registro de consulta/backend criado. Estado disponível somente após requisitos futuros de RF-AGE-001.
+
+RF-PRE-002 / RN-PRE-001..007 / TA-PRE-002..004 / T038 → WEBFIT-19 (2026-10-09): `collect-tbca.py`/`import-food-catalog.py`, catálogo e manifesto completos, comparação TACO, `food-catalog.ts`/`FoodPicker.tsx`, `nutrition.ts`/`nutrition.rs`, regressões Python/Node/Rust e ensaio Chrome mock. 5.874 registros TBCA (5 bloqueados), TACO4-522 qualificado; 596 demais linhas não ativadas como fallback. [Evidência, decisões e limites](../../specs/checkpoint-pendencias-2026-10-09/P02-catalogo-tbca-taco.md). Não substitui T097 nativo/aceite Amanda; snapshots históricos preservados, sem schema novo.

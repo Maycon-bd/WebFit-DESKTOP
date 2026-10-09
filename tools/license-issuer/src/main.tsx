@@ -82,8 +82,8 @@ function App() {
     <main className="issuer-main">
       <h1>Emissor de licenças WebFit</h1>
       <p>
-        Uso exclusivo do administrador. A chave privada permanece no cofre deste
-        computador.
+        Uso exclusivo do administrador. A chave privada permanece no
+        armazenamento deste computador.
       </p>
       {error && (
         <p role="alert" className="error">
@@ -92,7 +92,7 @@ function App() {
       )}
       {notice && <p role="status">{notice}</p>}
       {!status ? (
-        <p role="status">Consultando o cofre…</p>
+        <p role="status">Carregando o emissor de licenças…</p>
       ) : !status.initialized ? (
         <section>
           <h2>Preparar o emissor</h2>
@@ -115,7 +115,7 @@ function App() {
                 await operate({ op: "initialize", confirmed });
                 setConfirmed(false);
                 setNotice(
-                  "Identidade criada. Exporte a chave pública e o backup do cofre.",
+                  "Emissor preparado. Exporte a chave pública e o backup do emissor de licenças.",
                 );
               })
             }
@@ -392,14 +392,14 @@ function App() {
             >
               Exportar chave pública
             </button>
-            <p>{status.issued} autorizações emitidas neste cofre.</p>
+            <p>{status.issued} licenças geradas por este emissor.</p>
           </section>
         </>
       )}
       <section>
         <h2>Backup e recuperação do emissor</h2>
         <label>
-          Senha de recuperação do cofre
+          Senha do backup do emissor de licenças
           <input
             type="password"
             value={recovery}
@@ -438,7 +438,7 @@ function App() {
                 if (typeof path !== "string") return;
                 if (
                   !window.confirm(
-                    "Recuperar este cofre? O cofre atual será preservado em um backup protegido antes da substituição.",
+                    "Restaurar este backup do emissor de licenças? Os dados atuais do emissor serão salvos em um backup protegido antes da substituição.",
                   )
                 )
                   return;
@@ -451,11 +451,11 @@ function App() {
                 setRecovery("");
                 setRequest(null);
                 setPassword("");
-                setNotice("Cofre recuperado.");
+                setNotice("Backup do emissor de licenças restaurado.");
               })
             }
           >
-            Recuperar cofre
+            Restaurar backup do emissor
           </button>
         </div>
       </section>

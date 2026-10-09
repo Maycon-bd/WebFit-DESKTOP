@@ -17,8 +17,21 @@ test("RF-PRE-002: search combines words without accents, order or case restricti
   assert.deepEqual(searchFoods(foods, "   "), foods);
 });
 
-test("RN-PRE-001/003: catalog has unique official codes, source, units and quantitative macros", () => {
-  assert.ok(foods.length >= 70);
+test("RN-PRE-001/003: complete catalog preserves identity, units and unavailable values", () => {
+  const manifest = JSON.parse(
+    readFileSync(
+      new URL("../../src/data/tbca-import-manifest.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  assert.equal(manifest.complete, true);
+  assert.equal(foods.length, 5874);
+  assert.equal(manifest.count, foods.length);
+  assert.deepEqual(manifest.missingCodes, []);
+  assert.equal(
+    new Set(manifest.sources.map((s: { code: string }) => s.code)).size,
+    foods.length,
+  );
   assert.equal(
     new Set(foods.map((f: { code: string }) => f.code)).size,
     foods.length,
@@ -30,7 +43,8 @@ test("RN-PRE-001/003: catalog has unique official codes, source, units and quant
     assert.ok(!JSON.stringify(food).includes("\uFFFD"));
     for (const field of ["kcal", "protein", "carbs", "fat", "fiber"]) {
       assert.ok(
-        Number.isFinite(food[field]) && food[field] >= 0,
+        food[field] === null ||
+          (Number.isFinite(food[field]) && food[field] >= 0),
         `${food.code}: ${field}`,
       );
     }
@@ -40,8 +54,13 @@ test("RN-PRE-001/003: catalog has unique official codes, source, units and quant
       unit: string;
       original: string;
     }[]) {
-      assert.ok(nutrient.unit && nutrient.original);
+      assert.ok(nutrient.unit);
+      assert.equal(typeof nutrient.original, "string");
+      if (nutrient.original === "") assert.equal(nutrient.value, null);
       assert.ok(nutrient.value === null || Number.isFinite(nutrient.value));
     }
   }
+  const bread = foods.find((f: { code: string }) => f.code === "BRC0004A");
+  assert.ok(bread.compositionIssues.includes("Energia:kcal"));
+  assert.equal(bread.kcal, null);
 });

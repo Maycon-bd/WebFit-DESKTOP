@@ -1,0 +1,7 @@
+{
+  "version": "3.13.1",
+  "archive": "DB.Browser.for.SQLite-v3.13.1-win64.zip",
+  "url": "https://github.com/sqlitebrowser/sqlitebrowser/releases/download/v3.13.1/DB.Browser.for.SQLite-v3.13.1-win64.zip",
+  "sha256": "22375e275ec42d96de1d3b8e9ea4ed86d2a3505c4d0ffcbd1af67aa4003e5e4d",
+  "source": "https://github.com/sqlitebrowser/sqlitebrowser/tree/v3.13.1"
+}

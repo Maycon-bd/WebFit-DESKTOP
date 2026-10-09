@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { api, errorMessage } from "./api";
 import type { EnergyInput, EnergyResult } from "./api";
+import { FormField } from "./FormField";
+import { PercentField } from "./PercentField";
+import { ValueField } from "./ValueField";
 export function EnergyForm({
   token,
   value,
@@ -30,25 +33,30 @@ export function EnergyForm({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   function number(key: keyof EnergyInput, label: string, optional = false) {
+    const value = (input[key] as number | undefined) ?? null;
+    const onValueChange = (nextValue: number | undefined) =>
+      setInput({ ...input, [key]: nextValue, confirmedBelowBmr: false });
+    const decimals = ["age", "gestation", "lactationMonths", "days"].includes(
+      key,
+    )
+      ? 0
+      : 2;
+
     return (
-      <label className="field">
-        <span>
-          {label}
-          {optional ? " (opcional)" : ""}
-        </span>
-        <input
-          type="number"
-          step="any"
-          value={(input[key] as number) ?? ""}
-          onChange={(e) =>
-            setInput({
-              ...input,
-              [key]: e.target.value === "" ? undefined : Number(e.target.value),
-              confirmedBelowBmr: false,
-            })
-          }
-        />
-      </label>
+      <FormField label={`${label}${optional ? " (opcional)" : ""}`}>
+        {["carbsPercent", "proteinPercent", "fatPercent"].includes(key) ? (
+          <PercentField value={value} decimals={2} onChange={onValueChange} />
+        ) : (
+          <ValueField
+            value={value}
+            decimals={decimals}
+            emptyAsUndefined
+            allowNegative={key === "changeKg"}
+            showCurrencyPrefix={false}
+            onChange={onValueChange}
+          />
+        )}
+      </FormField>
     );
   }
   async function calculate() {

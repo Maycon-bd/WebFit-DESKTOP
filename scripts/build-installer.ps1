@@ -8,6 +8,6 @@ try {
   $env:PATH=(Split-Path $portable)+';'+(Join-Path $root '.tools/strawberry/c/bin')+';'+$env:PATH
   $env:LC_ALL='C'
   $env:LANG='C'
-  npm run tauri build -- --bundles nsis -- --locked
+  npm run tauri -- build --bundles nsis -- --locked
   if($LASTEXITCODE -ne 0){throw 'Falha na geração do instalador.'}
 } finally {Pop-Location}

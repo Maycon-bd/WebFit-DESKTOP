@@ -20,6 +20,13 @@ pub struct Command {
 #[derive(Deserialize)]
 #[serde(tag = "op", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    MasterStatus,
+    MasterLogin {
+        password: String,
+    },
+    MasterOperation {
+        action: crate::admin::Action,
+    },
     CalculateEnergy {
         input: crate::energy::EnergyInput,
     },
@@ -95,6 +102,9 @@ pub enum Action {
     },
     Users,
     Profile,
+    Dashboard {
+        months: u32,
+    },
     SaveProfile {
         profile: Value,
     },
@@ -196,18 +206,19 @@ pub struct User {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub support_authorization_id: Option<String>,
 }
-struct Session {
-    token: String,
-    user: User,
-    last: Instant,
-    support_deadline: Option<Instant>,
+pub(crate) struct Session {
+    pub(crate) token: String,
+    pub(crate) user: User,
+    pub(crate) last: Instant,
+    pub(crate) support_deadline: Option<Instant>,
 }
 pub struct Service {
     pub db: Connection,
     pub root: PathBuf,
     pub key: Zeroizing<Vec<u8>>,
     pub license_roots: Vec<[u8; 32]>,
-    session: Option<Session>,
+    pub(crate) session: Option<Session>,
+    pub(crate) master: crate::admin::Access,
     failed: u32,
     next_login: Option<Instant>,
     updating: bool,
@@ -415,6 +426,7 @@ impl Service {
             key,
             license_roots: crate::license::trust_roots()?,
             session: None,
+            master: crate::admin::Access::from_build(),
             failed: 0,
             next_login: None,
             updating: false,
@@ -425,6 +437,7 @@ impl Service {
     }
     pub fn lock(&mut self) {
         self.session = None;
+        self.master.lock();
         self.audit_queries.clear();
     }
     fn authorized(
@@ -514,6 +527,12 @@ impl Service {
         }
         use Action::*;
         match request.command {
+            MasterStatus => Ok(json!({"configured":self.master.configured()})),
+            MasterLogin { password } => self.master_login(password),
+            MasterOperation { action } => {
+                self.master.authorize(request.token.as_deref())?;
+                self.master_execute(action)
+            }
             RememberedLogin { administrator } => {
                 let role = if administrator {
                     "ADMIN"
@@ -753,6 +772,9 @@ impl Service {
                     return Err(Error::validation("Banco de testes sem licença: somente backup e solicitação estão disponíveis."));
                 }
                 match other {
+                    Dashboard { months } => {
+                        crate::dashboard::summary(&mut self.db, months, Utc::now().date_naive())
+                    }
                     ResetClinic { id, confirmed } => self.reset_clinic(&id, confirmed, &user),
                     RememberLogin { remember } => {
                         let key = format!("login:remembered:{}", user.role);

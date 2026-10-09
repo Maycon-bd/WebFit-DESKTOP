@@ -1,5 +1,7 @@
 # ADR-0003 — Ativação offline e suporte por instalação
 
+Adendo 2026-10-09: DEC-059/ADR-0004 aprovam integrar código de emissão e painel mestra ao produto pessoal, importando localmente o cofre atual. Restrições históricas a emissor separado/painel adiado abaixo são evoluídas nessa parte; protocolo, confiança fixa, consumo e efeitos preservados. [ADR-0004](ADR-0004-painel-administrativo-integrado.md), [manual](../../operations/admin-panel.md), [WEBFIT-16](../../../specs/WEBFIT-16/task.md).
+
 - Status: **ACCEPTED** por Maycon em 2026-10-08: “Aprovo a implementação”, após apresentação do protocolo v1 e D-LIC-006..008. Adota as recomendações de preservação de acessos do destino, legado restrito e inventário P-LIC-001. Os parágrafos de proposta abaixo documentam o desenho aprovado e sua origem; não são pendências atuais. Não autoriza dados reais ou publicação.
 - Data: 2026-10-08. Responsável técnico: Maycon. Demanda: [WEBFIT-10](../../../specs/WEBFIT-10/task.md).
 - Relacionados: ADR-0001, ADR-0002, RF-LIC-001..005, RN-LIC-001..007. RF-LIC-006/RN-LIC-008 adiados para outra demanda por Maycon.

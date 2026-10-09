@@ -11,7 +11,7 @@ DEC-058 e ADR-0003 v1 aprovados por Maycon: “Aprovo a implementação”, 2026
 | RN-LIC-001 | somente autorização de Maycon válida para instalação/operação libera seus efeitos; validação backend | aprovado DEC-058 / ADR-0003 v1 |
 | RN-LIC-002 | tipos têm efeitos separados; reimportar autorização consumida não repete efeito | aprovado DEC-058 / ADR-0003 v1 |
 | RN-LIC-003 | ativação inicial só prepara banco vazio; importar não limpa banco preparado | aprovado DEC-058 |
-| RN-LIC-004 | credencial administrativa por instalação; nenhuma senha mestra/chave privada no instalador; senha não persistida em texto claro | DEC-058/RN-AUT-001/ADR-0003 v1 |
+| RN-LIC-004 | credenciais clínicas por instalação; painel pessoal com verificador mestra compilado; chave privada do emissor importada no cofre local, sem senha clara/seed no instalador | DEC-058/RN-AUT-001; evoluído por DEC-059/ADR-0004, Maycon 2026-10-09 |
 | RN-LIC-005 | transferência/recuperação requer destino autorizado e backup validado; sem promessa de desativação remota da origem offline | aprovado DEC-058 / ADR-0003 v1 |
 | RN-LIC-006 | suporte: uma sessão de até 4 h, encerrada ao sair/bloquear; sem conta permanente criada por autorização temporária | aprovado DEC-058 / ADR-0003 v1 |
 | RN-LIC-007 | reinicialização mantém licença/acessos e limpa consultório; autorização própria, backup validado e confirmação separados; falha/cancelamento preserva dados e consumo não é reaberto | aprovado DEC-058 / ADR-0003 v1 |

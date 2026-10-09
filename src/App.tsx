@@ -1,4 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { Dashboard } from "./Dashboard";
 import type { FormEvent, ReactNode } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { listen } from "@tauri-apps/api/event";
@@ -8,9 +15,10 @@ import { BackupNotice } from "./BackupNotice";
 import { DraftRecoveryDialog } from "./DraftRecoveryDialog";
 import { FormFeedback } from "./FormFeedback";
 import { FormField as Field } from "./FormField";
-import { DateInput } from "./DateInput";
+import { DateField } from "./DateField";
+import { ValueField } from "./ValueField";
 import { SearchInput } from "./SearchInput";
-import { DataTable } from "./DataTable";
+import { MestreGrid } from "./MestreGrid";
 import { PatientSexField, canonicalPatientSex } from "./PatientSexField";
 import type { FormFeedbackState } from "./FormFeedback";
 import {
@@ -32,11 +40,12 @@ import type {
   AuditEvent,
   BackupStatus,
 } from "./api";
-import { displayName, menuComposition } from "./nutrition";
+import { compositionText, displayName, menuComposition } from "./nutrition";
 import { EnergyForm } from "./EnergyForm";
 import { FoodPicker } from "./FoodPicker";
 import { GuidedTour } from "./GuidedTour";
 import { LoginInfo } from "./LoginInfo";
+import { AdminPanel } from "./AdminPanel";
 import { LicensePanel } from "./LicensePanel";
 import type { LicenseStatus } from "./LicensePanel";
 import type { TourId } from "./onboarding";
@@ -48,7 +57,14 @@ import {
 } from "./audit-view";
 import type { AuditFilters } from "./audit-view";
 
-type Page = "patients" | "profile" | "audit" | "backup" | "access" | "settings";
+type Page =
+  | "dashboard"
+  | "patients"
+  | "profile"
+  | "audit"
+  | "backup"
+  | "access"
+  | "settings";
 function NavigationIcon({
   kind,
 }: {
@@ -204,13 +220,13 @@ export default function App() {
     setInitialized(r.initialized);
   }
   const [adminAccess, setAdminAccess] = useState(false);
+  const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const [session, setSession] = useState<{ token: string; user: User } | null>(
     null,
   );
-  const [page, setPage] = useState<Page>("patients");
+  const [page, setPage] = useState<Page>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const closeMenuButton = useRef<HTMLButtonElement>(null);
-  const openMenuButton = useRef<HTMLButtonElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const menuFocusPending = useRef(false);
   function toggleSidebar() {
     setAccountOpen(false);
@@ -219,9 +235,7 @@ export default function App() {
   }
   useLayoutEffect(() => {
     if (menuFocusPending.current) {
-      (sidebarOpen ? closeMenuButton : openMenuButton).current?.focus({
-        preventScroll: true,
-      });
+      menuButton.current?.focus({ preventScroll: true });
       menuFocusPending.current = false;
     }
   }, [sidebarOpen]);
@@ -256,6 +270,17 @@ export default function App() {
   const resolvedDraftId = useRef<string | null>(null);
   const recoveryExitFocus = useRef(false);
   const token = session?.token ?? null;
+  const endDashboardSession = useCallback(() => {
+    setError("Sua sessão terminou. Entre novamente para continuar.");
+    setNotice("");
+    setSession(null);
+    setPatient(null);
+    setPrescription(null);
+    setProfile(emptyProfile);
+    setDrafts([]);
+    draftRef.current = null;
+    draftDirty.current = false;
+  }, []);
   const tourScreen: TourId | null =
     page === "patients"
       ? prescription && patient
@@ -265,7 +290,7 @@ export default function App() {
             ? "patient"
             : "patient-new"
           : "patients"
-      : page === "settings"
+      : page === "settings" || page === "dashboard"
         ? null
         : page;
   const closeGuard = (
@@ -488,7 +513,7 @@ export default function App() {
     setAccountOpen(false);
     const state = await api<LicenseStatus>(null, { op: "status" });
     setLicenseStatus(state);
-    setPage(state.legacy ? "backup" : "patients");
+    setPage(state.legacy ? "backup" : "dashboard");
     setDrafts(
       state.legacy ? [] : await api<Draft[]>(result.token, { op: "drafts" }),
     );
@@ -551,6 +576,14 @@ export default function App() {
     return (
       <>
         {closeGuard}
+        {adminPanelOpen && (
+          <AdminPanel
+            onClose={() => setAdminPanelOpen(false)}
+            onRefresh={refreshLicense}
+            onSession={loggedIn}
+            onEnded={() => setSession(null)}
+          />
+        )}
         <main className="access-shell">
           <section className="access-intro">
             <img
@@ -668,7 +701,7 @@ export default function App() {
             adminUnavailable={initialized === null}
             error={error}
             onAdmin={() => {
-              setAdminAccess(true);
+              setAdminPanelOpen(true);
               setError("");
               setNotice("");
             }}
@@ -692,6 +725,14 @@ export default function App() {
     return (
       <>
         {closeGuard}
+        {adminPanelOpen && (
+          <AdminPanel
+            onClose={() => setAdminPanelOpen(false)}
+            onRefresh={refreshLicense}
+            onSession={loggedIn}
+            onEnded={() => setSession(null)}
+          />
+        )}
         <main className="issuer-main">
           <h1>Banco de testes preservado</h1>
           <p>
@@ -722,6 +763,14 @@ export default function App() {
   return (
     <>
       {closeGuard}
+      {adminPanelOpen && (
+        <AdminPanel
+          onClose={() => setAdminPanelOpen(false)}
+          onRefresh={refreshLicense}
+          onSession={loggedIn}
+          onEnded={() => setSession(null)}
+        />
+      )}
       <div className="application-frame">
         {!session.user.must_change && (
           <UpdatePanel
@@ -729,7 +778,7 @@ export default function App() {
             token={session.token}
             blocked={
               busy ||
-              page !== "patients" ||
+              (page !== "patients" && page !== "dashboard") ||
               patient !== null ||
               prescription !== null
             }
@@ -746,29 +795,30 @@ export default function App() {
                 aria-hidden={!sidebarOpen}
               >
                 <div className="sidebar-header">
-                  <img
-                    className="system-logo"
-                    src="/brand/webfit-icon.png"
-                    alt="WebFit Desktop"
-                    width="72"
-                    height="72"
-                  />
                   <button
-                    ref={closeMenuButton}
-                    className="menu-toggle"
-                    type="button"
-                    aria-label="Fechar menu"
-                    title="Fechar menu"
-                    aria-expanded={sidebarOpen}
-                    aria-controls="consultorio-sidebar"
-                    data-tour={sidebarOpen ? "navigation-toggle" : undefined}
-                    onClick={toggleSidebar}
+                    className="system-home"
+                    aria-label="Ir para Dashboard"
+                    disabled={busy || session.user.must_change}
+                    onClick={() => void navigate("dashboard")}
                   >
-                    <NavigationIcon kind="menu" />
+                    <img
+                      className="system-logo"
+                      src="/brand/webfit-icon.png"
+                      alt="WebFit Desktop"
+                      width="72"
+                      height="72"
+                    />
                   </button>
                 </div>
                 <nav aria-label="Módulos do consultório">
                   <h2 className="workspace">Consultório</h2>
+                  <button
+                    aria-current={page === "dashboard" ? "page" : undefined}
+                    onClick={() => void navigate("dashboard")}
+                    disabled={busy || session.user.must_change}
+                  >
+                    Dashboard
+                  </button>
                   <button
                     aria-current={page === "patients" ? "page" : undefined}
                     onClick={() => void navigate("patients")}
@@ -873,6 +923,21 @@ export default function App() {
               </aside>
             </div>
           </div>
+          <div className={`shell-toolbar${sidebarOpen ? " sidebar-open" : ""}`}>
+            <button
+              ref={menuButton}
+              className="menu-toggle"
+              type="button"
+              aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
+              title={sidebarOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={sidebarOpen}
+              aria-controls="consultorio-sidebar"
+              data-tour="navigation-toggle"
+              onClick={toggleSidebar}
+            >
+              <NavigationIcon kind="menu" />
+            </button>
+          </div>
           <main className="workspace-main" ref={workspace}>
             <DraftRecoveryDialog
               open={Boolean(visibleDraft)}
@@ -903,22 +968,6 @@ export default function App() {
                 if (visibleDraft) void discardDraft(visibleDraft);
               }}
             />
-            <div className="shell-toolbar" hidden={sidebarOpen}>
-              <button
-                ref={openMenuButton}
-                className="menu-toggle"
-                type="button"
-                hidden={sidebarOpen}
-                aria-label="Abrir menu"
-                title="Abrir menu"
-                aria-expanded={sidebarOpen}
-                aria-controls="consultorio-sidebar"
-                data-tour={!sidebarOpen ? "navigation-toggle" : undefined}
-                onClick={toggleSidebar}
-              >
-                <NavigationIcon kind="menu" />
-              </button>
-            </div>
             {!session.user.must_change && tourScreen && (
               <GuidedTour token={session.token} screen={tourScreen} />
             )}
@@ -1029,6 +1078,14 @@ export default function App() {
                       </button>
                     </section>
                     {licenseStatus && (
+                      <button
+                        disabled={busy}
+                        onClick={() => setAdminPanelOpen(true)}
+                      >
+                        Painel administrativo
+                      </button>
+                    )}
+                    {licenseStatus && (
                       <LicensePanel
                         status={licenseStatus}
                         busy={busy}
@@ -1040,6 +1097,21 @@ export default function App() {
                       />
                     )}
                   </section>
+                )}
+                {page === "dashboard" && (
+                  <Dashboard
+                    token={token}
+                    busy={busy}
+                    onUnauthorized={endDashboardSession}
+                    onPatients={() => void navigate("patients")}
+                    onNewPatient={() => {
+                      setPage("patients");
+                      setPatient(structuredClone(emptyPatient));
+                      setNavigationFocus((previous) => previous + 1);
+                    }}
+                    onProfile={() => void navigate("profile")}
+                    onBackup={() => void navigate("backup")}
+                  />
                 )}
                 {page === "patients" &&
                   (checkingDraftContext && activeDraftId ? (
@@ -1407,14 +1479,17 @@ function PatientsPage({
             placeholder="Número, nome, CPF ou telefone"
           />
         </Field>
-        <div className="segmented">
-          <button aria-pressed={!archived} onClick={() => setArchived(false)}>
-            Ativos
-          </button>
-          <button aria-pressed={archived} onClick={() => setArchived(true)}>
-            Arquivados
-          </button>
-        </div>
+        <select
+          className="patient-status-select"
+          aria-label="Situação dos pacientes"
+          value={archived ? "archived" : "active"}
+          onChange={(event) =>
+            setArchived(event.currentTarget.value === "archived")
+          }
+        >
+          <option value="active">Ativos</option>
+          <option value="archived">Arquivados</option>
+        </select>
       </div>
       {loaded && items.length === 0 ? (
         <section className="empty">
@@ -1431,15 +1506,21 @@ function PatientsPage({
           )}
         </section>
       ) : (
-        <DataTable
+        <MestreGrid
           label="Pacientes encontrados"
           rows={items}
           rowKey={(p) => p.id!}
           columns={[
-            { key: "number", label: "Número", render: (p) => p.internalNumber },
+            {
+              key: "number",
+              label: "Número",
+              sortValue: (p) => p.internalNumber ?? 0,
+              render: (p) => p.internalNumber,
+            },
             {
               key: "name",
               label: "Paciente",
+              sortValue: (p) => displayName(p),
               render: (p) => (
                 <>
                   <strong>{displayName(p)}</strong>
@@ -1450,21 +1531,25 @@ function PatientsPage({
             {
               key: "cpf",
               label: "CPF",
+              sortValue: (p) => p.cpf || "",
               render: (p) => p.cpf || "Não informado",
             },
             {
               key: "birth",
               label: "Nascimento",
+              sortValue: (p) => p.birth,
               render: (p) => p.birth.split("-").reverse().join("/"),
             },
             {
               key: "phone",
               label: "Telefone",
+              sortValue: (p) => p.phone || "",
               render: (p) => p.phone || "Não informado",
             },
             {
               key: "actions",
               label: "Ações",
+              sortable: false,
               render: (p) => (
                 <button
                   onClick={() => onOpen(p.id!)}
@@ -1532,21 +1617,14 @@ function PatientForm({
     type = "text",
     required = false,
   ) {
-    const missing =
-      validationAttempted && required && !String(patient[key] ?? "").trim();
-    const errorId = `patient-${key}-error`;
     return (
-      <Field
-        label={`${label.replace(/ \(opcional\)$/, "")}${required ? " *" : " (opcional)"}`}
-      >
+      <Field label={label}>
         {type === "date" ? (
-          <DateInput
+          <DateField
             name={key}
             value={String(patient[key] ?? "")}
             required={required}
-            aria-invalid={missing || undefined}
-            aria-describedby={missing ? errorId : undefined}
-            onChange={(e) => onChange({ ...patient, [key]: e.target.value })}
+            onValueChange={(value) => onChange({ ...patient, [key]: value })}
           />
         ) : (
           <input
@@ -1554,18 +1632,11 @@ function PatientForm({
             name={key}
             value={String(patient[key] ?? "")}
             required={required}
-            aria-invalid={missing || undefined}
-            aria-describedby={missing ? errorId : undefined}
             onChange={(e) => {
               e.currentTarget.setCustomValidity("");
               onChange({ ...patient, [key]: e.target.value });
             }}
           />
-        )}
-        {missing && (
-          <small className="patient-field-error" id={errorId}>
-            Preencha este campo.
-          </small>
         )}
       </Field>
     );
@@ -1684,7 +1755,7 @@ function PatientForm({
                 phone: "Telefone do responsável",
                 email: "E-mail do responsável",
               }).map(([key, label]) => (
-                <Field label={`${label} (opcional)`} key={key}>
+                <Field label={label} key={key}>
                   <input
                     type={key === "email" ? "email" : "text"}
                     value={patient.guardian?.[key] ?? ""}
@@ -1798,7 +1869,7 @@ function PatientForm({
               Criar tag
             </button>
           </div>
-          <Field label="Observações (opcional)">
+          <Field label="Observações">
             <textarea
               rows={4}
               value={patient.notes}
@@ -2018,10 +2089,7 @@ function ProfileForm({
           <h2>Dados profissionais</h2>
           <div className="form-grid">
             {Object.entries(fields).map(([key, label]) => (
-              <Field
-                key={key}
-                label={key === "address" ? label : `${label} (obrigatório)`}
-              >
+              <Field key={key} label={label}>
                 <input
                   value={String(value[key as keyof Profile] ?? "")}
                   type={key === "email" ? "email" : "text"}
@@ -2142,7 +2210,7 @@ function PrescriptionForm({
           </div>
           <p className="hint">
             Composição personalizada por 100 g. Registre a origem dos valores. A
-            busca inclui uma base inicial TBCA 7.3 offline. Dados ausentes e
+            busca inclui o catálogo oficial TBCA 7.3 offline. Dados ausentes e
             traços não são tratados como zero.
           </p>
           {value.meals.map((meal, mi) => (
@@ -2217,17 +2285,26 @@ function PrescriptionForm({
                     fiber: "Fibra / 100 g",
                   }).map(([key, label]) => (
                     <Field key={key} label={label}>
-                      <input
-                        type="number"
-                        readOnly={Boolean(item.code) && key !== "grams"}
-                        min={key === "grams" ? 0.01 : 0}
-                        step="any"
-                        required
-                        value={Number(item[key as keyof Food])}
-                        onChange={(e) =>
-                          changeFood(mi, ii, key as keyof Food, e.target.value)
-                        }
-                      />
+                      {item.code && item[key as keyof Food] === null ? (
+                        <input readOnly value="Indisponível na fonte" />
+                      ) : (
+                        <ValueField
+                          readOnly={Boolean(item.code) && key !== "grams"}
+                          min={key === "grams" ? 0.01 : 0}
+                          required
+                          value={Number(item[key as keyof Food])}
+                          showCurrencyPrefix={false}
+                          emptyAsUndefined={false}
+                          onChange={(amount) =>
+                            changeFood(
+                              mi,
+                              ii,
+                              key as keyof Food,
+                              String(amount ?? 0),
+                            )
+                          }
+                        />
+                      )}
                     </Field>
                   ))}
                   {item.measures && item.measures.length > 0 && (
@@ -2263,14 +2340,17 @@ function PrescriptionForm({
           ))}
         </section>
         <div className="nutrition-total">
-          <strong>Total do cardápio: {total.kcal.toFixed(0)} kcal</strong>
+          <strong>
+            Total do cardápio: {compositionText(total.kcal, 0, "kcal")}
+          </strong>
           <span>
-            Proteínas {total.protein.toFixed(1)} g · Carboidratos{" "}
-            {total.carbs.toFixed(1)} g · Gorduras {total.fat.toFixed(1)} g ·
-            Fibras {total.fiber.toFixed(1)} g
+            Proteínas {compositionText(total.protein, 1, "g")} · Carboidratos{" "}
+            {compositionText(total.carbs, 1, "g")} · Gorduras{" "}
+            {compositionText(total.fat, 1, "g")} · Fibras{" "}
+            {compositionText(total.fiber, 1, "g")}
           </span>
         </div>
-        {value.energy && (
+        {value.energy && total.kcal !== null && (
           <p>
             Energia do cardápio:{" "}
             {((total.kcal / value.energy.finalEnergy) * 100).toFixed(1)}% da
@@ -2279,6 +2359,12 @@ function PrescriptionForm({
             total.kcal <= value.energy.finalEnergy * 1.05
               ? "Dentro da faixa de 95% a 105%"
               : "Fora da faixa de 95% a 105%"}
+          </p>
+        )}
+        {value.energy && total.kcal === null && (
+          <p>
+            Energia indisponível: o cardápio contém valor ausente ou traço.
+            Comparação com a meta indisponível.
           </p>
         )}
         <Micronutrients items={value.meals.flatMap((m) => m.items)} />
@@ -2473,11 +2559,11 @@ function AuditPage({ token, task }: { token: string | null; task: Task }) {
           }).map(([key, label]) => (
             <Field key={key} label={label}>
               {["from", "to"].includes(key) ? (
-                <DateInput
+                <DateField
                   type="datetime-local"
                   value={filter[key as keyof typeof filter]}
-                  onChange={(e) =>
-                    setFilter({ ...filter, [key]: e.target.value })
+                  onValueChange={(value) =>
+                    setFilter({ ...filter, [key]: value })
                   }
                 />
               ) : (
@@ -2538,35 +2624,45 @@ function AuditPage({ token, task }: { token: string | null; task: Task }) {
           </p>
         </div>
       ) : (
-        <DataTable
+        <MestreGrid
           label="Eventos de auditoria"
           rows={items}
           rowKey={(e) => e.id}
           columns={[
-            { key: "when", label: "Quando", render: (e) => dateTime(e.at) },
+            {
+              key: "when",
+              label: "Quando",
+              sortValue: (e) => e.at,
+              render: (e) => dateTime(e.at),
+            },
             {
               key: "actor",
               label: "Ator",
+              sortValue: (e) => auditActor(e.actor, e.user),
               render: (e) => auditActor(e.actor, e.user),
             },
             {
               key: "action",
               label: "Ação",
+              sortValue: (e) => auditActions[e.action] ?? e.action,
               render: (e) => auditActions[e.action] ?? e.action,
             },
             {
               key: "entity",
               label: "Entidade",
+              sortValue: (e) => auditEntities[e.entity] ?? e.entity,
               render: (e) => auditEntities[e.entity] ?? e.entity,
             },
             {
               key: "result",
               label: "Resultado",
+              sortValue: (e) => auditResults[e.result] ?? e.result,
               render: (e) => auditResults[e.result] ?? e.result,
             },
             {
               key: "actions",
               label: "Ações",
+              sortable: false,
               render: (e) => (
                 <button
                   disabled={detailLoading}

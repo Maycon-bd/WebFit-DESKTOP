@@ -1,0 +1,149 @@
+[
+  {
+    "code": "TACO4-522",
+    "name": "Chantilly, spray, com gordura vegetal",
+    "source": "TACO 4ª edição",
+    "url": "https://nepa.unicamp.br/wp-content/uploads/sites/27/2023/10/Taco-4a-Edicao.xlsx",
+    "grams": 100,
+    "measures": [],
+    "nutrients": {
+      "Umidade:%": {
+        "value": 55.1426666,
+        "unit": "%",
+        "original": "55.142666599999998"
+      },
+      "Energia:kcal": {
+        "value": 314.9560002666667,
+        "unit": "kcal",
+        "original": "314.95600026666671"
+      },
+      "Energia:kJ": {
+        "value": 1317.7759051157336,
+        "unit": "kJ",
+        "original": "1317.7759051157336"
+      },
+      "Proteína:g": {
+        "value": 0.525,
+        "unit": "g",
+        "original": "0.52500000000000002"
+      },
+      "Lipídios:g": {
+        "value": 27.270666666666667,
+        "unit": "g",
+        "original": "27.270666666666667"
+      },
+      "Colesterol:mg": {
+        "value": null,
+        "unit": "mg",
+        "original": "Tr"
+      },
+      "Carboidrato total:g": {
+        "value": 16.85500006666667,
+        "unit": "g",
+        "original": "16.855000066666669"
+      },
+      "Fibra alimentar:g": {
+        "value": null,
+        "unit": "g",
+        "original": "NA"
+      },
+      "Cinzas:g": {
+        "value": 0.20666666666666667,
+        "unit": "g",
+        "original": "0.20666666666666667"
+      },
+      "Cálcio:mg": {
+        "value": 2.2743333333333333,
+        "unit": "mg",
+        "original": "2.2743333333333333"
+      },
+      "Magnésio:mg": {
+        "value": 0.8463333333333334,
+        "unit": "mg",
+        "original": "0.84633333333333338"
+      },
+      "Manganês:mg": {
+        "value": null,
+        "unit": "mg",
+        "original": "Tr"
+      },
+      "Fósforo:mg": {
+        "value": 15.646333333333333,
+        "unit": "mg",
+        "original": "15.646333333333333"
+      },
+      "Ferro:mg": {
+        "value": null,
+        "unit": "mg",
+        "original": "Tr"
+      },
+      "Sódio:mg": {
+        "value": 109.70366666666666,
+        "unit": "mg",
+        "original": "109.70366666666666"
+      },
+      "Potássio:mg": {
+        "value": 5.1113333333333335,
+        "unit": "mg",
+        "original": "5.1113333333333335"
+      },
+      "Cobre:mg": {
+        "value": 0.014333333333333335,
+        "unit": "mg",
+        "original": "1.4333333333333335E-2"
+      },
+      "Zinco:mg": {
+        "value": 0.07400000000000001,
+        "unit": "mg",
+        "original": "7.400000000000001E-2"
+      },
+      "Retinol:mcg": {
+        "value": null,
+        "unit": "mcg",
+        "original": "Tr"
+      },
+      "Vitamina A (RE):mcg": {
+        "value": null,
+        "unit": "mcg",
+        "original": ""
+      },
+      "Vitamina A (RAE):mcg": {
+        "value": null,
+        "unit": "mcg",
+        "original": ""
+      },
+      "Tiamina:mg": {
+        "value": 0.07,
+        "unit": "mg",
+        "original": "7.0000000000000007E-2"
+      },
+      "Riboflavina:mg": {
+        "value": null,
+        "unit": "mg",
+        "original": "Tr"
+      },
+      "Piridoxina:mg": {
+        "value": null,
+        "unit": "mg",
+        "original": "Tr"
+      },
+      "Niacina:mg": {
+        "value": null,
+        "unit": "mg",
+        "original": "Tr"
+      },
+      "Vitamina C:mg": {
+        "value": null,
+        "unit": "mg",
+        "original": ""
+      }
+    },
+    "sourceRow": 599,
+    "kcal": 314.9560002666667,
+    "protein": 0.525,
+    "carbs": 16.85500006666667,
+    "fat": 27.270666666666667,
+    "fiber": null,
+    "responseSha256": "a66b8ec528daeabc63bc2b015fc9bd8c6d76b941c2fc0ed93a4311d449302d14"
+  }
+]

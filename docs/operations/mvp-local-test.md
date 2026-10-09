@@ -16,7 +16,7 @@ O banco fica no diretório local do aplicativo do usuário do Windows, protegido
 
 ## Limites desta construção
 
-- Catálogo offline de 88 alimentos TBCA 7.3, com fonte, código, preparação, medidas disponíveis e composição por 100 g. Base completa e fallback TACO ainda pendentes; outros itens permitem composição personalizada explícita.
+- Catálogo offline do inventário TBCA 7.3: 5.874 registros coletados em 2026-10-09; 5 indisponíveis para inclusão por inconsistência/página vazia da fonte. Um fallback TACO qualificado para chantilly em spray com gordura vegetal. Fonte, código, preparação, medidas, composição por 100 g e hashes preservados. Outros candidatos TACO não foram automaticamente tratados como equivalentes.
 - Dados ausentes/traços de micronutrientes aparecem como indisponíveis, preservando os valores de origem.
 - Sem PDF, impressão, agenda, financeiro, nuvem ou atualização automática, conforme escopo/DEC-044.
 - Instalador sem assinatura Authenticode; assinatura de updater não corresponde à assinatura de executável. O comportamento do Windows e a instalação no computador-alvo precisam de ensaio manual.
@@ -28,7 +28,7 @@ Dependências da interface: `npm ci`. Verificações: `npm run check`, `cargo fm
 
 ## Fontes da composição e energia
 
-- [TBCA, USP/FoRC, versão 7.3, São Paulo, 2025](https://www.tbca.net.br/): cinco registros iniciais consultados em 2026-10-06 e 83 adicionados em 2026-10-07. Cada registro preserva a URL específica. Importação inicial em `scripts/import-tbca.ps1`, expansão em `scripts/expand-tbca.py`, com hashes de respostas públicas em `src/data/tbca-import-manifest.json`; o aplicativo funciona sem consultar a internet. Não se trata da base completa.
+- [TBCA, USP/FoRC, versão 7.3, São Paulo, 2025](https://www.tbca.net.br/): inventário completo obtido por `scripts/tbca-index.py`, coleta finita por `scripts/collect-tbca.py` e importação offline por `scripts/import-food-catalog.py`; hashes e lacunas em `src/data/tbca-import-manifest.json`. [TACO, NEPA/UNICAMP, 4ª edição](https://nepa.unicamp.br/publicacoes/): 597 linhas comparadas; evidência e candidatos em `src/data/taco-coverage.json`. Não há consultas à internet no aplicativo. A completude do inventário não significa que todas as composições são quantitativas/consistentes.
 - [Roza e Shizgal, 1984](https://pubmed.ncbi.nlm.nih.gov/6741850/): protocolo aprovado no registro clínico do projeto.
 - [NASEM, Dietary Reference Intakes for Energy, 2023](https://www.nationalacademies.org/read/26818/chapter/7): equações/tabelas 5-15 a 5-19, conforme baseline aprovada.
 - Fibras e demais regras seguem `docs/project/energy-planning-decisions-2026-08-21.md`; ensaio técnico não representa validação clínica nova.
@@ -60,7 +60,7 @@ Ensaio de aceite: crie/salve um paciente fictício na versão instalada, conclua
 
 ## Catálogo e busca — versão 0.1.4 (RF-PRE-002)
 
-Na prescrição, abra Buscar alimento na TBCA 7.3. Pesquise `feijao cozido`, `cozido feijão` e `BRC0208A`; confira a preparação e o código antes de incluir. A busca combina todas as palavras e ignora acentos/maiúsculas. Mostrar mais alimentos amplia a lista em grupos de 24. Uma busca sem resultados orienta a refinar os termos ou preencher a composição personalizada com origem explícita.
+Na prescrição, abra Buscar alimento nas tabelas oficiais. Pesquise `feijao cozido`, `cozido feijão` e `BRC0208A`; confira a preparação e o código antes de incluir. A busca combina todas as palavras e ignora acentos/maiúsculas. Mostrar mais alimentos amplia a lista em grupos de 24. Uma busca sem resultados orienta a refinar os termos ou preencher a composição personalizada com origem explícita. O catálogo carrega ao abrir o seletor, com estados de carregamento/erro. Confira o bloqueio de `BRC0004A` e `BRC0293T`, a fibra indisponível de `BRC0001F` e a origem TACO de `TACO4-522`. Salve/reabra uma prescrição fictícia e confira porção/medida/valores ausentes. Ensaio nativo WebView2 e aceite Amanda seguem pendentes.
 
 Inclua BRC0006C (banana, média de variedades), selecione 50 g e confira 54,5 kcal antes da apresentação arredondada, proteína 0,635 g, carboidratos 13,35 g, lipídios 0,095 g, fibras 1,12 g e potássio 173 mg. Os valores exibidos seguem o arredondamento aprovado; o cálculo mantém precisão. Confira também conversão da unidade de 65 g disponível para esse alimento. Salve/reabra a prescrição e confirme alimento/porção preservados. O aplicativo não precisa de internet para isso.
 

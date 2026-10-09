@@ -43,6 +43,8 @@ jobs:
         run: node -e "if (process.env.WEBFIT_RELEASE_REPO !== 'webfit-desktop-releases') throw new Error('Unexpected release repository.')"
       - name: Install locked frontend dependencies
         run: npm ci
+      - name: Prepare pinned database manager resources
+        run: npm run prepare:db-browser
       - name: Test release tooling
         run: node --test scripts/pilot-release.test.mjs scripts/prepare-pilot.test.mjs scripts/stage-pilot.test.mjs
       - name: Verify frontend format

@@ -221,6 +221,86 @@ fn write_new(path: &Path, bytes: &[u8], extension: &str) -> Result<()> {
     Ok(())
 }
 impl Vault {
+    pub fn public_key(&self) -> Result<Option<[u8; 32]>> {
+        let seed: Option<String> = self
+            .db
+            .query_row("SELECT seed FROM identity WHERE id=1", [], |r| r.get(0))
+            .optional()?;
+        seed.map(|seed| {
+            let seed = Zeroizing::new(seed);
+            let bytes = Zeroizing::new(protocol::decode(&seed).map_err(validate)?);
+            Ok(protocol::signing_key_from_bytes(&bytes)
+                .map_err(validate)?
+                .verifying_key()
+                .to_bytes())
+        })
+        .transpose()
+    }
+
+    pub fn issue_verified(
+        &mut self,
+        request: Request,
+        credential: Option<protocol::Credential>,
+        path: &Path,
+    ) -> Result<Value> {
+        if request.kind.credential() != credential.is_some() {
+            return Err(validate("Credencial incompatível com a autorização."));
+        }
+        let seed = Zeroizing::new(protocol::decode(&self.contents()?.seed).map_err(validate)?);
+        let key = protocol::signing_key_from_bytes(&seed).map_err(validate)?;
+        let envelope = protocol::issue(request.clone(), &key, credential).map_err(validate)?;
+        let tx = self.db.transaction()?;
+        tx.execute(
+            "INSERT INTO issued(id,request_id,kind) VALUES(?1,?2,?3)",
+            params![
+                envelope.id.to_string(),
+                request.request_id.to_string(),
+                request.kind.name()
+            ],
+        )?;
+        write_new(path, &serde_json::to_vec(&envelope)?, "webfit-license")?;
+        if tx.commit().is_err() {
+            let _ = std::fs::remove_file(path);
+            return Err(Error::internal());
+        }
+        Ok(json!({"issued":true,"id":envelope.id}))
+    }
+
+    pub fn issue_initial_verified(
+        &mut self,
+        credential: protocol::Credential,
+        path: &Path,
+        confirmed: bool,
+    ) -> Result<Value> {
+        if !confirmed {
+            return Err(validate(
+                "Confirme a emissão inicial e o limite de reutilização offline.",
+            ));
+        }
+        let seed = Zeroizing::new(protocol::decode(&self.contents()?.seed).map_err(validate)?);
+        let key = protocol::signing_key_from_bytes(&seed).map_err(validate)?;
+        let (envelope, code) = protocol::issue_initial_code(&key, credential).map_err(validate)?;
+        let tx = self.db.transaction()?;
+        tx.execute(
+            "INSERT INTO issued(id,request_id,kind) VALUES(?1,?2,'INITIAL')",
+            params![
+                envelope.id.to_string(),
+                envelope.request.request_id.to_string()
+            ],
+        )?;
+        write_new(path, &serde_json::to_vec(&envelope)?, "webfit-license")?;
+        if tx.commit().is_err() {
+            let _ = std::fs::remove_file(path);
+            return Err(Error::internal());
+        }
+        Ok(json!({"issued":true,"id":envelope.id,"code":code.as_str()}))
+    }
+
+    /// Product import must validate the signing identity BEFORE replacing the vault.
+    #[allow(dead_code)] // Used by the integrated product; the standalone issuer has no trust roots.
+    pub fn execute_trusted(&mut self, action: Action, roots: &[[u8; 32]]) -> Result<Value> {
+        self.execute_inner(action, Some(roots))
+    }
     pub fn open(root: PathBuf) -> Result<Self> {
         std::fs::create_dir_all(&root)?;
         let path = root.join("issuer.key.dpapi");
@@ -228,7 +308,7 @@ impl Vault {
             security::protect(&std::fs::read(path)?, true)?
         } else {
             if root.join("issuer.db").exists() {
-                return Err(validate("Recupere o cofre em um novo destino."));
+                return Err(validate("Restaure o backup do emissor em um novo destino."));
             }
             let key = security::random_key();
             std::fs::write(path, security::protect(&key, false)?.as_slice())?;
@@ -241,7 +321,7 @@ impl Vault {
         let version: i64 = db.pragma_query_value(None, "user_version", |r| r.get(0))?;
         if version > 1 {
             return Err(validate(
-                "Cofre de versão futura. Use um emissor compatível.",
+                "Dados do emissor de versão futura. Use uma versão compatível.",
             ));
         }
         if version == 0 {
@@ -286,20 +366,12 @@ impl Vault {
         })?)
     }
     pub fn execute(&mut self, action: Action) -> Result<Value> {
+        self.execute_inner(action, None)
+    }
+    fn execute_inner(&mut self, action: Action, roots: Option<&[[u8; 32]]>) -> Result<Value> {
         match action {
             Action::Status => {
-                let seed: Option<String> = self
-                    .db
-                    .query_row("SELECT seed FROM identity WHERE id=1", [], |r| r.get(0))
-                    .optional()?;
-                let public = seed
-                    .map(|s| {
-                        protocol::decode(&s)
-                            .map_err(validate)
-                            .and_then(|v| protocol::signing_key_from_bytes(&v).map_err(validate))
-                            .map(|k| protocol::encode(k.verifying_key().as_bytes()))
-                    })
-                    .transpose()?;
+                let public = self.public_key()?.map(|key| protocol::encode(&key));
                 Ok(
                     json!({"initialized":public.is_some(),"publicKey":public,"issued":self.db.query_row("SELECT count(*) FROM issued",[],|r|r.get::<_,i64>(0))?}),
                 )
@@ -337,36 +409,9 @@ impl Vault {
                 path,
                 confirmed,
             } => {
-                if !confirmed {
-                    return Err(validate(
-                        "Confirme a emissão inicial e o limite de reutilização offline.",
-                    ));
-                }
-                let seed =
-                    Zeroizing::new(protocol::decode(&self.contents()?.seed).map_err(validate)?);
-                let key = protocol::signing_key_from_bytes(&seed).map_err(validate)?;
                 let password = Zeroizing::new(password);
                 let credential = protocol::credential(&login, &password).map_err(validate)?;
-                let (envelope, code) =
-                    protocol::issue_initial_code(&key, credential).map_err(validate)?;
-                let tx = self.db.transaction()?;
-                tx.execute(
-                    "INSERT INTO issued(id,request_id,kind) VALUES(?1,?2,'INITIAL')",
-                    params![
-                        envelope.id.to_string(),
-                        envelope.request.request_id.to_string()
-                    ],
-                )?;
-                write_new(
-                    Path::new(&path),
-                    &serde_json::to_vec(&envelope)?,
-                    "webfit-license",
-                )?;
-                if tx.commit().is_err() {
-                    let _ = std::fs::remove_file(&path);
-                    return Err(Error::internal());
-                }
-                Ok(json!({"issued":true,"id":envelope.id,"code":code.as_str()}))
+                self.issue_initial_verified(credential, Path::new(&path), confirmed)
             }
             Action::Issue {
                 request,
@@ -374,36 +419,13 @@ impl Vault {
                 password,
                 path,
             } => {
-                let seed =
-                    Zeroizing::new(protocol::decode(&self.contents()?.seed).map_err(validate)?);
-                let key = protocol::signing_key_from_bytes(&seed).map_err(validate)?;
                 let password = Zeroizing::new(password);
                 let credential = if request.kind.credential() {
                     Some(protocol::credential(&login, &password).map_err(validate)?)
                 } else {
                     None
                 };
-                let envelope =
-                    protocol::issue(request.clone(), &key, credential).map_err(validate)?;
-                let tx = self.db.transaction()?;
-                tx.execute(
-                    "INSERT INTO issued(id,request_id,kind) VALUES(?1,?2,?3)",
-                    params![
-                        envelope.id.to_string(),
-                        request.request_id.to_string(),
-                        request.kind.name()
-                    ],
-                )?;
-                write_new(
-                    Path::new(&path),
-                    &serde_json::to_vec(&envelope)?,
-                    "webfit-license",
-                )?;
-                if tx.commit().is_err() {
-                    let _ = std::fs::remove_file(&path);
-                    return Err(Error::internal());
-                }
-                Ok(json!({"issued":true,"id":envelope.id}))
+                self.issue_verified(request, credential, Path::new(&path))
             }
             Action::ExportTrust { path } => {
                 let seed =
@@ -433,7 +455,7 @@ impl Vault {
                 confirmed,
             } => {
                 if !confirmed {
-                    return Err(validate("Confirme a recuperação do cofre."));
+                    return Err(validate("Confirme a restauração do backup do emissor."));
                 }
                 if Path::new(&path).extension().and_then(|v| v.to_str())
                     != Some("webfit-issuer-backup")
@@ -466,10 +488,15 @@ impl Vault {
                         .map_err(|_| validate("Senha incorreta ou backup corrompido."))?,
                 );
                 let mut contents: Contents = serde_json::from_slice(&clear)?;
-                protocol::signing_key_from_bytes(
+                let restored_key = protocol::signing_key_from_bytes(
                     &protocol::decode(&contents.seed).map_err(validate)?,
                 )
                 .map_err(validate)?;
+                if roots
+                    .is_some_and(|roots| !roots.contains(&restored_key.verifying_key().to_bytes()))
+                {
+                    return Err(validate("Este backup não corresponde ao emissor configurado no aplicativo. Importe o backup do emissor atual."));
+                }
                 if self
                     .db
                     .query_row("SELECT EXISTS(SELECT 1 FROM identity)", [], |r| {

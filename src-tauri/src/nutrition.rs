@@ -1,20 +1,57 @@
 use crate::{Error, Result};
 use serde_json::{json, Value};
+use std::{collections::HashMap, sync::OnceLock};
+
+// The expanded offline reference is immutable for this build. Parse and index
+// it once; parsing thousands of full compositions on each save is unnecessary.
+fn catalog() -> Result<&'static HashMap<String, Value>> {
+    static CATALOG: OnceLock<std::result::Result<HashMap<String, Value>, String>> = OnceLock::new();
+    CATALOG
+        .get_or_init(|| {
+            let mut catalog = HashMap::new();
+            for raw in [
+                include_str!("../../src/data/tbca.json"),
+                include_str!("../../src/data/taco.json"),
+            ] {
+                let foods: Vec<Value> = serde_json::from_str(raw).map_err(|e| e.to_string())?;
+                for food in foods {
+                    let code = food["code"]
+                        .as_str()
+                        .ok_or("Código oficial ausente.")?
+                        .to_owned();
+                    if catalog.insert(code, food).is_some() {
+                        return Err("Código oficial duplicado.".to_owned());
+                    }
+                }
+            }
+            Ok(catalog)
+        })
+        .as_ref()
+        .map_err(|_| {
+            Error::validation(
+                "Catálogo oficial offline inválido. Reinstale esta versão do aplicativo.",
+            )
+        })
+}
+
 pub fn composition(payload: &mut Value, complete: bool) -> Result<()> {
-    let catalog: Vec<Value> = serde_json::from_str(include_str!("../../src/data/tbca.json"))?;
+    let catalog = catalog()?;
     if let Some(meals) = payload["meals"].as_array_mut() {
         for meal in meals {
             if let Some(items) = meal["items"].as_array_mut() {
                 for item in items {
                     if let Some(code) = item["code"].as_str() {
-                        let official = catalog
-                            .iter()
-                            .find(|food| food["code"] == code)
-                            .ok_or_else(|| {
-                                Error::validation(
-                                    "Alimento oficial não encontrado nesta versão da base.",
-                                )
-                            })?;
+                        let official = catalog.get(code).ok_or_else(|| {
+                            Error::validation(
+                                "Alimento oficial não encontrado nesta versão da base.",
+                            )
+                        })?;
+                        if official["compositionIssues"]
+                            .as_array()
+                            .is_some_and(|issues| !issues.is_empty())
+                        {
+                            return Err(Error::validation("Este alimento possui composição conflitante na fonte oficial e está indisponível para inclusão."));
+                        }
                         let grams = item["grams"].clone();
                         *item = official.clone();
                         item["grams"] = grams;
@@ -32,7 +69,7 @@ pub fn composition(payload: &mut Value, complete: bool) -> Result<()> {
             "Inclua ao menos uma refeição antes de finalizar.",
         ));
     }
-    let mut totals = [0.0; 5];
+    let mut totals = [Some(0.0); 5];
     let keys = [
         "Sódio:mg",
         "Cálcio:mg",
@@ -76,13 +113,30 @@ pub fn composition(payload: &mut Value, complete: bool) -> Result<()> {
                 .iter()
                 .enumerate()
             {
-                let amount = item[*field]
-                    .as_f64()
-                    .filter(|n| n.is_finite() && *n >= 0.0)
-                    .ok_or_else(|| {
-                        Error::validation("Valores de composição devem ser números não negativos.")
-                    })?;
-                totals[index] += amount * grams / 100.0;
+                let amount = match item[*field].as_f64() {
+                    Some(n) if n.is_finite() && n >= 0.0 => Some(n),
+                    // Only an authoritative official record may supply an
+                    // unavailable macro. A custom composition still requires
+                    // its quantitative values; it cannot invent an official code.
+                    None if item["code"].is_string() && item[*field].is_null() => None,
+                    _ => {
+                        return Err(Error::validation(
+                            "Valores de composição devem ser números não negativos.",
+                        ))
+                    }
+                };
+                totals[index] = match (totals[index], amount) {
+                    (Some(sum), Some(amount)) => {
+                        let value = sum + amount * (grams / 100.0);
+                        if !value.is_finite() {
+                            return Err(Error::validation(
+                                "Quantidade fora da faixa de cálculo. Confira as porções.",
+                            ));
+                        }
+                        Some(value)
+                    }
+                    _ => None,
+                };
             }
             for (index, key) in keys.iter().enumerate() {
                 micros[index] = match (micros[index], item["nutrients"][*key]["value"].as_f64()) {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api } from "./api";
 import type { User } from "./api";
+import { FormField as Field } from "./FormField";
 export interface LicenseStatus {
   initialized: boolean;
   installationId: string;
@@ -27,6 +28,8 @@ export function LicensePanel({
   onSession,
   token,
   onEnded,
+  operate = api,
+  onSupport,
 }: {
   status: LicenseStatus;
   busy: boolean;
@@ -35,6 +38,8 @@ export function LicensePanel({
   onSession: (r: { token: string; user: User }) => Promise<void>;
   token: string | null;
   onEnded: () => void;
+  operate?: typeof api;
+  onSupport?: (id: string) => Promise<void>;
 }) {
   const [kind, setKind] = useState<keyof typeof kinds>(
     status.licensed ? "TEMPORARY_SUPPORT" : "INITIAL",
@@ -70,7 +75,7 @@ export function LicensePanel({
               onSubmit={(e) => {
                 e.preventDefault();
                 void task(async () => {
-                  const result = await api<{ consumed?: boolean }>(null, {
+                  const result = await operate<{ consumed?: boolean }>(null, {
                     op: "activate_license_code",
                     path: activationPath,
                     code: activationCode,
@@ -112,8 +117,7 @@ export function LicensePanel({
               <p className="license-id">
                 {activationPath || "Nenhuma licença selecionada"}
               </p>
-              <label className="field">
-                Código de ativação
+              <Field label="Código de ativação">
                 <input
                   type="password"
                   value={activationCode}
@@ -123,7 +127,7 @@ export function LicensePanel({
                   disabled={busy}
                   onChange={(e) => setActivationCode(e.target.value)}
                 />
-              </label>
+              </Field>
               <button
                 disabled={
                   busy ||
@@ -187,7 +191,7 @@ export function LicensePanel({
                       ],
                     });
                     if (!destination) return;
-                    const r = await api<{
+                    const r = await operate<{
                       content: string;
                       fingerprint: string;
                     }>(null, {
@@ -195,7 +199,7 @@ export function LicensePanel({
                       kind,
                       source: kind === "TRANSFER_RECOVERY" ? source : null,
                     });
-                    await api(null, {
+                    await operate(null, {
                       op: "save_license_request",
                       content: r.content,
                       path: destination,
@@ -222,7 +226,7 @@ export function LicensePanel({
                       ],
                     });
                     if (typeof path !== "string") return;
-                    const result = await api<{ consumed?: boolean }>(null, {
+                    const result = await operate<{ consumed?: boolean }>(null, {
                       op: "read_license_file",
                       path,
                     });
@@ -254,12 +258,19 @@ export function LicensePanel({
               Licença inicial recebida. Preencha o acesso da nutricionista para
               concluir.
             </p>
+          ) : grant.kind === "TEMPORARY_SUPPORT" && onSupport ? (
+            <button
+              disabled={busy}
+              onClick={() => void task(() => onSupport(grant.id))}
+            >
+              Iniciar sessão de suporte com o acesso mestra
+            </button>
           ) : grant.kind === "TEMPORARY_SUPPORT" ? (
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 void task(async () => {
-                  const r = await api<{ token: string; user: User }>(null, {
+                  const r = await operate<{ token: string; user: User }>(null, {
                     op: "support_login",
                     id: grant.id,
                     password,
@@ -269,8 +280,7 @@ export function LicensePanel({
                 });
               }}
             >
-              <label className="field">
-                Senha temporária fornecida pelo administrador
+              <Field label="Senha temporária fornecida pelo administrador">
                 <input
                   type="password"
                   value={password}
@@ -278,7 +288,7 @@ export function LicensePanel({
                   autoComplete="current-password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </label>
+              </Field>
               <button disabled={busy}>Iniciar sessão de suporte</button>
               <p className="hint">
                 Uma sessão de até 4 horas. Encerrar, bloquear ou reiniciar
@@ -296,7 +306,7 @@ export function LicensePanel({
                     )
                   )
                     return;
-                  await api(null, {
+                  await operate(null, {
                     op: "recover_administrator",
                     id: grant.id,
                     confirmed: true,
@@ -323,7 +333,7 @@ export function LicensePanel({
                     )
                   )
                     return;
-                  await api(token, {
+                  await operate(token, {
                     op: "reset_clinic",
                     id: grant.id,
                     confirmed: true,
@@ -347,7 +357,7 @@ export function LicensePanel({
                     )
                   )
                     return;
-                  await api(null, {
+                  await operate(null, {
                     op: "transfer_recovery",
                     id: grant.id,
                     path,
@@ -386,21 +396,18 @@ export function LicensePanel({
               <p className="license-id">
                 {path || "Nenhum backup selecionado"}
               </p>
-              <label className="field">
-                Senha de recuperação do backup
+              <Field label="Senha de recuperação do backup">
                 <input
                   name="password"
                   type="password"
                   required
                   autoComplete="off"
                 />
-              </label>
-              <label className="field">
-                Novo nome de acesso da nutricionista
+              </Field>
+              <Field label="Novo nome de acesso da nutricionista">
                 <input name="professional_name" required />
-              </label>
-              <label className="field">
-                Nova senha da nutricionista
+              </Field>
+              <Field label="Nova senha da nutricionista">
                 <input
                   name="professional_password"
                   type="password"
@@ -408,9 +415,8 @@ export function LicensePanel({
                   minLength={6}
                   autoComplete="new-password"
                 />
-              </label>
-              <label className="field">
-                Senha dos backups desta instalação
+              </Field>
+              <Field label="Senha dos backups desta instalação">
                 <input
                   name="recovery_password"
                   type="password"
@@ -418,7 +424,7 @@ export function LicensePanel({
                   minLength={12}
                   autoComplete="new-password"
                 />
-              </label>
+              </Field>
               <button disabled={busy || !path}>
                 Confirmar transferência / recuperação
               </button>

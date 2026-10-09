@@ -1,9 +1,16 @@
 mod acceptance_tests;
+mod admin;
+#[cfg(test)]
+mod admin_tests;
+// One implementation for the integrated panel and the historical issuer tool.
 #[cfg(test)]
 mod audit_recovery_tests;
 mod branding;
+mod dashboard;
 mod database;
 mod energy;
+#[path = "../../tools/license-issuer/src-tauri/src/vault.rs"]
+mod issuer_vault;
 mod license;
 mod license_tests;
 mod nutrition;

@@ -136,6 +136,140 @@ mod tests {
         assert!(nutrition::composition(&mut invalid, true).is_err());
     }
     #[test]
+    fn full_catalog_preserves_trace_rejects_conflicts_and_qualifies_only_reviewed_taco() {
+        let mut p = json!({"meals":[{"name":"Fictícia","items":[{"code":"BRC0001F","grams":50,"fiber":999}]}]});
+        nutrition::composition(&mut p, true).unwrap();
+        assert!(p["totals"]["fiber"].is_null());
+        assert_eq!(
+            p["meals"][0]["items"][0]["nutrients"]["Fibra alimentar:g"]["original"],
+            "NA"
+        );
+        let mut fallback = json!({"meals":[{"name":"Fictícia","items":[{"code":"TACO4-522","grams":25,"kcal":999}]}]});
+        nutrition::composition(&mut fallback, true).unwrap();
+        assert_eq!(fallback["meals"][0]["items"][0]["source"], "TACO 4ª edição");
+        let kcal = fallback["meals"][0]["items"][0]["kcal"].as_f64().unwrap();
+        assert_eq!(fallback["totals"]["kcal"], kcal / 4.0);
+        assert!(fallback["micronutrientTotals"]["Vitamina D:mcg"].is_null());
+        for code in ["BRC0004A", "BRC0237T", "BRC1145B", "BRC1196B", "TACO4-003"] {
+            let mut blocked =
+                json!({"meals":[{"name":"Fictícia","items":[{"code":code,"grams":100,"kcal":1}]}]});
+            assert!(nutrition::composition(&mut blocked, true).is_err());
+        }
+        let mut custom = json!({"meals":[{"name":"Fictícia","items":[{"name":"Personalizado","source":"fixture","grams":100,"kcal":1,"protein":1,"carbs":1,"fat":1,"fiber":null}]}]});
+        assert!(nutrition::composition(&mut custom, true).is_err());
+    }
+
+    #[test]
+    fn full_catalog_prescription_survives_sqlcipher_close_and_reopen() {
+        let tmp = tempfile::tempdir().unwrap();
+        let mut s = Service::open(tmp.path().to_owned()).unwrap();
+        let token = session(&mut s);
+        let patient_id = call(&mut s, Some(&token), Action::SavePatient {
+            id: None, patient: json!({"name":"Paciente catálogo fictício","birth":"1990-01-02","sex":"F","phone":"11999999999","tags":[]})
+        }).unwrap()["id"].as_str().unwrap().to_owned();
+        let payload = json!({"objective":"Ensaio fictício de catálogo","meals":[{"name":"Refeição fictícia","items":[{"code":"BRC0001F","grams":50},{"code":"TACO4-522","grams":25}]}]});
+        call(
+            &mut s,
+            Some(&token),
+            Action::SavePrescription {
+                id: None,
+                patient_id: patient_id.clone(),
+                payload,
+            },
+        )
+        .unwrap();
+        let before = call(
+            &mut s,
+            Some(&token),
+            Action::Prescriptions {
+                patient_id: patient_id.clone(),
+            },
+        )
+        .unwrap();
+        let backup = tmp.path().join("catalog-fixture.webfit-backup");
+        call(
+            &mut s,
+            Some(&token),
+            Action::Backup {
+                path: Some(backup.to_string_lossy().into()),
+            },
+        )
+        .unwrap();
+        drop(s);
+        let mut reopened = Service::open(tmp.path().to_owned()).unwrap();
+        let token = call(
+            &mut reopened,
+            None,
+            Action::Login {
+                name: "admin ficticio".into(),
+                password: "senha ficticia segura".into(),
+            },
+        )
+        .unwrap()["token"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        let after = call(
+            &mut reopened,
+            Some(&token),
+            Action::Prescriptions {
+                patient_id: patient_id.clone(),
+            },
+        )
+        .unwrap();
+        assert_eq!(before, after);
+        assert!(after[0]["payload"]["totals"]["fiber"].is_null());
+        assert_eq!(
+            after[0]["payload"]["meals"][0]["items"][1]["source"],
+            "TACO 4ª edição"
+        );
+        assert!(after[0]["payload"]["meals"][0]["items"][0]["responseSha256"].is_string());
+        // Restore must recover the saved JSON snapshot, including unavailable
+        // values, rather than looking up a fresh composition during restoration.
+        let mut edited = after[0]["payload"].clone();
+        edited["meals"][0]["items"][0]["grams"] = json!(99);
+        call(
+            &mut reopened,
+            Some(&token),
+            Action::SavePrescription {
+                id: Some(after[0]["id"].as_str().unwrap().to_owned()),
+                patient_id: patient_id.clone(),
+                payload: edited,
+            },
+        )
+        .unwrap();
+        call(
+            &mut reopened,
+            Some(&token),
+            Action::Restore {
+                path: backup.to_string_lossy().into(),
+                password: "recuperacao ficticia segura".into(),
+                confirmed: true,
+            },
+        )
+        .unwrap();
+        let token = call(
+            &mut reopened,
+            None,
+            Action::Login {
+                name: "admin ficticio".into(),
+                password: "senha ficticia segura".into(),
+            },
+        )
+        .unwrap()["token"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        let restored = call(
+            &mut reopened,
+            Some(&token),
+            Action::Prescriptions { patient_id },
+        )
+        .unwrap();
+        assert_eq!(before, restored);
+        crate::database::integrity(&reopened.db).unwrap();
+    }
+    #[test]
     fn prescription_is_immutable_and_versioned_and_archived_patient_is_protected() {
         let tmp = tempfile::tempdir().unwrap();
         let mut s = Service::open(tmp.path().to_owned()).unwrap();

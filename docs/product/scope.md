@@ -1,5 +1,7 @@
 # Escopo do produto
 
+Evolução pessoal 2026-10-09 — DEC-059/ADR-0004: Maycon aprovou painel administrativo integrado por senha mestra, código de emissão em abas e importação única do cofre atual; chave SQLCipher fixa em hexadecimal e manutenção local. RF-ADM-001..006/TA-ADM-001..021, [WEBFIT-16](../../specs/WEBFIT-16/task.md). Evolui emissor separado abaixo; protocolo e efeitos anteriores preservados. Não inclui importação WebDiet, reset de fábrica, versão web/FastAPI, dados reais, publicação ou aceite/G7.
+
 ## Refinamento de instalação — DEC-058 / WEBFIT-10
 
 Maycon aprovou em 2026-10-08 ativação offline por solicitação/licença vinculada, administrador por instalação, emissor separado com interface e tipos inicial, transferência/recuperação, suporte temporário (uma sessão até 4 h), recuperação administrativa e reinicialização. Última limpa consultório mantendo licença/acessos/consumo, com backup e confirmação separados. Discovery/Plan concluídos e implementação específica aprovada por Maycon (“Aprovo a implementação”), ADR-0003 v1/D-LIC-006..008; execução fictícia, aceite final pendente; [registro único](../../specs/WEBFIT-10/task.md). Instalações anteriores eram testes: ativações iniciais sem limpeza automática. Sem mensalidade/servidor/planos pagos/sincronização ou dados reais/G7. Pacote de suporte por cópia adiado por Maycon para outra demanda.
@@ -54,3 +56,7 @@ Maycon aprovou em 2026-10-08 ativação offline por solicitação/licença vincu
 - Biblioteca profissional de documentos e imagens sem vínculo obrigatório com paciente.
 
 O catálogo detalhado permanece em [funcionalidades candidatas](../project/functional-candidates.md). A implementação é condicionada aos requisitos e testes aprovados no Gate G2.
+
+## Dashboard geral — WEBFIT-17
+
+RF-UX-008 aprovado para implementação por Maycon em 2026-10-09: home do Consultório, acima de Pacientes e destino do símbolo WebFit. Visão agregada dos módulos existentes, extensível por requisitos futuros; gráficos/indicadores iniciais registrados como D-DASH-001/002 provisórios no registro único. Não amplia agenda/financeiro nem uso clínico/G5/G6/G7.

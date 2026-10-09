@@ -33,3 +33,22 @@ test("RN-PAT-004: social name preferred without deleting civil name", () => {
   assert.equal(patient.name, "Nome civil fictício");
   assert.equal(displayName({ ...patient, socialName: "" }), patient.name);
 });
+
+test("RN-PRE-003: missing macro propagates through meal and menu without becoming zero", () => {
+  const food = {
+    name: "Fonte fictícia",
+    source: "fixture",
+    grams: 50,
+    kcal: 100,
+    protein: 10,
+    carbs: 20,
+    fat: 1,
+    fiber: null,
+  };
+  assert.equal(composition([food]).fiber, null);
+  const totals = menuComposition([
+    { name: "Refeição", items: [food, { ...food, fiber: 2 }] },
+  ]);
+  assert.equal(totals.fiber, null);
+  assert.equal(totals.kcal, 100);
+});

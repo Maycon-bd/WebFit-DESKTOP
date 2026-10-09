@@ -1,12 +1,12 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "WebFit Desktop",
-  "version": "0.1.10",
+  "version": "0.1.12",
   "identifier": "br.webfit.desktop",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "npm run prepare:db-browser && npm run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "npm run prepare:db-browser && npm run build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -28,6 +28,7 @@
   },
   "bundle": {
     "resources": {
+      "../.tools/db-browser/3.13.1-win64/": "GerenciadorBanco/",
       "licenses/THIRD-PARTY-LICENSES.txt": "licenses/THIRD-PARTY-LICENSES.txt",
       "../docs/operations/third-party-notices.md": "licenses/COMPONENTS.md",
       "../docs/operations/mvp-local-test.md": "TESTE-LOCAL.md"

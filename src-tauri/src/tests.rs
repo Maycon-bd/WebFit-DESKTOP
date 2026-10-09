@@ -43,6 +43,23 @@ mod integration {
         result["token"].as_str().unwrap().to_owned()
     }
     #[test]
+    fn dashboard_requires_authorized_session_and_valid_period() {
+        let temp = tempfile::tempdir().unwrap();
+        let mut service = Service::open(temp.path().to_owned()).unwrap();
+        let token = setup(&mut service);
+        assert!(call(&mut service, Some(&token), Action::Dashboard { months: 3 }).is_err());
+        let result = call(&mut service, Some(&token), Action::Dashboard { months: 6 }).unwrap();
+        assert_eq!(result["patients"]["active"], 0);
+        assert_eq!(result["registrations"].as_array().unwrap().len(), 6);
+        assert!(call(&mut service, None, Action::Dashboard { months: 6 }).is_err());
+        assert!(call(
+            &mut service,
+            Some("invalid"),
+            Action::Dashboard { months: 6 }
+        )
+        .is_err());
+    }
+    #[test]
     fn remembered_login_is_opt_in_authorized_and_scoped_without_credentials() {
         let temp = tempfile::tempdir().unwrap();
         let root = temp.path().to_owned();

@@ -81,3 +81,9 @@ Próxima ação: ensaiar cadastro/numeração/migração/restore no Windows com 
 ### Continuação solicitada — 2026-10-08
 
 Conferida conclusão da rodada frontend (37 testes, lint/TS/build/Prettier PASS). HEAD observado 538091c4b25b1cba2ff566c885b9bd255c019a68, main/origin-main alinhados pela referência local; avanço externo sobre base 3558edd, sem operação Git deste chat. Mudanças locais e trabalho simultâneo preservados. Busca inicial não encontrou Cargo; preparação posteriormente autorizada por “Sim” e cache local reutilizado. Verificação nativa concluída conforme tabela, sem reabrir requisito, origem de Amanda ou autorização da migração.
+
+## Refinamento do filtro da lista — 2026-10-09
+
+- Pedido de Maycon: um único seletor em vez dos botões Ativos/Arquivados. Implementado como `<select>` nativo acessível, com seta, nome acessível “Situação dos pacientes” e “Ativos” selecionado ao entrar. O mesmo estado `archived` continua dirigindo a consulta existente; busca e persistência não mudaram.
+- Regressão: fixture fictícia arquivada adicionada ao mock; `node scripts/visual-smoke.mjs` PASS nos quatro cenários, incluindo default Ativos, troca para Arquivados e retorno a Ativos. Captura visual `ready.png` inspecionada. `npm run format:check`, Prettier dos arquivos do runner, `npm run check` (lint, TypeScript, 54 Node e Vite) e `git diff --check` PASS. Vite emitiu aviso de bundle 573,08 kB acima de 500 kB.
+- Escopo LIGHT, reuso de WEBFIT-5/RF-PAT-002/TA-PAT-020; não altera backend, esquema ou regras. Ensaio nativo WebView2/teclado no Windows e aceite permanecem pendentes.

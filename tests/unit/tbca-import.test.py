@@ -6,6 +6,9 @@ import unittest
 spec = importlib.util.spec_from_file_location("importer", Path(__file__).resolve().parents[2] / "scripts/expand-tbca.py")
 importer = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(importer)
+full_spec = importlib.util.spec_from_file_location("full_importer", Path(__file__).resolve().parents[2] / "scripts/import-food-catalog.py")
+full_importer = importlib.util.module_from_spec(full_spec)
+full_spec.loader.exec_module(full_importer)
 
 
 class ImportTests(unittest.TestCase):
@@ -34,6 +37,37 @@ class ImportTests(unittest.TestCase):
         for code, page in [("BRC0006C", self.page("NA")), ("BRC9999C", self.page())]:
             with self.assertRaises(ValueError):
                 importer.parse_food(code, "https://www.tbca.net.br/fixture", page)
+
+    def test_complete_import_keeps_trace_macro_unavailable(self):
+        food = importer.parse_food("BRC0006C", "https://www.tbca.net.br/fixture",
+                                   self.page("tr"), require_quantitative=False)
+        self.assertIsNone(food["fiber"])
+        self.assertEqual(food["nutrients"]["Fibra alimentar:g"]["original"], "tr")
+
+    def test_conflicting_rows_are_quarantined_without_last_wins(self):
+        page = self.page().replace("</table>", "<tr><td>Energia</td><td>kcal</td><td>292</td></tr></table>")
+        food = importer.parse_food("BRC0006C", "https://www.tbca.net.br/fixture",
+                                   page, require_quantitative=False)
+        self.assertIsNone(food["kcal"])
+        self.assertEqual(food["compositionIssues"], ["Energia:kcal"])
+        self.assertEqual([v["original"] for v in food["nutrients"]["Energia:kcal"]["variants"]], ["109", "292"])
+
+    def test_fallback_requires_reviewed_inventory_and_composition_hashes(self):
+        foods = [{"code": code, "name": "Chantily, em pó", "responseSha256": sha}
+                 for code, sha in full_importer.REVIEWED_CHANTILLY_PAGES.items()]
+        taco = [{"code": "TACO4-522"}]
+        coverage = [{"code": "TACO4-522", "fallbackEnabled": False}]
+        snapshot = {"indexSha256": full_importer.REVIEWED_INDEX_SHA256}
+        self.assertEqual(len(full_importer.qualify_fallback(coverage, taco, foods, snapshot)), 1)
+        with self.assertRaisesRegex(ValueError, "inventory changed"):
+            full_importer.qualify_fallback(coverage, taco, foods, {"indexSha256": "changed"})
+        changed = [dict(food) for food in foods]
+        changed[0].update(name="Chantily, spray, com gordura vegetal", responseSha256="changed")
+        with self.assertRaisesRegex(ValueError, "family inventory changed"):
+            full_importer.qualify_fallback(coverage, taco, changed, snapshot)
+        added = foods + [{"code": "BRC9999K", "name": "Chantilly, spray", "responseSha256": "changed"}]
+        with self.assertRaises(ValueError):
+            full_importer.qualify_fallback(coverage, taco, added, snapshot)
 
 
 if __name__ == "__main__":

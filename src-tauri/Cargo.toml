@@ -1,8 +1,9 @@
 [package]
 name = "webfit-desktop"
-version = "0.1.10"
+version = "0.1.12"
 description = "WebFit Desktop — primeiro incremento local"
 edition = "2021"
+default-run = "webfit-desktop"
 license = "LicenseRef-WebFit"
 
 [lib]

@@ -2,6 +2,15 @@
 
 Inventário gerado a partir de Cargo.lock/metadata e dos pacotes npm instalados. Inclui ferramentas de desenvolvimento; nem todos os itens são distribuídos no executável. Textos de licença disponíveis nos pacotes acompanham o instalador em `licenses/`.
 
+## Gerenciador de banco distribuído separadamente
+
+DB Browser for SQLite/SQLCipher **3.13.1 win64**, pacote oficial não modificado, acompanha WebFit em `GerenciadorBanco/`. Seus textos originais e avisos dos componentes estão em `GerenciadorBanco/licenses/`. O gerenciador é um executável separado do WebFit.
+
+- [Projeto e versão original](https://sqlitebrowser.org/blog/version-3-13-1-released/).
+- [Código-fonte correspondente, tag v3.13.1](https://github.com/sqlitebrowser/sqlitebrowser/tree/v3.13.1).
+- [Download do código-fonte correspondente](https://github.com/sqlitebrowser/sqlitebrowser/archive/refs/tags/v3.13.1.zip).
+- Pacote e SHA256 fixados em `tools/db-browser/bundle.json`.
+
 ## Rust
 
 | Pacote | Versão | Licença declarada |
@@ -649,7 +658,9 @@ Inventário gerado a partir de Cargo.lock/metadata e dos pacotes npm instalados.
 
 SQLCipher Community é incorporado por libsqlite3-sys; licença BSD de três cláusulas. SQLite é domínio público. OpenSSL embarcado preserva sua licença no pacote openssl-src e exige os textos correspondentes. WebView2 é um componente Microsoft distribuído por seu instalador oficial; não é software sob licença MIT do WebFit.
 
-TBCA: Tabela Brasileira de Composição de Alimentos, USP/FoRC, versão 7.3, São Paulo, 2025; https://www.tbca.net.br/. 88 registros locais: cinco preservados de 2026-10-06 e 83 consultados em 2026-10-07; manifesto e hashes em src/data/tbca-import-manifest.json. URLs, código, unidade e valor original preservados em cada registro. Uso local de teste para Amanda, sem publicação externa.
+TBCA: Tabela Brasileira de Composição de Alimentos, USP/FoRC, versão 7.3, São Paulo, 2025; https://www.tbca.net.br/. Inventário de 5.874 códigos obtido em 2026-10-09; 5 registros bloqueados por conflito/página vazia da fonte. Manifesto, hashes e lacunas em src/data/tbca-import-manifest.json. URLs, código, unidade e valor original preservados em cada registro. Uso local de teste para Amanda, sem publicação externa; autorização TBCA relatada por Maycon, documento não inspecionado.
+
+TACO: Tabela Brasileira de Composição de Alimentos, NEPA/UNICAMP, 4ª edição revisada e ampliada, Campinas, 2011; https://nepa.unicamp.br/publicacoes/. Planilha Excel oficial, SHA256 a66b8ec528daeabc63bc2b015fc9bd8c6d76b941c2fc0ed93a4311d449302d14: 597 linhas comparadas ao inventário TBCA, sem mesclar nutrientes. Produto incorpora apenas TACO4-522 (chantilly em spray com gordura vegetal), conforme qualificação registrada em src/data/taco-coverage.json. Não inventa medidas caseiras ou nutrientes ausentes; aceite clínico não inferido da qualificação técnica.
 
 NASEM 2023 e Roza/Shizgal 1984: referências clínicas e equações documentadas no projeto. Ver docs/operations/mvp-local-test.md.
 

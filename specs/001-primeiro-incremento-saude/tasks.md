@@ -221,7 +221,7 @@ Retomada 2026-10-08: Maycon autorizou iniciar catálogo/TACO, auditoria e recupe
 - [x] T094 Ampliar seleção oficial offline em src/data/tbca.json via scripts/expand-tbca.py, preservando os cinco registros anteriores, código, fonte, preparação, unidades, valores originais e proveniência em src/data/tbca-import-manifest.json.
 - [x] T095 Melhorar pesquisa por palavras/acentos/código, lista progressiva e estado vazio em src/FoodPicker.tsx e src/food-search.ts; conferir integridade, importação e autoridade/proporção no backend em tests/unit/food-search.test.ts, tests/unit/tbca-import.test.py e src-tauri/src/acceptance_tests.rs.
 - [x] T096 Gerar/verificar instalador 0.1.4 e registrar evidência em .harness/evidence/health-increment/2026-10-07-food-catalog.md.
-- [ ] T097 Ensaiar busca, medida caseira, porção, persistência e atualização no Windows 10 x64, conforme docs/operations/mvp-local-test.md. T038 ainda exige cobertura completa e fallback TACO conforme RN-PRE-002, sem inferir ausência na TBCA a partir desta seleção local.
+- [ ] T097 Ensaiar busca, medida caseira, porção, persistência e atualização no Windows 10 x64, conforme docs/operations/mvp-local-test.md. WEBFIT-19 em 2026-10-09 integrou o inventário completo TBCA (5.874 registros, 5 bloqueados) e fallback TACO4-522 tecnicamente qualificado; ensaio Chrome mock/SQLCipher automatizado não substitui Windows/WebView2/aceite. Evidência e equivalências ainda abertas no [registro P02](../checkpoint-pendencias-2026-10-09/P02-catalogo-tbca-taco.md).
 
 ## Refinamento RF-UX-002 — DEC-049, 2026-10-07
 
