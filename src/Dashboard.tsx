@@ -133,7 +133,7 @@ export function Dashboard({
     <section className="dashboard" aria-labelledby="dashboard-title">
       <header className="dashboard-heading">
         <div>
-          <h1 id="dashboard-title" tabIndex={-1}>
+          <h1 className="focus-anchor" id="dashboard-title" tabIndex={-1}>
             Dashboard
           </h1>
           <p>Uma visão geral do seu consultório.</p>

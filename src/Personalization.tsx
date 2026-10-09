@@ -34,7 +34,7 @@ export function Personalization() {
     <section aria-labelledby="personalization-title">
       <header className="page-heading">
         <div>
-          <h1 id="personalization-title" tabIndex={-1}>
+          <h1 className="focus-anchor" id="personalization-title" tabIndex={-1}>
             Personalização
           </h1>
           <p>Escolha a aparência mais confortável para trabalhar.</p>

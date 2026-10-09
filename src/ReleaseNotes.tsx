@@ -156,7 +156,12 @@ export function ReleaseNotes({
             }
           }}
         >
-          <h2 id="release-notes-title" ref={title} tabIndex={-1}>
+          <h2
+            className="focus-anchor"
+            id="release-notes-title"
+            ref={title}
+            tabIndex={-1}
+          >
             {state?.notes.title ?? "Novidades do WebFit"}
           </h2>
           <p id="release-notes-intro">

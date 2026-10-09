@@ -192,7 +192,12 @@ function Tour({
                 Pular
               </button>
             </div>
-            <h2 ref={heading} tabIndex={-1} id="tour-title">
+            <h2
+              className="focus-anchor"
+              ref={heading}
+              tabIndex={-1}
+              id="tour-title"
+            >
               {current.title}
             </h2>
             <p id="tour-text">{current.text}</p>

@@ -60,6 +60,8 @@ Passagem independente da implementação, com outro revisor humano/agente dispon
 
 Segurança conforme [política](security/POLICY.md); indisponibilidade de Mantis não elimina review disponível nem permite afirmar reprodução. UI usa Impeccable disponível, primeira leitura read-only, padrões existentes e limites visuais explícitos.
 
+Regra persistente de UI: distinguir foco de interação de foco de leitura/contexto. Títulos focados programaticamente preservam o foco sem contorno de controle (`focus-anchor`/`tabIndex={-1}`); controles mantêm foco visível. Implementação e review seguem [foco de contexto](prompts/ui-review.md#foco-de-interação-e-de-contexto--maycon-2026-10-09), aprovado por Maycon em 2026-10-09.
+
 Resultados: REVIEW PASSED, REVIEW PASSED WITH WARNINGS ou CHANGES REQUIRED. READY TO SHIP exige critérios técnicos satisfeitos, checks aplicáveis, review independente e nenhum finding impeditivo. Warnings/aceite final pendente explícitos; não concede aceite clínico, G5/G6/G7, Done ou publicação.
 
 ## Condução proporcional e retomada

@@ -2,6 +2,21 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Refinamento — WEBFIT-22, foco de contexto e harness, 2026-10-09
+
+- **Autorização/resultado:** Maycon pediu preservar foco de leitura sem contorno e adicionar prevenção no harness. LIGHT, RF-UX-009/TA-UX-THEME-001/005 e foco aprovado das novidades. Cinco títulos com focus-anchor/tabIndex=-1; controles e erros preservados. [Registro](../../specs/WEBFIT-22/task.md#foco-de-contexto-e-prevenção-no-harness--2026-10-09-light).
+- **Branch/commit-base/HEAD/sincronização — conferência ao salvar em 2026-10-09:** `main`; commit-base e HEAD `25389a728412aa15e58deaff51bf9075c9e94495`, iguais ao registro deste refinamento. Upstream local `origin/main`, ahead/behind `0/0` por `git rev-list`; sem fetch ou consulta ao remoto vivo. Refinamentos de foco/harness permanecem locais, sem commit, incluindo o novo `scripts/focus-context-visual-smoke.mjs` ainda não rastreado; alinhamento dos commits não sincroniza essas alterações com outra máquina. Trabalho preexistente e históricos das demais trilhas preservados, sem Git mutável.
+- **Última etapa/checks:** CSS/componentes, regra em ui-review/implementation/GOVERNANCE, acessibilidade/DESIGN/notas e regressão atualizados. npm check PASS (lint/TypeScript/70 testes/Vite), runner de contexto PASS (mouse/Enter/Tab/Escape/retorno/título Dashboard); formatação e diff conferidos. Autorrevisão LIGHT, sem novo review independente. Rust/Tauri não reexecutados por mudança apenas visual/foco, nenhum backend/schema.
+- **Próxima ação exata/checklist:** conferir títulos/controles e leitura por teclado no candidato Windows/WebView2 e tecnologia assistiva com dados fictícios. [x] implementação/harness/regressão; [x] documentação; [ ] aceite nativo/humano; [ ] distribuição humana. Demais trilhas mantidas.
+- **Salvamento:** checkpoint documental atualizado; checks técnicos acima referenciados, sem repetir testes/builds. Integração e envio dos arquivos pelo fluxo Git de Maycon antes da troca de máquina; capturas/logs ignorados em `.artifacts/visual-test/WEBFIT-22/` exigem preservação separada ou nova execução dos runners. G5 em execução, G6/G7 não concluídos.
+
+## Refinamento — WEBFIT-22, foco discreto, 2026-10-09
+
+- **Autorização/resultado:** pedido Maycon “Faça isso” após captura do foco quadrado. Campos com destaque fino junto à borda; rádios circulares e anel apenas para teclado; cartão sem foco duplicado. LIGHT, RF-UX-009/TA-UX-THEME-001/005. [Evidência](../../specs/WEBFIT-22/task.md#refinamento-de-foco--2026-10-09-light).
+- **Branch/commit-base/HEAD/sincronização:** main /25389a728412aa15e58deaff51bf9075c9e94495, árvore inicialmente limpa; refs locais sem divergência indicada, sem fetch/Git mutável.
+- **Última etapa:** CSS, notas, DESIGN/sidecar e runner atualizados; frontend70/lint/TypeScript/Vite/Prettier/diff e Chrome mock Claro/Escuro PASS. Autorrevisão LIGHT, sem novo review independente/nativo; Rust/Tauri não reexecutados por ajuste apenas visual.
+- **Próxima ação exata/checklist:** conferir clique/Tab nos campos e escolha do tema no candidato Windows com dados fictícios; aceite nativo/humano pendente. [x] ajuste/checks/documentação; [ ] aceite Windows; [ ] distribuição humana. Demais trilhas preservadas.
+
 ## Checkpoint — WEBFIT-22, personalização e tema escuro, 2026-10-09
 
 - **Escopo/autorização:** pedido Maycon para Personalização em Configurações e tema escuro; RF-UX-009 / TA-UX-THEME-001..005. [Registro único](../../specs/WEBFIT-22/task.md); Plane WEBFIT-22 em Review, sem Done.

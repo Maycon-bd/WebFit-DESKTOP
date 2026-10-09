@@ -47,7 +47,7 @@
       "refersTo": "input",
       "description": "Controle com cores semânticas e foco visível.",
       "html": "<label class=\"ds-field\">Nome<input class=\"ds-input\" value=\"Exemplo fictício\"></label>",
-      "css": ".ds-field { display: flex; flex-direction: column; gap: 7px; font-family: 'Segoe UI', sans-serif; color: var(--text); font-weight: 600; font-size: 14px; } .ds-input { font-family: 'Segoe UI', sans-serif; font-weight: 400; width: 100%; border: 1px solid var(--control-line); border-radius: var(--radius-control); padding: 11px 12px; background: var(--surface); color: var(--text); } .ds-input:focus { outline: 3px solid var(--focus); outline-offset: 2px; }"
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 7px; font-family: 'Segoe UI', sans-serif; color: var(--text); font-weight: 600; font-size: 14px; } .ds-input { font-family: 'Segoe UI', sans-serif; font-weight: 400; width: 100%; border: 1px solid var(--control-line); border-radius: var(--radius-control); padding: 11px 12px; background: var(--surface); color: var(--text); } .ds-input:focus { border-color: var(--focus); outline: 1px solid var(--focus); outline-offset: 0; }"
     },
     {
       "name": "Navegação selecionada",
@@ -71,7 +71,7 @@
       "refersTo": "theme-choice",
       "description": "Radio nativo; contorno da seleção e foco independentes da paleta demonstrada na miniatura.",
       "html": "<label class=\"ds-theme-choice\"><span class=\"ds-theme-label\"><input type=\"radio\" name=\"ds-theme\" checked><strong>Claro</strong></span><small>Superfícies claras e verde do WebFit.</small></label>",
-      "css": ".ds-theme-choice { display: block; font-family: 'Segoe UI', sans-serif; color: var(--text); padding: 14px; border: 1px solid var(--control-line); border-radius: var(--radius-panel); background: var(--surface); cursor: pointer; min-width: 0; } .ds-theme-choice:has(input:checked) { border-color: var(--green); outline: 2px solid var(--green); outline-offset: 2px; } .ds-theme-choice:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 4px; } .ds-theme-choice:hover { background: var(--surface-hover); } .ds-theme-label { display: flex; align-items: center; gap: 10px; margin: 14px 0 6px; } .ds-theme-label input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); } .ds-theme-choice small { display: block; color: var(--muted); margin-top: 5px; }"
+      "css": ".ds-theme-choice { display: block; font-family: 'Segoe UI', sans-serif; color: var(--text); padding: 14px; border: 1px solid var(--control-line); border-radius: var(--radius-panel); background: var(--surface); cursor: pointer; min-width: 0; } .ds-theme-choice:has(input:checked) { border-color: var(--green); outline: 1px solid var(--green); outline-offset: 1px; } .ds-theme-choice:hover { background: var(--surface-hover); } .ds-theme-label { display: flex; align-items: center; gap: 10px; margin: 14px 0 6px; } .ds-theme-label input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); } .ds-theme-choice small { display: block; color: var(--muted); margin-top: 5px; } .ds-theme-label input { appearance: none; padding: 0; border: 1px solid var(--control-line); background: var(--surface); border-radius: 50%; } .ds-theme-label input:checked { background: var(--green); border-color: var(--green); box-shadow: inset 0 0 0 3px var(--surface); } .ds-theme-label input:focus { outline: none; } .ds-theme-label input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }"
     }
   ],
   "narrative": {
@@ -81,4 +81,3 @@
     "donts": []
   }
 }
-

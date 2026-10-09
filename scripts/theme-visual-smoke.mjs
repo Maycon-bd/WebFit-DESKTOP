@@ -134,6 +134,26 @@ try {
       await page.locator("html").getAttribute("data-theme"),
       selected,
     );
+    const activeRadio = page.locator('input[name="theme"]:checked');
+    const keyboardFocus = await activeRadio.evaluate((node) => {
+      const css = getComputedStyle(node);
+      return {
+        radius: css.borderRadius,
+        outline: css.outlineWidth,
+        visible: node.matches(":focus-visible"),
+      };
+    });
+    assert.equal(keyboardFocus.radius, "50%");
+    assert.equal(keyboardFocus.outline, "2px");
+    assert.equal(keyboardFocus.visible, true);
+    await page
+      .getByRole("heading", { name: "Personalização", exact: true })
+      .click();
+    await activeRadio.click();
+    assert.equal(
+      await activeRadio.evaluate((node) => getComputedStyle(node).outlineStyle),
+      "none",
+    );
     if (initial === "blocked") {
       await page.getByText(/não foi possível salvar a preferência/).waitFor();
       await page.evaluate(() => window.restoreThemeStorage());

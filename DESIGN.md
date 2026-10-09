@@ -135,3 +135,11 @@ Somente a preferência visual é persistida na chave `webfit:appearance:v1`. Fal
 ### Primitivas compartilhadas
 
 Botões e campos mantêm raio de controle e cores semânticas; o botão tem altura mínima de 44px, preservada por `min-height` no snippet. Navegação selecionada usa seu par de seleção. Painéis do Dashboard mantêm raio próprio e separação por borda. Snippets em `.impeccable/design.json` reproduzem essas primitivas com variáveis CSS herdadas e estados de interação observados, sem nova linguagem visual.
+
+### Foco dos campos — refinamento WEBFIT-22
+
+Pedido de Maycon em 2026-10-09: destaque discreto que acompanha o controle. Campos de texto/select/textarea usam borda de foco e contorno de 1px sem afastamento. Radios usam anel circular de 2px e checkboxes contorno arredondado de 2px, somente em focus-visible para teclado. Ao clicar nesses controles, não há contorno extra; seleção nativa continua visível. O cartão de tema mantém seleção com contorno de 1px, sem segundo contorno de foco no cartão. Botões e links preservam seus indicadores.
+
+### Foco de contexto — títulos
+
+Títulos de páginas, novidades e tutoriais que recebem foco programático para leitura usam a classe compartilhada `focus-anchor` e `tabIndex={-1}`. Preservar a posição do foco, sem contorno visual de campo e sem incluir textos na ordem de Tab. Não usar essa classe em controles, tabelas navegáveis ou alertas de erro. Regra persistente de implementação/review em `.harness/prompts/ui-review.md`.

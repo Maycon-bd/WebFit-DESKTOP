@@ -204,7 +204,9 @@ function Heading({
   return (
     <header className="page-heading">
       <div>
-        <h1 tabIndex={-1}>{title}</h1>
+        <h1 className="focus-anchor" tabIndex={-1}>
+          {title}
+        </h1>
         {description && <p>{description}</p>}
       </div>
       {children}
