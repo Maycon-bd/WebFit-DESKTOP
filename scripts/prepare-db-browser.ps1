@@ -41,19 +41,9 @@ if ($ArchivePath) {
   if ($Offline) { throw 'ZIP do DB Browser ausente. Execute com -ArchivePath antes do build offline.' }
   $download = Join-Path $cacheRoot ([guid]::NewGuid().ToString() + '.zip')
   try {
-    $maximumAttempts = 3
-    for ($attempt = 1; $attempt -le $maximumAttempts; $attempt++) {
-      try {
-        Invoke-WebRequest -Uri $manifest.url -OutFile $download -UseBasicParsing
-        break
-      } catch {
-        Remove-Item -LiteralPath $download -Force -ErrorAction SilentlyContinue
-        if ($attempt -eq $maximumAttempts) {
-          throw "Falha ao baixar o DB Browser após $maximumAttempts tentativas. Último erro: $($_.Exception.Message)"
-        }
-        Start-Sleep -Seconds (2 * $attempt)
-      }
-    }
+    $downloader = Join-Path $PSScriptRoot 'download-db-browser.mjs'
+    & node $downloader $manifest.url $download
+    if ($LASTEXITCODE -ne 0) { throw 'DB Browser download failed. See downloader output above.' }
     Assert-Archive $download
     Move-Item -LiteralPath $download -Destination $cachedArchive
   } finally {

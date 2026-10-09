@@ -5,9 +5,11 @@
 ## Complemento — WEBFIT-16, download do DB Browser no CI, 2026-10-09
 
 - **Relato/causa:** workflow falhou em `npm run prepare:db-browser`; Windows PowerShell reportou falha de descriptografia em `Invoke-WebRequest` na transferência HTTPS. O log não inclui a exceção interna, então interrupção transitória/TLS é hipótese, não causa confirmada. Hash SHA-256 segue como barreira antes de extrair.
-- **Ajuste local:** download agora tenta até três vezes, remove ZIP parcial entre tentativas e só move ao cache depois do hash fixado passar. Fonte, versão, hash, TLS e conteúdo do pacote não mudaram. Task WEBFIT-16 atualizada; rerun do workflow não executado.
-- **Branch/HEAD:** `main` / `5376137cd6936cf715a894bf4ab74aba2a5a498c`; alterações locais preexistentes WEBFIT-22 preservadas. Nenhuma operação Git mutável ou publicação; estado remoto não consultado.
-- **Próxima ação exata:** Maycon integrar as alterações pelo fluxo Git e rerodar o workflow. Se o erro persistir, coletar exceção interna/diagnóstico TLS do runner antes de trocar o transporte.
+- **Ajuste e entrega:** o log enviado por Maycon confirmou que as três tentativas de `Invoke-WebRequest` falharam com a mesma exceção. Substituí o transporte pelo `fetch` nativo do Node 22 já instalado pelo CI, com três tentativas, timeout, remoção de parcial, redirects limitados a HTTPS e download máximo de 128 MiB; SHA-256 fixado é mantido. Commit `50057fdb06fb081bd2e0530b3392a39c3784593d` enviado a `main`; nova alteração ainda local.
+- **Validação:** workflow `Publish WebFit pilot` run #28 iniciou para esse SHA e falhou novamente em `Prepare pinned database manager resources` (exit code 1); checks/build/publicação posteriores foram pulados. A API/página pública expõe o estado e o log detalhado retornou HTTP 403 por exigir direitos de admin/login. Não há evidência suficiente para afirmar que a falha repetiu o erro TLS original.
+- **Verificação local:** `node --check`, AST PowerShell, `git diff --check`, download real pelo helper e SHA-256 fixado PASS; revisão independente PASS sem bloqueadores. O workflow desta implementação ainda não foi executado.
+- **Branch/HEAD/sincronização:** `main` / `50057fdb06fb081bd2e0530b3392a39c3784593d` no commit já enviado; downloader e documentação WEBFIT-16 locais, demais trilhas preservadas. Novo push/rerun ainda pendentes.
+- **Próxima ação exata:** commitar e enviar apenas a correção do downloader e documentação própria da WEBFIT-16, então verificar o run de `Publish WebFit pilot`. Se preparação/empacotamento voltar a falhar, retirar o DB Browser empacotado conforme autorização de Maycon e deixar instalação manual. Logs detalhados do workflow podem exigir autenticação de administrador.
 
 ## Checkpoint — WEBFIT-21, novidades após login, 2026-10-09
 
