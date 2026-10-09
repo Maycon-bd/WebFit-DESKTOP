@@ -33,7 +33,7 @@ autenticação → perfil → espaço Saúde → pacientes
 1. Documentos legados são fontes de descoberta, não requisitos aprovados.
 2. Só implementar requisito com ID, critérios de aceite e status aprovado.
 3. Não introduzir nuvem, sincronização ou acesso remoto sem decisão e ADR.
-4. Não adicionar segredos, dados reais, bancos, backups ou artefatos de build.
+4. Não adicionar os segredos, dados reais, bancos, backups ou artefatos de build.
 5. Manter requisitos, testes, documentação e versão rastreáveis.
 
 Consulte [AGENTS.md](AGENTS.md) para as regras obrigatórias.
