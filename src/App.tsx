@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { Dashboard } from "./Dashboard";
+import { Personalization } from "./Personalization";
 import type { FormEvent, ReactNode } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { listen } from "@tauri-apps/api/event";
@@ -65,7 +66,8 @@ type Page =
   | "audit"
   | "backup"
   | "access"
-  | "settings";
+  | "settings"
+  | "personalization";
 function NavigationIcon({
   kind,
 }: {
@@ -293,7 +295,9 @@ export default function App() {
             ? "patient"
             : "patient-new"
           : "patients"
-      : page === "settings" || page === "dashboard"
+      : page === "settings" ||
+          page === "dashboard" ||
+          page === "personalization"
         ? null
         : page;
   const closeGuard = (
@@ -868,7 +872,12 @@ export default function App() {
                       aria-label="Configurações"
                       title="Configurações"
                       aria-current={
-                        ["settings", "audit", "backup"].includes(page)
+                        [
+                          "settings",
+                          "audit",
+                          "backup",
+                          "personalization",
+                        ].includes(page)
                           ? "page"
                           : undefined
                       }
@@ -1031,7 +1040,9 @@ export default function App() {
               />
             ) : (
               <>
-                {(page === "audit" || page === "backup") && (
+                {(page === "audit" ||
+                  page === "backup" ||
+                  page === "personalization") && (
                   <button
                     className="settings-return"
                     disabled={busy}
@@ -1044,9 +1055,19 @@ export default function App() {
                   <section aria-label="Configurações">
                     <Heading
                       title="Configurações"
-                      description="Ferramentas para cuidar dos registros e das cópias do consultório."
+                      description="Personalize o aplicativo e cuide dos registros e das cópias do consultório."
                     />
                     <div className="settings-list">
+                      <button
+                        disabled={busy}
+                        onClick={() => void navigate("personalization")}
+                      >
+                        <span>
+                          <strong>Personalização</strong>
+                          <small>Escolher entre o tema claro e o escuro.</small>
+                        </span>
+                        <NavigationIcon kind="chevron" />
+                      </button>
                       <button
                         disabled={busy}
                         onClick={() => void navigate("audit")}
@@ -1117,6 +1138,7 @@ export default function App() {
                     )}
                   </section>
                 )}
+                {page === "personalization" && <Personalization />}
                 {page === "dashboard" && (
                   <Dashboard
                     token={token}

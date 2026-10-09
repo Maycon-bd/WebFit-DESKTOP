@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-09T16:52:45.7902124-03:00",
+  "title": "WebFit Desktop — Interface de trabalho",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "dialog",
+        "value": "var(--dialog-shadow)",
+        "purpose": "Sombra de diálogos; a intensidade acompanha o tema ativo em src/style.css."
+      }
+    ],
+    "motion": [
+      {
+        "name": "button-feedback",
+        "value": "background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out",
+        "purpose": "Feedback curto dos botões; não adia mudança de estado."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "theme-single-column",
+        "value": "560px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão primário",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal, com texto e verde do tema ativo.",
+      "html": "<button class=\"ds-primary\">Salvar</button>",
+      "css": ".ds-primary { font-family: 'Segoe UI', sans-serif; font-weight: 600; cursor: pointer; border: 1px solid var(--green); border-radius: var(--radius-control); min-height: var(--control-height); padding: 10px 16px; background: var(--green); color: var(--on-primary); transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out; } .ds-primary:hover, .ds-primary:active:not(:disabled) { background: var(--primary-hover); } .ds-primary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; } .ds-primary:disabled { opacity: .5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Botão secundário",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação com contorno e superfície do tema ativo.",
+      "html": "<button class=\"ds-secondary\">Voltar</button>",
+      "css": ".ds-secondary { font-family: 'Segoe UI', sans-serif; font-weight: 600; cursor: pointer; border: 1px solid var(--control-line); border-radius: var(--radius-control); min-height: var(--control-height); padding: 10px 16px; background: var(--surface); color: var(--text); transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out; } .ds-secondary:hover, .ds-secondary:active:not(:disabled) { background: var(--surface-hover); } .ds-secondary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; } .ds-secondary:disabled { opacity: .5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Campo de texto",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Controle com cores semânticas e foco visível.",
+      "html": "<label class=\"ds-field\">Nome<input class=\"ds-input\" value=\"Exemplo fictício\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 7px; font-family: 'Segoe UI', sans-serif; color: var(--text); font-weight: 600; font-size: 14px; } .ds-input { font-family: 'Segoe UI', sans-serif; font-weight: 400; width: 100%; border: 1px solid var(--control-line); border-radius: var(--radius-control); padding: 11px 12px; background: var(--surface); color: var(--text); } .ds-input:focus { outline: 3px solid var(--focus); outline-offset: 2px; }"
+    },
+    {
+      "name": "Navegação selecionada",
+      "kind": "nav",
+      "refersTo": "nav-selected",
+      "description": "Destino atual em uma navegação com teclado.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Consultório\"><button aria-current=\"page\">Dashboard</button><button>Pacientes</button></nav>",
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 5px; background: var(--sidebar-surface); color: var(--text); } .ds-nav button { font-family: 'Segoe UI', sans-serif; font-weight: 500; text-align: left; border: 0; border-radius: var(--radius-control); min-height: var(--control-height); background: transparent; color: var(--text); padding: 12px 14px; cursor: pointer; } .ds-nav button:hover { background: transparent; } .ds-nav button:active { background: var(--surface-hover); } .ds-nav button[aria-current='page'] { background: var(--selected); color: var(--selected-text); font-weight: 650; } .ds-nav button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }"
+    },
+    {
+      "name": "Painel do Dashboard",
+      "kind": "card",
+      "refersTo": "dashboard-panel",
+      "description": "Superfície estática com borda; usa a mesma composição nos dois temas.",
+      "html": "<section class=\"ds-panel\"><h2>Consultório</h2><p>Exemplo de painel.</p></section>",
+      "css": ".ds-panel { font-family: 'Segoe UI', sans-serif; color: var(--text); min-width: 0; padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; } .ds-panel h2 { margin-top: 0; font-size: 20px; line-height: 1.3; font-weight: 600; } .ds-panel p { margin-top: 0; line-height: 1.6; color: var(--muted); }"
+    },
+    {
+      "name": "Opção de tema",
+      "kind": "custom",
+      "refersTo": "theme-choice",
+      "description": "Radio nativo; contorno da seleção e foco independentes da paleta demonstrada na miniatura.",
+      "html": "<label class=\"ds-theme-choice\"><span class=\"ds-theme-label\"><input type=\"radio\" name=\"ds-theme\" checked><strong>Claro</strong></span><small>Superfícies claras e verde do WebFit.</small></label>",
+      "css": ".ds-theme-choice { display: block; font-family: 'Segoe UI', sans-serif; color: var(--text); padding: 14px; border: 1px solid var(--control-line); border-radius: var(--radius-panel); background: var(--surface); cursor: pointer; min-width: 0; } .ds-theme-choice:has(input:checked) { border-color: var(--green); outline: 2px solid var(--green); outline-offset: 2px; } .ds-theme-choice:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 4px; } .ds-theme-choice:hover { background: var(--surface-hover); } .ds-theme-label { display: flex; align-items: center; gap: 10px; margin: 14px 0 6px; } .ds-theme-label input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); } .ds-theme-choice small { display: block; color: var(--muted); margin-top: 5px; }"
+    }
+  ],
+  "narrative": {
+    "overview": "Tema Claro com fundo claro quente, texto escuro e verde escuro para ação primária; tema Escuro com superfícies verde/carvão, texto claro e verde claro para ação primária. Ambos preservam a fonte Segoe UI nativa do Windows.",
+    "rules": [],
+    "dos": [],
+    "donts": []
+  }
+}
+

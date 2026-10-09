@@ -6,7 +6,7 @@ TA-ADM-022..025 / RF-ADM-007: pacote completo do gerenciador incluído no NSIS/u
 
 TA-ADM-001..021 / RF-ADM-001..006: comportamento aprovado por Maycon em 2026-10-09; [critérios completos e evidência](../../specs/WEBFIT-16/task.md). Senha mestra/sessão Rust, cofre atual/compatibilidade, cinco tipos, chave hex fixa, verificador de build, manutenção e UI. Checks locais PASS: 57 Rust/SQLCipher/DPAPI com fixtures, 54 Node, seis cenários UI mock, build Tauri debug. Revisão independente com warnings; aprovação/automação não equivale a aceite Windows. Evento real de bloqueio, atualização, GUI SQLCipher, teclado/zoom nativos ainda não ensaiados.
 
-**TA-UX-WINDOW-002 / RF-UX-005 — aprovado para implementação, Maycon, 2026-10-09:** barra com fundo claro WebFit e controles escuros, fora da rolagem em acesso e telas autenticadas; arraste em região dedicada, controles acessíveis de minimizar/maximizar-restaurar/fechar. Fechar e Alt+F4 passam pelo fluxo existente de confirmação/rascunhos, sem bypass. Conteúdo/ações alcançáveis em zoom/resize, título longo truncado. Configuração/capabilities/build e callbacks com fixture; ensaio Windows10/WebView pendente.
+**TA-UX-WINDOW-002 / RF-UX-005 — aprovado para implementação, Maycon, 2026-10-09:** barra com fundo claro WebFit e controles escuros no tema Claro; tema Escuro acompanha RF-UX-009 com controles contrastantes, fora da rolagem em acesso e telas autenticadas; arraste em região dedicada, controles acessíveis de minimizar/maximizar-restaurar/fechar. Fechar e Alt+F4 passam pelo fluxo existente de confirmação/rascunhos, sem bypass. Conteúdo/ações alcançáveis em zoom/resize, título longo truncado. Configuração/capabilities/build e callbacks com fixture; ensaio Windows10/WebView pendente.
 
 **TA-UX-TUT-001 / RF-UX-001 — aprovado para implementação, Maycon, 2026-10-09:** nenhum Ver tutorial fixo em telas. Reiniciar tutoriais acessível em Configurações, com andamento/sucesso/erro; reset autorizado apenas para usuário conectado, idempotente, sem afetar outro usuário ou preferências/dados. Após reset/reabrir, tours voltam automaticamente na entrada das telas e podem ser pulados/concluídos; não repetem indefinidamente após nova conclusão. Foco anterior preservado ao fechar. Testes Rust de autorização/isolamento/reabertura e SSR de controles; ensaio integrado Windows pendente.
 
@@ -219,3 +219,13 @@ Status: aprovado para implementação por Maycon em 2026-10-09, pedido e confirm
 | TA-UPD-NEWS-006 | Diálogo nomeado, teclado/foco/Escape, retorno do foco e viewport/zoom preservam conteúdo/ações; tours não disputam abertura automática. |
 | TA-UPD-NEWS-007 | Cada entrega mantém resumo editorial local; build/staging recusam notas ausentes/vazias; publicação usa o mesmo texto. Versão piloto gerada automaticamente não depende de versão duplicada nas notas. |
 | TA-UPD-NEWS-008 | Comandos exigem sessão/permissões existentes e derivam usuário/versão no backend; leitura persiste em SQLite sem schema novo, incluindo reabertura/restauração de backup. |
+
+## Tema — RF-UX-009 / WEBFIT-22
+
+Aprovado para implementação pelo pedido de Maycon, 2026-10-09; aceite final pendente.
+
+- TA-UX-THEME-001: Configurações oferece Personalização e retorno acessível; opções Claro/Escuro identificáveis, selecionáveis por teclado e com foco visível.
+- TA-UX-THEME-002: selecionar Escuro aplica imediatamente fundo, texto, ações, formulários, tabelas, gráficos, barra, calendário e diálogos; Claro restaura a apresentação anterior. Sem reinício/perda de formulário.
+- TA-UX-THEME-003: somente preferência visual é persistida localmente e aplicada antes da primeira renderização, inclusive acesso e após reabrir/logout; valor ausente/inválido usa Claro (D-THEME-001 provisória).
+- TA-UX-THEME-004: falha de gravação mantém tema selecionado na sessão, explica limite de persistência e permite tentar salvar novamente; falha de leitura não impede acesso.
+- TA-UX-THEME-005: ambos os temas mantêm contraste legível, estados erro/sucesso/foco, seleção nativa e conteúdo/ações disponíveis em janela pequena ou zoom, sem dados clínicos em armazenamento visual.

@@ -36,3 +36,7 @@ Educação não aparece como funcionalidade simulada no MVP. A estrutura poderá
 - CPF mascarado em listagens.
 - Pacientes ativos e arquivados claramente separados.
 - Ações destrutivas ou de substituição exigem confirmação.
+
+## Personalização — WEBFIT-22
+
+RF-UX-009: Configurações → Personalização → Tema do aplicativo (Claro/Escuro). Voltar às Configurações usa a navegação/foco existente. Seleção imediata e preferência local ao computador; falha de gravação informa aplicação apenas na sessão e permite retry. Não acrescenta domínio ou acesso remoto.

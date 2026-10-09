@@ -25,16 +25,20 @@ test("RF-PRE-002: catalog parsing rejects corruption and duplicate identities", 
   );
 });
 
-test("complete TBCA assets parse together while empty source pages remain blocked", () => {
+test("complete TBCA assets keep conflicts blocked and import the corrected omelet source", () => {
   const foods = parseFoodCatalog(
     readFileSync(new URL("../../src/data/tbca.json", import.meta.url), "utf8"),
   );
   assert.equal(foods.length, 5874);
-  const empty = foods.find((f) => f.code === "BRC0293T");
-  assert.ok(empty?.name);
-  assert.ok(empty?.compositionIssues?.length);
-  assert.equal(empty?.kcal, null);
-  assert.equal(foods.filter((f) => f.compositionIssues?.length).length, 5);
+  const corrected = foods.find((f) => f.code === "BRC0293T");
+  assert.ok(corrected?.name.includes("Omelete vegano"));
+  assert.ok(!corrected?.compositionIssues?.length);
+  assert.equal(corrected?.kcal, 119);
+  assert.equal(corrected?.protein, 5);
+  assert.equal(corrected?.carbs, 18);
+  assert.equal(corrected?.fat, 4.1);
+  assert.equal(corrected?.fiber, 5.02);
+  assert.equal(foods.filter((f) => f.compositionIssues?.length).length, 4);
 });
 
 test("RN-PRE-001: TACO fallback belongs to the complete inventory qualification", () => {

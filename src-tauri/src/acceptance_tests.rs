@@ -245,6 +245,17 @@ mod tests {
     }
     #[test]
     fn full_catalog_preserves_trace_rejects_conflicts_and_qualifies_only_reviewed_taco() {
+        let mut corrected = json!({"meals":[{"name":"Fictícia","items":[{"code":"BRC0293T","grams":50,"kcal":999}]}]});
+        nutrition::composition(&mut corrected, true).unwrap();
+        assert_eq!(corrected["totals"]["kcal"], 59.5);
+        assert_eq!(corrected["totals"]["protein"], 2.5);
+        assert_eq!(corrected["totals"]["carbs"], 9.0);
+        assert_eq!(corrected["totals"]["fat"], 2.05);
+        assert_eq!(corrected["totals"]["fiber"], 2.51);
+        assert_eq!(
+            corrected["meals"][0]["items"][0]["responseSha256"],
+            "dd8c0b16a2d1dda0148962fd6807921202f1d7f85ef56e385f5c0c9fab65900e"
+        );
         let mut p = json!({"meals":[{"name":"Fictícia","items":[{"code":"BRC0001F","grams":50,"fiber":999}]}]});
         nutrition::composition(&mut p, true).unwrap();
         assert!(p["totals"]["fiber"].is_null());
@@ -275,7 +286,7 @@ mod tests {
         let patient_id = call(&mut s, Some(&token), Action::SavePatient {
             id: None, patient: json!({"name":"Paciente catálogo fictício","birth":"1990-01-02","sex":"F","phone":"11999999999","tags":[]})
         }).unwrap()["id"].as_str().unwrap().to_owned();
-        let payload = json!({"objective":"Ensaio fictício de catálogo","meals":[{"name":"Refeição fictícia","items":[{"code":"BRC0001F","grams":50},{"code":"TACO4-522","grams":25}]}]});
+        let payload = json!({"objective":"Ensaio fictício de catálogo","meals":[{"name":"Refeição fictícia","items":[{"code":"BRC0001F","grams":50},{"code":"TACO4-522","grams":25}]},{"name":"Porções e preparações fictícias","items":[{"code":"BRC0208A","grams":55},{"code":"BRC0006C","grams":50},{"code":"BRC0017A","grams":100},{"code":"BRC0016A","grams":100}]}]});
         call(
             &mut s,
             Some(&token),
@@ -327,6 +338,21 @@ mod tests {
         .unwrap();
         assert_eq!(before, after);
         assert!(after[0]["payload"]["totals"]["fiber"].is_null());
+        let portions = &after[0]["payload"]["meals"][1]["items"];
+        assert_eq!(portions[0]["grams"], 55);
+        assert_eq!(portions[1]["grams"], 50);
+        assert_eq!(portions[1]["kcal"], 109.0);
+        assert_eq!(portions[2]["code"], "BRC0017A");
+        assert_eq!(portions[2]["kcal"], 347.0);
+        assert_eq!(portions[3]["code"], "BRC0016A");
+        assert_eq!(portions[3]["kcal"], 108.0);
+        let portion_energy: f64 = portions
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|f| f["kcal"].as_f64().unwrap() * f["grams"].as_f64().unwrap() / 100.0)
+            .sum();
+        assert!((portion_energy - 585.4).abs() < 1e-9);
         assert_eq!(
             after[0]["payload"]["meals"][0]["items"][1]["source"],
             "TACO 4ª edição"

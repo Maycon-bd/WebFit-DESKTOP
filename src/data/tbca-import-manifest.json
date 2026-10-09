@@ -334,10 +334,6 @@
       ]
     },
     {
-      "code": "BRC0293T",
-      "fields": ["Official composition page empty; name from index only"]
-    },
-    {
       "code": "BRC1145B",
       "fields": ["Lipídios:g"]
     },
@@ -377,15 +373,15 @@
       ]
     }
   ],
-  "usableCount": 5869,
-  "blockedCount": 5,
+  "usableCount": 5870,
+  "blockedCount": 4,
   "fallbackCodes": ["TACO4-522"],
   "unavailableMacros": {
-    "fiber": 130,
-    "fat": 40,
-    "kcal": 9,
-    "protein": 21,
-    "carbs": 13
+    "fiber": 129,
+    "fat": 39,
+    "kcal": 8,
+    "protein": 20,
+    "carbs": 12
   },
   "sources": [
     {
@@ -14361,7 +14357,7 @@
     {
       "code": "BRC0293T",
       "url": "https://www.tbca.net.br/base-dados/int_composicao_alimentos_2_edit.php?n0REd3kv7e86D%2BViXWYUnQ%3D%3D=hi8US89HFElt9a9H7RwH7A%3D%3D",
-      "responseSha256": "b26e0f06c017dc2ccd55a355cb87e90b8daa4d18ea13c845ebc0667112eb13ad"
+      "responseSha256": "dd8c0b16a2d1dda0148962fd6807921202f1d7f85ef56e385f5c0c9fab65900e"
     },
     {
       "code": "BRC0294A",

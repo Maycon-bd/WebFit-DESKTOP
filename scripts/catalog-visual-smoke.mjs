@@ -155,13 +155,59 @@ try {
         await page.getByLabel("Quantidade (g)").inputValue(),
         "55,00",
       );
+      assert.equal(
+        await page.getByLabel("kcal / 100 g").inputValue(),
+        "138,00",
+      );
+      await search.fill("BRC0006C");
+      await page.locator(".catalog-row button").click();
+      await page
+        .getByLabel("Converter medida caseira para gramas")
+        .nth(1)
+        .selectOption("65");
+      assert.equal(
+        await page.getByLabel("Quantidade (g)").nth(1).inputValue(),
+        "65,00",
+      );
+      // ValueField uses two decimal places while typing; enter the explicit
+      // formatted amount rather than the two digits representing 0.50 g.
+      await page.getByLabel("Quantidade (g)").nth(1).fill("50,00");
+      await page.getByLabel("Quantidade (g)").nth(1).press("Tab");
+      await page
+        .getByText("Total do cardápio: 130 kcal", { exact: true })
+        .waitFor();
+      for (const [code, kcal] of [
+        ["BRC0017A", "347,00"],
+        ["BRC0016A", "108,00"],
+      ]) {
+        await search.fill(code);
+        await page.locator(".catalog-row button").click();
+        assert.equal(
+          await page.getByLabel("kcal / 100 g").last().inputValue(),
+          kcal,
+        );
+      }
+      await page
+        .getByText("Total do cardápio: 585 kcal", { exact: true })
+        .waitFor();
+      await search.fill("TACO4-522");
+      await search.fill("BRC0293T");
+      assert.equal(
+        await page.locator(".catalog-row button").isDisabled(),
+        false,
+      );
+      await page.locator(".catalog-row button").click();
+      assert.equal(
+        await page.getByLabel("kcal / 100 g").nth(4).inputValue(),
+        "119,00",
+      );
       await search.fill("TACO4-522");
       await page.locator(".catalog-row button").click();
       await search.fill("BRC0001F");
       await page.locator(".catalog-row button").click();
-      await page.getByLabel("Fibra / 100 g").nth(2).waitFor();
+      await page.getByLabel("Fibra / 100 g").nth(6).waitFor();
       assert.equal(
-        await page.getByLabel("Fibra / 100 g").nth(2).inputValue(),
+        await page.getByLabel("Fibra / 100 g").nth(6).inputValue(),
         "Indisponível na fonte",
       );
       await page
@@ -181,11 +227,27 @@ try {
         .click();
       assert.equal(
         await page.locator(".food-grid .field:first-child input").count(),
-        3,
+        7,
       );
       assert.equal(
-        await page.getByLabel("Origem (ex.: rótulo)").nth(1).inputValue(),
+        await page.getByLabel("Origem (ex.: rótulo)").nth(5).inputValue(),
         "TACO 4ª edição",
+      );
+      assert.equal(
+        await page.getByLabel("Quantidade (g)").nth(0).inputValue(),
+        "55,00",
+      );
+      assert.equal(
+        await page.getByLabel("Quantidade (g)").nth(1).inputValue(),
+        "50,00",
+      );
+      assert.equal(
+        await page.getByLabel("kcal / 100 g").nth(2).inputValue(),
+        "347,00",
+      );
+      assert.equal(
+        await page.getByLabel("kcal / 100 g").nth(3).inputValue(),
+        "108,00",
       );
       await page.screenshot({
         path: resolve(output, `${scenario}.png`),

@@ -322,7 +322,7 @@ Envio remoto ao paciente está fora do MVP local. O módulo só entra se houver 
 
 ### Capacidades candidatas
 
-- Tema visual.
+- Tema visual: Claro/Escuro aprovado para implementação pelo pedido de Maycon em 2026-10-09, RF-UX-009 / WEBFIT-22; demais personalizações continuam candidatas.
 - Preferências de tabela e navegação.
 - Dados padrão do profissional e da clínica.
 - Modelos de texto reutilizáveis em documentos ou comunicação manual.

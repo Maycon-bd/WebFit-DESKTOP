@@ -6,7 +6,7 @@ RF-ADM-007 / TA-ADM-022..025 **aprovado para implementação por Maycon em 2026-
 
 RF-ADM-001..006 / TA-ADM-001..021 **aprovados para implementação por Maycon em 2026-10-09**: painel pelo ícone de informações, senha mestra única para todas as funções/emissor, cinco tipos de licença e manutenção completa. Chave SQLCipher fixa hexadecimal existente e importação única do backup do emissor atual foram escolhas específicas. Verificador de build/backend; nenhum segredo claro no instalador/repo. [Registro/aceite](../../specs/WEBFIT-16/task.md), [ADR-0004](../architecture/adr/ADR-0004-painel-administrativo-integrado.md). Implementação/checks locais concluídos, revisão independente com warnings; provisionamento e aceite Windows pendentes. Sem reset de fábrica, importação WebDiet, banco real pelo agente ou publicação. Baseline WEBFIT-10 histórica abaixo preservada.
 
-**RF-UX-005 — barra clara aprovada por Maycon, 2026-10-09:** barra de título própria com fundo claro da paleta WebFit, independente da cor de destaque do Windows, fixa fora da rolagem; arrastar e minimizar/maximizar-restaurar/solicitar fechamento. Fechamento preserva confirmação/rascunhos vigentes. Prioridade: ajuste solicitado; TA-UX-WINDOW-002/T-UX-WINDOW-002 no registro WEBFIT-10, aceite integrado pendente.
+**RF-UX-005 — barra clara aprovada por Maycon, 2026-10-09:** barra de título própria com fundo da paleta WebFit (claro por padrão; acompanha o tema escolhido em RF-UX-009), independente da cor de destaque do Windows, fixa fora da rolagem; arrastar e minimizar/maximizar-restaurar/solicitar fechamento. Fechamento preserva confirmação/rascunhos vigentes. Prioridade: ajuste solicitado; TA-UX-WINDOW-002/T-UX-WINDOW-002 no registro WEBFIT-10, aceite integrado pendente.
 
 **RF-UX-001 — refinamento aprovado por Maycon, 2026-10-09:** remover Ver tutorial fixo das telas. Em Configurações, Reiniciar tutoriais apaga somente as marcações do usuário conectado e reativa as orientações automaticamente na próxima entrada de cada tela; Pular/Concluir e persistência por tela mantidos. Prioridade: ajuste solicitado do incremento, aceite Windows pendente. TA-UX-TUT-001, DEC-046/T114; sem migration ou nova dependência.
 
@@ -391,3 +391,11 @@ Aprovado para preparação visual por Maycon em 2026-10-09 após escolha explíc
 - **Comportamento:** troca obrigatória de senha precede o aviso; Fechar/Entendi/Escape confirmam leitura no backend para o próprio usuário/versão instalada. Falha de consulta/gravação não bloqueia trabalho e não simula confirmação; retry e fechamento temporário preservam pendência. Não alterar instalação/backup/assinatura do updater.
 - **Prioridade:** incremento atual, sem prioridade Plane inventada.
 - **Aceite:** TA-UPD-NEWS-001..008. [Plan/registro](../../specs/WEBFIT-21/task.md).
+
+## RF-UX-009 — Personalização e tema escuro
+
+- **Status:** aprovado para implementação por Maycon, pedido explícito em 2026-10-09; aceite funcional separado.
+- **Prioridade:** pedido atual; Plane neutro.
+- **Descrição:** disponibilizar Personalização nas Configurações, com escolha Claro/Escuro e aplicação imediata em toda a interface.
+- **Critérios:** TA-UX-THEME-001..005.
+- **Rastreabilidade:** WEBFIT-22 / specs/WEBFIT-22/task.md. Preferência local puramente visual; não altera domínio, autorização, dados ou backup. D-THEME-001 provisória documenta padrão claro/persistência por computador.

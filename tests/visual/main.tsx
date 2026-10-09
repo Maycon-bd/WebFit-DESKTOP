@@ -24,6 +24,8 @@ const [
 ]);
 // @ts-expect-error CSS is loaded by Vite.
 await import("../../src/style.css");
+const { initializeTheme } = await import("../../src/theme");
+initializeTheme();
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <div

@@ -60,3 +60,7 @@ O catálogo detalhado permanece em [funcionalidades candidatas](../project/funct
 ## Dashboard geral — WEBFIT-17
 
 RF-UX-008 aprovado para implementação por Maycon em 2026-10-09: home do Consultório, acima de Pacientes e destino do símbolo WebFit. Visão agregada dos módulos existentes, extensível por requisitos futuros; gráficos/indicadores iniciais registrados como D-DASH-001/002 provisórios no registro único. Não amplia agenda/financeiro nem uso clínico/G5/G6/G7.
+
+## Personalização — WEBFIT-22
+
+RF-UX-009 aprovado para implementação por Maycon em 2026-10-09: tema Claro/Escuro em Configurações → Personalização, escolha global imediata e preferência visual local. Aceite final separado; demais personalizações fora desta demanda. Não altera domínio, backup clínico ou gates G5/G6/G7.
