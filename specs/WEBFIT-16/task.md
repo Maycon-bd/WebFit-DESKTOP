@@ -174,6 +174,10 @@ Maycon: preparar senha mestra por `scripts/configure-admin-access.ps1` fora do c
 
 Checklist: [x] Discovery/Plan/autorização específica; [x] implementação completa; [x] checks/fixtures; [x] review independente e correção de findings; [x] docs/rastreabilidade; [ ] provisionamento humano; [ ] ensaio Windows/GUI/update; [ ] aceite/integração/distribuição.
 
+### Correção de download no CI — 2026-10-09
+
+Maycon relatou falha do workflow em `npm run prepare:db-browser`: Windows PowerShell 5.1 lançou `Invoke-WebRequest : Falha na operação de descriptografia` ao baixar o ZIP fixado. O erro ocorre durante a transferência, antes da validação SHA-256; a causa interna TLS/rede não foi comprovada pelo log. Ajuste local: repetir a transferência até três vezes com espera crescente, remover arquivo parcial entre tentativas e manter a validação SHA-256 obrigatória antes de mover para o cache/extrair. Fonte, versão e hash não mudaram; sem fallback inseguro nem relaxamento TLS. Código/consistência revisados estaticamente; testes e rerun do workflow NOT RUN nesta sessão. Próxima ação: Maycon integrar pelo fluxo Git e rerodar o pipeline; se persistir, coletar exceção interna/diagnóstico TLS do runner.
+
 ### Evidência inicial
 
 - Git read-only: várias alterações preexistentes em DESIGN/docs/status/requisitos/specs, App/FormField/LicensePanel/PatientSexField/style e testes; scripts/specs/visual fixtures não rastreados. Nenhum trabalho removido.

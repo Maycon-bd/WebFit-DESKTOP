@@ -40,9 +40,25 @@ if ($ArchivePath) {
 } elseif (!(Test-Path -LiteralPath $cachedArchive)) {
   if ($Offline) { throw 'ZIP do DB Browser ausente. Execute com -ArchivePath antes do build offline.' }
   $download = Join-Path $cacheRoot ([guid]::NewGuid().ToString() + '.zip')
-  Invoke-WebRequest -Uri $manifest.url -OutFile $download -UseBasicParsing
-  Assert-Archive $download
-  Move-Item -LiteralPath $download -Destination $cachedArchive
+  try {
+    $maximumAttempts = 3
+    for ($attempt = 1; $attempt -le $maximumAttempts; $attempt++) {
+      try {
+        Invoke-WebRequest -Uri $manifest.url -OutFile $download -UseBasicParsing
+        break
+      } catch {
+        Remove-Item -LiteralPath $download -Force -ErrorAction SilentlyContinue
+        if ($attempt -eq $maximumAttempts) {
+          throw "Falha ao baixar o DB Browser após $maximumAttempts tentativas. Último erro: $($_.Exception.Message)"
+        }
+        Start-Sleep -Seconds (2 * $attempt)
+      }
+    }
+    Assert-Archive $download
+    Move-Item -LiteralPath $download -Destination $cachedArchive
+  } finally {
+    Remove-Item -LiteralPath $download -Force -ErrorAction SilentlyContinue
+  }
 }
 Assert-Archive $cachedArchive
 

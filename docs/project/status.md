@@ -2,6 +2,13 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Complemento — WEBFIT-16, download do DB Browser no CI, 2026-10-09
+
+- **Relato/causa:** workflow falhou em `npm run prepare:db-browser`; Windows PowerShell reportou falha de descriptografia em `Invoke-WebRequest` na transferência HTTPS. O log não inclui a exceção interna, então interrupção transitória/TLS é hipótese, não causa confirmada. Hash SHA-256 segue como barreira antes de extrair.
+- **Ajuste local:** download agora tenta até três vezes, remove ZIP parcial entre tentativas e só move ao cache depois do hash fixado passar. Fonte, versão, hash, TLS e conteúdo do pacote não mudaram. Task WEBFIT-16 atualizada; rerun do workflow não executado.
+- **Branch/HEAD:** `main` / `5376137cd6936cf715a894bf4ab74aba2a5a498c`; alterações locais preexistentes WEBFIT-22 preservadas. Nenhuma operação Git mutável ou publicação; estado remoto não consultado.
+- **Próxima ação exata:** Maycon integrar as alterações pelo fluxo Git e rerodar o workflow. Se o erro persistir, coletar exceção interna/diagnóstico TLS do runner antes de trocar o transporte.
+
 ## Checkpoint — WEBFIT-21, novidades após login, 2026-10-09
 
 - **Escopo/autorização:** Maycon pediu resumo sem dados técnicos e escolheu uma vez por usuário/atualização, com consulta posterior. RF-UPD-002 / TA-UPD-NEWS-001..008; [registro único](../../specs/WEBFIT-21/task.md). Plane WEBFIT-21 em Review, sem Done/publicação.

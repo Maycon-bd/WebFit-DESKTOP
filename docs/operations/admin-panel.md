@@ -77,6 +77,6 @@ Preparação local com o ZIP fornecido, sem rede:
 ./scripts/prepare-db-browser.ps1 -ArchivePath 'C:/Users/Maycon Garcia Silva/Downloads/DB.Browser.for.SQLite-v3.13.1-win64.zip' -Offline
 ```
 
-Build/dev Tauri e CI preparam o recurso automaticamente. Sem cache, baixam somente a versão fixada em `tools/db-browser/bundle.json`; validam SHA256 antes de extrair e conferem cada arquivo antes de empacotar. O cache `.tools/db-browser/` é ignorado pelo Git. Builds Rust diretos devem executar `npm run prepare:db-browser` antes da compilação. Nenhuma chave, senha ou banco acompanha esse recurso.
+Build/dev Tauri e CI preparam o recurso automaticamente. Sem cache, baixam somente a versão fixada em `tools/db-browser/bundle.json`, repetindo falhas de transferência até três vezes; validam SHA256 antes de extrair e conferem cada arquivo antes de empacotar. O cache `.tools/db-browser/` é ignorado pelo Git. Builds Rust diretos devem executar `npm run prepare:db-browser` antes da compilação. Nenhuma chave, senha ou banco acompanha esse recurso.
 
 [Checks/revisão](../../specs/WEBFIT-16/task.md) usam fixtures isoladas; browser mock não prova Rust/DPAPI/WebView2. Gerenciador SQLCipher, atualização/provisionamento reais e aceite funcional continuam ações de Maycon, não executadas pelo agente. G5/G6/G7 preservados.
