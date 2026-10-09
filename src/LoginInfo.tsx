@@ -67,27 +67,36 @@ export function LoginInfo({
           if (busy) event.preventDefault();
         }}
       >
-        <img
-          className="system-logo"
-          src="/brand/webfit-icon.png"
-          alt=""
-          width="64"
-          height="64"
-        />
-        <h2 id="login-info-title">WebFit Desktop</h2>
-        <p>Versão {isTauri() ? (version ?? "Consultando…") : previewVersion}</p>
-        <p>Desenvolvido por Eng. Maycon Garcia Silva</p>
-        <hr />
-        <h3>Acesso do administrador</h3>
-        <p>
-          Entre com o nome de acesso e a senha definidos pelo administrador na
-          emissão da licença deste computador.
-        </p>
-        <p className="hint">
-          Se este computador ainda não foi preparado, o administrador deve
-          definir os acessos e a recuperação dos backups antes do uso.
-        </p>
-        {children}
+        <div className="login-info-content">
+          <section
+            className="login-info-overview"
+            aria-labelledby="login-info-title"
+          >
+            <img
+              className="system-logo"
+              src="/brand/webfit-icon.png"
+              alt=""
+              width="64"
+              height="64"
+            />
+            <h2 id="login-info-title">WebFit Desktop</h2>
+            <p>
+              Versão {isTauri() ? (version ?? "Consultando…") : previewVersion}
+            </p>
+            <p>Desenvolvido por Eng. Maycon Garcia Silva</p>
+            <hr />
+            <h3>Acesso do administrador</h3>
+            <p>
+              Entre com o nome de acesso e a senha definidos pelo administrador
+              na emissão da licença deste computador.
+            </p>
+            <p className="hint">
+              Se este computador ainda não foi preparado, o administrador deve
+              definir os acessos e a recuperação dos backups antes do uso.
+            </p>
+          </section>
+          {children}
+        </div>
         {error && (
           <p role="alert" className="message error">
             {error}

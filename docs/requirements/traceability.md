@@ -15,9 +15,9 @@ Implementação: `crates/license-protocol/` (TA-LIC-003/005), `src-tauri/src/lic
 
 RF-UX-004 / DEC-056 → TA-UX-BRAND-001..004 → specs/005-webfit-8-identidade-visual/{spec,plan,tasks}.md (T001..T008) → public/brand/webfit-icon.png, src/App.tsx, src/LoginInfo.tsx, src/style.css, index.html, src-tauri/icons/** e tauri.conf.json → .harness/evidence/webfit-8/{verification,evidence}.md. Versão 0.1.8, base e07cdc8300de0421dbdc7fd64aafe7d30a191e80, main. Checks locais separados de aceite Windows/review independente.
 
-## WEBFIT-5 — Planejamento do cadastro mínimo
+## WEBFIT-5 — Cadastro mínimo e número interno
 
-RF-PAT-007 (proposto) -> TA-PAT-008..016 -> [spec/plan/tasks](../../specs/003-webfit-5-cadastro-paciente/spec.md), T001..T015. Branch main, HEAD-base a83998ef33c032ea46e283322bbf7620c0051d49, candidato base 0.1.8. Preparação autorizada; implementação, testes de comportamento, aprovação funcional conjunta e D-PAT-001/002 pendentes. Evidência: [planejamento](../../.harness/evidence/webfit-5/planning.md). Baseline RF-PAT-001/003 e RN-PAT-001/003/005/006 ainda não substituída.
+RF-PAT-007 aprovado -> TA-PAT-008..017 -> [spec/plan/tasks](../../specs/003-webfit-5-cadastro-paciente/spec.md), T001..T016 -> App/PatientSexField/API; service/database/recovery/migration003; patient_tests.rs, patient-migration.test.ts e patient-sex.test.ts. Refina RF-PAT-001/002/003 e RN-PAT-001/003/005/006/007. Branch main, HEAD-base 3558eddd84211e504ba0457388b1bedc30c9697d, fonte 0.1.10 sem nova distribuição. Solicitação de Amanda relatada por Maycon, número sem zeros aprovado e execução autorizada em 2026-10-08. D-PAT-001/003 aceitas; D-PAT-002 provisória não bloqueante. Implementação local, verificação parcial; Rust/SQLCipher/build Tauri/ensaio Windows e aceite final pendentes. Evidência atual em [plan.md](../../specs/003-webfit-5-cadastro-paciente/plan.md); [planejamento histórico](../../.harness/evidence/webfit-5/planning.md) preservado.
 
 **Status:** baseline do primeiro incremento preenchida; evidência de execução parcial local disponível; aceite integral pendente.
 
@@ -51,6 +51,8 @@ Itens propostos do restante do MVP aparecem no [catálogo funcional](functional-
 ## Trilha operacional do updater piloto
 
 Complemento RF-AUD-001 → TA-AUD-001..015 → T051/T056 parciais em 2026-10-07: src/App.tsx, src/audit-view.ts e tests/unit/audit-view.test.ts. Estados de consulta, filtros/retry, detalhes de metadados e foco. Checks frontend/Rust aprovados; ensaio integrado e revisão pendentes. Evidência .harness/evidence/health-increment/2026-10-07-audit-ui.md. Não representa execução integral dos critérios TA-AUD.
+
+Continuação 2026-10-08: RF-AUD-001 (T051/T052/T055/T056) e RF-BKP-001..003 (T058..064) → service.rs/recovery.rs, audit_recovery_tests.rs, BackupNotice.tsx/App.tsx e backup-notice.test.ts. Escopo HEALTH, cursor recuperável, rollback de evento obrigatório, falhas SYSTEM/USER, estado/alerta, pacote temporário, restauração inválida e retenção. [Evidência e limites](../../.harness/evidence/health-increment/2026-10-08-audit-recovery.md), sem afirmar execução integral TA-AUD ou conclusão G5. RF-PRE-002/T038: índice oficial coletado por scripts/tbca-index.py, ainda sem composição completa/TACO integrada.
 
 RF-UPD-001 / DEC-050 → T101–T105 → src-tauri/src/update.rs, service.rs, src/UpdatePanel.tsx e scripts de release. Testes locais: autorização/backup/bloqueio em tests.rs, origem/versão em update.rs, assinatura/manifesto/checksums em pilot-release.test.mjs e versão em prepare-pilot.test.mjs. Evidência: .harness/evidence/update-pilot/2026-10-07-product-preparation.md. UPD-001–UPD-015 permanecem sujeitos aos ensaios integrados; código construído não comprova publicação ou instalação real.
 

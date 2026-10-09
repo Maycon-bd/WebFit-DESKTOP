@@ -174,7 +174,7 @@ pub enum TourId {
     Backup,
     Access,
 }
-#[derive(Deserialize, Default)]
+#[derive(Clone, Deserialize, Default)]
 pub struct AuditFilter {
     #[serde(default)]
     pub open: bool,
@@ -276,32 +276,55 @@ fn text<'a>(value: &'a Value, field: &str) -> Result<&'a str> {
             Error::validation(&format!("Preencha o campo {label}."))
         })
 }
-fn validate_patient(patient: &Value) -> Result<String> {
-    for key in ["name", "cpf", "phone", "birth", "email", "address"] {
-        text(patient, key)?;
+fn optional_text<'a>(value: &'a Value, field: &str) -> Result<&'a str> {
+    match value.get(field) {
+        None | Some(Value::Null) => Ok(""),
+        Some(Value::String(value)) => Ok(value.trim()),
+        _ => Err(Error::validation("Campo opcional com formato inválido.")),
     }
-    let cpf: String = text(patient, "cpf")?
+}
+fn optional_cpf(value: &Value) -> Result<Option<String>> {
+    let raw = optional_text(value, "cpf")?;
+    if raw.is_empty() {
+        return Ok(None);
+    }
+    let digits: String = raw.chars().filter(char::is_ascii_digit).collect();
+    if !raw
         .chars()
-        .filter(char::is_ascii_digit)
-        .collect();
-    if !cpf_valid(&cpf) {
+        .all(|c| c.is_ascii_digit() || c.is_whitespace() || ".-".contains(c))
+        || !cpf_valid(&digits)
+    {
         return Err(Error::validation("CPF inválido. Confira os 11 dígitos."));
     }
-    if !text(patient, "email")?.contains('@') {
+    Ok(Some(digits))
+}
+fn validate_optional_email(value: &Value) -> Result<()> {
+    let email = optional_text(value, "email")?;
+    if !email.is_empty() && !email.contains('@') {
         return Err(Error::validation("Informe um e-mail válido."));
     }
+    Ok(())
+}
+fn validate_patient(patient: &Value) -> Result<Option<String>> {
+    for key in ["name", "birth"] {
+        text(patient, key)?;
+    }
+    if !matches!(patient.get("sex").and_then(Value::as_str), Some("F" | "M")) {
+        return Err(Error::validation(
+            "Selecione Feminino ou Masculino no campo sexo.",
+        ));
+    }
+    let cpf = optional_cpf(patient)?;
+    validate_optional_email(patient)?;
     let birth = chrono::NaiveDate::parse_from_str(text(patient, "birth")?, "%Y-%m-%d")
         .map_err(|_| Error::validation("Data de nascimento inválida."))?;
     if birth > Utc::now().date_naive() {
         return Err(Error::validation("Nascimento não pode estar no futuro."));
     }
     if let Some(guardian) = patient.get("guardian").filter(|v| v.is_object()) {
-        for field in ["name", "cpf", "relationship", "phone", "email"] {
-            text(guardian, field)?;
-        }
-        if !cpf_valid(text(guardian, "cpf")?) {
-            return Err(Error::validation("CPF do responsável inválido."));
-        }
+        optional_cpf(guardian).map_err(|_| Error::validation("CPF do responsável inválido."))?;
+        validate_optional_email(guardian)
+            .map_err(|_| Error::validation("E-mail do responsável inválido."))?;
     }
     Ok(cpf)
 }
@@ -384,7 +407,7 @@ impl Service {
             key
         };
         let mut db = database::open(&root.join("health.db"), &key)?;
-        database::migrate(&mut db)?;
+        database::migrate_installed(&mut db, &root, &key)?;
         let mut service = Self {
             db,
             root,
@@ -882,21 +905,26 @@ impl Service {
                         } else {
                             normalize(query.trim())
                         };
-                        let mut st=self.db.prepare("SELECT id,payload,archived FROM patients WHERE archived=?1 AND instr(search,?2)>0 ORDER BY search LIMIT 200")?;
+                        let mut st=self.db.prepare("SELECT id,payload,archived,internal_number FROM patients WHERE archived=?1 AND (instr(search,?2)>0 OR CAST(internal_number AS TEXT)=?2) ORDER BY search,internal_number LIMIT 200")?;
                         let mut items = Vec::new();
                         for row in st.query_map(params![archived, query], |r| {
                             Ok((
                                 r.get::<_, String>(0)?,
                                 r.get::<_, String>(1)?,
                                 r.get::<_, bool>(2)?,
+                                r.get::<_, i64>(3)?,
                             ))
                         })? {
-                            let (id, payload, archived) = row?;
+                            let (id, payload, archived, internal_number) = row?;
                             let mut value: Value = serde_json::from_str(&payload)?;
                             let cpf = value["cpf"].as_str().unwrap_or("");
-                            value["cpf"] =
-                                json!(format!("***.***.{}-**", cpf.get(6..9).unwrap_or("***")));
+                            value["cpf"] = if cpf.is_empty() {
+                                json!("")
+                            } else {
+                                json!(format!("***.***.{}-**", cpf.get(6..9).unwrap_or("***")))
+                            };
                             value["id"] = json!(id);
+                            value["internalNumber"] = json!(internal_number);
                             value["archived"] = json!(archived);
                             value
                                 .as_object_mut()
@@ -907,13 +935,15 @@ impl Service {
                         Ok(json!(items))
                     }
                     Patient { id } => {
-                        let (payload, archived): (String, bool) = self.db.query_row(
-                            "SELECT payload,archived FROM patients WHERE id=?1",
-                            [&id],
-                            |r| Ok((r.get(0)?, r.get(1)?)),
-                        )?;
+                        let (payload, archived, internal_number): (String, bool, i64) =
+                            self.db.query_row(
+                                "SELECT payload,archived,internal_number FROM patients WHERE id=?1",
+                                [&id],
+                                |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?)),
+                            )?;
                         let mut patient: Value = serde_json::from_str(&payload)?;
                         patient["id"] = json!(id);
+                        patient["internalNumber"] = json!(internal_number);
                         patient["archived"] = json!(archived);
                         let tx = self.db.transaction()?;
                         audit(
@@ -929,7 +959,12 @@ impl Service {
                     }
                     SavePatient { id, mut patient } => {
                         let cpf = validate_patient(&patient)?;
-                        patient["cpf"] = json!(cpf);
+                        patient["cpf"] = json!(cpf.as_deref().unwrap_or(""));
+                        // Identity and display number are server-owned, never trusted from a draft/client.
+                        if let Some(fields) = patient.as_object_mut() {
+                            fields.remove("internalNumber");
+                            fields.remove("id");
+                        }
                         let existing = self
                             .db
                             .query_row("SELECT id FROM patients WHERE cpf=?1", [&cpf], |r| {
@@ -948,7 +983,7 @@ impl Service {
                             "{} {} {} {}",
                             patient["name"].as_str().unwrap_or(""),
                             patient["socialName"].as_str().unwrap_or(""),
-                            cpf,
+                            cpf.as_deref().unwrap_or(""),
                             patient["phone"]
                                 .as_str()
                                 .unwrap_or("")
@@ -997,8 +1032,13 @@ impl Service {
                             "DELETE FROM drafts WHERE user_id=?1 AND id=?2",
                             params![user.id, draft_key],
                         )?;
+                        let internal_number: i64 = tx.query_row(
+                            "SELECT internal_number FROM patients WHERE id=?1",
+                            [&id],
+                            |r| r.get(0),
+                        )?;
                         tx.commit()?;
-                        Ok(json!({"id":id}))
+                        Ok(json!({"id":id,"internalNumber":internal_number}))
                     }
                     ArchivePatient { id, archived } => {
                         let tx = self.db.transaction()?;
@@ -1105,7 +1145,7 @@ impl Service {
                     VersionPrescription { id } => self.version_prescription(&user, &id),
                     Audit { filter } => self.query_audit(&user, filter),
                     AuditDetail { id } => {
-                        let result=self.db.query_row("SELECT actor_type,user_id,at,action,entity_type,entity_id,result FROM audit WHERE id=?1",[&id],|r|Ok(json!({"id":id,"actor":r.get::<_,String>(0)?,"userId":r.get::<_,Option<String>>(1)?,"at":r.get::<_,String>(2)?,"action":r.get::<_,String>(3)?,"entity":r.get::<_,String>(4)?,"entityId":r.get::<_,Option<String>>(5)?,"result":r.get::<_,String>(6)?})))?;
+                        let result=self.db.query_row("SELECT actor_type,user_id,at,action,entity_type,entity_id,result FROM audit WHERE id=?1 AND workspace='HEALTH'",[&id],|r|Ok(json!({"id":id,"actor":r.get::<_,String>(0)?,"userId":r.get::<_,Option<String>>(1)?,"at":r.get::<_,String>(2)?,"action":r.get::<_,String>(3)?,"entity":r.get::<_,String>(4)?,"entityId":r.get::<_,Option<String>>(5)?,"result":r.get::<_,String>(6)?}))).optional()?.ok_or_else(Error::denied)?;
                         let tx = self.db.transaction()?;
                         audit(
                             &tx,
@@ -1118,15 +1158,7 @@ impl Service {
                         tx.commit()?;
                         Ok(result)
                     }
-                    Backup { path } => {
-                        let result = self.create_backup(path.map(PathBuf::from), Some(&user));
-                        if result.is_err() {
-                            let tx = self.db.transaction()?;
-                            audit(&tx, Some(&user), "BACKUP_CREATE", "BACKUP", None, "FAILURE")?;
-                            tx.commit()?;
-                        }
-                        result
-                    }
+                    Backup { path } => self.create_backup(path.map(PathBuf::from), Some(&user)),
                     Restore {
                         path,
                         password,
@@ -1329,14 +1361,11 @@ impl Service {
     }
     fn query_audit(&mut self, user: &User, filter: AuditFilter) -> Result<Value> {
         let is_initial = filter.open;
-        let query_id = if let Some(cursor) = &filter.cursor {
-            cursor.clone()
-        } else {
-            Uuid::new_v4().to_string()
-        };
+        let consumed_cursor = filter.cursor.clone();
         let (filter, snapshot, last) = if let Some(cursor) = &filter.cursor {
             self.audit_queries
-                .remove(cursor)
+                .get(cursor)
+                .cloned()
                 .ok_or_else(|| Error::validation("Consulta expirada. Reabra a auditoria."))?
         } else {
             let now = Utc::now();
@@ -1358,10 +1387,27 @@ impl Service {
             (filter, now.to_rfc3339(), String::new())
         };
         let items = {
-            let mut st=self.db.prepare("SELECT a.id,a.at,a.actor_type,u.name,a.action,a.entity_type,a.entity_id,a.result FROM audit a LEFT JOIN users u ON u.id=a.user_id WHERE a.at>=?1 AND a.at<?2 AND a.at<?3 AND (?4 IS NULL OR a.user_id=?4) AND (?5 IS NULL OR a.action=?5) AND (?6 IS NULL OR a.entity_type=?6) AND (?7 IS NULL OR a.result=?7) AND (?8='' OR (a.at||'|'||a.id)<?8) ORDER BY a.at DESC,a.id DESC LIMIT 51")?;
+            let mut st=self.db.prepare("SELECT a.id,a.at,a.actor_type,u.name,a.action,a.entity_type,a.entity_id,a.result FROM audit a LEFT JOIN users u ON u.id=a.user_id WHERE a.workspace='HEALTH' AND a.at>=?1 AND a.at<?2 AND a.at<?3 AND (?4 IS NULL OR a.user_id=?4) AND (?5 IS NULL OR a.action=?5) AND (?6 IS NULL OR a.entity_type=?6) AND (?7 IS NULL OR a.result=?7) AND (?8='' OR (a.at||'|'||a.id)<?8) ORDER BY a.at DESC,a.id DESC LIMIT 51")?;
             let rows = st.query_map(params![filter.from,filter.to,snapshot,filter.user,filter.action,filter.entity,filter.result,last],|r|Ok(json!({"id":r.get::<_,String>(0)?,"at":r.get::<_,String>(1)?,"actor":r.get::<_,String>(2)?,"user":r.get::<_,Option<String>>(3)?,"action":r.get::<_,String>(4)?,"entity":r.get::<_,String>(5)?,"entityId":r.get::<_,Option<String>>(6)?,"result":r.get::<_,String>(7)?})))?.collect::<std::result::Result<Vec<_>,_>>()?;
             rows
         };
+        // Do not consume the page cursor or publish another cursor until the
+        // query and its mandatory access event both succeed. A retry can reuse it.
+        if is_initial {
+            let tx = self.db.transaction()?;
+            audit(
+                &tx,
+                Some(user),
+                "AUDIT_MODULE_OPEN",
+                "WORKSPACE",
+                None,
+                "SUCCESS",
+            )?;
+            tx.commit()?;
+        }
+        if let Some(cursor) = consumed_cursor {
+            self.audit_queries.remove(&cursor);
+        }
         let mut items = items;
         let more = items.len() > 50;
         items.truncate(50);
@@ -1384,19 +1430,6 @@ impl Service {
         } else {
             None
         };
-        if is_initial {
-            let tx = self.db.transaction()?;
-            audit(
-                &tx,
-                Some(user),
-                "AUDIT_MODULE_OPEN",
-                "WORKSPACE",
-                None,
-                "SUCCESS",
-            )?;
-            tx.commit()?;
-        }
-        let _ = query_id;
         Ok(json!({"items":items,"cursor":cursor}))
     }
 }

@@ -1,55 +1,66 @@
-# Implementation Plan: WEBFIT-5 cadastro minimo
+# WEBFIT-5 — Plano e evidência
 
-**Branch**: `main` | **Date**: 2026-10-07 | **Spec**: [spec.md](spec.md)
-**HEAD-base**: a83998ef33c032ea46e283322bbf7620c0051d49
-**Status**: planejamento para revisao humana; nao implementado.
+> Verificação nativa retomada após “Sim” de Maycon à preparação do toolchain. Rust/Cargo 1.98.1 encontrado e reutilizado em `.tools/validation`; variáveis restritas ao processo. Cache isolado `.tools/patient-native-target`, TEMP próprio com fixtures. A tentativa no target compartilhado aguardava file lock de outra demanda e foi interrompida apenas para esta execução. Nenhum outro processo foi interrompido. Última verificação em 2026-10-09, HEAD 538091c4b25b1cba2ff566c885b9bd255c019a68, main/origin-main alinhados pela referência local, sem fetch.
 
-## Summary
+**Data:** 2026-10-08. **Branch/base:** main/3558eddd84211e504ba0457388b1bedc30c9697d. Fonte 0.1.10, sem nova distribuição. Profundidade STRICT. [Escopo e aprovação](spec.md#origem-e-decisões).
 
-Cadastro/edicao exigem nome, nascimento e sexo com duas opcoes de radio. Demais campos opcionais; validar os preenchidos no backend. Migracao 002 torna CPF anulavel mantendo unicidade dos informados. Backup/restauracao suportam schema 1/2.
+## Plan Scope Check
 
-## Technical Context
+PLAN APPROVED BY SCOPE: pedido e respostas de Maycon cobrem os três obrigatórios, demais opcionais, número sem zeros e migração necessária preservando dados/backups com fixtures. Origem funcional: solicitação de Amanda relatada por Maycon. D-PAT-001/003 aceitas; D-PAT-002 provisória não bloqueante para preservar legado sem inferência. Nenhuma dependência/arquitetura nova, dados reais, Git mutável ou publicação. Aceite final separado. Plane indisponível, ID WEBFIT-5 conhecido reutilizado (PLANE SYNC DEGRADED).
 
-- **Language/Version**: TypeScript 5.9.3, React 19.1, Rust existente.
-- **Primary Dependencies**: Tauri 2, Vite 8, rusqlite/SQLCipher existentes; nenhuma instalacao.
-- **Storage**: SQLCipher protegido por DPAPI, payload JSON existente e UUID como identidade.
-- **Testing**: testes Node, cargo test, integracao SQLCipher/backup e ensaio Windows.
-- **Target Platform / Project Type**: desktop Windows-first, local/offline.
-- **Performance Goals**: manter RNFs existentes; sem meta arbitraria nova.
-- **Constraints**: dados ficticios; transacoes; foreign_keys ON; logs sem dados sensiveis; Git humano.
-- **Scale/Scope**: formulario e persistencia/backup necessarios a opcionalidade; sem alterar calculos clinicos.
+## Abordagem executada
 
-## Constitution Check
+1. Migration **003_optional_patient_cpf.sql**, sem alterar 001/002. Schema atual antes desta mudança é 2 (licenciamento). Runner transacional 0/1/2→3, recusa futuro. `internal_number INTEGER PRIMARY KEY AUTOINCREMENT`, UUID `NOT NULL UNIQUE`, CPF `NULL UNIQUE`. Legado ordenado por created_at/id, conteúdo e relações preservados.
+2. FKs ON; tabelas TEMP em memória recebem vínculos e todas as versões de prescrições. Retirar linhas filhas, reconstruir pacientes e repor vínculos dentro da transação. Validar integridade/FKs antes do commit; rollback em erro. Evitar DROP de pai ainda referenciado por linhas vivas.
+3. Antes de migrar instalação 1/2, snapshot SQLCipher via API SQLite Backup, validado, fechado e reaberto com a mesma chave protegida por DPAPI. Falha bloqueia migration. Cópia fica em migration-snapshots/UUID.db, local/não portátil. Banco vazio e staging restaurado dispensam snapshot extra; backup original continua íntegro.
+4. Restore aceita schemas 1/2/3, exige metadata concordante, migra staging e verifica integridade. Envelope continua v1. Preserva credenciais/licença/consumo do destino, autores históricos, auditoria append-only, backup preventivo e bloqueio após sucesso. Importa números de schema3 e conserva maior contador. Legado 1/2 reutiliza números conhecidos por UUID e aloca desconhecidos acima do contador do destino.
+5. Backend exige somente nome/nascimento/sexo F/M, valida opcionais informados, ignora número/ID do payload e retorna número gerado. CPF vazio é NULL; lista sem máscara fictícia quando ausente. Pesquisa inclui número exato, preservando busca textual existente.
+6. Formulário com radios nativos sem default, responsáveis opcionais, número na lista/cadastro inclusive imediatamente após salvar. Equivalências de sexo legado apenas em exibição/envio; valor desconhecido preservado até escolha. Campos ausentes antigos recebem defaults de formulário sem gravar automaticamente. Acessibilidade, foco e layout existente preservados.
 
-Antes/depois do design: I/III/IV/VIII/X atendidos pelo planejamento com status proposto e gate humano; nenhum requisito implementado antes de aprovar. II/IX exigem testes/evidencia antes de concluir. V exige autorizacao backend, auditoria e protecao do backup; VI/VII mantem stack/API/padroes. ADR-0001 aceito e DEC-045 superam a restricao historica de arquitetura somente para spike na Constitution; nenhuma nova arquitetura. Autorizacao recebida cobre preparacao com migracao, nao concede aceite funcional de Amanda.
+## Arquivos da entrega
 
-## Project Structure
+- Frontend: `src/App.tsx`, `PatientSexField.tsx`, `api.ts`, `style.css`, `onboarding.ts`.
+- Backend/banco: `src-tauri/src/{database,service,recovery,lib}.rs`, `src-tauri/migrations/003_optional_patient_cpf.sql`.
+- Testes: `src-tauri/src/patient_tests.rs`; ajustes de fixtures/versão em `tests.rs`, `acceptance_tests.rs`, `license_tests.rs`; `tests/unit/patient-migration.test.ts`, `patient-sex.test.ts`.
+- Fontes: requisitos/regras/aceite/casos/matriz; `docs/architecture/data-model.md`, `docs/operations/backup-restore.md`, decisões/status e este pacote WEBFIT-5. Evidência histórica de 2026-10-07 preservada.
+- Preexistentes preservados: AGENTS.md, ui-review.md, WEBFIT-10/task.md, LoginInfo.tsx e alterações anteriores de style.css/status/acceptance-criteria.
 
-Documentacao: `specs/003-webfit-5-cadastro-paciente/{spec,plan,research,data-model,quickstart,tasks}.md`, `contracts/patient.md`, checklist e `.harness/evidence/webfit-5/`.
+## Verificação
 
-Codigo previsto: `src/App.tsx`, `src/style.css`, `src/onboarding.ts`, `src/api.ts` se necessario; `src-tauri/src/{service,database,recovery,tests,acceptance_tests}.rs`; nova `src-tauri/migrations/002_optional_patient_cpf.sql`. Fontes canonicas: requisitos, decisoes e checkpoint.
+| Check | Resultado e limite |
+|---|---|
+| SQL migration real em SQLite Node 3.49.1 | PASS: CPF NULL múltiplo, unicidade, UUID/payload/filhos, ordem dos números e rollback por FK diferida; complementar a SQLCipher |
+| SSR/componentes React | PASS: radios, exclusividade, ausência de default, legado/ausente, callbacks, formulário real com apenas três campos obrigatórios e número sem zeros |
+| npm run check | PASS na rodada de fechamento: lint, TypeScript, 37 testes Node e build Vite; bundle 549,67 kB WARNING. Inclui três testes da demanda simultânea de backup; sete testes específicos de paciente/migração permanecem PASS |
+| npm run format:check | PASS após últimas alterações de frontend/testes |
+| Rust/SQLCipher/DPAPI | PASS: `cargo test --locked --offline --manifest-path src-tauri/Cargo.toml`, 46 testes, zero falhas; inclui regressões da demanda simultânea de auditoria/backup |
+| Rust fmt/Clippy | PASS: `cargo fmt --manifest-path src-tauri/Cargo.toml --check` e `cargo clippy --locked --offline --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings` |
+| Build Tauri | PASS: `node node_modules/@tauri-apps/cli/tauri.js build --debug --no-bundle -- --locked --offline`; executável local `.tools/patient-native-target/debug/webfit-desktop.exe`, sem installer/bundle/publicação |
+| Windows integrado, teclado/NVDA/zoom | NOT RUN: compilação e testes automatizados não substituem ensaio interativo/aceite |
+| Revisão independente | Três passagens estáticas pelo agente review_patient, sem finding funcional concreto aberto. Ressalva do contador da origem atendida com transferência schema3 para destino vazio, agora PASS nativo |
 
-**Structure Decision**: produto na raiz; spike G4 separado.
+Os testes Rust comprovaram validação direta/autorização, ID/número, obrigatórios/opcionais, arquivo anterior, snapshot cifrado reaberto, rollback, schema futuro, backups1/2/3 e sequência. A transferência schema3 para destino vazio inclui origem com contador maior que o último paciente restante; próximo número preserva esse contador. Erros HMAC SQLCipher na saída pertencem ao teste negativo de chave incorreta, aprovado. Warnings LNK4099 de símbolos PDB OpenSSL não impediram os testes. Primeiro teste Node de rollback esperava erro na inserção, mas FKs diferidas só falham no commit; corrigido para testar COMMIT e rollback real, sem enfraquecer integridade.
 
-## Phase 0: Research / Architecture and Privacy Review
+## Riscos e decisões provisórias
 
-Pesquisa em [research.md](research.md). Mudanca de nulabilidade/validacao sem stack, dependencia ou fronteira nova; nao exige ADR material novo. Riscos: colisao de CPF vazio, referencias perdidas na reconstrucao, backup recusado, sexo inferido. Mitigacoes: SQL NULL, transacao/integridade, compatibilidade e preservacao do legado. Nenhum dado real acessado.
+Sem READY TO SHIP enquanto ensaio Windows estiver pendente. Snapshot local requer chave DPAPI original; não substitui backup portátil. D-PAT-002 continua provisória para aceite final. Numeração automática pode ter lacunas, nunca deve ser renumerada para preenchê-las. Não há definição de identidade global pelo número; UUID mantém vínculos.
 
-## Phase 1: Design
+A estratégia SQL foi provada tanto no SQLite Node quanto no SQLCipher nativo. A indisponibilidade inicial de Cargo foi superada após autorização de preparação e reutilização do cache local. Nenhuma instalação clínica real foi aberta ou migrada.
 
-1. CPF ausente como Option/SQL NULL e payload vazio consistente com API existente. Consultar duplicidade somente se informado. Nao deduplicar por nome nem criar CPF sintetico.
-2. Radios nativos em fieldset/legend, labels Feminino/Masculino, required, mesmo name e foco visivel. Sem default. Canonico F/M; equivalencias inequivocas Feminino/Masculino/F/M somente ao exibir legado, sem reescrever antes de salvar.
-3. Nova 002 sem editar 001; manter ordem/quantidade de colunas, IDs, payload, search, datas e arquivamento. Runner 0->1->2 rejeita schema futuro. Reconstrucao sob foreign_keys ON com defer_foreign_keys na transacao e integrity_check/foreign_key_check antes do commit. Primeiro provar essa sequencia no SQLCipher empacotado com referencias existentes; se falhar, parar a tarefa e revisar plano sem desativar FKs silenciosamente.
-4. Antes de migrar v1, snapshot criptografado consistente pela API SQLite, validado e recuperavel com chave DPAPI existente. Falha bloqueia migracao; nao copiar banco ativo. Service::open migra antes de construir Service: extrair helper minimo ou reorganizar abertura limitada. Snapshot local de migracao nao equivale a backup portatil; provar reabertura em teste.
-5. Backup informa schema real da copia; restore aceita v1/v2 e exige concordancia metadata/user_version. Migrar copia temporaria v1 antes do import logico, verificar integridade novamente. Manter Envelope.version=1, credencial de recuperacao, DPAPI destino, backup preventivo, auditoria append-only e bloqueio apos sucesso.
-6. D-PAT-001: responsavel tambem opcional; D-PAT-002: sexo antigo diferente permanece ate escolha explicita ao salvar. Ambas AGENT-PROVISIONAL.
+Fontes técnicas verificadas: [SQLite AUTOINCREMENT](https://www.sqlite.org/autoinc.html), [TEMP store](https://www.sqlite.org/pragma.html#pragma_temp_store). Nenhuma alteração de stack ou ADR material. [Histórico](../../.harness/evidence/webfit-5/planning.md) não é plano de execução vigente.
 
-Contratos: [data-model.md](data-model.md), [contracts/patient.md](contracts/patient.md). Guia: [quickstart.md](quickstart.md).
+## Code Review e resultado
 
-## Quality / Gates
+Autorrevisão corrigiu apresentação imediata do número, abertura de legado sem sexo/tags e identidade do rascunho (UUID/número carregados do backend prevalecem sobre draft antigo). SSR do formulário completo comprovou apenas os três campos obrigatórios e rótulos opcionais. Revisão independente estática sem findings funcionais abertos; não substitui teste integrado.
 
-Analyze antes de implementar. Maycon autorizou registro/preparacao; validar D-PAT-001/002, obter confirmacao funcional de Amanda e autorizacao de execucao deste plano. Depois: Implement, Converge, Verification, Review independente, Security/UI gates e Evidence. Sem Git mutavel, publicacao ou aprovacao G5/G6/G7 implicita.
+**Resultado: REVIEW PASSED WITH WARNINGS, sem READY TO SHIP enquanto o ensaio Windows/aceite estiver pendente.** Segurança revisada e integração testada: autorização Tauri preservada, SQL parametrizado/transações/FKs, snapshots cifrados, ausência de logs sensíveis. UI revisada estaticamente/SSR, sem ensaio visual/teclado Windows. Rust/SQLCipher/DPAPI e cargo fmt/clippy/test PASS. A tentativa inicial sem Cargo é histórica; não representa bloqueio atual. Build de desenvolvimento não é instalador ou distribuição.
 
-## Complexity Tracking
+Build Tauri PASS com warnings ambientais de PDB OpenSSL ausente (LNK4099), colisão do nome PDB de bin/lib e STATIC_VCRUNTIME deprecado. Não houve falha de compilação; não ampliado o escopo para mudar configuração/dependências. Bundle Vite final 549,67 kB WARNING, refletindo checkout com trabalho simultâneo preservado. Nenhuma nova versão distribuída.
 
-Sem violacao proposta. Reconstrucao e recovery necessarios porque schema proibe CPF ausente e backup aceita so v1.
+Alterações concorrentes observadas em auditoria/backup (src-tauri/src/audit_recovery_tests.rs, trechos adicionais de lib/service/recovery, specs/001-primeiro-incremento-saude/plan.md e frontend relacionado) foram preservadas, não atribuídas à WEBFIT-5 nem cobertas como entrega independente por este review. Checks disponíveis registram o checkout no momento da execução; rerodar os afetados se outra demanda modificar as entradas.
+
+Próxima ação: ensaiar cadastro/numeração/migração/restore no Windows com fixtures e obter aceite. Integração/distribuição controladas por Maycon. Sem banco real, commit/push/publicação ou versão distribuída nesta sessão. Plane sync degraded; G5 em execução e G6/G7 preservados.
+
+### Continuação solicitada — 2026-10-08
+
+Conferida conclusão da rodada frontend (37 testes, lint/TS/build/Prettier PASS). HEAD observado 538091c4b25b1cba2ff566c885b9bd255c019a68, main/origin-main alinhados pela referência local; avanço externo sobre base 3558edd, sem operação Git deste chat. Mudanças locais e trabalho simultâneo preservados. Busca inicial não encontrou Cargo; preparação posteriormente autorizada por “Sim” e cache local reutilizado. Verificação nativa concluída conforme tabela, sem reabrir requisito, origem de Amanda ou autorização da migração.

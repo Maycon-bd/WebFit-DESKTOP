@@ -6,6 +6,14 @@
 
 ## Summary
 
+### Retomada de auditoria, recuperação e catálogo — 2026-10-08
+
+Maycon solicitou iniciar as pendências de catálogo/TACO, auditoria e backup/restauração e confirmou que possui autorização TBCA, autorizando prosseguir. Confirmação humana registrada; documento/licença da fonte não foi inspecionado. Continuidade nos artefatos aprovados por DEC-045, com vínculo Plane pendente por indisponibilidade da ferramenta; nenhum ID inventado ou item legado reaberto. Branch atual main; alterações simultâneas WEBFIT-5 preservadas, sem assumir seu aceite.
+
+RF-AUD-001 / TA-AUD-003..015: restringir lista/detalhe ao espaço HEALTH, conservar cursor em falha recuperável e cobrir filtros AND, imutabilidade, autorização, paginação e falha transacional. RF-BKP-001..003 / TA-BKP-001..005: corrigir limpeza de temporários/publicação que falha em auditoria, registrar falhas automáticas como SYSTEM e não ocultar erros de leitura do estado; atualizar estado após falha manual e apresentar alerta na sessão. Testes isolados com fixtures, sem banco de instalação. Sem nova migração/dependência, preservando a compatibilidade de restore em trabalho pela WEBFIT-5. Checks frontend, Rust/SQLite, formatação e build aplicáveis; ausência de toolchain/ensaio nativo será registrada, não representada como PASS.
+
+RF-PRE-002 / RN-PRE-001/002: obter o catálogo autorizado completo, preservar códigos/origem/preparação/unidades e ausências nutricionais; TACO somente após demonstrar ausência do item na TBCA completa. A fonte pública retornou HTTP 429 na investigação; não contornar bloqueio nem inferir catálogo completo a partir dos 88 itens locais. Importação depende de fonte íntegra/acessível; implementação independente de auditoria/backup continua.
+
 RF-UX-002: reutilizar Setup/Login e autorização existentes, sem migração ou dependência nova. Componente LoginInfo com botão SVG e dialog nativo para foco/Escape; getVersion da API Tauri para versão instalada e package.json como fallback de preview web. Nome admin fixado somente no payload de preparação de instalações novas, sem renomear contas existentes. Formulário administrativo separado da tela normal de acesso.
 
 O primeiro incremento entrega o núcleo operacional do espaço Saúde em uma instalação local e offline: autenticação e sessão, perfil profissional, pacientes, rascunhos protegidos, plano alimentar/orientações, auditoria e backup/restauração. O plano organiza a execução vertical desses fluxos, mas segue a direção aceita pelo ADR-0001 e a execução G5 autorizada pela DEC-045. Educação, sincronização entre máquinas, nuvem e colaboração ficam fora. A distribuição do canal piloto é uma trilha operacional separada, aprovada pelo ADR-0002, sem alterar o escopo clínico.

@@ -1,10 +1,14 @@
 mod acceptance_tests;
+#[cfg(test)]
+mod audit_recovery_tests;
 mod branding;
 mod database;
 mod energy;
 mod license;
 mod license_tests;
 mod nutrition;
+#[cfg(test)]
+mod patient_tests;
 mod recovery;
 mod security;
 mod service;

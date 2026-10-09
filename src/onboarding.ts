@@ -19,14 +19,14 @@ const tourCatalog = {
     {
       target: ".list-tools",
       title: "Encontre um cadastro",
-      text: "Pesquise por nome, CPF ou telefone. Os botões Ativos e Arquivados alternam as listas. Abra um cadastro para acompanhar as prescrições.",
+      text: "Pesquise por número do paciente, nome, CPF ou telefone. Os botões Ativos e Arquivados alternam as listas. Abra um cadastro para acompanhar as prescrições.",
     },
   ],
   "patient-new": [
     {
       target: '[data-tour="identity"] h2',
       title: "Identifique o paciente",
-      text: "Preencha identificação e contato. Os campos obrigatórios precisam estar completos para salvar. Nome social e responsável ficam no mesmo cadastro.",
+      text: "Preencha nome, data de nascimento e selecione Feminino ou Masculino. Os demais campos são opcionais, inclusive CPF e responsável. Ao salvar, o sistema gera o número de controle do paciente.",
     },
     {
       target: '[data-tour="tags"] h2',

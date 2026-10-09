@@ -107,7 +107,7 @@ RF-AUD-001; RN-AUD-001 a RN-AUD-017; RNF-PRI-001; RNF-SEG-002; RNF-SEG-003; DEC-
 ## Fluxos e erros obrigatórios
 
 - Credencial inválida mantém sessão fechada e aplica a espera correspondente.
-- CPF inválido ou duplicado impede conclusão e preserva o formulário.
+- CPF informado inválido ou duplicado impede conclusão e preserva o formulário; CPF ausente é permitido. UC-PAT-001 exige somente nome/nascimento/sexo; gera número sequencial sem zeros mantendo UUID (RF-PAT-007, WEBFIT-5). UC-PAT-002 permite localizar também pelo número.
 - Cancelar edição não persiste alterações.
 - Arquivado não recebe novo registro até restauração.
 - Prescrição finalizada não é sobrescrita; correção cria nova versão.

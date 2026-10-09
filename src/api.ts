@@ -7,6 +7,7 @@ export interface User {
 }
 export interface Patient {
   id?: string;
+  internalNumber?: number;
   name: string;
   socialName: string;
   cpf: string;

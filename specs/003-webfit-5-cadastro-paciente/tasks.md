@@ -1,51 +1,22 @@
-# Tasks: WEBFIT-5
+# Tarefas — WEBFIT-5
 
-**Input**: spec.md, plan.md, research.md, data-model.md, contracts/patient.md.
-**Branch**: main; HEAD-base a83998ef33c032ea46e283322bbf7620c0051d49.
-**Status**: propostas, nao iniciadas; aprovacao funcional/execucao e D-PAT-001/002 pendentes. Testes requeridos por SC-002/003 e DoD.
+Atualizadas em 2026-10-08; main/3558eddd84211e504ba0457388b1bedc30c9697d. [Plano/evidência](plan.md). Código implementado não equivale a teste executado/aceite. Numeração de tarefas histórica preservada.
 
-## Phase 1: Setup
+- [x] T001 Registrar origem funcional relatada, autorização de implementação/migração e D-PAT-001/003; D-PAT-002 não bloqueante.
+- [x] T002 Prova SQLCipher com FKs ON e rollback: SQLite Node e integração SQLCipher PASS, somente fixtures.
+- [x] T003 Implementar snapshot cifrado pré-migração com reabertura e teste de falha/recuperação; integração nativa PASS.
+- [x] T004 Migration003/runner transacional 0/1/2→3, CPF NULL e número sequencial mantendo UUID, conteúdo/referências; integridade antes do commit.
+- [x] T005 Restore schemas1/2/3/staging, contadores e números, preservando licença/credenciais/auditoria/backup preventivo.
+- [x] T006 Escrever regressões de comando/autorização, obrigatórios/opcionais, CPF, duplicidade e número; Rust PASS.
+- [x] T007 Backend mínimo, sexo F/M, CPF opcional, erros e número controlado pelo servidor.
+- [x] T008 Radios acessíveis, opcionais, lista/busca/máscara/legado/número na API e formulário.
+- [x] T009 Adequar fixtures de salvamento e onboarding, sem reescrever legado.
+- [x] T010 Responsável opcional e sexo legado preservado conforme decisões.
+- [x] T011 Executar matriz nativa vazio/v1/v2/futuro/falhas/idempotência/vínculos; integração SQLCipher PASS.
+- [x] T012 Executar roundtrips nativos de backups1/2/3, licença/transferência, contador e preservação; integração nativa PASS.
+- [ ] T013 Completar checks Rust/SQLCipher/fmt/clippy/build Tauri e ensaios Windows; todos os checks automatizados PASS, ensaio interativo Windows pendente.
+- [x] T014 Sincronizar requisitos, regras, aceite, casos, matriz, modelo, operação e pacote vigente sem duplicar specs.
+- [ ] T015 Fechar review/evidência com checks nativos e aceite: REVIEW PASSED WITH WARNINGS, revisão independente sem findings abertos, aceite final pendente; sem READY TO SHIP.
+- [x] T016 Número sequencial visível sem zeros, UUID preservado, busca e retorno imediato ao salvar; testes/contrato TA-PAT-017.
 
-- [ ] T001 Registrar aprovacao funcional/execucao e D-PAT-001/002 em docs/project/decision-log.md e RF-PAT-007 em docs/requirements/functional-requirements.md/spec.md, sem inferir aprovacao de Amanda.
-
-## Phase 2: Foundational
-
-- [ ] T002 Provar reconstrucao com foreign_keys ON, defer_foreign_keys, paciente referenciado e rollback no SQLCipher em src-tauri/src/tests.rs; parar se referencias nao forem preservadas (FR-004).
-- [ ] T003 Snapshot criptografado consistente pre-migracao e teste de recuperacao/falha em src-tauri/src/database.rs, src-tauri/src/service.rs e src-tauri/src/tests.rs; nao copiar banco ativo (FR-004).
-- [ ] T004 Criar src-tauri/migrations/002_optional_patient_cpf.sql e runner em src-tauri/src/database.rs: "CPF opcional; SQL NULL se ausente; informado normalizado, valido e unico inclusive entre arquivados"; conservar colunas/ordem, UUIDs, payloads, referencias/datas; nao editar 001 (FR-003/004).
-- [ ] T005 Ajustar src-tauri/src/recovery.rs: schema real, metadados consistentes, backups v1/v2 e migracao temporaria; manter envelope v1, credencial, auditoria, backup preventivo e bloqueio (FR-004).
-
-## Phase 3: US1 - Cadastro minimo (P1)
-
-**Goal / Independent Test**: dois pacientes somente tres obrigatorios; TA-PAT-008..012 com reabertura.
-
-- [ ] T006 [US1] Testes de comando/autorizacao, obrigatorios, CPF vazio multiplo, invalido/duplicado inclusive arquivado e e-mail opcional em src-tauri/src/tests.rs antes da validacao (FR-001/003).
-- [ ] T007 [US1] Ajustar src-tauri/src/service.rs: "name nao vazio apos trim", "birth data civil valida nao futura", "sex F ou M, obrigatorio, sem default"; CPF NULL/consulta condicional, contato opcional e erros por campo (FR-001/002/003).
-- [ ] T008 [US1] Radios acessiveis e required somente nos obrigatorios em src/App.tsx, foco em src/style.css; revisar lista/busca/mascara/rascunho e src/api.ts para CPF vazio (FR-001/002/003).
-- [ ] T009 [US1] Sexo ficticio explicito em fixtures de novos salvamentos src-tauri/src/tests.rs e src-tauri/src/acceptance_tests.rs; adequar src/onboarding.ts; manter fixtures de legado (FR-001/002).
-
-## Phase 4: US2 - Edicao, legado e recuperacao (P1)
-
-**Goal / Independent Test**: conservar cadastro/backup na atualizacao; TA-PAT-013..016 em instalacao anterior/nova.
-
-- [ ] T010 [US2] Aplicar D-PAT-001/002 validadas em src/App.tsx e src-tauri/src/service.rs: responsavel opcional com CPF/e-mail preenchidos validados e preservar sexo antigo ate escolha explicita (FR-005/006).
-- [ ] T011 [US2] Testar vazio/v1 populada/idempotencia/futuro/falha em src-tauri/src/tests.rs; comparar IDs/payloads/tags/prescricoes/auditoria, foreign_keys ON/integridade, edicao sem CPF, legado e responsavel (FR-003/004/005/006).
-- [ ] T012 [US2] Testar backups v1/v2 com vinculos e CPFs ausentes em src-tauri/src/tests.rs; futuro/metadata divergente/corrupcao/senha incorreta/falha preservam estado; sucesso une auditoria/bloqueia sessao (FR-004).
-
-## Phase 5: Polish
-
-- [ ] T013 Executar quickstart.md/checks existentes e ensaio Windows mouse/teclado; resultados em .harness/evidence/webfit-5/verification.md (FR-001..006, SC-001..004).
-- [ ] T014 Sincronizar docs/requirements/{functional-requirements,business-rules,acceptance-criteria,use-cases,traceability}.md, docs/architecture/data-model.md e docs/operations/backup-restore.md; preservar historico.
-- [ ] T015 Converge, review independente, gates Security/UI e evidencia/limites/versao em .harness/evidence/webfit-5/evidence.md e docs/project/status.md; Plane Review ate aceite final.
-
-## Dependencies & Execution Order
-
-T001 -> T002 -> T003/T004 -> T005 -> US1/US2 -> T013..T015. T006 antes de T007; T008/T009 apos contrato T007; T010 antes de T011; T012 depende T005. T002 prova estrategia antes de migrar instalacao.
-
-## Parallel Examples
-
-Sem [P]: historias compartilham App.tsx/service.rs/tests.rs. Checks frontend/Rust podem ocorrer independentemente apos edicoes.
-
-## Implementation Strategy
-
-Fundacao/compatibilidade primeiro, depois cadastro e preservacao. Ambas historias necessarias antes da atualizacao. Testes focados antes do comportamento, sem tooling novo. Sem Git mutavel/publicacao.
+Somente dados fictícios; preparação do toolchain autorizada e cache local reutilizado. Sem banco real, commit/push ou publicação. Checks nativos concluídos em 2026-10-09; ensaio Windows/aceite permanecem pendentes e não constituem nova aprovação funcional.

@@ -210,7 +210,7 @@ mod integration {
         )
         .is_err());
         let token = setup(&mut service);
-        let patient = json!({"name":"Paciente Fictício","cpf":"52998224725","phone":"11999999999","birth":"1990-01-02","email":"ficticio@example.invalid","address":"Endereço fictício","tags":[]});
+        let patient = json!({"name":"Paciente Fictício","cpf":"52998224725","phone":"11999999999","birth":"1990-01-02","sex":"F","email":"ficticio@example.invalid","address":"Endereço fictício","tags":[]});
         let result = call(
             &mut service,
             Some(&token),
@@ -411,7 +411,7 @@ mod integration {
             .db
             .pragma_query_value(None, "user_version", |row| row.get(0))
             .unwrap();
-        assert_eq!(version, 2);
+        assert_eq!(version, 3);
     }
     #[test]
     fn six_character_access_passwords_work_and_recovery_remains_twelve() {

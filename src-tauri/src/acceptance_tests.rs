@@ -140,7 +140,7 @@ mod tests {
         let tmp = tempfile::tempdir().unwrap();
         let mut s = Service::open(tmp.path().to_owned()).unwrap();
         let t = session(&mut s);
-        let patient = json!({"name":"Paciente ficticio","cpf":"52998224725","phone":"11999999999","birth":"1990-01-02","email":"teste@example.invalid","address":"Ficticio","tags":[]});
+        let patient = json!({"name":"Paciente ficticio","cpf":"52998224725","phone":"11999999999","birth":"1990-01-02","sex":"F","email":"teste@example.invalid","address":"Ficticio","tags":[]});
         let patient_id = call(&mut s, Some(&t), Action::SavePatient { id: None, patient }).unwrap()
             ["id"]
             .as_str()

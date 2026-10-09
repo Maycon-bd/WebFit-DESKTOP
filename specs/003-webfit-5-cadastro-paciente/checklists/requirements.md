@@ -28,4 +28,4 @@
 
 ## Notes
 
-Checklist de qualidade documental completo, nao concede IMPLEMENTATION APPROVAL. D-PAT-001/002 e aprovacao funcional pendentes conforme spec.md.
+Checklist documental histórico; não concede aceite. Atualização 2026-10-09: implementação autorizada e D-PAT-001/003 aceitas; origem funcional relatada por Maycon e D-PAT-002 provisória não bloqueante conforme spec.md. Testes nativos/SQLCipher PASS; ensaio Windows/aceite final pendentes.

@@ -1,22 +1,24 @@
-# Quickstart: WEBFIT-5
+# Verificação — WEBFIT-5
 
-Execucao futura somente ficticia; nenhum teste de produto executado neste planejamento.
+Somente dados fictícios em diretório temporário. [Resultados e limites](plan.md#verificação).
 
-## Checks existentes
+## Comandos
 
-Raiz: `npm run format:check`, `npm run check` (lint, TypeScript, testes Node e build).
+- `npm run check`: lint, TypeScript, testes Node (inclui SQL real de migration003 e SSR dos componentes) e build Vite.
+- `npm run format:check`.
+- `cargo fmt --manifest-path src-tauri/Cargo.toml --check`.
+- `cargo clippy --locked --offline --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings`.
+- `cargo test --locked --offline --manifest-path src-tauri/Cargo.toml` (integração SQLCipher, DPAPI, snapshots e backups).
+- `node node_modules/@tauri-apps/cli/tauri.js build --debug --no-bundle -- --locked --offline`.
 
-src-tauri: `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test` (integracao SQLCipher/backup). Build Tauri aplicavel conforme politica vigente; nao gerar/publicar instalador por iniciativa do agente. Registrar resultados reais; nao instalar dependencias.
+Preparação nativa autorizada por Maycon, toolchain Rust 1.98.1 local reutilizado com ambiente restrito ao processo/cache isolado. Cargo fmt, Clippy e 46 testes Rust/SQLCipher/DPAPI PASS. Check SQL Node complementa a integração nativa. Build debug sem bundle não gera instalador nem publica atualização. Não instalar dependências adicionais sem autorização.
 
-## Aceite
+## Ensaio necessário
 
-1. TA-PAT-008/009: dois pacientes somente nome/nascimento/sexo; reabrir depois de reiniciar.
-2. TA-PAT-010/011: omitir cada obrigatorio; data futura, sexo invalido por comando, CPF invalido/duplicado inclusive arquivado e e-mail preenchido invalido; preservar digitado.
-3. TA-PAT-012: mouse/teclado, foco, selecao exclusiva, sem default.
-4. TA-PAT-013/015/016: editar retirando CPF/contato; preservar ID/historico. Legado vazio/arbitrario preservado ate escolher. Responsavel parcial conforme validacao humana.
-5. TA-PAT-014: banco vazio/v1 populada/idempotencia; comparar IDs/payloads/tags/prescricoes/auditoria; foreign_keys ON, integridade, rollback e snapshot pre-migracao recuperavel.
-6. TA-PAT-014: restaurar backups v1/v2 incluindo varios CPFs ausentes. Metadata divergente/futura, senha incorreta, corrupcao e falha de import preservam estado; sucesso mantem trilhas e bloqueia sessao.
-
-## Entrega
-
-Converge, Verification/Review independentes, Security/UI gates, evidencia e aceite Windows. Frontend isolado nao comprova Tauri integrado; planejamento nao e implementacao.
+1. Criar dois pacientes somente nome/nascimento/sexo; número visível sem zeros, distinto e imediato. Reiniciar/reencontrar por número.
+2. Ausência de cada obrigatório; data inválida/futura; sexo arbitrário por comando; CPF/e-mail opcionais inválidos; CPF duplicado inclusive de arquivado. Falha preserva formulário.
+3. Radios por mouse/teclado, foco visível, exclusividade, leitor de tela e zoom200%; sem default. Campos do responsável parciais não bloqueiam.
+4. Editar removendo CPF/contato, manter UUID/número/vínculos. Legado desconhecido visível até seleção; ausente abre sem erro.
+5. Banco vazio, v1/v2 populados, idempotência e futuro; snapshot cifrado reaberto, licença/consumo/auditoria/prescrições/tags preservados; falhas com rollback.
+6. Backups1/2/3, origem/destino licenciados/transferência conforme contrato. Número conhecido preservado, contador não diminui; senha incorreta, metadata divergente/futura/corrupção/falha não substituem estado.
+7. Revisão independente e aceite Windows; não confundir build/SSR com funcionamento integrado.

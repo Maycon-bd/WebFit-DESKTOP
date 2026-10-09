@@ -259,6 +259,34 @@ a {
   align-items: flex-end;
   margin-bottom: 24px;
 }
+.patient-sex {
+  min-width: 0;
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+}
+.patient-sex legend {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.patient-sex-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+.patient-sex-options .check {
+  min-height: 44px;
+  margin: 0;
+  cursor: pointer;
+}
+.patient-sex-options input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--green);
+}
 .list-tools .field {
   flex: 1;
   max-width: 560px;
@@ -668,7 +696,7 @@ input[readonly] {
   color: var(--muted);
 }
 .login-info-dialog {
-  width: min(480px, calc(100vw - 32px));
+  width: min(960px, calc(100vw - 32px));
   max-height: calc(100dvh - 32px);
   overflow: auto;
   padding: 28px;
@@ -681,7 +709,42 @@ input[readonly] {
   background: rgba(20, 35, 28, 0.35);
 }
 .login-info-dialog .system-logo {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+}
+.login-info-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  align-items: start;
+}
+.login-info-overview {
+  min-width: 0;
+}
+.login-info-content > .license-panel {
+  min-width: 0;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.login-info-content > .license-panel h2 {
+  margin-top: 0;
+}
+.login-info-content > .license-panel .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.login-info-content:not(:has(> .license-panel)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (max-width: 760px) {
+  .login-info-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .login-info-dialog {
+    padding: 20px;
+  }
 }
 .login-info-dialog hr {
   border: 0;

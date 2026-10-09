@@ -2,6 +2,8 @@
 
 ## Acesso sem obstrução — WEBFIT-10, 2026-10-08
 
+Refinamento visual de TA-UX-LOGIN-003 solicitado por Maycon: modal (i) mais largo, aproveitando espaço horizontal para reduzir scroll vertical. Conferir informações e suporte em duas colunas quando houver largura, reflow para uma coluna em viewport estreito/zoom e ações/conteúdo sempre alcançáveis. Não cortar conteúdo para impedir rolagem.
+
 - TA-UX-LOGIN-003 (RF-UX-002/RF-LIC-001): instalação preparada mostra login sem painel de licença; (i) abre diálogo com Licença e suporte; operações, erros e confirmação continuam acessíveis. Fechar/Escape devolvem foco sem alterar login ou licença, exceto enquanto operação está em andamento. Suporte temporário e recuperação administrativa conservam contratos. Destino vazio mantém ativação e preparação acessíveis na tela inicial. Conferir teclado/rolagem a 200% no Windows.
 - TA-UX-WINDOW-001 (RF-UX-005): ao abrir e reabrir, inclusive após fechar em tamanho restaurado, janela principal inicia maximizada; controles nativos continuam disponíveis. Aceite Windows pendente.
 
@@ -47,9 +49,9 @@ Cobertura técnica aprovada por D-LIC-006..008 (Maycon, “Aprovo a implementaç
 | TA-UX-BRAND-003 | Acesso/lateral/Sobre/favicon usam símbolo com proporção e identificação acessível; lateral recolhida oculta sua marca; imagem não recebe foco |
 | TA-UX-BRAND-004 | Logo profissional, ações, foco/controles, dados, autorização, versão/identificador e spike preservados; checks existentes passam |
 
-## Refinamento proposto WEBFIT-5
+## Refinamento aprovado WEBFIT-5 — 2026-10-08
 
-TA-PAT-008..016 / RF-PAT-007: cadastro mínimo, CPF opcional múltiplo, rejeição dos três obrigatórios ausentes, validação dos opcionais informados, sexo por seleção acessível, edição preservando ID, migração/backup anterior e atual, sexo legado e responsável opcional. Cenários em [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md). Preparação autorizada por Maycon em 2026-10-07; aprovação funcional/execução e D-PAT-001/002 pendentes. Nenhum critério executado; não substitui ainda TA-PAT-001..007.
+TA-PAT-008..017 / RF-PAT-007: cadastro mínimo, CPF opcional múltiplo, rejeição dos três obrigatórios ausentes, validação dos opcionais informados, sexo por seleção acessível, edição preservando UUID/número, migração/backup 1/2/3, sexo legado e responsável opcional. TA-PAT-017 cobre número sequencial sem zeros, gerado no backend, exibido/buscável e estável, sem renumeração pelo cliente. Cenários em [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md). Solicitação de Amanda relatada por Maycon e execução autorizada em 2026-10-08; D-PAT-001/003 aceitas, D-PAT-002 provisória não bloqueante. Refinam TA-PAT-001..007; checks SQL Node/SSR são evidência parcial, Rust/SQLCipher/Windows e aceite final pendentes.
 
 **Status:** testes de aceite do primeiro incremento aprovados; resultado será preenchido após execução.
 

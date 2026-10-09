@@ -1,5 +1,7 @@
 # Research: WEBFIT-5
 
+> Registro histórico de 2026-10-07. Versões/decisões abaixo refletem aquela base. Plano vigente: [plan.md](plan.md), schema3/migration003 e decisões de 2026-10-08; não executar migration002 deste histórico.
+
 2026-10-07. Pesquisa somente leitura por agente sob speckit-plan; produto/banco nao alterados.
 
 ## CPF ausente

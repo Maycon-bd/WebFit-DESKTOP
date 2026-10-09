@@ -1,79 +1,43 @@
-# Feature Specification: Cadastro minimo de paciente
+# WEBFIT-5 — Cadastro mínimo e número do paciente
 
-**Feature Branch**: `main` (DEC-054)
-**Work Item**: WEBFIT-5
-**Created**: 2026-10-07
-**Status**: READY FOR HUMAN DECISION REVIEW; preparacao autorizada por Maycon, implementacao pendente.
-**Input**: "No cadastro de paciente apenas os campos de Nome, data de nascimento, sexo serem obrigatorios, e o sexo ser duas opcoes: feminino e masculino so pra apertar, sem ter que escrever."
+**Data:** 2026-10-08. **Branch:** main. **Base:** 3558eddd84211e504ba0457388b1bedc30c9697d.
+**Status:** aprovado para implementação; código local e testes nativos/SQLCipher PASS. Aceite final/Windows pendentes. Plane sync degraded. Evidência atualizada em 2026-10-09.
 
-## User Scenarios & Testing
+## Origem e decisões
 
-### User Story 1 - Cadastrar com os dados minimos (Priority: P1)
+Maycon pediu somente nome, nascimento e sexo obrigatórios, radios Feminino/Masculino e todos os demais campos opcionais, inclusive CPF. Confirmou número sequencial visível mantendo UUID: “Sim, mas sem os zeros, por exemplo apenas 1, 245, 123”. À pergunta conjunta sobre aprovação funcional de Amanda e migração necessária com testes fictícios respondeu “Foi solicitação dela”, após pedir continuidade. Registrar como solicitação de Amanda relatada por Maycon, não como aceite da entrega.
 
-Nutricionista ou administrador cadastra um paciente com nome, nascimento e sexo, sem precisar informar documentos e contato.
+D-PAT-001 ACCEPTED: responsável e seus campos também opcionais. D-PAT-003 ACCEPTED: número sequencial visível sem zeros. D-PAT-002 AGENT-PROVISIONAL não bloqueante: preservar sexo legado até salvar; reconhecer apenas F/M/Feminino/Masculino; valor ausente/desconhecido exige escolha explícita sem inferência. Aprovação de implementação/migração no escopo do pedido; sem dados reais, publicação, Git mutável ou G5/G6/G7.
 
-**Why this priority**: remover impedimentos ao cadastro solicitado por Maycon.
-**Independent Test**: salvar dois pacientes ficticios sem CPF, fechar/reabrir e localizar ambos.
+## Requisitos — RF-PAT-007
 
-**Acceptance Scenarios**:
+| ID | Comportamento | Aceite |
+|---|---|---|
+| FR-001 | Exigir somente nome não vazio, nascimento válido não futuro e sexo | TA-PAT-008/010 |
+| FR-002 | Radios Feminino/Masculino exclusivos, acessíveis, sem texto livre nem default | TA-PAT-012 |
+| FR-003 | CPF/contato opcionais; CPF preenchido válido/normalizado/único inclusive em arquivados; e-mail preenchido validado | TA-PAT-009/011 |
+| FR-004 | Preservar UUIDs, números, conteúdos, vínculos, licença e auditoria em atualização/backup | TA-PAT-013/014/017 |
+| FR-005 | Preservar sexo legado até edição; exigir escolha quando desconhecido | TA-PAT-015 |
+| FR-006 | Responsável e campos opcionais; validar CPF/e-mail quando preenchidos | TA-PAT-016 |
+| FR-007 | Número de controle inteiro positivo crescente, sem zeros, gerado pelo sistema, exibido no cadastro/lista e pesquisável | TA-PAT-017 |
 
-1. **Given** Novo paciente, **When** preencher somente nome e nascimento valido e selecionar Feminino ou Masculino, **Then** salvar e reencontrar depois de reiniciar (TA-PAT-008).
-2. **Given** CPF ausente em dois cadastros, **When** salvar ambos, **Then** cada cadastro possuir identidade independente (TA-PAT-009).
-3. **Given** nome vazio, nascimento ausente/invalido/futuro ou sexo sem selecao, **When** salvar pela tela ou comando direto, **Then** rejeitar indicando o campo e preservar o formulario (TA-PAT-010).
-4. **Given** CPF ou e-mail preenchido, **When** salvar com valor invalido ou CPF duplicado, inclusive de arquivado, **Then** rejeitar sem apagar o digitado (TA-PAT-011).
-5. **Given** o grupo Sexo, **When** clicar ou usar teclado, **Then** selecionar exclusivamente Feminino ou Masculino sem digitar e sem selecao inicial presumida (TA-PAT-012).
+Prioridade: refinamento solicitado do incremento 1, sem repriorização remota. FR-001..004/006/007 aprovados no escopo; FR-005 segue decisão provisória não bloqueante. Nenhuma equação ou regra nutricional alterada.
 
-### User Story 2 - Editar e atualizar sem perder dados (Priority: P1)
+## Cenários de aceite
 
-O profissional conserva pacientes, prescricoes, tags e historico ao atualizar a aplicacao e continua restaurando backups anteriores.
+- **TA-PAT-008:** salvar somente nome/nascimento/sexo e reencontrar após reiniciar.
+- **TA-PAT-009:** salvar dois pacientes sem CPF (inclusive mesmo nome/nascimento); UUIDs e números distintos. Não deduplicar automaticamente por nome.
+- **TA-PAT-010:** ausências dos três obrigatórios, nascimento inválido/futuro e sexo arbitrário impedem salvamento pela UI/comando protegido; preservar formulário.
+- **TA-PAT-011:** CPF ou e-mail informado inválido, ou CPF duplicado inclusive em arquivado, impede salvar; CPF vazio/espaços/ausente permitido.
+- **TA-PAT-012:** mouse/teclado escolhem exclusivamente Feminino ou Masculino; rótulos, agrupamento e foco acessíveis, sem default.
+- **TA-PAT-013:** editar removendo CPF/contato preserva UUID, número, tags enviadas, prescrições, arquivamento e auditoria.
+- **TA-PAT-014:** banco vazio e atualização 1/2→3; snapshot anterior validado/reabrível; restaurar backups 1/2/3 respeitando licença/transferência; integridade/rollback; futuro, metadata divergente, corrupção e senha errada não substituem estado atual.
+- **TA-PAT-015:** sexo legado conhecido aparece selecionado sem reescrita em massa; desconhecido permanece visível e exige escolha ao salvar; ausente abre com radios vazios.
+- **TA-PAT-016:** responsável parcial ou vazio não cria novos obrigatórios; CPF/e-mail preenchidos validados.
+- **TA-PAT-017:** números como 1 e 245, sem zeros, distintos e não editáveis; não confiar em número enviado pelo cliente; mostrar imediatamente após salvar; preservar ao editar/arquivar/reabrir/restaurar; busca por número exato. Novo número acima dos já consumidos na instalação. UUID segue identificador dos vínculos.
 
-**Why this priority**: a opcionalidade do CPF muda a persistencia e nao pode causar perda de historico.
-**Independent Test**: atualizar uma instalacao ficticia anterior, editar um paciente, criar/restaurar backup e comparar IDs e relacionamentos.
+## Compatibilidade e limites
 
-**Acceptance Scenarios**:
+Legado recebe numeração por criação, UUID como desempate. CPF ausente é SQL NULL e aparece como “Não informado” na lista. Banco com schema futuro é recusado. Backup 3 conserva números; backup 1/2 não possuía número: UUID conhecido mantém número do destino; desconhecido recebe próximo número local. Números não são uma identidade global entre instalações; o UUID é preservado.
 
-1. **Given** cadastro existente, **When** remover CPF/contato e salvar com os tres obrigatorios, **Then** preservar o ID, tags, prescricoes, arquivamento e auditoria (TA-PAT-013).
-2. **Given** base anterior ou backup anterior, **When** atualizar ou restaurar em versao nova, **Then** preservar conteudos, referencias e auditoria; uma falha preservar o estado anterior (TA-PAT-014).
-3. **Given** cadastro antigo com sexo vazio ou fora das duas opcoes, **When** abrir, **Then** preservar o valor antigo ate salvar e pedir escolha explicita antes de salvar; nunca inferir sexo (TA-PAT-015, proposta D-PAT-002).
-4. **Given** dados opcionais de responsavel parcialmente preenchidos, **When** salvar, **Then** nao exigir seus campos; validar CPF/e-mail somente se informados (TA-PAT-016, proposta D-PAT-001).
-
-### Edge Cases
-
-- CPF ausente, vazio ou contendo somente espacos equivale a nao informado; texto nao vazio que nao seja CPF valido e rejeitado.
-- Nascimento e data civil, sem conversao de fuso; manter rejeicao de data futura.
-- Sem CPF nao ha deduplicacao automatica por nome/nascimento; identidade existente continua independente.
-- Sexo antigo nao e descartado na atualizacao nem no rascunho. Nenhuma inferencia por nome, genero ou prescricao.
-- Arquivamento, sessoes, permissoes, rascunhos e auditoria mantem seus contratos existentes.
-- Versao antiga nao pode abrir base nova; mostrar incompatibilidade sem alterar o banco.
-
-## Requirements
-
-### Functional Requirements
-
-- **FR-001** (RF-PAT-007, TA-PAT-008/010): exigir somente nome, nascimento e sexo no cadastro e edicao, na tela e na operacao protegida.
-- **FR-002** (RF-PAT-007, TA-PAT-012): oferecer somente Feminino e Masculino por selecao exclusiva acessivel, sem texto livre nem valor presumido.
-- **FR-003** (RF-PAT-007, TA-PAT-009/011): permitir CPF/telefone/e-mail/endereco vazios; validar e normalizar CPF preenchido e impedir duplicidade entre ativos/arquivados; validar e-mail preenchido.
-- **FR-004** (RF-PAT-007, TA-PAT-013/014): preservar IDs, conteudos, relacionamentos e trilha de auditoria durante atualizacao e backup/restauracao, inclusive backups da versao anterior.
-- **FR-005** (RF-PAT-007, TA-PAT-015, D-PAT-002 AGENT-PROVISIONAL): preservar sexo antigo e exigir escolha explicita ao salvar se o valor nao corresponder a Feminino/Masculino.
-- **FR-006** (RF-PAT-007, TA-PAT-016, D-PAT-001 AGENT-PROVISIONAL): campos de responsavel tambem opcionais, com validacao de CPF/e-mail preenchidos.
-
-### Key Entities
-
-- **Paciente**: identidade independente do CPF, nome, nascimento, sexo, documentos/contato opcionais, genero separado e opcional, responsavel opcional, tags, observacoes e situacao.
-- **Backup**: estado consistente e protegido, incluindo versao dos dados, identidade e relacionamentos.
-
-## Success Criteria
-
-### Measurable Outcomes
-
-- **SC-001**: dois cadastros contendo somente os tres campos persistem e podem ser reabertos e editados independentemente.
-- **SC-002**: todos os cenarios TA-PAT-008..016 passam com dados ficticios; os tres obrigatorios e valores invalidos sao rejeitados inclusive fora da tela.
-- **SC-003**: atualizacao e restauracao anterior/atual conservam IDs e relacionamentos; falhas e versoes incompatíveis nao perdem dados.
-- **SC-004**: sexo pode ser selecionado com mouse e teclado, com foco visivel e selecao exclusiva anunciada por tecnologia assistiva.
-
-## Assumptions
-
-- Pedido e autorizacao de preparacao sao de Maycon, em 2026-10-07. Nao ha evidencia de aprovacao funcional de Amanda nem de autorizacao de implementacao deste plano.
-- RF-PAT-001/003 e RN-PAT-001/003/005/006 anteriores continuam baseline ate aprovacao do refinamento; RF-PAT-007 e proposta rastreavel, sem substituir silenciosamente regras aceitas.
-- D-PAT-001 e D-PAT-002 aguardam validacao em lote. A opcionalidade de responsavel segue a interpretacao literal de "apenas" tres campos; preservar sexo antigo evita perda e inferencia clinica.
-- Somente dados ficticios. Sem dependencias novas, alteracao de calculos nutricionais, dados reais ou publicacao. Pesquisa tecnica em research.md.
+Somente fixtures. Checks SQL Node/SSR não substituem SQLCipher/DPAPI/WebView/aceite. [Plano e evidência](plan.md), [tarefas](tasks.md), [modelo](data-model.md), [contrato](contracts/patient.md), [roteiro](quickstart.md). Histórico de preparação em [.harness/evidence/webfit-5/planning.md](../../.harness/evidence/webfit-5/planning.md); bloqueios antigos superados pelas respostas acima.

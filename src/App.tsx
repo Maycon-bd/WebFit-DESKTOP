@@ -4,8 +4,10 @@ import { open, save } from "@tauri-apps/plugin-dialog";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { UpdatePanel } from "./UpdatePanel";
+import { BackupNotice } from "./BackupNotice";
 import { DraftRecoveryDialog } from "./DraftRecoveryDialog";
 import { FormFeedback } from "./FormFeedback";
+import { PatientSexField, canonicalPatientSex } from "./PatientSexField";
 import type { FormFeedbackState } from "./FormFeedback";
 import {
   api,
@@ -215,6 +217,7 @@ export default function App() {
   }, [navigationFocus]);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [backupRevision, setBackupRevision] = useState(0);
   const [busy, setBusy] = useState(false);
   const [drafts, setDrafts] = useState<Draft[]>([]);
   const [pendingDraft, setPendingDraft] = useState<Draft | null>(null);
@@ -492,7 +495,14 @@ export default function App() {
   async function restoreDraft(draft: Draft) {
     const restored = await task(async () => {
       draftDirty.current = false;
-      if (draft.kind === "patient") setPatient(draft.payload as Patient);
+      if (draft.kind === "patient")
+        setPatient({
+          ...emptyPatient,
+          ...(draft.payload as Patient),
+          // A recovered draft edits fields, not the identity loaded from the backend.
+          id: patient?.id,
+          internalNumber: patient?.internalNumber,
+        });
       else if (draft.kind === "profile") setProfile(draft.payload as Profile);
       else if (draft.kind === "prescription") {
         const payload = draft.payload as PrescriptionPayload;
@@ -864,6 +874,14 @@ export default function App() {
           <div className="test-banner">
             Ambiente de teste · dados fictícios · instalação local
           </div>
+          {!session.user.must_change && (
+            <BackupNotice
+              token={session.token}
+              revision={backupRevision}
+              busy={busy}
+              onManage={() => void navigate("backup")}
+            />
+          )}
           {error && !contextualFeedback && (
             <div role="alert" className="message error">
               {error}
@@ -994,7 +1012,12 @@ export default function App() {
                         ? { busy, error, notice }
                         : { busy: false, error: "", notice: "" }
                     }
-                    patient={patient}
+                    patient={{
+                      ...emptyPatient,
+                      ...patient,
+                      sex: patient.sex ?? "",
+                      tags: patient.tags ?? [],
+                    }}
                     onChange={(v) => {
                       setPatient(v);
                       draftDirty.current = true;
@@ -1014,9 +1037,9 @@ export default function App() {
                         draftRef.current = null;
                       })
                     }
-                    onSaved={(id) => {
+                    onSaved={(id, internalNumber) => {
                       draftDirty.current = false;
-                      setPatient({ ...patient, id });
+                      setPatient({ ...patient, id, internalNumber });
                       setNotice("Cadastro salvo.");
                     }}
                     onPrescription={(p) => {
@@ -1069,6 +1092,7 @@ export default function App() {
                 <BackupPage
                   token={token}
                   task={task}
+                  onStatusChange={() => setBackupRevision((value) => value + 1)}
                   onRestore={() => {
                     setSession(null);
                     setPatient(null);
@@ -1304,7 +1328,7 @@ function PatientsPage({
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Nome, CPF ou telefone"
+            placeholder="Número, nome, CPF ou telefone"
           />
         </Field>
         <div className="segmented">
@@ -1323,7 +1347,7 @@ function PatientsPage({
           </h2>
           <p>
             {query
-              ? "Tente outro nome, CPF ou telefone."
+              ? "Tente outro número, nome, CPF ou telefone."
               : "Cadastre um paciente fictício para testar o acompanhamento."}
           </p>
           {!query && (
@@ -1335,6 +1359,7 @@ function PatientsPage({
           <table>
             <thead>
               <tr>
+                <th>Número</th>
                 <th>Paciente</th>
                 <th>CPF</th>
                 <th>Nascimento</th>
@@ -1345,13 +1370,14 @@ function PatientsPage({
             <tbody>
               {items.map((p) => (
                 <tr key={p.id}>
+                  <td>{p.internalNumber}</td>
                   <td>
                     <strong>{displayName(p)}</strong>
                     {p.socialName && <small>{p.name}</small>}
                   </td>
-                  <td>{p.cpf}</td>
+                  <td>{p.cpf || "Não informado"}</td>
                   <td>{p.birth.split("-").reverse().join("/")}</td>
-                  <td>{p.phone}</td>
+                  <td>{p.phone || "Não informado"}</td>
                   <td>
                     <button
                       onClick={() => onOpen(p.id!)}
@@ -1390,7 +1416,7 @@ function PatientForm({
   busy: boolean;
   task: Task;
   onClose: () => void;
-  onSaved: (id: string) => void;
+  onSaved: (id: string, internalNumber: number) => void;
   onPrescription: (p?: Prescription) => void;
 }) {
   const [tags, setTags] = useState<Tag[]>([]);
@@ -1437,12 +1463,15 @@ function PatientForm({
     submitting.current = true;
     try {
       await task(async () => {
-        const result = await api<{ id: string }>(token, {
-          op: "save_patient",
-          id: patient.id ?? null,
-          patient,
-        });
-        onSaved(result.id);
+        const result = await api<{ id: string; internalNumber: number }>(
+          token,
+          {
+            op: "save_patient",
+            id: patient.id ?? null,
+            patient: { ...patient, sex: canonicalPatientSex(patient.sex) },
+          },
+        );
+        onSaved(result.id, result.internalNumber);
       });
     } finally {
       submitting.current = false;
@@ -1469,22 +1498,28 @@ function PatientForm({
       <form data-draft-form="" onSubmit={submit}>
         <section className="form-section" data-tour="identity">
           <h2>Identificação e contato</h2>
+          {patient.internalNumber != null && (
+            <p>
+              <strong>Número do paciente: {patient.internalNumber}</strong>
+            </p>
+          )}
           <p className="hint">
-            Os rótulos indicam quais campos são obrigatórios e quais são
-            opcionais.
+            Apenas nome, data de nascimento e sexo são obrigatórios. Os demais
+            campos são opcionais.
           </p>
           <div className="form-grid">
             {field("name", "Nome completo", "text", true)}
             {field("socialName", "Nome social (opcional)")}
-            {field("cpf", "CPF", "text", true)}
+            {field("cpf", "CPF")}
             {field("birth", "Data de nascimento", "date", true)}
-            {field("phone", "Telefone", "tel", true)}
-            {field("email", "E-mail", "email", true)}
-            {field("sex", "Sexo")}
+            {field("phone", "Telefone", "tel")}
+            {field("email", "E-mail", "email")}
+            <PatientSexField
+              value={patient.sex}
+              onChange={(sex) => onChange({ ...patient, sex })}
+            />
             {field("gender", "Gênero (opcional)")}
-            <div className="wide">
-              {field("address", "Endereço", "text", true)}
-            </div>
+            <div className="wide">{field("address", "Endereço")}</div>
           </div>
           <label className="check">
             <input
@@ -1517,9 +1552,8 @@ function PatientForm({
                 phone: "Telefone do responsável",
                 email: "E-mail do responsável",
               }).map(([key, label]) => (
-                <Field label={`${label} (obrigatório)`} key={key}>
+                <Field label={`${label} (opcional)`} key={key}>
                   <input
-                    required
                     type={key === "email" ? "email" : "text"}
                     value={patient.guardian?.[key] ?? ""}
                     onChange={(e) =>
@@ -2505,11 +2539,13 @@ function BackupPage({
   token,
   task,
   onRestore,
+  onStatusChange,
   backupOnly = false,
 }: {
   token: string | null;
   task: Task;
   onRestore: () => void;
+  onStatusChange?: () => void;
   backupOnly?: boolean;
 }) {
   const [status, setStatus] = useState<BackupStatus | null>(null);
@@ -2553,17 +2589,29 @@ function BackupPage({
                 ],
               });
               if (destination) {
-                const result = await api<{ path: string; sha256: string }>(
-                  token,
-                  {
-                    op: "backup",
-                    path: destination,
-                  },
-                );
-                setResult(
-                  `Backup criado: ${result.path}. SHA-256 para transferência: ${result.sha256}`,
-                );
-                await refresh();
+                setResult("");
+                try {
+                  const result = await api<{ path: string; sha256: string }>(
+                    token,
+                    {
+                      op: "backup",
+                      path: destination,
+                    },
+                  );
+                  setResult(
+                    `Backup criado: ${result.path}. SHA-256 para transferência: ${result.sha256}`,
+                  );
+                  await refresh();
+                } catch (error) {
+                  try {
+                    await refresh();
+                  } catch {
+                    setStatus(null);
+                  }
+                  throw error;
+                } finally {
+                  onStatusChange?.();
+                }
               }
             })
           }
@@ -2604,14 +2652,25 @@ function BackupPage({
                 )
               )
                 void task(async () => {
-                  await api(token, {
-                    op: "restore",
-                    path,
-                    password,
-                    confirmed: true,
-                  });
-                  setPassword("");
-                  onRestore();
+                  try {
+                    await api(token, {
+                      op: "restore",
+                      path,
+                      password,
+                      confirmed: true,
+                    });
+                    setPassword("");
+                    onRestore();
+                  } catch (error) {
+                    try {
+                      await refresh();
+                    } catch {
+                      setStatus(null);
+                    }
+                    throw error;
+                  } finally {
+                    onStatusChange?.();
+                  }
                 });
             }}
           >

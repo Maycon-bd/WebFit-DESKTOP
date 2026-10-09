@@ -44,13 +44,13 @@ Atualizar/reparar não redefine contas nem consome nova ativação. Chaves de li
 
 | ID | Regra | Status |
 |---|---|---|
-| RN-PAT-001 | nome completo, CPF, telefone, nascimento, e-mail e endereço são obrigatórios | aprovado |
+| RN-PAT-001 | somente nome completo, nascimento válido não futuro e sexo F/M são obrigatórios; demais campos opcionais | aprovado — WEBFIT-5, 2026-10-08 |
 | RN-PAT-002 | CPF é normalizado para dígitos, validado e único no espaço Saúde, inclusive para paciente arquivado | aprovado |
-| RN-PAT-003 | no MVP, cadastro sem CPF válido é rejeitado; exceções exigem novo requisito | aprovado |
+| RN-PAT-003 | CPF ausente é permitido em vários cadastros; CPF informado segue RN-PAT-002; UUID identifica paciente, número sequencial sem zeros serve ao controle visível | aprovado — RF-PAT-007/WEBFIT-5 |
 | RN-PAT-004 | nome social é opcional e preferido na interface quando informado, preservando nome civil | aprovado |
-| RN-PAT-005 | sexo e gênero são campos separados; gênero é opcional | aprovado |
-| RN-PAT-006 | responsável legal é informado quando aplicável, com nome, CPF, vínculo, telefone e e-mail | aprovado |
-| RN-PAT-007 | pesquisa ignora caixa, acentos e formatação de CPF/telefone; CPF é mascarado na lista | aprovado |
+| RN-PAT-005 | sexo obrigatório por radios Feminino/Masculino sem default; gênero separado/opcional; legado preservado até salvar com seleção válida | aprovado — RF-PAT-007; tratamento legado D-PAT-002 provisório |
+| RN-PAT-006 | responsável e todos os seus campos opcionais; CPF/e-mail preenchidos validados | aprovado — WEBFIT-5/D-PAT-001 |
+| RN-PAT-007 | pesquisa por número exato ou texto ignora caixa, acentos e formatação de CPF/telefone; CPF informado é mascarado na lista | aprovado — refinamento WEBFIT-5 |
 | RN-PAT-008 | arquivar nunca exclui dados nem histórico | aprovado |
 | RN-PAT-009 | paciente arquivado deve ser restaurado antes de receber novos registros | aprovado |
 | RN-PAT-010 | tags usadas podem ser renomeadas ou desativadas, mas não removidas do histórico | aprovado |

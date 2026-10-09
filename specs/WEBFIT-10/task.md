@@ -1,5 +1,11 @@
 # WEBFIT-10 — Ativação offline e autorizações por instalação
 
+## Refinamento LIGHT — largura do modal, 2026-10-08
+
+Maycon mostrou o modal estreito no piloto 0.1.11-pilot.21.1 e pediu alargar/persistir preferência por reduzir scroll. Base main/3558eddd84211e504ba0457388b1bedc30c9697d, entrada limpa; integração humana do ajuste anterior observada. T-LIC-016/TA-UX-LOGIN-003 reutilizados; sem nova demanda/Plane. Plan inline: LoginInfo agrupado em duas colunas, modal até 960px limitado ao viewport, coluna única até 760px, espaçamentos ajustados e scroll acessível preservado. Sem mudanças de fluxo/backend/dependências.
+
+Implementado em LoginInfo.tsx/style.css. Preferência persistida em AGENTS.md e .harness/prompts/ui-review.md: maximizar conteúdo útil visível, aproveitar largura, preservar legibilidade/teclado, aceitar scroll necessário em telas menores/zoom. Checks PASS: npm run check (lint/TS/27 testes/build), npm run format:check, git diff --check. Aviso de chunk 547.05 kB preservado. Rust/SQLite/build nativo não reexecutados para JSX/CSS; ambiente sem Cargo conforme entrega anterior. Revisão visual nativa/zoom NOT RUN, sem afirmar ausência de scroll em todas as resoluções. Revisão independente estática concluída sem findings acionáveis; ensaio visual nativo permanece pendente. Sem commit/push/publicação.
+
 ## Login livre e abertura maximizada — 2026-10-08
 
 Discovery/Plan: Maycon mostrou painel de suporte deslocando o login e pediu movê-lo ao (i), além de iniciar em tela cheia. STANDARD, ajuste de apresentação sem alterar autorização/IPC/schema. Reuso WEBFIT-10; PLANE SYNC DEGRADED (sem ferramenta disponível). Base a520408 na feature/pbi-001-primeiro-incremento-saude, entrada limpa; avanço humano desde 3dc1bd6 preservado. Pedido autoriza implementação; nenhuma publicação/Git mutável novo presumido.

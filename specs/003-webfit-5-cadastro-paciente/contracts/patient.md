@@ -1,19 +1,15 @@
-# Contract: WEBFIT-5
+# Contrato — WEBFIT-5
 
-Manter save_patient existente, com autenticacao/autorizacao no backend Tauri; sem SQL generico na WebView.
+`save_patient` preserva autenticação/autorização no backend Tauri. Sem SQL genérico na WebView.
 
 ## Entrada
 
-ID opcional para novo e existente para edicao. Patient com name/birth/sex obrigatorios, sexo canonico F/M. CPF/contato ausentes ou vazios permitidos; normalizar CPF preenchido. Guardian conforme D-PAT-001. Preservar legado/rascunho ate salvar. Rejeitar sexo arbitrario em comando direto.
+ID do comando ausente para criar ou UUID existente para editar. Patient exige name/birth/sex F/M; CPF/contato/responsável opcionais. CPF/e-mail preenchidos validados. Campos internalNumber/id no payload nunca controlam identidade ou numeração. Radios sem default; desconhecido exige escolha. Rascunho/legado preservados até Salvar.
 
-## Saida / erro
+## Saída e erro
 
-Sucesso retorna UUID, salva atomicamente e audita conforme contrato existente. Erro de obrigatorio, CPF/e-mail invalido ou CPF duplicado preserva formulario; nenhum valor sensivel em logs. Mensagem identifica campo sexo.
-
-## Interface
-
-Sexo em fieldset/legend, radios Feminino/Masculino de mesmo name, labels clicaveis, foco visivel e teclado. Sem default. Somente nome/nascimento/sexo required; opcionais identificados consistentemente. Responsavel/legado dependem de D-PAT-001/002.
+Sucesso retorna `{ id: UUID, internalNumber: inteiro positivo }`, grava/audita atomicamente. Patient/Patients retornam número da coluna confiável, sem zeros; lista mascara CPF informado, vazio permanece vazio para “Não informado”. Pesquisa por número exato ou texto existente. Erros de obrigatório, data, sexo, CPF/e-mail inválido e CPF duplicado mantêm formulário. Sem logs sensíveis.
 
 ## Compatibilidade
 
-Lista, busca, mascaramento e rascunhos toleram CPF vazio. Backup v1/v2 segue data-model.md; criptografia/auditoria preservadas. Fixtures de novos salvamentos recebem sexo ficticio explicito; fixtures de legado mantem payload original.
+Migração003/schema3; bancos instalados anteriores exigem snapshot cifrado validado. Backup1/2/3 conforme [modelo](../data-model.md), com criptografia, licença e auditoria preservadas. Fixtures de novos cadastros têm sexo explícito; legado é testado sem reescrita. [Aceite e decisões](../spec.md).

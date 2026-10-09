@@ -110,16 +110,17 @@ Instalações anteriores eram testes: entrega parte de ativação inicial; impor
 ### RF-PAT-007 — Refinar cadastro mínimo (WEBFIT-5)
 
 - **Descrição:** cadastro e edição exigem somente nome, nascimento e sexo; Feminino/Masculino por seleção, sem digitação. CPF e contato opcionais; CPF informado válido, normalizado e único inclusive entre arquivados.
-- **Critérios:** TA-PAT-008..016 em [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md).
+- **Identificação:** UUID independente do CPF; número sequencial visível sem zeros à esquerda, gerado no backend e preservado na edição/arquivamento/backup. Busca por número, nome ou documentos/contatos informados.
+- **Critérios:** TA-PAT-008..017 em [spec.md](../../specs/003-webfit-5-cadastro-paciente/spec.md).
 - **Prioridade:** refinamento solicitado do incremento 1; prioridade neutra no Plane.
-- **Status:** solicitado por Maycon em 2026-10-07; registro/preparação com migração autorizados. Aprovação funcional conjunta e execução do plano pendentes. Não substitui ainda RF-PAT-001/003 ou RN-PAT-001/003/005/006.
-- **Decisões:** D-PAT-001/002 provisórias em [decision-log.md](../project/decision-log.md); [plan.md](../../specs/003-webfit-5-cadastro-paciente/plan.md) cobre migração/backup.
+- **Status:** aprovado para implementação em 2026-10-08 por Maycon; solicitação de Amanda conforme relato dele (“Foi solicitação dela”). Implementação local e verificação parcial; aceite final/nativo pendentes. Refina RF-PAT-001/002/003 e RN-PAT-001/003/005/006; origem anterior preservada no registro de decisões.
+- **Decisões:** D-PAT-001/003 ACCEPTED; D-PAT-002 AGENT-PROVISIONAL não bloqueante (preservar sexo legado sem inferência). [Plan](../../specs/003-webfit-5-cadastro-paciente/plan.md) cobre migração 003/backup.
 
 ### RF-PAT-001 — Cadastrar paciente
 
 - **Descrição:** permitir abrir a área de pacientes, acionar **Novo**, preencher os dados em um único formulário e salvar o paciente.
-- **Obrigatórios:** nome completo, CPF, telefone, data de nascimento, e-mail e endereço.
-- **Opcionais:** nome social, gênero, tags e observações; sexo é campo separado; responsável legal aparece quando aplicável.
+- **Obrigatórios:** nome completo, data de nascimento e sexo (Feminino/Masculino por radios sem seleção inicial), conforme RF-PAT-007.
+- **Opcionais:** todos os demais campos, inclusive CPF, telefone, e-mail, endereço e todos os campos do responsável legal; opcionais preenchidos são validados. Número do paciente é gerado pelo sistema.
 - **Regras:** RN-PAT-001 a RN-PAT-006.
 - **Critérios:** TA-PAT-001 e TA-PAT-002.
 - **Prioridade:** obrigatória — incremento 1.
@@ -128,8 +129,8 @@ Instalações anteriores eram testes: entrega parte de ativação inicial; impor
 
 ### RF-PAT-002 — Pesquisar e abrir paciente
 
-- **Descrição:** listar e localizar por nome, nome social, CPF ou telefone e abrir o cadastro.
-- **Listagem:** nome, nome social, CPF mascarado, nascimento, idade, sexo, telefone e situação.
+- **Descrição:** listar e localizar por número do paciente, nome, nome social, CPF ou telefone e abrir o cadastro.
+- **Listagem:** número sem zeros à esquerda, nome, nome social, CPF mascarado quando informado, nascimento, idade, sexo, telefone e situação; CPF/telefone vazios indicados como não informados.
 - **Regras:** RN-PAT-007.
 - **Critérios:** TA-PAT-003.
 - **Prioridade:** obrigatória — incremento 1.
@@ -257,8 +258,8 @@ PDF, impressão e exportação não pertencem ao incremento 1.
 
 ### RF-AUD-001 — Registrar e consultar auditoria
 
-- **Descrição:** registrar ator, instante, espaço, ação, entidade e resultado de eventos críticos e permitir consulta paginada pelos usuários autenticados e autorizados. D-AUTO-001 propõe apresentação tipada para usuário, sistema e tentativa não autenticada.
-- **Consulta:** abrir com os últimos 30 dias, 50 registros por página e ordenação fixa do mais recente para o mais antigo; permitir filtros combinados com AND por período, usuário, ação, tipo de entidade e resultado. D-AUTO-002 propõe janela UTC semiaberta congelada, desempate por ID e cursor opaco para estabilidade.
+- **Descrição:** registrar ator, instante, espaço, ação, entidade e resultado de eventos críticos e permitir consulta paginada pelos usuários autenticados e autorizados. D-AUTO-001 define apresentação tipada para usuário, sistema e tentativa não autenticada.
+- **Consulta:** abrir com os últimos 30 dias, 50 registros por página e ordenação fixa do mais recente para o mais antigo; permitir filtros combinados com AND por período, usuário, ação, tipo de entidade e resultado. D-AUTO-002 define janela UTC semiaberta congelada, desempate por ID e cursor opaco para estabilidade.
 - **Detalhe:** apresentar somente metadados autorizados; resolver o rótulo atual da entidade quando permitido e usar tipo/ID como fallback.
 - **Ações:** listar, filtrar, paginar e abrir detalhe; não editar, excluir ou exportar no incremento 1.
 - **Retenção:** manter os eventos por tempo indeterminado no MVP, sem exclusão automática, até existir política legal aprovada.
@@ -267,7 +268,7 @@ PDF, impressão e exportação não pertencem ao incremento 1.
 - **Regras:** RN-AUD-001 a RN-AUD-017.
 - **Critérios:** TA-AUD-001 a TA-AUD-015.
 - **Prioridade:** obrigatória — incremento 1.
-- **Status:** baseline aprovada por Maycon em 2026-09-10; refinamentos D-AUTO-001 e D-AUTO-002 estão `AGENT-PROVISIONAL`.
+- **Status:** baseline aprovada por Maycon em 2026-09-10; refinamentos D-AUTO-001 e D-AUTO-002 `ACCEPTED` por Amanda e Maycon em 2026-09-17, conforme decision-log.md.
 - **Fonte:** entrevista 01, DEC-016, DEC-025, DEC-026, DEC-028 a DEC-038, D-AUTO-001 e D-AUTO-002.
 ## Backup e restauração
 

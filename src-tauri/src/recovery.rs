@@ -8,12 +8,15 @@ use aes_gcm::{
     Aes256Gcm, Nonce,
 };
 use base64::{engine::general_purpose::STANDARD, Engine};
-use chrono::Utc;
+use chrono::{DateTime, Utc};
 use rusqlite::OptionalExtension;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
-use std::path::{Path, PathBuf};
+use std::{
+    io::Write,
+    path::{Path, PathBuf},
+};
 use uuid::Uuid;
 use zeroize::Zeroizing;
 pub fn encode(bytes: &[u8]) -> String {
@@ -39,14 +42,21 @@ struct Snapshot {
     key: String,
     sha256: String,
 }
-struct TemporarySnapshot(PathBuf);
+struct TemporarySnapshot(Option<PathBuf>);
 impl Drop for TemporarySnapshot {
     fn drop(&mut self) {
-        let _ = std::fs::remove_file(&self.0);
+        if let Some(path) = &self.0 {
+            let _ = std::fs::remove_file(path);
+        }
     }
 }
 fn digest(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
+}
+fn stale_backup(at: &str, now: DateTime<Utc>) -> bool {
+    DateTime::parse_from_rfc3339(at).map_or(true, |at| {
+        now - at.with_timezone(&Utc) > chrono::Duration::hours(24)
+    })
 }
 impl Service {
     pub fn daily_backup(&mut self) -> Result<()> {
@@ -57,8 +67,14 @@ impl Service {
                 [],
                 |r| r.get(0),
             )
+            .optional()?
             .unwrap_or_default();
-        if !date.starts_with(&Utc::now().date_naive().to_string()) {
+        let today = Utc::now().date_naive();
+        if !DateTime::parse_from_rfc3339(&date)
+            .is_ok_and(|at| at.with_timezone(&Utc).date_naive() == today)
+        {
+            // A failed automatic copy must not block access to the application.
+            // create_backup persists the failure for the session's visible alert.
             let _ = self.create_backup(None, None);
         }
         Ok(())
@@ -71,6 +87,7 @@ impl Service {
                 [],
                 |r| r.get(0),
             )
+            .optional()?
             .unwrap_or_default();
         let failed: String = self
             .db
@@ -79,10 +96,9 @@ impl Service {
                 [],
                 |r| r.get(0),
             )
+            .optional()?
             .unwrap_or_default();
-        let stale = chrono::DateTime::parse_from_rfc3339(&at).map_or(true, |t| {
-            Utc::now() - t.with_timezone(&Utc) > chrono::Duration::hours(24)
-        });
+        let stale = stale_backup(&at, Utc::now());
         Ok(
             json!({"lastBackup":at,"stale":stale,"failed":!failed.is_empty(),"folder":self.root.join("backups").to_string_lossy()}),
         )
@@ -90,7 +106,14 @@ impl Service {
     pub fn create_backup(&mut self, path: Option<PathBuf>, user: Option<&User>) -> Result<Value> {
         let result = self.backup_inner(path, user);
         if result.is_err() {
-            let _=self.db.execute("INSERT INTO settings(name,value) VALUES('backup_failure','FAILED') ON CONFLICT(name) DO UPDATE SET value='FAILED'",[]);
+            let tx = self.db.transaction()?;
+            tx.execute("INSERT INTO settings(name,value) VALUES('backup_failure','FAILED') ON CONFLICT(name) DO UPDATE SET value='FAILED'",[])?;
+            if user.is_some() {
+                audit(&tx, user, "BACKUP_CREATE", "BACKUP", None, "FAILURE")?;
+            } else {
+                tx.execute("INSERT INTO audit(id,actor_type,at,action,entity_type,result) VALUES(?1,'SYSTEM',?2,'BACKUP_CREATE','BACKUP','FAILURE')",rusqlite::params![Uuid::new_v4().to_string(),Utc::now().to_rfc3339()])?;
+            }
+            tx.commit()?;
         }
         result
     }
@@ -145,12 +168,21 @@ impl Service {
                 ciphertext: encode(&ciphertext),
             })?;
             let temporary = output.with_extension(format!("{}.tmp", Uuid::new_v4()));
-            std::fs::write(&temporary, &package)?;
+            let _temporary_cleanup = TemporarySnapshot(Some(temporary.clone()));
+            let mut file = std::fs::OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open(&temporary)?;
+            file.write_all(&package)?;
+            file.sync_all()?;
+            drop(file);
             if std::fs::read(&temporary)? != package {
-                let _ = std::fs::remove_file(&temporary);
                 return Err(Error::internal());
             }
             std::fs::rename(&temporary, &output)?;
+            // Publication and the success event form one observable operation.
+            // If the mandatory transaction fails, remove only this new package.
+            let mut publication = TemporarySnapshot(Some(output.clone()));
             let at = Utc::now().to_rfc3339();
             let tx = self.db.transaction()?;
             if user.is_some() {
@@ -161,8 +193,9 @@ impl Service {
             tx.execute("INSERT INTO settings(name,value) VALUES('last_backup',?1) ON CONFLICT(name) DO UPDATE SET value=excluded.value",[&at])?;
             tx.execute("DELETE FROM settings WHERE name='backup_failure'", [])?;
             tx.commit()?;
+            publication.0 = None;
             // Rotate only the managed folder after a new valid snapshot was published.
-            for entry in std::fs::read_dir(&folder)?.flatten() {
+            for entry in std::fs::read_dir(&folder).into_iter().flatten().flatten() {
                 let item = entry.path();
                 if item != output
                     && item.extension().and_then(|s| s.to_str()) == Some("webfit-backup")
@@ -219,7 +252,7 @@ impl Service {
                 })?,
         );
         let snapshot: Snapshot = serde_json::from_slice(&plain)?;
-        if !(1..=2).contains(&snapshot.schema) {
+        if !(1..=3).contains(&snapshot.schema) {
             return Err(Error::validation("Schema de backup incompatível."));
         }
         let data = decode(&snapshot.database)?;
@@ -233,8 +266,8 @@ impl Service {
             return Err(Error::validation("Chave de backup inválida."));
         }
         let stage = self.root.join(format!("{}.db", Uuid::new_v4()));
+        let _cleanup = TemporarySnapshot(Some(stage.clone()));
         std::fs::write(&stage, &data)?;
-        let _cleanup = TemporarySnapshot(stage.clone());
         let validation = (|| -> Result<rusqlite::Connection> {
             let mut db = database::open(&stage, &key)?;
             database::integrity(&db)?;
@@ -243,6 +276,7 @@ impl Service {
                 return Err(Error::validation("Backup incompatível."));
             }
             database::migrate(&mut db)?;
+            database::integrity(&db)?;
             Ok(db)
         })();
         let restored = match validation {
@@ -287,6 +321,21 @@ impl Service {
             self.create_backup(None, user)?;
         }
         // Explicit columns and an allowlist preserve destination credentials, licensing and consumption.
+        // Backups before schema 3 have no public number. Reuse known UUID-number
+        // pairs and allocate unknown patients above the destination high-water mark.
+        let mut legacy_numbers = std::collections::HashMap::<String, i64>::new();
+        let mut next_legacy_number: i64 = self.db.query_row(
+            "SELECT COALESCE(MAX(seq),0) FROM sqlite_sequence WHERE name='patients'",
+            [],
+            |r| r.get(0),
+        )?;
+        if snapshot.schema < 3 {
+            let mut read = self.db.prepare("SELECT id,internal_number FROM patients")?;
+            for row in read.query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, i64>(1)?)))? {
+                let (id, number) = row?;
+                legacy_numbers.insert(id, number);
+            }
+        }
         let tx = self.db.transaction()?;
         tx.execute_batch("PRAGMA defer_foreign_keys=ON; DELETE FROM patient_tags; DELETE FROM prescriptions; DELETE FROM drafts WHERE kind!='profile'; DELETE FROM patients; DELETE FROM tags;")?;
         if let Some((grant, name, hash, recovery_password)) = &transfer {
@@ -334,7 +383,7 @@ impl Service {
         for (table, columns) in [
             (
                 "patients",
-                "id,cpf,search,payload,archived,created_at,updated_at",
+                "id,cpf,search,payload,archived,created_at,updated_at,internal_number",
             ),
             ("tags", "id,name,active"),
             ("patient_tags", "patient_id,tag_id"),
@@ -348,7 +397,12 @@ impl Service {
                 "id,actor_type,user_id,at,workspace,action,entity_type,entity_id,result",
             ),
         ] {
-            let mut read = restored.prepare(&format!("SELECT {columns} FROM {table}"))?;
+            let order = if table == "patients" {
+                " ORDER BY internal_number"
+            } else {
+                ""
+            };
+            let mut read = restored.prepare(&format!("SELECT {columns} FROM {table}{order}"))?;
             let cols = read.column_count();
             let mut rows = read.query([])?;
             let placeholders = (1..=cols)
@@ -361,15 +415,39 @@ impl Service {
                 "INSERT"
             };
             while let Some(row) = rows.next()? {
-                let values = (0..cols)
+                let mut values = (0..cols)
                     .map(|i| row.get::<_, rusqlite::types::Value>(i))
                     .collect::<std::result::Result<Vec<_>, _>>()?;
+                if table == "patients" && snapshot.schema < 3 {
+                    let id: String = row.get(0)?;
+                    let number = if let Some(number) = legacy_numbers.get(&id) {
+                        *number
+                    } else {
+                        next_legacy_number = next_legacy_number
+                            .checked_add(1)
+                            .ok_or_else(Error::internal)?;
+                        next_legacy_number
+                    };
+                    values[7] = rusqlite::types::Value::Integer(number);
+                }
                 tx.execute(
                     &format!("{verb} INTO {table}({columns}) VALUES({placeholders})"),
                     rusqlite::params_from_iter(values),
                 )?;
             }
         }
+        // Explicit imports advance AUTOINCREMENT to imported rows; also preserve
+        // numbers used and later removed at the source (destination never decreases).
+        let source_sequence: i64 = restored.query_row(
+            "SELECT COALESCE(MAX(seq),0) FROM sqlite_sequence WHERE name='patients'",
+            [],
+            |r| r.get(0),
+        )?;
+        tx.execute("INSERT INTO sqlite_sequence(name,seq) SELECT 'patients',?1 WHERE NOT EXISTS(SELECT 1 FROM sqlite_sequence WHERE name='patients')", [source_sequence])?;
+        tx.execute(
+            "UPDATE sqlite_sequence SET seq=MAX(seq,?1) WHERE name='patients'",
+            [source_sequence],
+        )?;
         audit(
             &tx,
             user,
@@ -388,5 +466,20 @@ impl Service {
         let _ = std::fs::remove_file(&stage);
         self.lock();
         Ok(json!({"restored":true}))
+    }
+}
+
+#[cfg(test)]
+mod status_tests {
+    use super::*;
+    #[test]
+    fn alert_starts_strictly_after_24_hours_and_unknown_dates_are_stale() {
+        let now = DateTime::parse_from_rfc3339("2026-10-08T12:00:00Z")
+            .unwrap()
+            .with_timezone(&Utc);
+        assert!(!stale_backup("2026-10-07T09:00:00-03:00", now));
+        assert!(stale_backup("2026-10-07T11:59:59Z", now));
+        assert!(stale_backup("", now));
+        assert!(stale_backup("invalid", now));
     }
 }

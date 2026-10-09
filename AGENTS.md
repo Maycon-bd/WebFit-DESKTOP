@@ -106,6 +106,7 @@ Antes de concluir uma entrega, execute os comandos disponíveis para formataçã
 - Verifique APIs e comportamentos incertos na documentação oficial compatível com a versão usada. Não invente contratos de bibliotecas; prefira dependências existentes e mantenha aprovação prévia para novas dependências.
 - Corrija primeiro o comportamento; otimize com evidência de necessidade e medição. Não acrescente cache, concorrência ou instrumentação sem motivo no escopo aprovado.
 - Em interfaces, cubra carregamento, vazio, erro e recuperação previstos nos requisitos, além de semântica, rótulos, teclado, foco e contraste. Lacunas relevantes de comportamento seguem o discovery vigente.
+- Telas e modais devem aproveitar a largura disponível e mostrar o máximo de conteúdo útil na área visível, evitando rolagem vertical desnecessária. Prefira dimensões responsivas, agrupamentos e colunas quando couberem; reduza espaços excessivos antes de diminuir fontes. Preserve legibilidade, hierarquia, alvos de interação e navegação por teclado. Em telas pequenas ou zoom, permita rolagem quando necessária: nunca corte/oculte conteúdo ou ações para eliminar o scroll. Aplique essa preferência ao planejar e revisar interfaces.
 
 ### Testes, diagnóstico e revisão
 

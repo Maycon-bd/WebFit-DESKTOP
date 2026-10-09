@@ -528,7 +528,7 @@ mod tests {
         );
     }
     #[test]
-    fn migration_from_version_one_is_additive_and_transactional() {
+    fn migration_from_version_one_preserves_users_and_is_transactional() {
         let temp = tempfile::tempdir().unwrap();
         let key = crate::security::random_key();
         let mut db = crate::database::open(&temp.path().join("fixture.db"), &key).unwrap();
@@ -541,7 +541,7 @@ mod tests {
         assert_eq!(
             db.pragma_query_value(None, "user_version", |r| r.get::<_, i64>(0))
                 .unwrap(),
-            2
+            3
         );
         assert_eq!(
             db.query_row("SELECT count(*) FROM users", [], |r| r.get::<_, i64>(0))

@@ -50,13 +50,17 @@ erDiagram
 
 ## Convenções aprovadas
 
-- IDs internos UUID.
+- Identidade/vínculos por UUID. WEBFIT-5 acrescenta número inteiro positivo sequencial sem zeros à esquerda para controle visível; imutável pela UI e gerado no backend. CPF opcional (`NULL UNIQUE`), validado quando informado; nunca é chave de relacionamento.
 - Instantes em UTC; data de nascimento sem conversão de fuso.
 - CPF armazenado normalizado e exibido mascarado onde definido.
 - Sem exclusão física de pacientes no MVP.
 - Arquivos físicos usam UUID; nome original fica apenas como metadado.
 - Foreign keys ativas em toda conexão.
 - Migrações numeradas, transacionais e testadas em banco vazio e atualização.
+
+### Schema 3 — WEBFIT-5
+
+Migration 003 reconstrói patients com `internal_number INTEGER PRIMARY KEY AUTOINCREMENT`, `id TEXT NOT NULL UNIQUE` preservado e CPF anulável. Número limitado ao inteiro exato suportado pelo frontend; legado ordenado por created_at/id. FKs permanecem ON, vínculos são copiados temporariamente em memória e repostos na mesma transação, com integridade antes do commit. Snapshot SQLCipher consistente/reaberto antes de atualizar bases instaladas 1/2; 001/002 preservadas. Licenciamento permanece no schema 002. Implementação local; testes SQL complementares executados, validação SQLCipher pendente neste ambiente sem Cargo. Contrato/evidência em [WEBFIT-5](../../specs/003-webfit-5-cadastro-paciente/plan.md).
 
 ## Pendências do projeto físico
 

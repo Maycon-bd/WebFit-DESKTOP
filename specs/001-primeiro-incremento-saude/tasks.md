@@ -214,6 +214,8 @@ As caixas de implementação acima significam código construído, sem represent
 
 ## Continuação de T038 — RF-PRE-002, DEC-045, 2026-10-07
 
+Retomada 2026-10-08: Maycon autorizou iniciar catálogo/TACO, auditoria e recuperação. Correções e novos testes de T051/T052/T055/T056/T058..064, sem marcar aceite integral: [registro de implementação/checks/review](../../.harness/evidence/health-increment/2026-10-08-audit-recovery.md). Catálogo completo/TACO ainda pendente de coleta íntegra e equivalência conforme RN-PRE-002; autorização TBCA relatada pelo humano. Alterações paralelas WEBFIT-5 preservadas.
+
 - [x] T094 Ampliar seleção oficial offline em src/data/tbca.json via scripts/expand-tbca.py, preservando os cinco registros anteriores, código, fonte, preparação, unidades, valores originais e proveniência em src/data/tbca-import-manifest.json.
 - [x] T095 Melhorar pesquisa por palavras/acentos/código, lista progressiva e estado vazio em src/FoodPicker.tsx e src/food-search.ts; conferir integridade, importação e autoridade/proporção no backend em tests/unit/food-search.test.ts, tests/unit/tbca-import.test.py e src-tauri/src/acceptance_tests.rs.
 - [x] T096 Gerar/verificar instalador 0.1.4 e registrar evidência em .harness/evidence/health-increment/2026-10-07-food-catalog.md.
