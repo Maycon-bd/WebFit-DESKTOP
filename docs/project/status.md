@@ -2,6 +2,15 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Ensaio autorizado de atualização — 2026-10-08
+
+- Maycon relatou neste chat que conseguiu acessar o aplicativo após a ativação. Relato humano, sem inferir aceite integral de WEBFIT-10 ou G5/G6/G7.
+- Pedido explícito: preparar atualização, fazer commit e enviar para main para testar a detecção. Branch de trabalho preservada: feature/pbi-001-primeiro-incremento-saude; HEAD de entrada 94be55f. Árvore limpa; main remota consultada em 3030c596201d9d00dfd1629e90a24f20c85cb628, ancestral do HEAD. Envio normal HEAD:main autorizado, sem force ou troca de branch.
+- Plano LIGHT: registrar o ensaio neste checkpoint e usar o versionamento existente do pipeline. Base 0.1.10 gera 0.1.11-pilot.<run>.<attempt>, superior ao candidato manual 0.1.10; nenhuma alteração funcional adicional necessária. O envio inclui a entrega de licença/código já integrada à branch.
+- Verificação local: 14 testes de preparação de versão, manifesto, assinatura, API de publicação e staging PASS. Revisão documental local; checks completos/build assinado pertencem ao Actions disparado pelo envio. Publicação e detecção no aplicativo ainda não comprovadas neste registro.
+- Próxima ação: concluir commit/envio autorizado e acompanhar Actions; após publicação válida, Maycon conferir detecção no aplicativo, confirmar atualização e verificar reinício/acesso/dados fictícios preservados. Não reinstalar manualmente para comprovar detecção automática.
+- Checklist: [x] acesso relatado; [x] autorização Git/publicação piloto; [x] verificação de ancestralidade e testes de release; [ ] commit/envio; [ ] Actions/publicação; [ ] detecção/atualização no Windows. G5 em execução; G6/G7 pendentes.
+
 ## Checkpoint vigente — WEBFIT-10, ativação por licença e código, 2026-10-08
 
 - Data/branch/HEAD observado ao salvar: 2026-10-08, `feature/pbi-001-primeiro-incremento-saude` / `03c28430b90d990e91db1663375788bdbf959b5d`; upstream `origin/feature/pbi-001-primeiro-incremento-saude`, ahead/behind local 0/0, sem fetch/pull/consulta remota viva ou Git mutável. Árvore limpa na entrada deste salvamento. Avanço humano desde a base de build `e0fb4eae28b69f69cea74c76771e5ca724c96d2a` comunicado antes de editar; commit atual integra a entrega simplificada/documentação. Ao salvar, somente este checkpoint fica modificado; demais trilhas preservadas.
