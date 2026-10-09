@@ -21,7 +21,14 @@ export function FormFeedback({ busy, error, notice }: FormFeedbackState) {
           {error}
         </div>
       )}
-      <div role="status" aria-live="polite" aria-atomic="true">
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={
+          busy ? "message info" : notice ? "message success" : undefined
+        }
+      >
         {busy ? "Concluindo operação…" : notice}
       </div>
     </div>

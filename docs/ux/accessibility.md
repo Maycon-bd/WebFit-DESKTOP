@@ -14,6 +14,8 @@
 
 ## Validação
 
+Padrões compartilhados de controles, feedback, tabelas e modais: [curadoria e aplicação de componentes](component-patterns.md). A padronização visual não substitui os ensaios de teclado e zoom abaixo.
+
 - testes automatizados de semântica onde aplicável;
 - revisão manual somente por teclado;
 - inspeção em 100%, 150% e 200%;

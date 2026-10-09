@@ -8,6 +8,19 @@
   --muted: #52665a;
   --control-line: #65796a;
   --focus: #245840;
+  --surface: #fff;
+  --dialog-surface: #fffef8;
+  --surface-subtle: #f5f6f2;
+  --surface-hover: #e9efe7;
+  --radius-control: 6px;
+  --radius-panel: 12px;
+  --control-height: 44px;
+  --dialog-shadow: 0 12px 36px rgba(20, 35, 28, 0.24);
+  --dialog-backdrop: rgba(20, 35, 28, 0.35);
+  --error-surface: #f4e5df;
+  --error-text: #7b3028;
+  --success-surface: #e0edda;
+  --success-text: #214d2e;
 }
 * {
   box-sizing: border-box;
@@ -24,14 +37,15 @@ select {
 button {
   cursor: pointer;
   border: 1px solid var(--control-line);
-  border-radius: 6px;
+  border-radius: var(--radius-control);
+  min-height: var(--control-height);
   padding: 10px 16px;
-  background: #fff;
+  background: var(--surface);
   color: inherit;
   font-weight: 600;
 }
 button:hover {
-  background: #e9efe7;
+  background: var(--surface-hover);
 }
 button:disabled {
   opacity: 0.5;
@@ -54,9 +68,9 @@ textarea,
 select {
   width: 100%;
   border: 1px solid var(--control-line);
-  border-radius: 5px;
+  border-radius: var(--radius-control);
   padding: 11px 12px;
-  background: #fff;
+  background: var(--surface);
   color: #20332b;
 }
 textarea {
@@ -310,11 +324,14 @@ a {
 }
 .table-wrap {
   overflow-x: auto;
+  /* Keep native table semantics and allow wide rows to scroll at zoom. */
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
 }
 table {
   border-collapse: collapse;
   width: 100%;
-  background: #fff;
+  background: var(--surface);
 }
 th {
   text-align: left;
@@ -324,12 +341,19 @@ th {
 }
 th,
 td {
-  padding: 16px 18px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--line);
   vertical-align: middle;
 }
 td {
   font-size: 14px;
+}
+.table-wrap tbody tr:nth-child(even) {
+  background: var(--surface-subtle);
+}
+.table-wrap tbody tr:hover,
+.table-wrap tbody tr:focus-within {
+  background: var(--surface-hover);
 }
 td:last-child {
   text-align: right;
@@ -447,15 +471,24 @@ td button {
   padding: 14px 18px;
   margin: 18px 0;
   line-height: 1.5;
-  border-radius: 5px;
+  border-radius: var(--radius-control);
+  border-inline-start: 4px solid currentColor;
+  overflow-wrap: anywhere;
 }
 .error {
-  background: #f4e5df;
-  color: #7b3028;
+  background: var(--error-surface);
+  color: var(--error-text);
 }
 .success {
-  background: #e0edda;
-  color: #214d2e;
+  background: var(--success-surface);
+  color: var(--success-text);
+}
+.message.info {
+  background: #edf1e9;
+  color: var(--green);
+}
+.form-feedback [role="status"]:empty {
+  display: none;
 }
 .working {
   font-size: 13px;
@@ -695,18 +728,22 @@ input[readonly] {
   border-color: transparent;
   color: var(--muted);
 }
-.login-info-dialog {
-  width: min(960px, calc(100vw - 32px));
+:is(.login-info-dialog, .draft-recovery-dialog) {
   max-height: calc(100dvh - 32px);
   overflow: auto;
-  padding: 28px;
-  background: #fffef8;
+  padding: 24px;
+  background: var(--dialog-surface);
   color: #20332b;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-panel);
+  box-shadow: var(--dialog-shadow);
+  overflow-wrap: anywhere;
 }
-.login-info-dialog::backdrop {
-  background: rgba(20, 35, 28, 0.35);
+:is(.login-info-dialog, .draft-recovery-dialog)::backdrop {
+  background: var(--dialog-backdrop);
+}
+.login-info-dialog {
+  width: min(960px, calc(100vw - 32px));
 }
 .login-info-dialog .system-logo {
   margin-bottom: 8px;
@@ -742,7 +779,7 @@ input[readonly] {
     grid-template-columns: minmax(0, 1fr);
     gap: 20px;
   }
-  .login-info-dialog {
+  :is(.login-info-dialog, .draft-recovery-dialog) {
     padding: 20px;
   }
 }
@@ -756,33 +793,18 @@ input[readonly] {
 }
 .draft-recovery-dialog {
   width: min(480px, calc(100vw - 32px));
-  max-height: calc(100dvh - 32px);
-  overflow: auto;
-  padding: 28px;
-  background: #fffef8;
-  color: #20332b;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-}
-.draft-recovery-dialog::backdrop {
-  background: rgba(20, 35, 28, 0.35);
 }
 .draft-recovery-dialog h2 {
   margin-top: 0;
 }
-.draft-recovery-actions {
+:is(.draft-recovery-actions, .login-info-actions) {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 24px;
-}
-.login-info-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
 }
 .update-banner {
   position: relative;

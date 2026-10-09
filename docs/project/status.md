@@ -2,6 +2,16 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Checkpoint — curadoria de components.rar e padrões visuais, 2026-10-09
+
+- Branch/commit-base: `feature/pbi-001-primeiro-incremento-saude` / `7c2c5506df2f94cd35071bc1d5c828b23e06508e`; árvore limpa na entrada e referência local de upstream alinhada, sem fetch/consulta remota. Branch atual preservada, sem Git mutável/commit/push/publicação.
+- Pedido de Maycon: analisar o pacote e aplicar padrões já compatíveis. LIGHT de apresentação, Plan inline aprovado pelo escopo; requisitos/fluxos existentes preservados. 82 arquivos inventariados (19 testes); componentes SAV dependem de módulos/estilos ausentes. Extração em `.artifacts/components-analysis/` ignorada; nenhum componente legado ou dependência importado para o runtime.
+- Última etapa: estilos comuns de modais Sobre/Rascunho, tokens/altura mínima dos botões, tabelas compactas com linhas alternadas/hover/foco e feedback contextual com aparência de andamento/sucesso/erro implementados. Sem schema/Rust/persistência/autorização/regra clínica ou fluxo novo.
+- Verificação: lint/TypeScript/37 testes Node/build Vite/format/diff PASS; `issuer:build` PASS, pois o emissor também usa o CSS compartilhado. Aviso de bundle 549,72 kB. Autorrevisão estática sem finding impeditivo; Impeccable indisponível. Rust/SQLite/build Tauri NOT RUN por recorte exclusivo de apresentação. Visual/teclado/zoom Windows e revisão independente NOT RUN; CODE REVIEW INCOMPLETE, sem READY TO SHIP ou aceite presumido.
+- Documentação/evidência: [padrões e curadoria](../ux/component-patterns.md) criado com matriz de aproveitamento, critérios, checks e limites; acessibilidade vinculada. Escolha de apresentação AGENT-PROVISIONAL, validação no aceite humano.
+- Próxima ação exata deste recorte: review independente e ensaio fictício de tabelas/feedback e modais com erros/conteúdo longo a 100/150/200% no Windows; integrar pelo fluxo humano. Adaptação funcional de grids/calendário/combobox/exportação exige demanda própria, sem nova dependência autorizada por inferência. Próximas ações de catálogo/backup/cadastro abaixo preservadas.
+- Sincronização/checklist: somente alterações locais, fonte 0.1.10; [x] análise/Plan; [x] padronização e checks frontend; [ ] review independente; [ ] ensaio Windows/aceite; [ ] integração/distribuição. G5 em execução, G6/G7 pendentes.
+
 ## Checkpoint — continuidade catálogo, auditoria e backup, 2026-10-08
 
 - Branch/commit-base: `main` / `538091c4b25b1cba2ff566c885b9bd255c019a68`; referência local origin/main alinhada, sem fetch/pull. Avanço humano desde 3558edd reconhecido; WEBFIT-5 e modal preexistentes preservados. Sem Git mutável/publicação nesta demanda.
