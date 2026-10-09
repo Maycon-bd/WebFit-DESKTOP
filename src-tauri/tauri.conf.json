@@ -16,6 +16,7 @@
         "title": "WebFit Desktop — ambiente de teste",
         "width": 1200,
         "height": 800,
+        "maximized": true,
         "minWidth": 800,
         "minHeight": 600
       }

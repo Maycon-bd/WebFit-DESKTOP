@@ -653,7 +653,7 @@ input[readonly] {
   padding-bottom: 64px;
 }
 .access-footer {
-  position: absolute;
+  position: fixed;
   bottom: 12px;
   right: 20px;
 }

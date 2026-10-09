@@ -1,5 +1,11 @@
 # Requisitos funcionais
 
+## Refinamento de acesso — WEBFIT-10, 2026-10-08
+
+Pedido explícito de Maycon neste chat; aprovado para implementação, aceite Windows pendente. RF-UX-002/RF-LIC-001: em instalação preparada, Licença e suporte fica dentro das informações do ícone (i), sem ocupar o formulário de login. Ativação inicial continua na entrada do destino vazio; autorizações/backend preservados. Critério TA-UX-LOGIN-003.
+
+RF-UX-005 — Abrir a janela principal maximizada a cada início do aplicativo, preservando controles nativos e possibilidade de restaurar/minimizar. Interpretação comunicada de “tela cheia”: maximizada, sem modo exclusivo. Prioridade: solicitação atual, sem repriorizar backlog; aprovado para implementação por Maycon, aceite final pendente. Critério TA-UX-WINDOW-001; registro WEBFIT-10.
+
 ### RF-LIC-001 — extensão aprovada D-LIC-009, 2026-10-08
 
 Permitir também ativação inicial offline com licença/código enviados junto do instalador, sem request prévio. Emissor define administrador e gera código aleatório; profissional importa licença, informa código e prepara seu acesso/backup. Backend verifica assinatura/confiança/código/tipo e recusa banco preparado. Credencial administrativa pertence à licença; senha fica com Maycon. Pacote pode ativar outras máquinas, limite explicitamente aceito para testes fictícios. Prioridade obrigatória para candidato de teste; status aprovado para implementação, aceite final pendente. TA-LIC-013..016 / T-LIC-012..015 no registro WEBFIT-10. Demais tipos/v1 preservados.

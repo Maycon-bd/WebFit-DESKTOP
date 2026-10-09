@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { getVersion } from "@tauri-apps/api/app";
 import { isTauri } from "@tauri-apps/api/core";
 import { version as previewVersion } from "../package.json";
@@ -6,9 +7,15 @@ import { version as previewVersion } from "../package.json";
 export function LoginInfo({
   onAdmin,
   busy,
+  adminUnavailable = false,
+  children,
+  error,
 }: {
   onAdmin: () => void;
   busy: boolean;
+  adminUnavailable?: boolean;
+  children?: ReactNode;
+  error?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [version, setVersion] = useState<string | null>(null);
@@ -56,6 +63,9 @@ export function LoginInfo({
         ref={dialog}
         className="login-info-dialog"
         aria-labelledby="login-info-title"
+        onCancel={(event) => {
+          if (busy) event.preventDefault();
+        }}
       >
         <img
           className="system-logo"
@@ -70,22 +80,29 @@ export function LoginInfo({
         <hr />
         <h3>Acesso do administrador</h3>
         <p>
-          Entre com o nome de acesso e a senha definidos na preparação deste
-          computador. Em instalações novas, o nome do administrador é{" "}
-          <strong>admin</strong>.
+          Entre com o nome de acesso e a senha definidos pelo administrador na
+          emissão da licença deste computador.
         </p>
         <p className="hint">
           Se este computador ainda não foi preparado, o administrador deve
           definir os acessos e a recuperação dos backups antes do uso.
         </p>
+        {children}
+        {error && (
+          <p role="alert" className="message error">
+            {error}
+          </p>
+        )}
         <div className="login-info-actions">
           <form method="dialog">
-            <button autoFocus>Fechar</button>
+            <button autoFocus disabled={busy}>
+              Fechar
+            </button>
           </form>
           <button
             type="button"
             className="primary"
-            disabled={busy}
+            disabled={busy || adminUnavailable}
             onClick={() => {
               dialog.current?.close();
               onAdmin();

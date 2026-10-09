@@ -1,5 +1,10 @@
 # Critérios e testes de aceite
 
+## Acesso sem obstrução — WEBFIT-10, 2026-10-08
+
+- TA-UX-LOGIN-003 (RF-UX-002/RF-LIC-001): instalação preparada mostra login sem painel de licença; (i) abre diálogo com Licença e suporte; operações, erros e confirmação continuam acessíveis. Fechar/Escape devolvem foco sem alterar login ou licença, exceto enquanto operação está em andamento. Suporte temporário e recuperação administrativa conservam contratos. Destino vazio mantém ativação e preparação acessíveis na tela inicial. Conferir teclado/rolagem a 200% no Windows.
+- TA-UX-WINDOW-001 (RF-UX-005): ao abrir e reabrir, inclusive após fechar em tamanho restaurado, janela principal inicia maximizada; controles nativos continuam disponíveis. Aceite Windows pendente.
+
 ## Ativação inicial simplificada — D-LIC-009 / RF-LIC-001
 
 Maycon aprovou implementação e reutilização offline entre computadores em 2026-10-08; dados fictícios/aceite final pendente.

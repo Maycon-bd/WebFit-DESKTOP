@@ -1,5 +1,7 @@
 # Matriz de rastreabilidade
 
+Refinamento WEBFIT-10 de 2026-10-08: RF-UX-002/RF-LIC-001 → T-LIC-016 → TA-UX-LOGIN-003 → App.tsx/LoginInfo.tsx/style.css; RF-UX-005 → T-LIC-017 → TA-UX-WINDOW-001 → src-tauri/tauri.conf.json. Evidência/checks/versão e limites no registro specs/WEBFIT-10/task.md. Aceite Windows separado da implementação.
+
 D-LIC-009 ACCEPTED → RF-LIC-001/RN-LIC-001 → TA-LIC-013..016 → T-LIC-012..015 ([registro](../../specs/WEBFIT-10/task.md)). Protocolo `issue_initial_code`/`verify_initial_code` e teste; emissor `IssueInitialCode` e teste; backend `ActivateLicenseCode`/`import_initial_code` e integração SQLite de atomicidade/identidade/contas/repetição/dois destinos; UI `LicensePanel.tsx`/emissor. Candidato clínico 0.1.10 e emissor 0.1.1; artefatos/checks não comprovam aceite. Operação: [manual do emissor](../../tools/license-issuer/README.md).
 
 ## WEBFIT-10 — licenciamento offline

@@ -2,6 +2,14 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Checkpoint — login livre e janela maximizada, 2026-10-08
+
+- Branch/base: feature/pbi-001-primeiro-incremento-saude, a5204083be2f2049ce3ef6d0970e9456271e45ee; entrada limpa, branch/upstream local alinhados conforme git status. Avanço humano desde 3dc1bd6 preservado; sem fetch/pull ou Git mutável nesta entrega.
+- Pedido de Maycon: Licença e suporte no (i), sem atrapalhar login, e abrir em tela cheia (interpretada/comunicada como maximizada com controles nativos). WEBFIT-10/T-LIC-016/017, RF-UX-002/RF-LIC-001/RF-UX-005; requisitos/aceite/matriz atualizados. Instalação preparada mostra suporte no diálogo; destino vazio mantém ativação inicial; ícone fixo no canto. Backend/schema/autorizações preservados.
+- Última etapa: implementação e revisão independente concluídas; P2 de fechamento bloqueado após falha inicial corrigido/reavaliado. Checks frontend, formatação, lint, TypeScript, 27 testes e build PASS; aviso de chunk 546.88 kB. Cargo indisponível: build Tauri tentou cargo metadata e falhou por program not found; Rust/SQLite/Clippy NOT RUN. Ensaio Windows/foco/zoom/maximização NOT RUN. Registro/evidência em specs/WEBFIT-10/task.md; Plane sync degraded.
+- Sincronização: alterações locais desta entrega sem commit/push/publicação; nenhuma nova versão distribuída. Próxima ação: build nativo no ambiente com Cargo, ensaiar TA-UX-LOGIN-003/TA-UX-WINDOW-001 e integrar pelo fluxo Git humano. Não atribuir estas mudanças ao piloto #19 anterior.
+- Checklist: [x] pedido/Plan; [x] implementação/frontend checks; [x] review independente e correção; [ ] build Tauri/ensaios Windows; [ ] integração/distribuição; [ ] aceite. G5 em execução; G6/G7 pendentes. Demais trilhas preservadas.
+
 ## Ensaio autorizado de atualização — 2026-10-08
 
 - Maycon relatou neste chat que conseguiu acessar o aplicativo após a ativação. Relato humano, sem inferir aceite integral de WEBFIT-10 ou G5/G6/G7.

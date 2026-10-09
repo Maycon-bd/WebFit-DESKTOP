@@ -568,7 +568,7 @@ export default function App() {
               {error}
             </div>
           )}
-          {licenseStatus && (
+          {initialized === false && licenseStatus && (
             <LicensePanel
               status={licenseStatus}
               busy={busy}
@@ -634,13 +634,27 @@ export default function App() {
           {notice && <p role="status">{notice}</p>}
         </section>
         <LoginInfo
-          busy={busy || initialized === null}
+          busy={busy}
+          adminUnavailable={initialized === null}
+          error={error}
           onAdmin={() => {
             setAdminAccess(true);
             setError("");
             setNotice("");
           }}
-        />
+        >
+          {initialized === true && licenseStatus && (
+            <LicensePanel
+              status={licenseStatus}
+              busy={busy}
+              task={task}
+              onRefresh={refreshLicense}
+              onSession={loggedIn}
+              token={null}
+              onEnded={() => setSession(null)}
+            />
+          )}
+        </LoginInfo>
       </main>
     );
   if (licenseStatus?.legacy)

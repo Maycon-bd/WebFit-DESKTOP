@@ -1,5 +1,17 @@
 # WEBFIT-10 — Ativação offline e autorizações por instalação
 
+## Login livre e abertura maximizada — 2026-10-08
+
+Discovery/Plan: Maycon mostrou painel de suporte deslocando o login e pediu movê-lo ao (i), além de iniciar em tela cheia. STANDARD, ajuste de apresentação sem alterar autorização/IPC/schema. Reuso WEBFIT-10; PLANE SYNC DEGRADED (sem ferramenta disponível). Base a520408 na feature/pbi-001-primeiro-incremento-saude, entrada limpa; avanço humano desde 3dc1bd6 preservado. Pedido autoriza implementação; nenhuma publicação/Git mutável novo presumido.
+
+Plan Scope Check: aprovado no escopo. T-LIC-016 move painel de instalação preparada para LoginInfo, mantém ativação inicial, mostra erros no diálogo e bloqueia fechamento durante operação; ícone fixo no canto. T-LIC-017 configura maximized no Tauri, preservando controles Windows. RF-UX-002/RF-LIC-001/TA-UX-LOGIN-003 e RF-UX-005/TA-UX-WINDOW-001. Fonte técnica: https://v2.tauri.app/reference/config/#maximized. Testar callbacks/estrutura do diálogo, checks frontend e config; ensaio nativo separado. Rust/backend sem mudanças; disponibilidade Cargo/build a conferir.
+
+Execução: T-LIC-016/017 implementadas em App/LoginInfo/style/tauri.conf; texto administrativo alinhado ao acesso definido pela licença, sem presumir nome admin. Testes tests/unit/login-info.test.ts exercitam conteúdo/erro dentro do diálogo fechado e proteção de fechamento ocupado/acesso administrativo. PASS: npm run check (lint/TS/24 testes/build), após adição dos testes npm test 26/26, npm run format:check, configuração maximized e git diff --check. Build frontend mantém aviso de chunk 546.84 kB. Dependências existentes restauradas pelo lockfile (DEC-045), nenhum manifesto/lock alterado; cache offline incompleto, npm ci --ignore-scripts autorizado pelo escopo anterior completou com rede ampliada.
+
+Build Tauri tentado diretamente pelo CLI, bloqueado por cargo metadata/program not found; Cargo/Rust não instalado ou disponível no ambiente consultado. Não instalar toolchain nesta entrega. Rust fmt/Clippy/testes SQLite NOT RUN, código Rust/schema não alterados. Ensaio nativo Windows/teclado/foco/200%/reabertura NOT RUN. Impeccable indisponível, revisão estática com padrões existentes; revisão independente em andamento. Base de versão 0.1.10, sem novo instalador/commit/push/publicação nesta mudança.
+
+Code Review final: revisão independente encontrou P2 (falha na consulta inicial mantinha initialized=null e prendia Fechar/Escape). Corrigido separando busy real de adminUnavailable; teste acrescentado. Reavaliação independente sem findings pendentes no escopo estático. npm run check final PASS (lint/TS/27 testes/build 546.88 kB), format:check e diffcheck PASS. REVIEW PASSED WITH WARNINGS na revisão estática; sem READY TO SHIP integrado porque build Tauri e aceite Windows continuam pendentes. Nenhuma mudança de backend/schema/segurança. Documentação RF/TA/matriz e checkpoint atualizados; Plane sync pendente. Próxima ação: build nativo em ambiente com Cargo e ensaio TA-UX-LOGIN-003/TA-UX-WINDOW-001, incluindo falha inicial, suporte, ativação vazia, foco/teclado/200% e reabertura.
+
 ## Simplificação aprovada — D-LIC-009, 2026-10-08
 
 ### Entrega simplificada concluída localmente
