@@ -10,6 +10,18 @@ No emissor, confirmar criação de identidade. Exportar chave pública para um a
 
 ## Ativar uma instalação
 
+### Fluxo simplificado: licença e código antes de instalar (D-LIC-009)
+
+1. Em **Ativação inicial sem solicitação**, definir seu nome/senha administrativa (ou **Gerar senha administrativa**). Guardar ambos no Bitwarden e confirmar o limite offline.
+2. **Gerar licença e código de ativação**, salvar `.webfit-license` novo e copiar/guardar o código exibido. Fechar perde sua exibição; se perder antes da ativação, emitir novo pacote. Não enviar sua senha administrativa.
+3. Enviar somente instalador clínico de teste, arquivo `.webfit-license` e código à nutricionista. Emissor/cofre/backup/chave privada permanecem com Maycon.
+4. Em instalação vazia: **Selecionar licença**, colar **Código de ativação**, **Validar licença e código**. Preencher acesso profissional e senha de recuperação de backups; **Preparar acessos locais**. Administrador definido pela licença.
+5. Pacote pode ativar mais de um computador, limite aceito explicitamente. Cópias compartilham licença e credencial administrativa, mas cada destino conserva identidade DPAPI própria. Reimportação local não repete efeitos; INITIAL não apaga/reconfigura banco preparado/legado. Emitir pacote separado por destinatário.
+
+Código não é senha administrativa: abre o verificador Argon2 cifrado da licença assinada. Não publicar licença/código em repo/releases. Demais operações mantêm solicitações vinculadas. Sem painel/serviço online; dados fictícios no teste, review/aceite pendentes.
+
+### Fluxo vinculado por solicitação (v1)
+
 1. Aplicativo clínico vazio: gerar/salvar `.webfit-request` e enviar manualmente a Maycon.
 2. Maycon abre a solicitação, confere tipo, UUID da instalação e fingerprint com a pessoa destinatária. Solicitação não autentica a identidade humana do remetente.
 3. Gerar senha exclusiva (mascarada por padrão). Guardar em um item **Login** ou nota segura do Bitwarden, com instalação/solicitação/tipo nas notas. Sem integração automática; não escrever credenciais no repositório ou chat. Suporte usa senha temporária diferente da permanente.

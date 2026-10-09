@@ -58,6 +58,115 @@ mod tests {
             .into()
     }
     #[test]
+    fn portable_initial_is_atomic_preserves_identity_and_accounts_and_allows_other_empty_destination(
+    ) {
+        let temp = tempfile::tempdir().unwrap();
+        let key = protocol::signing_key();
+        let admin_password = "fictional-portable-admin";
+        let (envelope, code) = protocol::issue_initial_code(
+            &key,
+            protocol::credential("admin", admin_password).unwrap(),
+        )
+        .unwrap();
+        let content = serde_json::to_string(&envelope).unwrap();
+        let mut a = Service::open(temp.path().join("a")).unwrap();
+        let mut b = Service::open(temp.path().join("b")).unwrap();
+        a.license_roots = vec![key.verifying_key().to_bytes()];
+        b.license_roots = a.license_roots.clone();
+        let identity_a = std::fs::read(a.root.join("license.identity.dpapi")).unwrap();
+        let id_a = a.license_status().unwrap()["installationId"].clone();
+        let id_b = b.license_status().unwrap()["installationId"].clone();
+        assert_ne!(id_a, id_b);
+        let (_, wrong_code) = protocol::issue_initial_code(
+            &key,
+            protocol::credential("admin", admin_password).unwrap(),
+        )
+        .unwrap();
+        assert!(a.import_initial_code(&content, &wrong_code).is_err());
+        assert_eq!(
+            a.db.query_row("SELECT count(*) FROM license_requests", [], |r| r
+                .get::<_, i64>(0))
+                .unwrap(),
+            0
+        );
+        assert_eq!(
+            a.db.query_row("SELECT count(*) FROM license_authorizations", [], |r| r
+                .get::<_, i64>(0))
+                .unwrap(),
+            0
+        );
+        assert!(a.import_license(&content).is_err());
+        a.db.execute_batch("CREATE TRIGGER fail_portable BEFORE INSERT ON license_authorizations BEGIN SELECT RAISE(ABORT,'fixture failure'); END;").unwrap();
+        assert!(a.import_initial_code(&content, &code).is_err());
+        assert_eq!(
+            a.db.query_row("SELECT count(*) FROM license_requests", [], |r| r
+                .get::<_, i64>(0))
+                .unwrap(),
+            0
+        );
+        a.db.execute_batch("DROP TRIGGER fail_portable;").unwrap();
+        let file = a.root.join("portable.webfit-license");
+        std::fs::write(&file, &content).unwrap();
+        call(
+            &mut a,
+            None,
+            Action::ActivateLicenseCode {
+                path: file.to_string_lossy().into(),
+                code: code.to_string(),
+            },
+        )
+        .unwrap();
+        assert_eq!(
+            a.import_initial_code(&content, &code).unwrap()["repeated"],
+            true
+        );
+        assert_eq!(a.license_status().unwrap()["installationId"], id_a);
+        assert_eq!(
+            std::fs::read(a.root.join("license.identity.dpapi")).unwrap(),
+            identity_a
+        );
+        let setup_action = || Action::Setup {
+            professional_name: "nutri".into(),
+            professional_password: "fictional-professional".into(),
+            recovery_password: "fictional-recovery-password".into(),
+        };
+        call(&mut a, None, setup_action()).unwrap();
+        login(&mut a, admin_password);
+        assert_eq!(
+            a.import_initial_code(&content, &code).unwrap()["consumed"],
+            true
+        );
+        let (other, other_code) = protocol::issue_initial_code(
+            &key,
+            protocol::credential("other-admin", "fictional-different-password").unwrap(),
+        )
+        .unwrap();
+        assert!(a
+            .import_initial_code(&serde_json::to_string(&other).unwrap(), &other_code)
+            .is_err());
+        login(&mut a, admin_password);
+        b.import_initial_code(&content, &code).unwrap();
+        call(&mut b, None, setup_action()).unwrap();
+        login(&mut b, admin_password);
+        assert_eq!(b.license_status().unwrap()["installationId"], id_b);
+        assert_eq!(
+            a.license_status().unwrap()["licenseId"],
+            b.license_status().unwrap()["licenseId"]
+        );
+        // Explicitly prepared legacy databases also cannot be activated or reset by this path.
+        let mut legacy = Service::open(temp.path().join("legacy")).unwrap();
+        legacy.license_roots = a.license_roots.clone();
+        legacy.db.execute("INSERT INTO users(id,name,role,password_hash) VALUES(?1,'legacy','ADMIN','fixture-disabled')", [uuid::Uuid::new_v4().to_string()]).unwrap();
+        assert!(legacy.import_initial_code(&content, &code).is_err());
+        assert_eq!(
+            legacy
+                .db
+                .query_row("SELECT count(*) FROM users", [], |r| r.get::<_, i64>(0))
+                .unwrap(),
+            1
+        );
+    }
+    #[test]
     fn initial_requires_signed_grant_and_cannot_reapply_or_prepare_existing() {
         let temp = tempfile::tempdir().unwrap();
         let mut s = Service::open(temp.path().into()).unwrap();

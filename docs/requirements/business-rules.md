@@ -1,5 +1,7 @@
 # Regras de negócio
 
+**Adendo RN-LIC-001 / D-LIC-009 (Maycon, 2026-10-08):** INITIAL v2 autoriza também destino vazio por licença/código previamente distribuídos. Assinatura/confiança/código/tipo conferidos no backend; grant associado à identidade local sem substituí-la. Reuso local idempotente; banco preparado preservado; reuso entre máquinas explicitamente aceito. Credencial administrativa por licença, compartilhada por cópias. Demais tipos/v1 preservados; sem garantia global offline.
+
 ## Licenciamento offline — WEBFIT-10
 
 DEC-058 e ADR-0003 v1 aprovados por Maycon: “Aprovo a implementação”, 2026-10-08. Implementação local em fixtures; aceite final pendente.

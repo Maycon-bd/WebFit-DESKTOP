@@ -40,6 +40,11 @@ function App() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [initialLogin, setInitialLogin] = useState("admin");
+  const [initialPassword, setInitialPassword] = useState("");
+  const [initialConfirmed, setInitialConfirmed] = useState(false);
+  const [initialReveal, setInitialReveal] = useState(false);
+  const [activationCode, setActivationCode] = useState("");
   async function refresh() {
     setStatus(await operate({ op: "status" }));
   }
@@ -120,6 +125,123 @@ function App() {
         </section>
       ) : (
         <>
+          <section>
+            <h2>Ativação inicial sem solicitação</h2>
+            <p>
+              Gere a licença antes da instalação. Envie a licença e o código
+              junto do instalador; guarde sua senha administrativa no Bitwarden.
+            </p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                void task(async () => {
+                  const path = await choose("webfit-license", true);
+                  if (typeof path !== "string") return;
+                  const result = await operate<{ code: string }>({
+                    op: "issue_initial_code",
+                    login: initialLogin,
+                    password: initialPassword,
+                    path,
+                    confirmed: initialConfirmed,
+                  });
+                  setActivationCode(result.code);
+                  setInitialConfirmed(false);
+                  setNotice(
+                    "Licença inicial salva. Copie o código de ativação e envie com a licença e o instalador. Sua senha administrativa fica somente com você.",
+                  );
+                });
+              }}
+            >
+              <label>
+                Seu nome de acesso administrativo
+                <input
+                  value={initialLogin}
+                  required
+                  maxLength={100}
+                  disabled={busy || !!activationCode}
+                  onChange={(e) => setInitialLogin(e.target.value)}
+                />
+              </label>
+              <label>
+                Sua senha administrativa para esta licença
+                <input
+                  type={initialReveal ? "text" : "password"}
+                  value={initialPassword}
+                  required
+                  minLength={12}
+                  maxLength={1024}
+                  autoComplete="new-password"
+                  disabled={busy || !!activationCode}
+                  onChange={(e) => setInitialPassword(e.target.value)}
+                />
+              </label>
+              <div className="actions">
+                <button
+                  type="button"
+                  disabled={busy || !!activationCode}
+                  onClick={() =>
+                    void task(async () => {
+                      const result = await operate<{ password: string }>({
+                        op: "password",
+                      });
+                      setInitialPassword(result.password);
+                    })
+                  }
+                >
+                  Gerar senha administrativa
+                </button>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => setInitialReveal(!initialReveal)}
+                >
+                  {initialReveal ? "Ocultar senha" : "Mostrar senha"}
+                </button>
+              </div>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={initialConfirmed}
+                  disabled={busy || !!activationCode}
+                  onChange={(e) => setInitialConfirmed(e.target.checked)}
+                />{" "}
+                Guardei meu acesso e aceito que o pacote possa ativar mais de um
+                computador offline
+              </label>
+              <button disabled={busy || !initialConfirmed || !!activationCode}>
+                Gerar licença e código de ativação
+              </button>
+            </form>
+            {activationCode && (
+              <div>
+                <label>
+                  Código de ativação para enviar com a licença
+                  <input readOnly value={activationCode} autoComplete="off" />
+                </label>
+                <p className="hint">
+                  Copie e guarde o código antes de fechar. Ele não é sua senha
+                  administrativa.
+                </p>
+                <button
+                  disabled={busy}
+                  onClick={() => {
+                    if (
+                      !window.confirm(
+                        "Você já guardou o código e sua senha? Preparar uma nova emissão limpará os campos desta tela.",
+                      )
+                    )
+                      return;
+                    setActivationCode("");
+                    setInitialPassword("");
+                    setInitialReveal(false);
+                    setInitialConfirmed(false);
+                  }}
+                >
+                  Preparar outra licença inicial
+                </button>
+              </div>
+            )}
+          </section>
           <section>
             <h2>Emitir autorização</h2>
             <button

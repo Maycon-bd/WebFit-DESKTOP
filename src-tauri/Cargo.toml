@@ -1,6 +1,6 @@
 [package]
 name = "webfit-desktop"
-version = "0.1.8"
+version = "0.1.10"
 description = "WebFit Desktop — primeiro incremento local"
 edition = "2021"
 license = "LicenseRef-WebFit"

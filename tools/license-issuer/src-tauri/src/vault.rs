@@ -55,6 +55,41 @@ pub enum Action {
 mod tests {
     use super::*;
     #[test]
+    fn initial_without_request_emits_separate_code_and_preserves_vault_on_failure() {
+        let temp = tempfile::tempdir().unwrap();
+        let mut vault = Vault::open(temp.path().join("vault")).unwrap();
+        vault
+            .execute(Action::Initialize { confirmed: true })
+            .unwrap();
+        let path = temp.path().join("initial.webfit-license");
+        let issue = |confirmed| Action::IssueInitialCode {
+            login: "admin".into(),
+            password: "fictional-initial-password".into(),
+            path: path.to_string_lossy().into(),
+            confirmed,
+        };
+        assert!(vault.execute(issue(false)).is_err());
+        assert!(!path.exists());
+        let value = vault.execute(issue(true)).unwrap();
+        let bytes = std::fs::read(&path).unwrap();
+        let text = String::from_utf8_lossy(&bytes);
+        assert!(!text.contains("fictional-initial-password"));
+        let code = value["code"].as_str().unwrap();
+        assert!(!text.contains(code));
+        let public: [u8; 32] = protocol::decode(
+            vault.execute(Action::Status).unwrap()["publicKey"]
+                .as_str()
+                .unwrap(),
+        )
+        .unwrap()
+        .try_into()
+        .unwrap();
+        assert!(protocol::verify_initial_code(&bytes, &[public], code).is_ok());
+        assert!(vault.execute(issue(true)).is_err());
+        assert_eq!(vault.execute(Action::Status).unwrap()["issued"], 1);
+        assert_eq!(std::fs::read(&path).unwrap(), bytes);
+    }
+    #[test]
     fn encrypted_vault_backup_recovers_identity_and_rejects_tampering() {
         let temp = tempfile::tempdir().unwrap();
         let mut a = Vault::open(temp.path().join("a")).unwrap();
@@ -296,17 +331,41 @@ impl Vault {
                 )
             }
             Action::Password => Ok(json!({"password":protocol::random_password().as_str()})),
-            Action::IssueInitialCode { login, password, path, confirmed } => {
-                if !confirmed { return Err(validate("Confirme a emissão inicial e o limite de reutilização offline.")); }
-                let seed = Zeroizing::new(protocol::decode(&self.contents()?.seed).map_err(validate)?);
+            Action::IssueInitialCode {
+                login,
+                password,
+                path,
+                confirmed,
+            } => {
+                if !confirmed {
+                    return Err(validate(
+                        "Confirme a emissão inicial e o limite de reutilização offline.",
+                    ));
+                }
+                let seed =
+                    Zeroizing::new(protocol::decode(&self.contents()?.seed).map_err(validate)?);
                 let key = protocol::signing_key_from_bytes(&seed).map_err(validate)?;
                 let password = Zeroizing::new(password);
                 let credential = protocol::credential(&login, &password).map_err(validate)?;
-                let (envelope, code) = protocol::issue_initial_code(&key, credential).map_err(validate)?;
+                let (envelope, code) =
+                    protocol::issue_initial_code(&key, credential).map_err(validate)?;
                 let tx = self.db.transaction()?;
-                tx.execute("INSERT INTO issued(id,request_id,kind) VALUES(?1,?2,'INITIAL')", params![envelope.id.to_string(), envelope.request.request_id.to_string()])?;
-                write_new(Path::new(&path), &serde_json::to_vec(&envelope)?, "webfit-license")?;
-                if tx.commit().is_err() { let _ = std::fs::remove_file(&path); return Err(Error::internal()); }
+                tx.execute(
+                    "INSERT INTO issued(id,request_id,kind) VALUES(?1,?2,'INITIAL')",
+                    params![
+                        envelope.id.to_string(),
+                        envelope.request.request_id.to_string()
+                    ],
+                )?;
+                write_new(
+                    Path::new(&path),
+                    &serde_json::to_vec(&envelope)?,
+                    "webfit-license",
+                )?;
+                if tx.commit().is_err() {
+                    let _ = std::fs::remove_file(&path);
+                    return Err(Error::internal());
+                }
                 Ok(json!({"issued":true,"id":envelope.id,"code":code.as_str()}))
             }
             Action::Issue {

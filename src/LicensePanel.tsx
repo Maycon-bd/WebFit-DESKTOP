@@ -43,6 +43,8 @@ export function LicensePanel({
   const [password, setPassword] = useState("");
   const [path, setPath] = useState("");
   const [notice, setNotice] = useState("");
+  const [activationPath, setActivationPath] = useState("");
+  const [activationCode, setActivationCode] = useState("");
   return (
     <section className="license-panel" aria-label="Licença e suporte">
       <h2>{status.licensed ? "Licença e suporte" : "Aguardando ativação"}</h2>
@@ -51,7 +53,7 @@ export function LicensePanel({
           ? "Autorizações são emitidas pelo administrador e vinculadas a este computador."
           : status.legacy
             ? "Este banco de testes foi preservado. Crie um backup e prepare uma instalação vazia para ativação inicial."
-            : "Gere uma solicitação, envie ao administrador e importe a licença recebida para preparar os acessos."}
+            : "Selecione a licença recebida e informe o código de ativação para preparar seus acessos."}
       </p>
       <p className="hint license-id">Instalação: {status.installationId}</p>
       {!status.trustConfigured && (
@@ -63,102 +65,180 @@ export function LicensePanel({
       )}
       {!status.legacy && (
         <>
-          <label className="field">
-            Tipo de autorização
-            <select
-              value={kind}
-              onChange={(e) => setKind(e.target.value as keyof typeof kinds)}
-              disabled={busy}
-            >
-              {Object.entries(kinds)
-                .filter(([key]) =>
-                  status.licensed
-                    ? !["INITIAL", "TRANSFER_RECOVERY"].includes(key)
-                    : ["INITIAL", "TRANSFER_RECOVERY"].includes(key),
-                )
-                .map(([key, title]) => (
-                  <option key={key} value={key}>
-                    {title}
-                  </option>
-                ))}
-            </select>
-          </label>
-          {kind === "TRANSFER_RECOVERY" && (
-            <label className="field">
-              Licença da origem ou checksum SHA-256 do backup
-              <input
-                value={source}
-                maxLength={100}
-                onChange={(e) => setSource(e.target.value)}
-              />
-            </label>
-          )}
-          <div className="actions">
-            <button
-              disabled={busy}
-              onClick={() =>
+          {!status.initialized && !status.licensed && (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
                 void task(async () => {
-                  const destination = await save({
-                    defaultPath: "instalacao.webfit-request",
-                    filters: [
-                      {
-                        name: "Solicitação WebFit",
-                        extensions: ["webfit-request"],
-                      },
-                    ],
-                  });
-                  if (!destination) return;
-                  const r = await api<{ content: string; fingerprint: string }>(
-                    null,
-                    {
-                      op: "license_request",
-                      kind,
-                      source: kind === "TRANSFER_RECOVERY" ? source : null,
-                    },
-                  );
-                  await api(null, {
-                    op: "save_license_request",
-                    content: r.content,
-                    path: destination,
-                  });
-                  setNotice(
-                    `Solicitação salva. Envie ao administrador e confira a identidade: ${r.fingerprint}`,
-                  );
-                })
-              }
-            >
-              Gerar e salvar solicitação
-            </button>
-            <button
-              disabled={busy}
-              onClick={() =>
-                void task(async () => {
-                  const path = await open({
-                    multiple: false,
-                    filters: [
-                      {
-                        name: "Licença WebFit",
-                        extensions: ["webfit-license"],
-                      },
-                    ],
-                  });
-                  if (typeof path !== "string") return;
                   const result = await api<{ consumed?: boolean }>(null, {
-                    op: "read_license_file",
-                    path,
+                    op: "activate_license_code",
+                    path: activationPath,
+                    code: activationCode,
                   });
+                  setActivationCode("");
                   await onRefresh();
                   setNotice(
                     result.consumed
                       ? "Esta autorização já foi utilizada. Nenhum efeito foi repetido."
-                      : "Autorização importada. Confirme a operação correspondente abaixo.",
+                      : "Licença validada. Preencha seu acesso e a senha de recuperação dos backups abaixo.",
                   );
-                })
-              }
+                });
+              }}
             >
-              Importar autorização
-            </button>
-          </div>
+              <h3>Ativar com licença e código</h3>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() =>
+                  void task(async () => {
+                    const file = await open({
+                      multiple: false,
+                      filters: [
+                        {
+                          name: "Licença WebFit",
+                          extensions: ["webfit-license"],
+                        },
+                      ],
+                    });
+                    if (typeof file === "string") {
+                      setActivationPath(file);
+                      setActivationCode("");
+                    }
+                  })
+                }
+              >
+                Selecionar licença
+              </button>
+              <p className="license-id">
+                {activationPath || "Nenhuma licença selecionada"}
+              </p>
+              <label className="field">
+                Código de ativação
+                <input
+                  type="password"
+                  value={activationCode}
+                  required
+                  maxLength={128}
+                  autoComplete="off"
+                  disabled={busy}
+                  onChange={(e) => setActivationCode(e.target.value)}
+                />
+              </label>
+              <button
+                disabled={
+                  busy ||
+                  !activationPath ||
+                  !activationCode.trim() ||
+                  !status.trustConfigured
+                }
+              >
+                Validar licença e código
+              </button>
+            </form>
+          )}
+          <details open={status.licensed}>
+            <summary>
+              {status.licensed
+                ? "Outras autorizações"
+                : "Ativação por solicitação ou transferência"}
+            </summary>
+            <label className="field">
+              Tipo de autorização
+              <select
+                value={kind}
+                onChange={(e) => setKind(e.target.value as keyof typeof kinds)}
+                disabled={busy}
+              >
+                {Object.entries(kinds)
+                  .filter(([key]) =>
+                    status.licensed
+                      ? !["INITIAL", "TRANSFER_RECOVERY"].includes(key)
+                      : ["INITIAL", "TRANSFER_RECOVERY"].includes(key),
+                  )
+                  .map(([key, title]) => (
+                    <option key={key} value={key}>
+                      {title}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            {kind === "TRANSFER_RECOVERY" && (
+              <label className="field">
+                Licença da origem ou checksum SHA-256 do backup
+                <input
+                  value={source}
+                  maxLength={100}
+                  onChange={(e) => setSource(e.target.value)}
+                />
+              </label>
+            )}
+            <div className="actions">
+              <button
+                disabled={busy}
+                onClick={() =>
+                  void task(async () => {
+                    const destination = await save({
+                      defaultPath: "instalacao.webfit-request",
+                      filters: [
+                        {
+                          name: "Solicitação WebFit",
+                          extensions: ["webfit-request"],
+                        },
+                      ],
+                    });
+                    if (!destination) return;
+                    const r = await api<{
+                      content: string;
+                      fingerprint: string;
+                    }>(null, {
+                      op: "license_request",
+                      kind,
+                      source: kind === "TRANSFER_RECOVERY" ? source : null,
+                    });
+                    await api(null, {
+                      op: "save_license_request",
+                      content: r.content,
+                      path: destination,
+                    });
+                    setNotice(
+                      `Solicitação salva. Envie ao administrador e confira a identidade: ${r.fingerprint}`,
+                    );
+                  })
+                }
+              >
+                Gerar e salvar solicitação
+              </button>
+              <button
+                disabled={busy}
+                onClick={() =>
+                  void task(async () => {
+                    const path = await open({
+                      multiple: false,
+                      filters: [
+                        {
+                          name: "Licença WebFit",
+                          extensions: ["webfit-license"],
+                        },
+                      ],
+                    });
+                    if (typeof path !== "string") return;
+                    const result = await api<{ consumed?: boolean }>(null, {
+                      op: "read_license_file",
+                      path,
+                    });
+                    await onRefresh();
+                    setNotice(
+                      result.consumed
+                        ? "Esta autorização já foi utilizada. Nenhum efeito foi repetido."
+                        : "Autorização importada. Confirme a operação correspondente abaixo.",
+                    );
+                  })
+                }
+              >
+                Importar autorização
+              </button>
+            </div>
+          </details>
         </>
       )}
       {notice && (

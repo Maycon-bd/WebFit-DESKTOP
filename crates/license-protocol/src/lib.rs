@@ -276,7 +276,10 @@ pub fn verify(
 
 /// Portable initial activation is explicitly a different signed protocol version.
 /// The random recipient key is delivered as a code, never embedded in the application.
-pub fn issue_initial_code(key: &SigningKey, credential: Credential) -> Result<(Envelope, Zeroizing<String>)> {
+pub fn issue_initial_code(
+    key: &SigningKey,
+    credential: Credential,
+) -> Result<(Envelope, Zeroizing<String>)> {
     let secret = recipient_secret();
     let code = Zeroizing::new(format!("WF1-{}", encode(&secret.to_bytes())));
     let request = request(Uuid::new_v4(), &secret, Kind::Initial, None, None);
@@ -288,19 +291,31 @@ pub fn issue_initial_code(key: &SigningKey, credential: Credential) -> Result<(E
 
 pub fn verify_initial_code(bytes: &[u8], trusted: &[[u8; 32]], code: &str) -> Result<Grant> {
     let envelope: Envelope = parse(bytes)?;
-    if envelope.version != 2 || envelope.request.kind != Kind::Initial
-        || envelope.request.base_license_id.is_some() || envelope.request.source.is_some() {
+    if envelope.version != 2
+        || envelope.request.kind != Kind::Initial
+        || envelope.request.base_license_id.is_some()
+        || envelope.request.source.is_some()
+    {
         return Err("Selecione uma licença de ativação inicial com código.");
     }
     let text = code.trim();
-    if text.len() != 48 { return Err("Código de ativação inválido."); }
-    let raw = Zeroizing::new(decode(text.strip_prefix("WF1-").ok_or("Código de ativação inválido.")?)?);
+    if text.len() != 48 {
+        return Err("Código de ativação inválido.");
+    }
+    let raw = Zeroizing::new(decode(
+        text.strip_prefix("WF1-")
+            .ok_or("Código de ativação inválido.")?,
+    )?);
     let secret = secret_from_bytes(&raw)?;
     verify_version(bytes, trusted, &secret, &envelope.request, 2)
 }
 
 fn verify_version(
-    bytes: &[u8], trusted: &[[u8; 32]], secret: &SecretKey, expected: &Request, version: u8,
+    bytes: &[u8],
+    trusted: &[[u8; 32]],
+    secret: &SecretKey,
+    expected: &Request,
+    version: u8,
 ) -> Result<Grant> {
     let envelope: Envelope = parse(bytes)?;
     if envelope.version != version {
@@ -351,21 +366,27 @@ mod tests {
         let key = signing_key();
         let roots = [key.verifying_key().to_bytes()];
         let password = "fictional-portable-password";
-        let (mut envelope, code) = issue_initial_code(&key, credential("admin", password).unwrap()).unwrap();
+        let (mut envelope, code) =
+            issue_initial_code(&key, credential("admin", password).unwrap()).unwrap();
         let bytes = serde_json::to_vec(&envelope).unwrap();
         assert!(!String::from_utf8_lossy(&bytes).contains(password));
         assert!(!String::from_utf8_lossy(&bytes).contains(code.as_str()));
         assert!(verify_initial_code(&bytes, &roots, &code).is_ok());
         assert!(verify_initial_code(&bytes, &[], &code).is_err());
-        let (_, other_code) = issue_initial_code(&key, credential("admin", password).unwrap()).unwrap();
+        let (_, other_code) =
+            issue_initial_code(&key, credential("admin", password).unwrap()).unwrap();
         assert!(verify_initial_code(&bytes, &roots, &other_code).is_err());
         assert!(verify_initial_code(&bytes, &roots, "wrong").is_err());
         assert!(verify(&bytes, &roots, &recipient_secret(), &envelope.request).is_err());
         envelope.request.kind = Kind::AdminRecovery;
-        assert!(verify_initial_code(&serde_json::to_vec(&envelope).unwrap(), &roots, &code).is_err());
+        assert!(
+            verify_initial_code(&serde_json::to_vec(&envelope).unwrap(), &roots, &code).is_err()
+        );
         envelope.request.kind = Kind::Initial;
         envelope.ciphertext.push('A');
-        assert!(verify_initial_code(&serde_json::to_vec(&envelope).unwrap(), &roots, &code).is_err());
+        assert!(
+            verify_initial_code(&serde_json::to_vec(&envelope).unwrap(), &roots, &code).is_err()
+        );
     }
     #[test]
     fn signed_bound_encrypted_and_tamper_rejected() {

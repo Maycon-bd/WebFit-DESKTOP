@@ -2,6 +2,15 @@
 
 > Este é o único checkpoint operacional para retomar o trabalho em outra máquina. Atualize-o ao terminar cada sessão e antes de trocar de computador.
 
+## Checkpoint vigente — WEBFIT-10, ativação por licença e código, 2026-10-08
+
+- Branch/base: `feature/pbi-001-primeiro-incremento-saude` / `e0fb4eae28b69f69cea74c76771e5ca724c96d2a`; upstream local 0/0, sem fetch/Git mutável. Mudança humana desde main reconhecida antes de editar; integração parcial e demais trilhas preservadas.
+- Última etapa concluída: D-LIC-009 aprovada explicitamente (licença/código juntos, reutilização entre máquinas offline aceita); T-LIC-012..015 implementadas/checks locais. INITIAL portátil v2, emissor sem request, tela licença/código e preparação do profissional; administrador definido pela licença. V1/demais operações/schema/cofre/DPAPI preservados.
+- Verificação: 29 Rust produto + 3 protocolo + 3 emissor e 24 Node PASS; lint/TS/frontend builds/fmt/Prettier/Clippy/diff PASS. Metadados finais clínico 0.1.10/emissor 0.1.1 e builds Tauri clínico NSIS/emissor debug PASS. NSIS primeiro bloqueado por DNS, retry ampliado autorizado concluído, inclui instalador offline WebView2. Sem instalação/abertura de banco/cofre reais/publicação/assinatura de release.
+- Artefatos: `.artifacts/mvp/2026-10-08/activation-code-0.1.10/` (instalador/roteiro/manifest SHA-256) e `activation-code-emissor-0.1.1/` (ferramenta/roteiro exclusivo). Licença/código reais ainda não gerados pelo agente. [Evidência/inventário](../../specs/WEBFIT-10/task.md#entrega-simplificada-concluída-localmente), [manual](../../tools/license-issuer/README.md).
+- Próxima ação exata: Maycon usar emissor atualizado no usuário do cofre, guardar login/senha administrativa no Bitwarden, gerar licença+código e enviar somente estes e instalador/roteiro à nutricionista para teste fictício em destino vazio. Ensaio Windows/teclado/visual e revisão independente pendentes; não enviar emissor/cofre/backup privado. Banco legado não é apagado para ativar.
+- Checklist: [x] decisão/requisitos/Plan; [x] protocolo/backend/emissor/UI/testes; [x] builds e documentação; [ ] licença/código por Maycon; [ ] ensaio fictício Windows; [ ] review independente/aceite final. Autorrevisão concluída, sem READY TO SHIP/Done; Plane sync degraded; G5 em execução, G6/G7 e demais trilhas preservados. Painel/serviço online adiados.
+
 ## Checkpoint salvo — encerramento desta sessão, 2026-10-08
 
 - **Data/branch/HEAD:** 2026-10-08; `feature/pbi-001-primeiro-incremento-saude`; commit-base observado `3030c596201d9d00dfd1629e90a24f20c85cb628`. Branch diferente da `main` registrada na correção anterior; divergência informada antes desta edição. Nenhuma criação/troca de branch pelo agente.

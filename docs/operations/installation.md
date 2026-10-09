@@ -1,5 +1,9 @@
 # Instalação
 
+**Teste WEBFIT-10 / D-LIC-009:** candidato clínico 0.1.10 permite selecionar licença inicial recebida e informar código sem request prévio. Maycon gera ambos no emissor separado 0.1.1; enviar só instalador/licença/código, mantendo senha administrativa/cofre/backup privado. Usar destino vazio e dados fictícios. Banco preparado recusa INITIAL sem apagar dados; não desinstalar/apagar para ativar. Fluxo/limite offline no [manual do emissor](../../tools/license-issuer/README.md). Updates mantêm licença/acessos/consumo. Painel/serviço online adiados; sem publicação/aceite final inferidos.
+
+Pré-requisito do instalador preservado: a configuração efetiva do produto usa `webviewInstallMode: offlineInstaller`, incluindo o instalador offline WebView2 no NSIS. A máquina de build obtém esse artefato Microsoft quando o cache está ausente; não é serviço de ativação. A ativação e o uso permanecem offline. Esta mudança não altera a distribuição do runtime.
+
 ## Ativação offline — WEBFIT-10 (implementação local, aceite pendente)
 
 Instalação vazia aguarda ativação; gerar `.webfit-request`, enviar manualmente a Maycon, emitir `.webfit-license` na ferramenta separada, importar e preparar somente o acesso profissional e senha de backup. O administrador vem da autorização. Protocolo/dependências/schema/efeitos aprovados por Maycon em 2026-10-08 (“Aprovo a implementação”). A configuração pública `src-tauri/license-trust.json` começa vazia e deve receber a pública exportada pelo emissor pelo fluxo build/Git humano **antes do instalador distribuível**. Não colocar cofre/executável/chave privada do emissor no instalador clínico.

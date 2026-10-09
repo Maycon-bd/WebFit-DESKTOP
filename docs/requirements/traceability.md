@@ -1,5 +1,7 @@
 # Matriz de rastreabilidade
 
+D-LIC-009 ACCEPTED → RF-LIC-001/RN-LIC-001 → TA-LIC-013..016 → T-LIC-012..015 ([registro](../../specs/WEBFIT-10/task.md)). Protocolo `issue_initial_code`/`verify_initial_code` e teste; emissor `IssueInitialCode` e teste; backend `ActivateLicenseCode`/`import_initial_code` e integração SQLite de atomicidade/identidade/contas/repetição/dois destinos; UI `LicensePanel.tsx`/emissor. Candidato clínico 0.1.10 e emissor 0.1.1; artefatos/checks não comprovam aceite. Operação: [manual do emissor](../../tools/license-issuer/README.md).
+
 ## WEBFIT-10 — licenciamento offline
 
 DEC-058 / ADR-0003 v1 ACCEPTED → RF-LIC-001..005 → RN-LIC-001..007 → UC-LIC-001..005 → TA-LIC-001..011 → T-LIC-001..009/011 no [registro único](../../specs/WEBFIT-10/task.md). RF-LIC-006/RN-LIC-008/UC-LIC-006/TA-LIC-012/T-LIC-010 adiados por Maycon, sem item extra. Aprovação específica: “Aprovo a implementação”, D-LIC-006..008 e P-LIC-001; main/680fad5616d54a895dbecc6702595a1b5d232cfd, candidato local 0.1.8, sem distribuição.
